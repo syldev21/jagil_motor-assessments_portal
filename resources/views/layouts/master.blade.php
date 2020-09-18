@@ -1,0 +1,6 @@
+@include('_partials.header')
+@include('_partials.navbar')
+@include('_partials.sidebar')
+@include('includes.main')
+@include('_partials.settings')
+@include('_partials.footer')
