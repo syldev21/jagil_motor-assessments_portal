@@ -33,9 +33,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="waves-effect waves-block waves-light notification-button" href="javascript:void(0);"
+                        <a class="waves-effect waves-block waves-light notification-button dropdown-trigger" href="javascript:void(0);"
                            data-target="notifications-dropdown">
-                            <i class="material-icons">notifications_none<small class="notification-badge">5</small></i>
+                            <i class="material-icons">notifications_none<small class="notification-badge">{{$user->unreadNotifications->count()}}</small></i>
                         </a>
                     </li>
                     <li>
@@ -55,49 +55,19 @@
                 </ul>
                 <ul class="dropdown-content" id="notifications-dropdown">
                     <li>
-                        <h6>NOTIFICATIONS<span class="new badge">5</span></h6>
+                        <h6>NOTIFICATIONS<span class="new badge">{{$user->unreadNotifications->count()}}</span></h6>
                     </li>
                     <li class="divider"></li>
-                    <li>
+                    @foreach($user->unreadNotifications as $notification)
+                    <li class="notification tooltipped" data-id="{{$notification->id}}" data-position="top" data-tooltip="Mark as Read">
                         <a class="black-text" href="javascript:void(0)">
-                            <span class="material-icons icon-bg-circle cyan small">add_shopping_cart</span>
-                            A new order has been placed!
+                            <span class="material-icons icon-bg-circle teal small">notifications_active</span>
+                            {{$notification->data['message']}}
                         </a>
                         <time class="media-meta grey-text darken-2" datetime="2015-06-12T20:50:48+08:00">2 hours ago
                         </time>
                     </li>
-                    <li>
-                        <a class="black-text" href="javascript:void(0)">
-                            <span class="material-icons icon-bg-circle red small">stars</span>
-                            Completed the task
-                        </a>
-                        <time class="media-meta grey-text darken-2" datetime="2015-06-12T20:50:48+08:00">3 days ago
-                        </time>
-                    </li>
-                    <li>
-                        <a class="black-text" href="javascript:void(0)">
-                            <span class="material-icons icon-bg-circle teal small">settings</span>
-                            Settings updated
-                        </a>
-                        <time class="media-meta grey-text darken-2" datetime="2015-06-12T20:50:48+08:00">4 days ago
-                        </time>
-                    </li>
-                    <li>
-                        <a class="black-text" href="javascript:void(0)">
-                            <span class="material-icons icon-bg-circle deep-orange small">today</span>
-                            Director meeting started
-                        </a>
-                        <time class="media-meta grey-text darken-2" datetime="2015-06-12T20:50:48+08:00">6 days ago
-                        </time>
-                    </li>
-                    <li>
-                        <a class="black-text" href="javascript:void(0)">
-                            <span class="material-icons icon-bg-circle amber small">trending_up</span>
-                            Generate monthly report
-                        </a>
-                        <time class="media-meta grey-text darken-2" datetime="2015-06-12T20:50:48+08:00">1 week ago
-                        </time>
-                    </li>
+                    @endforeach
                 </ul>
                 <!-- profile-dropdown-->
                 <ul class="dropdown-content" id="profile-dropdown">

@@ -13,7 +13,9 @@
         "guzzlehttp/guzzle": "^6.5",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "spatie/laravel-permission": "^2.38"
+        "spatie/laravel-permission": "^2.38",
+        "infobip/infobip-api-php-client": "dev-master"
+
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -681,6 +681,7 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('select').formSelect();
             }
 
         });
@@ -734,17 +735,12 @@ $(document).ready(function () {
         var fromDate = $("#fromDate");
         var toDate = $("#toDate");
         var vehicleRegNo = $("#vehicleRegNo");
-        if(vehicleRegNo.val() != '')
-        {
-            var url ='/adjuster/filterPremia11ClaimsByVehicleRegNo';
-            var data = {vehicleRegNo : vehicleRegNo.val()};
-        }else
-        {
-            var url = '/adjuster/filterPremia11ClaimsByDate';
-            var data = {fromDate : fromDate.val(),
-                toDate : toDate.val()
-            };
-        }
+        var url = '/adjuster/filterPremia11ClaimsByDate';
+        var data = {
+            fromDate : fromDate.val(),
+            toDate : toDate.val(),
+            vehicleRegNo : vehicleRegNo.val()
+        };
         $.ajaxSetup({
 
             headers: {
@@ -770,7 +766,7 @@ $(document).ready(function () {
     });
     $("body").on('click','.assessmentType',function (){
         var radioValue = $("input[name='assessmentType']:checked").val();
-        if(radioValue == 'Total loss')
+        if(radioValue == '3')
         {
             $(".totalLose").removeClass('hideTotalLose');
             $("#authorityToGarage").addClass('hideTotals');
@@ -799,6 +795,30 @@ $(document).ready(function () {
             url: '/adjuster/claimExceptionDetail',
             data: {claimID : claimID},
 
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
+    $('.tooltipped').tooltip();
+    $(".notification").on('click',function (e){
+        var id = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/markNotification',
+            data: {id : id},
             success: function (data) {
                 $("#main").html(data);
             }
@@ -939,25 +959,15 @@ function resizeStepper() {
             height: newHeight},
         300);
 }
-
+var count= 1;
 function addMore() {
     $(".dynamicVehiclePart:last").clone().insertAfter(".dynamicVehiclePart:last");
+    $('.dynamicVehiclePart').find('select').attr('id', 'select_'+count);
+    $('.dynamicVehiclePart').find('input').attr('name', 'quantity_'+count)
+    count++;
 }
 function deletePart() {
     $('.dynamicVehiclePart').each(function(index, item){
-        jQuery(':checkbox', this).each(function () {
-            if ($(this).is(':checked')) {
-                $(item).remove();
-            }
-        });
-    });
-}
-function addRepairedVehiclePart()
-{
-    $(".repairedVehicleParts:last").clone().insertAfter('.repairedVehicleParts:last');
-}
-function deleteRepairedVehiclePart(){
-    $('.repairedVehicleParts').each(function(index, item){
         jQuery(':checkbox', this).each(function () {
             if ($(this).is(':checked')) {
                 $(item).remove();

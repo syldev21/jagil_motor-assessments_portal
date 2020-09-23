@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Assessment;
 use App\Claim;
+use App\Helper\SMSHelper;
+use App\Notifications\AssignClaim;
 use App\StatusTracker;
 use App\Conf\Config;
 use App\Garage;
@@ -13,6 +15,7 @@ use App\Helper\InfobipEmailHelper;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class HeadAssessorController extends Controller
 {
@@ -55,8 +58,9 @@ class HeadAssessorController extends Controller
                     ]);
                     $assessor = User::where(['id' => $request->assessor])->first();
                     $claim = Claim::where(['id' => $request->claimID])->first();
+                    $location = isset($claim->location) ? $claim->location : '';
 //                    $garage = Garage::where(['garageID' => $request->garage])->first();
-                    if ($assessor->userID > 0) {
+                    if ($assessor->id > 0) {
                         $email_add = $assessor->email;
                         $email = [
                             'subject' => 'Vehicle Assessment - ' . $claim->vehicleRegNo,
@@ -66,7 +70,7 @@ class HeadAssessorController extends Controller
                     Please note that there's a vehicle
                     <br><strong>Claim number</strong>:  " . $claim->claimNo . "
                     <br><strong>Registration number</strong>: " . $claim->vehicleRegNo . "
-                    <br><strong>Location</strong>:
+                    <br><strong>Location</strong>: $location
                     <br><strong>Sum Insured</strong>: " . $claim->sumInsured . "
                     <br>Login to the portal using the link below to view the details. If you are not in a position to assess it, kindly inform us in the next 1 hour
                     <br>
@@ -79,6 +83,8 @@ class HeadAssessorController extends Controller
                 ",
                         ];
                         InfobipEmailHelper::sendEmail($email, $email_add);
+                        SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
+                        Notification::send($assessor, new AssignClaim($claim));
                     }
                     $response = array(
                         "STATUS_CODE" => Config::SUCCESS_CODE,
@@ -118,7 +124,8 @@ class HeadAssessorController extends Controller
                 ]);
                 $assessor = User::where(['userID' => $request->assessor])->first();
                 $claim = Claim::where(['claimID' => $request->claimID])->first();
-                if ($assessor->userID > 0) {
+                $location = isset($claim->location) ? $claim->location : '';
+                if ($assessor->id > 0) {
                     $email_add = $assessor->email;
                     $email = [
                         'subject' => 'Vehicle Assessment - ' . $claim->vehicleRegNo,
@@ -128,7 +135,7 @@ class HeadAssessorController extends Controller
                     Please note that there's a vehicle
                     <br><strong>Claim number</strong>:  " . $claim->claimNo . "
                     <br><strong>Registration number</strong>: " . $claim->vehicleRegNo . "
-                    <br><strong>Location</strong>:
+                    <br><strong>Location</strong>: $location
                     <br><strong>Sum Insured</strong>: " . $claim->sumInsured . "
                     <br>Login to the portal using the link below to view the details. If you are not in a position to assess it, kindly inform us in the next 1 hour
                     <br>
@@ -141,6 +148,8 @@ class HeadAssessorController extends Controller
                 ",
                     ];
                     InfobipEmailHelper::sendEmail($email, $email_add);
+                    SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
+                    Notification::send($assessor, new AssignClaim($claim));
                 }
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,

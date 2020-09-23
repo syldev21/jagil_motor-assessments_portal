@@ -76,8 +76,14 @@
                                             <label for="customerCode" class="active">Client Code</label>
                                         </div>
                                         <div class="input-field col m4 s12">
-                                            <input id="location" type="text" name="location">
-                                            <label for="location" class="active">Location</label>
+                                            <select id="location"required name="location">
+                                                <option value="">Select User</option>
+                                                @if(count($locations)>0)
+                                                    @foreach($locations as $location)
+                                                        <option value="{{$location->id}}">{{$location->name}}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
                                         </div>
                                         <input type="hidden" name="email" id="email" value="{{$claim['CUST_EMAIL1']}}">
                                         <input type="hidden" name="fullName" id="fullName"

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Assessment;
 use App\Claim;
 use App\ClaimTracker;
+use App\Helper\SMSHelper;
+use App\Location;
+use App\Notifications\NewClaimNotification;
 use App\StatusTracker;
 use App\Conf\Config;
 use App\CustomerMaster;
@@ -20,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class AdjusterController extends Controller
 {
@@ -169,7 +173,8 @@ class AdjusterController extends Controller
     public function claimForm(Request $request)
     {
         $claim = json_decode($request->getContent(), true);
-        return view('adjuster.claim-form', ['claim' => $claim]);
+        $locations = Location::all();
+        return view('adjuster.claim-form', ['claim' => $claim,'locations' =>$locations]);
     }
     public function claimDetails(Request $request,$claimID)
     {
@@ -276,13 +281,7 @@ class AdjusterController extends Controller
                     );
                 }
                 if ($claimID > 0) {
-                    $role = Role::where(['name' => Config::HEAD_ASSESSOR])->first();
-                    $headAssessors = array();
-                    if ($role->roleID > 0) {
-                        $userIDs = UserHasRole::where(['roleID' => $role->roleID])->select('userID')->get();
-
-                        $headAssessors = DB::table('users')->whereIn('userID', $userIDs->toArray())->get();
-                    }
+                    $headAssessors = User::role('Head Assessor')->get(); // Returns only users with the role 'Head Assessor'
                     if (count($headAssessors) > 0) {
                         foreach ($headAssessors as $headAssessor) {
                             $data = [
@@ -313,6 +312,9 @@ class AdjusterController extends Controller
                         ",
                             ];
                             $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                            SMSHelper::sendSMS('Hello '. $headAssessor->firstName .', A new claim : '.$claimNo.' has been created. You are required to assign an assessor',$headAssessor->MSISDN);
+                            $claim = Claim::where(['id' => $claimID])->first();
+                            Notification::send($headAssessors, new NewClaimNotification($claim));
                         }
                     }
                 }
@@ -470,13 +472,14 @@ class AdjusterController extends Controller
     public function filterPremia11ClaimsByDate(Request $request)
     {
         try {
-            if(isset($request->toDate) && isset($request->fromDate))
-            {
                 $utility = new Utility();
                 $access_token = $utility->getToken();
-                $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
-                $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
-                $data = ["fromDate"=>$fromDate,"toDate" => $toDate];
+                $defaultToDate = Carbon::now()->toDateTimeString();
+                $defaultFromDate = Carbon::now()->subDays(Config::DATES_LIMIT)->toDateTimeString();
+                $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
+                $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
+                $vehicleRegNo = $request->vehicleRegNo;
+                $data = ["fromDate"=>$fromDate,"toDate" => $toDate,"vehicleRegNo"=>$vehicleRegNo];
                 $response = $utility->getData($data, '/api/v1/b2b/general/claim/fetch', 'POST');
                 $claim_data = json_decode($response->getBody()->getContents());
                 if ($claim_data->status == 'success' && sizeof($claim_data->data->DB_VALUE1) != 0) {
@@ -484,11 +487,6 @@ class AdjusterController extends Controller
                 }else{
                     $claims = [];
                 }
-
-            }else
-            {
-                $claims = [];
-            }
         }catch (\Exception $e)
         {
             $claims = [];

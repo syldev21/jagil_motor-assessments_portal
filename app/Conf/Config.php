@@ -80,7 +80,7 @@ class Config
         "ASSESSMENT" =>2
     );
 
-    const DATES_LIMIT =2;
+    const DATES_LIMIT =5;
     static $ROLES = array(
         "ASSESSOR" => "Assessor",
         "ADJUSTER" => "Adjuster",
@@ -89,4 +89,14 @@ class Config
     );
 
     const START_YEAR = 1960;
+
+    const CURRENT_VAT = 14;
+    const CURRENT_VAT_PERCENTAGE = '14%';
+    const INITIAL_PERCENTAGE = 100;
+    const CURRENT_TOTAL_PERCENTAGE = self::INITIAL_PERCENTAGE + self::CURRENT_VAT;
+    const VAT_REDUCTION_DATE = '2020-05-01 12:00:00';
+
+    const VAT = 16;
+    const VAT_PERCENTAGE = '16%';
+    const TOTAL_PERCENTAGE = self::INITIAL_PERCENTAGE + self::VAT;
 }

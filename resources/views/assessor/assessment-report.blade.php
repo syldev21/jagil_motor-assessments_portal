@@ -91,55 +91,56 @@
                                             <div class="input-field col m1 s12">
                                                 <label>
                                                     <input type="checkbox"/>
-                                                    <span>Remove</span>
+                                                    <span style="font-size: 10px">Remove</span>
                                                 </label>
                                             </div>
                                             <div class="input-field col m2 s12">
-                                                <select id="vehiclePart">
+                                                <select id="vehiclePart_0" name="vehiclePart[]">
                                                     <option value="">147</option>
                                                     <option value="">1324</option>
                                                     <option value="">150</option>
                                                     <option value="">1020</option>
                                                 </select>
-                                                <label for="vehiclePart">Vehicle Part</label>
+                                                <label for="vehiclePart_0">Vehicle Part</label>
                                             </div>
                                             <div class="input-field col m1 s12">
-                                                <input placeholder="" id="quantity" type="text" name="quantity"
+                                                <input id="quantity_0" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
                                                        value=""/>
-                                                <label for="quantity">Quantity</label>
+                                                <label for="quantity_0" class="active">Quantity</label>
                                             </div>
                                             <div class="input-field col m1 s12">
-                                                <input placeholder="" id="partPrice" type="text" name="partPrice"
+                                                <input id="partPrice_0" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
                                                        value=""/>
-                                                <label for="partPrice">Part Price</label>
+                                                <label for="partPrice_0" class="active">Part Price</label>
                                             </div>
                                             <div class="input-field col m1 s12">
-                                                <input placeholder="" id="contribution" type="text"
-                                                       name="contribution" value=""/>
-                                                <label for="contribution">Contribution</label>
+                                                <input id="contribution_0" placeholder="" type="text"
+                                                       name="contribution[]" oninput="getTotal(0)" value=""/>
+                                                <label for="contribution_0" class="active">Contribution</label>
+                                            </div>
+                                            <div class="input-field col m1 s12">
+                                                <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
+                                                       value="" required/>
+                                                <label for="discount_0" class="active">Discount</label>
                                             </div>
                                             <div class="input-field col m2 s12">
-                                                <input placeholder="" id="discount" type="text" name="discount"
-                                                       value=""/>
-                                                <label for="discount">Discount</label>
-                                            </div>
-                                            <div class="input-field col m2 s12">
-                                                <input placeholder="" id="total" type="text" name="total" value=""
+                                                <input id="total_0" placeholder="" type="text" name="total[]" value="" class="total"
                                                        disabled/>
-                                                <label for="total">Total</label>
+                                                <label for="total_0" class="active">Total</label>
                                             </div>
                                             <div class="input-field col m2 s12">
-                                                <select id="remarks">
+                                                <select id="remarks_0" name="remarks[]">
                                                     @foreach($remarks as $remark)
                                                         <option value="{{$remark->id}}">{{$remark->name}}</option>
                                                     @endforeach
                                                 </select>
-                                                <label for="vehiclePart">Remarks</label>
+                                                <label for="remarks_0">Remarks</label>
                                             </div>
                                         </div>
+                                        <div id="addP"></div>
                                         <div class="row">
                                             <div class="col s12">
-                                                <a href="#" class="btn blue lighten-2" id="addPart" onclick="addMore()">Add Part <i
+                                                <a href="#" class="btn blue lighten-2" id="addPart">Add Part <i
                                                         class="medium material-icons">add</i></a>
                                                 <a href="#" class="btn red darken-4" onclick="deletePart()">Remove <i
                                                         class="medium material-icons">remove</i></a>
@@ -154,7 +155,7 @@
                                                             <div class="input-field">
                                                                 <input placeholder="" id="labour" type="text"
                                                                        name="labour" value=""
-                                                                       class="border-fields"/>
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -164,7 +165,7 @@
                                                             <div class="input-field">
                                                                 <input placeholder="" id="painting" type="text"
                                                                        name="painting" value=""
-                                                                       class="border-fields"/>
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -174,7 +175,7 @@
                                                             <div class="input-field">
                                                                 <input placeholder="" id="miscellaneous" type="text"
                                                                        name="miscellaneous" value=""
-                                                                       class="border-fields"/>
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -184,7 +185,7 @@
                                                             <div class="input-field">
                                                                 <input placeholder="" id="2kprimer" type="text"
                                                                        name="2kprimer" value=""
-                                                                       class="border-fields"/>
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -194,7 +195,7 @@
                                                             <div class="input-field">
                                                                 <input placeholder="" id="jigging" type="text"
                                                                        name="jigging" value=""
-                                                                       class="border-fields"/>
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -202,9 +203,9 @@
                                                         <td>Body Repair (Reconstruction) :</td>
                                                         <td>
                                                             <div class="input-field">
-                                                                <input placeholder="" id="jigging" type="text"
-                                                                       name="jigging" value=""
-                                                                       class="border-fields"/>
+                                                                <input placeholder="" id="reconstruction" type="text"
+                                                                       name="reconstruction" value=""
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -213,7 +214,7 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="acgas" type="text"
-                                                                       name="acgas" value="" class="border-fields"/>
+                                                                       name="acgas" value="" class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -223,7 +224,7 @@
                                                             <div class="input-field">
                                                                 <input placeholder="" id="weldinggas" type="text"
                                                                        name="weldinggas" value=""
-                                                                       class="border-fields"/>
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -233,7 +234,7 @@
                                                             <div class="input-field">
                                                                 <input placeholder="" id="bumperfibre" type="text"
                                                                        name="bumperfibre" value=""
-                                                                       class="border-fields"/>
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -243,7 +244,7 @@
                                                             <div class="input-field">
                                                                 <input placeholder="" id="damkit" type="text"
                                                                        name="damkit" value=""
-                                                                       class="border-fields"/>
+                                                                       class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -254,21 +255,21 @@
                                                     <div class="col m4">
                                                         <label>
                                                             <input name="assessmentType" type="radio" checked
-                                                                   class="with-gap assessmentType" value="Authority To Garage"/>
+                                                                   class="with-gap assessmentType" value="1"/>
                                                             <span>Authority To Garage</span>
                                                         </label>
                                                     </div>
                                                     <div class="col m4">
                                                         <label>
                                                             <input name="assessmentType" type="radio"
-                                                                   class="with-gap assessmentType" value="Cash In Lieu"/>
+                                                                   class="with-gap assessmentType" value="2"/>
                                                             <span>Cash In Lieu</span>
                                                         </label>
                                                     </div>
                                                     <div class="col m4">
                                                         <label>
                                                             <input name="assessmentType" type="radio"
-                                                                   class="with-gap assessmentType" value="Total loss"/>
+                                                                   class="with-gap assessmentType" value="3"/>
                                                             <span>Total loss</span>
                                                         </label>
                                                     </div>
@@ -279,11 +280,11 @@
                                                         <div id="authorityToGarage">
                                                             <h6 class="float-left">Total:</h6>
                                                             <div class="input-field float-right">
-                                                                <input id="total" type="text" name="total" value=""
+                                                                <input type="text" value="" name="sumTotal" id="sumTotal"
                                                                        class="border-fields" checked/>
                                                             </div>
                                                         </div>
-                                                        <div class="totalLose hideTotalLose card clearfix">
+                                                        <div class="totalLose hideTotalLose card clearfix " id="economics">
                                                             <div class="card-content">
                                                                 <h6>Economics of Repair Vis a Vis Total Loss</h6>
                                                                 <table id="totallosetable">
@@ -293,7 +294,7 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder=""
                                                                                        id="sumInsured" type="text"
-                                                                                       name="sumInsured" value=""
+                                                                                       name="sumInsured" value="{{number_format($assessments->claim->sumInsured)}}"
                                                                                        class="border-fields"/>
                                                                             </div>
                                                                         </td>
@@ -327,7 +328,7 @@
                                                                                 <input placeholder="" id="totalLoss"
                                                                                        type="text" name="totalLoss"
                                                                                        value=""
-                                                                                       class="border-fields"/>
+                                                                                       class="border-fields totalLoss"/>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -337,7 +338,7 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder="" id="repair"
                                                                                        type="text" name="repair"
-                                                                                       value=""
+                                                                                       value="{{ number_format(($assessments->claim->sumInsured) * 0.5)}}"
                                                                                        class="border-fields"/>
                                                                             </div>
                                                                         </td>
@@ -348,10 +349,10 @@
                                                                     <div class="col m9">
                                                                         <h6>Total</h6>
                                                                         <div class="input-field">
-                                                                            <input placeholder="" id="grandTotal"
-                                                                                   type="text" name="grandTotal"
+                                                                            <input placeholder="" id="total_loss"
+                                                                                   type="text" name="total_loss"
                                                                                    value="" class="border-fields"/>
-                                                                        </div>
+                                                                           </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -366,68 +367,6 @@
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                                 </button>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="step">
-                                    <div class="step-title waves-effect waves-dark">Parts to be Repaired</div>
-                                    <div class="step-content">
-                                        <div class="row repairedVehicleParts">
-                                            <div class="col m2">
-                                                Remove
-                                                <div class="input-field">
-                                                    <label>
-                                                        <input type="checkbox"/>
-                                                        <span></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col m4">
-                                                Vehicle Parts
-                                                <div class="input-field">
-                                                    <select id="vehiclePart">
-                                                        <option value="">147</option>
-                                                        <option value="">1324</option>
-                                                        <option value="">150</option>
-                                                        <option value="">1020</option>
-                                                        <label for="vehiclePart">Vehicle
-                                                            Part</label>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col m2">
-                                                Quantity
-                                                <div class="input-field">
-                                                    <input placeholder="" id="quantity" type="text" name="quantity"
-                                                           value="" class="border-fields"/>
-                                                </div>
-                                            </div>
-                                            <div class="col m4">
-                                                Remarks
-                                                <div class="input-field">
-                                                    <select name="remarks" id="remarks">
-                                                        @foreach($remarks as $remark)
-                                                            <option value="{{$remark->id}}">{{$remark->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12">
-                                                <a href="#" class="btn blue lighten-2" onclick="addRepairedVehiclePart()">Add Part <i
-                                                        class="medium material-icons">add</i></a>
-                                                <a href="#" class="btn red darken-4" onclick="deleteRepairedVehiclePart()">Remove <i
-                                                        class="medium material-icons">remove</i></a>
-                                            </div>
-                                        </div>
-                                        <div class="step-actions">
-                                            <button class="waves-effect waves-dark btn next-step"
-                                                    data-validator="validateStepOne">CONTINUE
-                                            </button>
-                                            <button class="waves-effect waves-dark btn-flat previous-step">
-                                                BACK
-                                            </button>
                                         </div>
                                     </div>
                                 </li>
@@ -470,3 +409,218 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    var t =0;
+    $("body").on('click','#addPart',function (){
+        t = t + 1;
+        $('#addP').append('<div class="row dynamicVehiclePart removable" id="row'+t+'">\n' +
+            '                                            <div class="input-field col m1 s12">\n' +
+            '                                                <label>\n' +
+            '                                                    <input type="checkbox"/>\n' +
+            '                                                    <span style="font-size: 10px">Remove</span>\n' +
+            '                                                </label>\n' +
+            '                                            </div>\n' +
+            '                                            <div class="input-field col m2 s12">\n' +
+            '                                                <select class="browser-default" name="vehiclePart[]" id="vehiclePart_'+t+'">\n' +
+            '                                                    <option value="">147</option>\n' +
+            '                                                    <option value="">1324</option>\n' +
+            '                                                    <option value="">150</option>\n' +
+            '                                                    <option value="">1020</option>\n' +
+            '                                                </select>\n' +
+            '                                                <label class="active" for="vehiclePart_'+t+'">Vehicle Part</label>\n' +
+            '                                            </div>\n' +
+            '                                            <div class="input-field col m1 s12">\n' +
+            '                                                <input placeholder="" oninput="getTotal('+t+')" type="text" id="quantity_'+t+'" name="quantity[]"\n' +
+            '                                                       value=""/>\n' +
+            '                                                <label for="quantity_'+t+'" class="active">Quantity</label>\n' +
+            '                                            </div>\n' +
+            '                                            <div class="input-field col m1 s12">\n' +
+            '                                                <input placeholder="" oninput="getTotal('+t+')" type="text" id="partPrice_'+t+'" name="partPrice[]"\n' +
+            '                                                       value=""/>\n' +
+            '                                                <label for="partPrice_'+t+'" class="active">Part Price</label>\n' +
+            '                                            </div>\n' +
+            '                                            <div class="input-field col m1 s12">\n' +
+            '                                                <input placeholder="" type="text"\n' +
+            '                                                       name="contribution[]" oninput="getTotal('+t+')"  id="contribution_'+t+'" value=""/>\n' +
+            '                                                <label for="contribution_'+t+'" class="active">Contribution</label>\n' +
+            '                                            </div>\n' +
+            '                                            <div class="input-field col m1 s12">\n' +
+            '                                                <input placeholder="" type="text" name="discount[]"\n' +
+            '                                                       value="" id="discount_'+t+'" oninput="getTotal('+t+')" required/>\n' +
+            '                                                <label for="discount_'+t+'" class="active">Discount</label>\n' +
+            '                                            </div>\n' +
+            '                                            <div class="input-field col m2 s12">\n' +
+            '                                                <input placeholder="" type="text" id="total_'+t+'" name="total[]" class="total" value=""\n' +
+            '                                                       disabled/>\n' +
+            '                                                <label for="total_'+t+'" class="active">Total</label>\n' +
+            '                                            </div>\n' +
+            '                                            <div class="input-field col m2 s12">\n' +
+            '                                                <select class="browser-default" name="remarks[]" id="remarks_'+t+'">\n' +
+            '                                                    @foreach($remarks as $remark)\n' +
+            '                                                        <option value="{{$remark->id}}">{{$remark->name}}</option>\n' +
+            '                                                    @endforeach\n' +
+            '                                                </select>\n' +
+            '                                                <label class="active" for="remarks_'+t+'">Remarks</label>\n' +
+            '                                            </div>\n' +
+            '                                        </div>');
+    });
+
+    function getTotal(t) {
+
+        var quantity = "quantity_" + t;
+
+        var quantity = document.getElementById(quantity).value;
+
+        var total = document.getElementById('total_'+t);
+
+        var cost = document.getElementById('partPrice_'+t).value;
+
+        var contribution = document.getElementById('contribution_'+t).value;
+
+        var discount = document.getElementById('discount_'+t).value;
+
+        var result = (quantity * cost);
+
+        if (contribution > 0 && discount < 1) {
+
+            result = ((((100 - contribution)/100) * (quantity * cost)));
+
+        }
+
+        if (discount > 0 && contribution < 1) {
+
+            result = ((((100 - discount)/100) * (quantity * cost)));
+
+        }
+
+        if (discount > 0 && contribution > 0) {
+
+            result = ((100 - contribution)/100) * ((((100 - discount)/100) * (quantity * cost)));
+
+        }
+
+
+
+        total.value = result;
+
+    }
+
+    function findTotal() {
+
+        var arr = document.getElementsByClassName('total');
+
+        var labour = document.getElementById('labour').value;
+
+        var paint = document.getElementById('painting').value;
+
+        var miscellaneous = document.getElementById('miscellaneous').value;
+
+        var primer = document.getElementById('2kprimer').value;
+
+        var jigging = document.getElementById('jigging').value;
+
+        var reconstruction = document.getElementById('reconstruction').value;
+
+        var gas = document.getElementById('acgas').value;
+
+        var welding = document.getElementById('weldinggas').value;
+
+        var dam = document.getElementById('damkit').value;
+
+        var bumper = document.getElementById('bumperfibre').value;
+
+        var assessmentType = document.querySelector('input[name="assessmentType"]:checked').value;
+
+        var total = 0;
+
+        for(var i = 0; i < arr.length; i++){
+
+            if(parseInt(arr[i].value))
+
+                total += parseInt(arr[i].value);
+
+        }
+
+
+
+        var result = parseFloat( "0" + labour ) + parseFloat( "0" + paint ) + parseFloat( "0" + miscellaneous ) + parseFloat( "0" + primer )
+
+            + parseFloat( "0" + jigging ) + parseFloat( "0" + reconstruction ) + parseFloat( "0" + gas ) + parseFloat( "0" + welding )
+
+            + parseFloat( "0" + dam ) + parseFloat( "0" + total ) + parseFloat( "0" + bumper );
+
+
+
+        var cil = parseFloat( "0" + labour ) + parseFloat( "0" + paint ) + parseFloat( "0" + miscellaneous ) + parseFloat( "0" + primer )
+
+            + parseFloat( "0" + jigging ) + parseFloat( "0" + reconstruction ) + parseFloat( "0" + gas ) + parseFloat( "0" + welding )
+
+            + parseFloat( "0" + dam ) + parseFloat( "0" + bumper );
+
+        if("{{$assessments->claim->intimationDate}}" > "{{\App\Conf\Config::VAT_REDUCTION_DATE}}")
+        {
+            var tax = "{{\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE}}"/"{{App\Conf\Config::INITIAL_PERCENTAGE}}";
+        }else
+        {
+            var tax = "{{\App\Conf\Config::TOTAL_PERCENTAGE}}"/"{{\App\Conf\Config::INITIAL_PERCENTAGE}}";
+        }
+
+        if(assessmentType == 1) {
+
+            result = result * tax;
+
+        } else if(assessmentType == 2) {
+
+            result = (parseFloat( "0" + cil ) + parseFloat( "0" + total )) * 0.9;
+
+        } else if(assessmentType == 3) {
+
+            result = result * tax;
+
+        }
+
+
+
+        if($('.totalLoss').is(':checked')) {
+
+            $(".salvage").prop('required', true);
+
+            $(".pav").prop('required', true);
+
+            $("#economics").fadeIn();
+
+
+
+        } else {
+
+            $(".salvage").prop('required', true);
+
+            $(".pav").prop('required', true);
+
+            $("#economics").fadeOut();
+
+        }
+
+
+
+        document.getElementById('sumTotal').value = Math.round(result);
+
+    }
+
+
+    function findTotalLoss() {
+
+        var pav = document.getElementById('pav').value;
+
+        var salvage = document.getElementById('salvage').value;
+
+
+
+        var totalLoss = parseFloat( "0" + pav ) - parseFloat( "0" + salvage );
+
+
+
+        document.getElementById('total_loss').value = totalLoss;
+
+    }
+</script>
