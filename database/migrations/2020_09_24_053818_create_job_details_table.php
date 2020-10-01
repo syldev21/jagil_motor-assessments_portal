@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssessmentItemsTable extends Migration
+class CreateJobDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,14 @@ class CreateAssessmentItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('assessment_items', function (Blueprint $table) {
+        Schema::create('job_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('assessmentID')->unsigned();
-            $table->bigInteger('partID')->unsigned();
-            $table->integer('quantity')->nullable();
-            $table->double('contribution')->nullable();
-            $table->integer('discount')->nullable();
+            $table->string('name')->nullable();
+            $table->integer('jobType')->nullable();
+            $table->integer('jobCategory')->nullable();
             $table->double('cost')->nullable();
-            $table->double('total')->nullable();
-            $table->longText('remarks')->nullable();
-            $table->integer('assessmentItemType')->nullable();
-            $table->tinyInteger('category')->default(0);
-            $table->integer('segment')->default(0);
+            $table->string('remarks')->nullable();
             $table->integer('modifiedBy')->nullable();
             $table->integer('createdBy')->nullable();
             $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));
@@ -33,7 +28,6 @@ class CreateAssessmentItemsTable extends Migration
 
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -41,6 +35,6 @@ class CreateAssessmentItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assessment_items');
+        Schema::dropIfExists('job_details');
     }
 }

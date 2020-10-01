@@ -10,7 +10,14 @@ class AssessmentItem extends Model
     protected $table = "assessment_items";
     protected $primaryKey = "id";
     protected $fillable = ['assessmentID','partID','quantity','contribution','discount','cost',
-        'total','remarks','assessmentItemType','supplementary','reInspection','repaired','replace','cashInLieu','modifiedBy',
+        'total','remarks','assessmentItemType','category','segment','modifiedBy',
         'createdBy','dateModified','dateCreated'];
     public $timestamps= false;
+
+    public function part() {
+        return $this->belongsTo(Part::class, 'partID', 'id');
+    }
+    public function remark() {
+        return $this->belongsTo(Remarks::class, 'remarks', 'id');
+    }
 }

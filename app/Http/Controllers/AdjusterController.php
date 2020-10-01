@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Assessment;
+use App\AssessmentItem;
 use App\Claim;
 use App\ClaimTracker;
+use App\Document;
 use App\Helper\SMSHelper;
+use App\JobDetail;
 use App\Location;
 use App\Notifications\NewClaimNotification;
 use App\StatusTracker;
@@ -200,6 +203,8 @@ class AdjusterController extends Controller
             $curDate = $this->functions->curlDate();
             $fullName = $request->fullName;
             $location = $request->location;
+            $originalExcess = $request->originalExcess;
+            $originalSumInsured = $request->originalSumInsured;
 
             $claims = Claim::where(['claimNo' => $claimNo])->limit(1)->get();
             if (count($claims) == 0) {
@@ -248,9 +253,28 @@ class AdjusterController extends Controller
                             "statusType" => Config::$STATUS_TYPES["CLAIM"],
                             "dateCreated" => $curDate
                         ]);
+                        if($originalExcess != $excess || $originalSumInsured != $sumInsured)
+                        {
+                            $createdBy = Auth::id();
+                            $claimTrackerID =ClaimTracker::insertGetId([
+                                'claimID' => $claimID,
+                                'claimNo' => $claimNo,
+                                'policyNo' => $policyNo,
+                                'createdBy' => $createdBy,
+                                'excess' =>    $originalExcess,
+                                'sumInsured' => $originalSumInsured,
+                                'location' => $location
+                            ]);
+                            if($claimTrackerID > 0)
+                            {
+                                Claim::where(['id' => $claimID])->update([
+                                    "changed" => Config::ACTIVE
+                                ]);
+                            }
+                        }
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
-                            "STATUS_MESSAGE" => "Congratulation!, You have successfully created a claim on the portal"
+                            "STATUS_MESSAGE" => "Congratulations!, You have successfully created a claim on the portal"
                         );
                     } else {
 
@@ -311,8 +335,8 @@ class AdjusterController extends Controller
                             Jubilee Insurance.
                         ",
                             ];
-                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                            SMSHelper::sendSMS('Hello '. $headAssessor->firstName .', A new claim : '.$claimNo.' has been created. You are required to assign an assessor',$headAssessor->MSISDN);
+//                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+//                            SMSHelper::sendSMS('Hello '. $headAssessor->firstName .', A new claim : '.$claimNo.' has been created. You are required to assign an assessor',$headAssessor->MSISDN);
                             $claim = Claim::where(['id' => $claimID])->first();
                             Notification::send($headAssessors, new NewClaimNotification($claim));
                         }
@@ -396,12 +420,33 @@ class AdjusterController extends Controller
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
+    public function fetchDraftAssessments(Request $request)
+    {
+        try {
+            $assessments = Assessment::where('assessmentStatusID','=',Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])->with('claim')->with('user')->get();
+            return view('adjuster.assessments',['assessments' => $assessments]);
+        }catch (\Exception $e)
+        {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
+        }
+    }
+    public function fetchAssessedAssessments(Request $request)
+    {
+        try {
+            $assessments = Assessment::where('assessmentStatusID','=',Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])->with('claim')->with('user')->get();
+            return view('adjuster.assessments',['assessments' => $assessments]);
+        }catch (\Exception $e)
+        {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
+        }
+    }
     public function assessmentDetails(Request $request,$assessmentID)
     {
         try {
             $assessment = Assessment::where('id','=',$assessmentID)->with('claim')->with('user')->first();
             $customer = CustomerMaster::where(['customerCode' =>$assessment->claim->customerCode])->first();
-
             return view('adjuster.assessment-details',['assessment' => $assessment,'customer' => $customer]);
         }catch (\Exception $e)
         {
@@ -500,5 +545,16 @@ class AdjusterController extends Controller
         $claimID = $request->claimID;
         $claim = Claim::where(["changed"=>Config::ACTIVE])->with('claimtracker')->orderBy('dateCreated', 'DESC')->first();
         return view("adjuster.exception-report",['claim' => $claim]);
+    }
+    public function assessmentReport(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+        return view("adjuster.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents]);
     }
 }

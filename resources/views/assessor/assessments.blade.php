@@ -102,6 +102,9 @@
                                                                 <a href="#" id="fillAssessmentReport" data-id="{{$assessment['id']}}"><i
                                                                         class="material-icons">insert_drive_file</i>Fill
                                                                     Report</a></li>
+                                                            <li>
+                                                                <a href="#" id="fillReInspectionReport" data-id="{{$assessment['id']}}"><i
+                                                                        class="material-icons">insert_drive_file</i>Re-Inspection Report</a></li>
                                                             <li><a href="#!"><i class="material-icons">edit</i>Edit</a>
                                                             </li>
                                                             <li>

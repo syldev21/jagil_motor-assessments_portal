@@ -116,23 +116,23 @@
                                 <div class="row">
                                     <div class="input-field col m6 s12">
                                         <input id="name" type="text" name="name"
-                                               value="{{$assessment->user->firstName}}" disabled>
+                                               value="{{isset($assessment->user) ? $assessment->user->firstName : null}}" disabled>
                                         <label for="name" class="active">First Name</label>
                                     </div>
                                     <div class="input-field col m6 s12">
                                         <input id="lastName" type="text" name="lastName"
-                                               value="{{$assessment->user->lastName}}" disabled>
+                                               value="{{isset($assessment->user) ? $assessment->user->lastName : null}}" disabled>
                                         <label for="lastName" class="active">Last Name</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col m6 s12">
                                         <input id="MSISDN" type="text" name="MSISDN"
-                                               value="{{$assessment->user->MSISDN}}" disabled>
+                                               value="{{isset($assessment->user) ? $assessment->user->MSISDN : null}}" disabled>
                                         <label for="MSISDN" class="active">Phone Number</label>
                                     </div>
                                     <div class="input-field col m6 s12">
-                                        <input id="email" type="text" name="email" value="{{$assessment->user->email}}"
+                                        <input id="email" type="text" name="email" value="{{isset($assessment->user) ? $assessment->user->email : null}}"
                                                disabled>
                                         <label for="email" class="active">Email</label>
                                     </div>

@@ -99,6 +99,11 @@
                                                         <!-- Dropdown Structure -->
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
+                                                                <li><a href="#" data-id="{{$assessment->id}}" id="assessmentReport"><i
+                                                                            class="material-icons">picture_as_pdf</i>View
+                                                                        Assessment Report</a></li>
+                                                            @endif
                                                             <li><a href="#!"><i
                                                                         class="material-icons">compare_arrows</i>View
                                                                     Re-inspection</a></li>

@@ -50,10 +50,15 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->get('/fetchUploadedClaims','AdjusterController@fetchUploadedClaims');
     $router->get('/assignedClaims','AdjusterController@assignedClaims');
     $router->get('/fetchAssignedAssessments','AdjusterController@fetchAssignedAssessments');
+    $router->get('/fetchAssessedAssessments','AdjusterController@fetchAssessedAssessments');
+    $router->get('/fetchDraftAssessments','AdjusterController@fetchDraftAssessments');
     $router->get('/assessment-details/{assessmentID}','AdjusterController@assessmentDetails');
     $router->post('/updateClaim','AdjusterController@updateClaim');
     $router->post('/filterPremia11ClaimsByDate','AdjusterController@filterPremia11ClaimsByDate');
     $router->post('/claimExceptionDetail','AdjusterController@claimExceptionDetail');
+
+    //Reports
+    $router->post('/assessmentReport','AdjusterController@assessmentReport');
 });
 
 // Assessor Routes
@@ -62,6 +67,8 @@ $router->group(['prefix' => 'assessor'], function($router)
     //Motor  assessment User Module
     $router->get('/assessments','AssessorController@fetchAssessments');
     $router->get('/fillAssessmentReport/{id}','AssessorController@fillAssessmentReport');
+    $router->get('/fillReInspectionReport/{id}','AssessorController@fillReInspectionReport');
+    $router->post('/submitAssessment','AssessorController@submitAssessment');
 
 
 });

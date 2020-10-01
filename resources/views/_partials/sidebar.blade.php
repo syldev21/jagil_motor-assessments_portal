@@ -81,13 +81,13 @@
                     </li>
 
                     <li class="">
-                        <a href="#" class="sidenav-link">
+                        <a href="#" class="sidenav-link" id="fetchDraftAssessments">
                             <i class="material-icons">drafts</i>
                             <span data-i18n="Chartist">is-draft</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" class="sidenav-link">
+                        <a href="#" class="sidenav-link" id="fetchAssessedAssessments">
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Chartist">Assessed</span>
                         </a>

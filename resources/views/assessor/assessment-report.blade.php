@@ -9,7 +9,7 @@
                 <div class="card-content">
                     <div class="row col s12">
                         <h4 class="card-title float-left">Assessment for claim Number
-                            - {{$assessments->claim->claimNo}} </h4>
+                            - {{$assessment->claim->claimNo}} </h4>
                     </div>
                     <div class="divider"></div>
                     <div class="row">
@@ -21,7 +21,7 @@
                                         <div class="row">
                                             <div class="input-field col m4 s12">
                                                 <input placeholder="" id="chassisNo" type="text" name="chassisNo"
-                                                       value=""/>
+                                                       value="{{isset($assessmentItems->claim) ? $assessmentItems->claim : null}}"/>
                                                 <label for="chassisNo">Chassis Number</label>
                                             </div>
                                             <div class="input-field col m4 s12">
@@ -54,7 +54,9 @@
                                             <div class="col m6 s12">
                                                 <p>Notes</p>
                                                 <textarea id="notes" class="materialize-textarea notes"
-                                                          name="notes"></textarea>
+                                                          name="notes">
+                                                    {{isset($draftAssessment->note) ? $draftAssessment->note : null}}
+                                                </textarea>
                                                 <script>
                                                     CKEDITOR.replace('notes', {
                                                         language: 'en',
@@ -65,7 +67,9 @@
                                             <div class="col m6 s12">
                                                 <p>Cause & Nature of Accident</p>
                                                 <textarea id="cause" class="materialize-textarea cause"
-                                                          name="cause"></textarea>
+                                                          name="cause">
+                                                    {{isset($draftAssessment->cause) ? $draftAssessment->cause : null}}
+                                                </textarea>
                                                 <script>
                                                     CKEDITOR.replace('cause', {
                                                         language: 'en',
@@ -87,56 +91,132 @@
                                 <li class="step">
                                     <div class="step-title waves-effect waves-dark">Replace Assembly</div>
                                     <div class="step-content">
-                                        <div class="row dynamicVehiclePart">
-                                            <div class="input-field col m1 s12">
-                                                <label>
-                                                    <input type="checkbox"/>
-                                                    <span style="font-size: 10px">Remove</span>
-                                                </label>
-                                            </div>
-                                            <div class="input-field col m2 s12">
-                                                <select id="vehiclePart_0" name="vehiclePart[]">
-                                                    <option value="">147</option>
-                                                    <option value="">1324</option>
-                                                    <option value="">150</option>
-                                                    <option value="">1020</option>
-                                                </select>
-                                                <label for="vehiclePart_0">Vehicle Part</label>
-                                            </div>
-                                            <div class="input-field col m1 s12">
-                                                <input id="quantity_0" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
-                                                       value=""/>
-                                                <label for="quantity_0" class="active">Quantity</label>
-                                            </div>
-                                            <div class="input-field col m1 s12">
-                                                <input id="partPrice_0" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
-                                                       value=""/>
-                                                <label for="partPrice_0" class="active">Part Price</label>
-                                            </div>
-                                            <div class="input-field col m1 s12">
-                                                <input id="contribution_0" placeholder="" type="text"
-                                                       name="contribution[]" oninput="getTotal(0)" value=""/>
-                                                <label for="contribution_0" class="active">Contribution</label>
-                                            </div>
-                                            <div class="input-field col m1 s12">
-                                                <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
-                                                       value="" required/>
-                                                <label for="discount_0" class="active">Discount</label>
-                                            </div>
-                                            <div class="input-field col m2 s12">
-                                                <input id="total_0" placeholder="" type="text" name="total[]" value="" class="total"
-                                                       disabled/>
-                                                <label for="total_0" class="active">Total</label>
-                                            </div>
-                                            <div class="input-field col m2 s12">
-                                                <select id="remarks_0" name="remarks[]">
-                                                    @foreach($remarks as $remark)
-                                                        <option value="{{$remark->id}}">{{$remark->name}}</option>
+                                                <table class="centered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Remove</th>
+                                                        <th>Vehicle Part</th>
+                                                        <th>Quantity</th>
+                                                        <th>Part Price</th>
+                                                        <th>Contribution</th>
+                                                        <th>Discount</th>
+                                                        <th>Total</th>
+                                                        <th>Remarks</th>
+                                                        <th>Category</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @if(count($assessmentItems)>0)
+                                                    <?php
+                                                    $count = 0;
+                                                    ?>
+                                                    @foreach($assessmentItems as $assessmentItem)
+                                                    <tr class="dynamicVehiclePart">
+                                                        <td>
+                                                            <label>
+                                                                <input type="checkbox"/>
+                                                                <span></span>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <select id="vehiclePart_{{$count}}" name="vehiclePart[]" class="browser-default">
+                                                                @foreach($parts as $part)
+                                                                    <option value="{{$part->id}}" @if($assessmentItem->part->id == $part->id) selected @endif>{{$part->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input id="quantity_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
+                                                                   value="{{$assessmentItem->quantity}}"/>
+                                                        </td>
+                                                        <td>
+                                                            <input id="partPrice_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
+                                                                   value="{{$assessmentItem->cost}}"/>
+                                                        </td>
+                                                        <td>
+                                                            <input id="contribution_{{$count}}" placeholder="" type="text"
+                                                                   name="contribution[]" oninput="getTotal(0)" value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}"/>
+                                                        </td>
+                                                        <td>
+                                                            <input id="discount_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
+                                                                   value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}" required/>
+                                                        </td>
+                                                        <td>
+                                                            <input id="total_{{$count}}" placeholder="" type="text" name="total[]" value="{{$assessmentItem->total}}" class="total"
+                                                                   disabled/>
+                                                        </td>
+                                                        <td>
+                                                            <select id="remarks_{{$count}}" name="remarks[]" class="browser-default">
+                                                                @foreach($remarks as $remark)
+                                                                    <option value="{{$remark->id}}" @if($assessmentItem->remark->id == $remark->id) selected @endif>{{$remark->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select id="category_{{$count}}" name="category[]" class="browser-default">
+                                                                @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)
+                                                                    <option value="{{$category['ID']}}" @if($assessmentItem->category == $category['ID']) selected @endif>{{$category['TITLE']}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                        <?php
+                                                            $count ++;
+                                                        ?>
                                                     @endforeach
-                                                </select>
-                                                <label for="remarks_0">Remarks</label>
-                                            </div>
-                                        </div>
+                                                    @else
+                                                        <tr class="dynamicVehiclePart">
+                                                            <td>
+                                                                <label>
+                                                                    <input type="checkbox"/>
+                                                                    <span></span>
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <select id="vehiclePart_0" name="vehiclePart[]" class="browser-default">
+                                                                    @foreach($parts as $part)
+                                                                        <option value="{{$part->id}}">{{$part->name}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input id="quantity_0" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
+                                                                       value=""/>
+                                                            </td>
+                                                            <td>
+                                                                <input id="partPrice_0" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
+                                                                       value=""/>
+                                                            </td>
+                                                            <td>
+                                                                <input id="contribution_0" placeholder="" type="text"
+                                                                       name="contribution[]" oninput="getTotal(0)" value=""/>
+                                                            </td>
+                                                            <td>
+                                                                <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
+                                                                       value="" required/>
+                                                            </td>
+                                                            <td>
+                                                                <input id="total_0" placeholder="" type="text" name="total[]" value="" class="total"
+                                                                       disabled/>
+                                                            </td>
+                                                            <td>
+                                                                <select id="remarks_0" name="remarks[]" class="browser-default">
+                                                                    @foreach($remarks as $remark)
+                                                                        <option value="{{$remark->id}}">{{$remark->name}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select id="category_0" name="category[]" class="browser-default">
+                                                                    @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)
+                                                                        <option value="{{$category['ID']}}">{{$category['TITLE']}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                    </tbody>
+                                                </table>
                                         <div id="addP"></div>
                                         <div class="row">
                                             <div class="col s12">
@@ -154,7 +234,7 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="labour" type="text"
-                                                                       name="labour" value=""
+                                                                       name="labour" value="{{}}"
                                                                        class="border-fields" oninput="findTotal()"/>
                                                             </div>
                                                         </td>
@@ -284,7 +364,7 @@
                                                                        class="border-fields" checked/>
                                                             </div>
                                                         </div>
-                                                        <div class="totalLose hideTotalLose card clearfix " id="economics">
+                                                        <div class="totalLose hideTotalLose card clearfix">
                                                             <div class="card-content">
                                                                 <h6>Economics of Repair Vis a Vis Total Loss</h6>
                                                                 <table id="totallosetable">
@@ -294,7 +374,7 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder=""
                                                                                        id="sumInsured" type="text"
-                                                                                       name="sumInsured" value="{{number_format($assessments->claim->sumInsured)}}"
+                                                                                       name="sumInsured" value="{{number_format($assessment->claim->sumInsured)}}"
                                                                                        class="border-fields"/>
                                                                             </div>
                                                                         </td>
@@ -306,7 +386,7 @@
                                                                                 <input placeholder="" id="pav"
                                                                                        type="text" name="pav"
                                                                                        value=""
-                                                                                       class="border-fields"/>
+                                                                                       class="border-fields" oninput="findTotalLoss()"/>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -317,7 +397,7 @@
                                                                                 <input placeholder="" id="salvage"
                                                                                        type="text" name="salvage"
                                                                                        value=""
-                                                                                       class="border-fields"/>
+                                                                                       class="border-fields" oninput="findTotalLoss()"/>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -325,10 +405,10 @@
                                                                         <td>Total Loss :</td>
                                                                         <td>
                                                                             <div class="input-field">
-                                                                                <input placeholder="" id="totalLoss"
-                                                                                       type="text" name="totalLoss"
+                                                                                <input placeholder="" id="total_loss"
+                                                                                       type="text" name="total_loss"
                                                                                        value=""
-                                                                                       class="border-fields totalLoss"/>
+                                                                                       class="border-fields total_loss"/>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -338,7 +418,7 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder="" id="repair"
                                                                                        type="text" name="repair"
-                                                                                       value="{{ number_format(($assessments->claim->sumInsured) * 0.5)}}"
+                                                                                       value="{{ number_format(($assessment->claim->sumInsured) * 0.5)}}"
                                                                                        class="border-fields"/>
                                                                             </div>
                                                                         </td>
@@ -349,8 +429,8 @@
                                                                     <div class="col m9">
                                                                         <h6>Total</h6>
                                                                         <div class="input-field">
-                                                                            <input placeholder="" id="total_loss"
-                                                                                   type="text" name="total_loss"
+                                                                            <input placeholder="" id="sumTotal"
+                                                                                   type="text" name="sumTotal"
                                                                                    value="" class="border-fields"/>
                                                                            </div>
                                                                     </div>
@@ -375,8 +455,8 @@
                                     <div class="step-content">
                                         <div class="row">
                                             <div class="col s12">
-                                                <form action="#" enctype="multipart/form-data">
-                                                    <div class="input-images"></div>
+                                                <form action="#" enctype="multipart/form-data" data-allowed-file-extensions='["jpeg", "jpg", "png"]' id="assessmentForm">
+                                                    <div class="input-images" id="images"></div>
                                                 </form>
                                                 <small>Only <span
                                                         class="red-text text-darken-3">JPEG,JPG & PNG</span> files
@@ -387,15 +467,17 @@
                                             <div class="col m6">
                                                 <div class="input-field">
                                                     <label>
-                                                        <input type="checkbox"/>
+                                                        <input type="checkbox" id="isDraft" value="0"/>
                                                         <span>Save as Draft</span>
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="step-actions">
+                                            <input type="hidden" name="counter" id="counter">
+                                            <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
                                             <input type="submit" class="waves-effect waves-dark btn next-step"
-                                                   value="SUBMIT"/>
+                                                   value="SUBMIT" id="submitAssessment"/>
                                             <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                             </button>
                                         </div>
@@ -413,58 +495,57 @@
     var t =0;
     $("body").on('click','#addPart',function (){
         t = t + 1;
-        $('#addP').append('<div class="row dynamicVehiclePart removable" id="row'+t+'">\n' +
-            '                                            <div class="input-field col m1 s12">\n' +
-            '                                                <label>\n' +
-            '                                                    <input type="checkbox"/>\n' +
-            '                                                    <span style="font-size: 10px">Remove</span>\n' +
-            '                                                </label>\n' +
-            '                                            </div>\n' +
-            '                                            <div class="input-field col m2 s12">\n' +
-            '                                                <select class="browser-default" name="vehiclePart[]" id="vehiclePart_'+t+'">\n' +
-            '                                                    <option value="">147</option>\n' +
-            '                                                    <option value="">1324</option>\n' +
-            '                                                    <option value="">150</option>\n' +
-            '                                                    <option value="">1020</option>\n' +
-            '                                                </select>\n' +
-            '                                                <label class="active" for="vehiclePart_'+t+'">Vehicle Part</label>\n' +
-            '                                            </div>\n' +
-            '                                            <div class="input-field col m1 s12">\n' +
-            '                                                <input placeholder="" oninput="getTotal('+t+')" type="text" id="quantity_'+t+'" name="quantity[]"\n' +
-            '                                                       value=""/>\n' +
-            '                                                <label for="quantity_'+t+'" class="active">Quantity</label>\n' +
-            '                                            </div>\n' +
-            '                                            <div class="input-field col m1 s12">\n' +
-            '                                                <input placeholder="" oninput="getTotal('+t+')" type="text" id="partPrice_'+t+'" name="partPrice[]"\n' +
-            '                                                       value=""/>\n' +
-            '                                                <label for="partPrice_'+t+'" class="active">Part Price</label>\n' +
-            '                                            </div>\n' +
-            '                                            <div class="input-field col m1 s12">\n' +
-            '                                                <input placeholder="" type="text"\n' +
-            '                                                       name="contribution[]" oninput="getTotal('+t+')"  id="contribution_'+t+'" value=""/>\n' +
-            '                                                <label for="contribution_'+t+'" class="active">Contribution</label>\n' +
-            '                                            </div>\n' +
-            '                                            <div class="input-field col m1 s12">\n' +
-            '                                                <input placeholder="" type="text" name="discount[]"\n' +
-            '                                                       value="" id="discount_'+t+'" oninput="getTotal('+t+')" required/>\n' +
-            '                                                <label for="discount_'+t+'" class="active">Discount</label>\n' +
-            '                                            </div>\n' +
-            '                                            <div class="input-field col m2 s12">\n' +
-            '                                                <input placeholder="" type="text" id="total_'+t+'" name="total[]" class="total" value=""\n' +
-            '                                                       disabled/>\n' +
-            '                                                <label for="total_'+t+'" class="active">Total</label>\n' +
-            '                                            </div>\n' +
-            '                                            <div class="input-field col m2 s12">\n' +
-            '                                                <select class="browser-default" name="remarks[]" id="remarks_'+t+'">\n' +
-            '                                                    @foreach($remarks as $remark)\n' +
-            '                                                        <option value="{{$remark->id}}">{{$remark->name}}</option>\n' +
-            '                                                    @endforeach\n' +
-            '                                                </select>\n' +
-            '                                                <label class="active" for="remarks_'+t+'">Remarks</label>\n' +
-            '                                            </div>\n' +
-            '                                        </div>');
+        $("#counter").val(t);
+        $('#addP').append('<tr class="row dynamicVehiclePart removable" id="row'+t+'">\n' +
+            '                                                        <td>\n' +
+            '                                                            <label>\n' +
+            '                                                                <input type="checkbox"/>\n' +
+            '                                                                <span></span>\n' +
+            '                                                            </label>\n' +
+            '                                                        </td>\n' +
+            '                                                        <td>\n' +
+            '                                                            <select id="vehiclePart_'+t+'" name="vehiclePart[]" class="browser-default">\n' +
+            '                                                                @foreach($parts as $part)\n' +
+            '                                                                    <option value="{{$part->id}}">{{$part->name}}</option>\n' +
+            '                                                                @endforeach\n' +
+            '                                                            </select>\n' +
+            '                                                        </td>\n' +
+            '                                                        <td>\n' +
+            '                                                            <input id="quantity_'+t+'" oninput="getTotal(0)" placeholder="quantity" type="text" name="quantity[]"\n' +
+            '                                                                   value=""/>\n' +
+            '                                                        </td>\n' +
+            '                                                        <td>\n' +
+            '                                                            <input id="partPrice_'+t+'" oninput="getTotal(0)" placeholder="part price" type="text" name="partPrice[]"\n' +
+            '                                                                   value=""/>\n' +
+            '                                                        </td>\n' +
+            '                                                        <td>\n' +
+            '                                                            <input id="contribution_'+t+'" placeholder="contribution" type="text"\n' +
+            '                                                                   name="contribution[]" oninput="getTotal(0)" value=""/>\n' +
+            '                                                        </td>\n' +
+            '                                                        <td>\n' +
+            '                                                            <input id="discount_'+t+'" oninput="getTotal(0)" placeholder="discount" type="text" name="discount[]"\n' +
+            '                                                                   value="" required/>\n' +
+            '                                                        </td>\n' +
+            '                                                        <td>\n' +
+            '                                                            <input id="total_'+t+'" placeholder="" type="text" name="total[]" value="" class="total"\n' +
+            '                                                                   disabled/>\n' +
+            '                                                        </td>\n' +
+            '                                                        <td>\n' +
+            '                                                            <select id="remarks_'+t+'" name="remarks[]" class="browser-default">\n' +
+            '                                                                @foreach($remarks as $remark)\n' +
+            '                                                                    <option value="{{$remark->id}}">{{$remark->name}}</option>\n' +
+            '                                                                @endforeach\n' +
+            '                                                            </select>\n' +
+            '                                                        </td>\n' +
+            '                                                        <td>\n' +
+            '                                                            <select id="category_'+t+'" name="category[]" class="browser-default">\n' +
+            '                                                                @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)\n' +
+            '                                                                    <option value="{{$category['ID']}}">{{$category['TITLE']}}</option>\n' +
+            '                                                                @endforeach\n' +
+            '                                                            </select>\n' +
+            '                                                        </td>\n' +
+            '                                                    </tr>');
     });
-
     function getTotal(t) {
 
         var quantity = "quantity_" + t;
@@ -557,7 +638,7 @@
 
             + parseFloat( "0" + dam ) + parseFloat( "0" + bumper );
 
-        if("{{$assessments->claim->intimationDate}}" > "{{\App\Conf\Config::VAT_REDUCTION_DATE}}")
+        if("{{$assessment->claim->intimationDate}}" > "{{\App\Conf\Config::VAT_REDUCTION_DATE}}")
         {
             var tax = "{{\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE}}"/"{{App\Conf\Config::INITIAL_PERCENTAGE}}";
         }else
@@ -578,30 +659,6 @@
             result = result * tax;
 
         }
-
-
-
-        if($('.totalLoss').is(':checked')) {
-
-            $(".salvage").prop('required', true);
-
-            $(".pav").prop('required', true);
-
-            $("#economics").fadeIn();
-
-
-
-        } else {
-
-            $(".salvage").prop('required', true);
-
-            $(".pav").prop('required', true);
-
-            $("#economics").fadeOut();
-
-        }
-
-
 
         document.getElementById('sumTotal').value = Math.round(result);
 

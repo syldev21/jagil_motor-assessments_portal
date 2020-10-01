@@ -54,11 +54,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
+                                            <input type="hidden" value="{{$claim['EXCESS_AMT']}}" id="originalExcess">
                                             <input id="excess" type="text" name="excess"
                                                    value="{{$claim['EXCESS_AMT']}}">
                                             <label for="excess" class="active">Excess</label>
                                         </div>
                                         <div class="input-field col m4 s12">
+                                            <input type="hidden" value="{{$claim['SUM_INSURED']}}" id="originalSumInsured">
                                             <input id="sumInsured" type="text" name="sumInsured"
                                                    VALUE="{{$claim['SUM_INSURED']}}">
                                             <label for="sumInsured" class="active">Sum Insured</label>
@@ -77,7 +79,7 @@
                                         </div>
                                         <div class="input-field col m4 s12">
                                             <select id="location"required name="location">
-                                                <option value="">Select User</option>
+                                                <option value="">Select Location</option>
                                                 @if(count($locations)>0)
                                                     @foreach($locations as $location)
                                                         <option value="{{$location->id}}">{{$location->name}}</option>

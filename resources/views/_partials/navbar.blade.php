@@ -35,7 +35,7 @@
                     <li>
                         <a class="waves-effect waves-block waves-light notification-button dropdown-trigger" href="javascript:void(0);"
                            data-target="notifications-dropdown">
-                            <i class="material-icons">notifications_none<small class="notification-badge">{{$user->unreadNotifications->count()}}</small></i>
+                            <i class="material-icons">notifications_none<small class="notification-badge">{{ isset($user->unreadNotifications) ? $user->unreadNotifications->count() : 0 }}</small></i>
                         </a>
                     </li>
                     <li>
@@ -53,6 +53,7 @@
                         </a>
                     </li>
                 </ul>
+                @if(isset($user->unreadNotifications))
                 <ul class="dropdown-content" id="notifications-dropdown">
                     <li>
                         <h6>NOTIFICATIONS<span class="new badge">{{$user->unreadNotifications->count()}}</span></h6>
@@ -64,11 +65,12 @@
                             <span class="material-icons icon-bg-circle teal small">notifications_active</span>
                             {{$notification->data['message']}}
                         </a>
-                        <time class="media-meta grey-text darken-2" datetime="2015-06-12T20:50:48+08:00">2 hours ago
+                        <time class="media-meta grey-text darken-2">{{$notification->created_at->diffForHumans()}} ago
                         </time>
                     </li>
                     @endforeach
                 </ul>
+            @endif
                 <!-- profile-dropdown-->
                 <ul class="dropdown-content" id="profile-dropdown">
                     <li>

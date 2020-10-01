@@ -176,6 +176,8 @@ $(document).ready(function () {
         var fullName = $("#fullName");
         var MSISDN = $("#MSISDN");
         var location = $("#location");
+        var originalSumInsured = $("#originalSumInsured");
+        var originalExcess = $("#originalExcess");
         if(location.val() != '')
         {
             $.ajaxSetup({
@@ -207,7 +209,9 @@ $(document).ready(function () {
                     email : email.val(),
                     fullName : fullName.val(),
                     MSISDN : MSISDN.val(),
-                    location : location.val()
+                    location : location.val(),
+                    originalExcess : originalExcess.val(),
+                    originalSumInsured : originalSumInsured.val()
                 },
 
                 success: function (data) {
@@ -554,6 +558,37 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                var stepper = document.querySelector('.stepper');
+                var stepperInstace = new MStepper(stepper, {
+                    // options
+                    firstActive: 0 // this is the default
+                });
+                $('.input-images').imageUploader({label : "Drag & Drop Images here or click to browse"});
+                $('select').formSelect();
+            }
+
+        });
+    });
+    $("body").on('click','#fillReInspectionReport',function (e){
+        e.preventDefault();
+        var id = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'GET',
+
+            url: '/assessor/fillReInspectionReport/'+id,
+
+            success: function (data) {
+                $("#main").html(data);
                 $('select').formSelect();
                 var stepper = document.querySelector('.stepper');
                 var stepperInstace = new MStepper(stepper, {
@@ -606,6 +641,79 @@ $(document).ready(function () {
 
             url: '/adjuster/fetchAssignedAssessments',
 
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
+    $("#fetchDraftAssessments").on('click',function (e){
+        e.preventDefault();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'GET',
+
+            url: '/adjuster/fetchDraftAssessments',
+
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
+    $("body").on('click','#fetchAssessedAssessments',function (e){
+        e.preventDefault();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'GET',
+
+            url: '/adjuster/fetchAssessedAssessments',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('.materialboxed').materialbox();
+            }
+
+        });
+    });
+    $("body").on('click','#assessmentReport',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/adjuster/assessmentReport',
+            data : {
+                assessmentID : assessmentID
+            },
             success: function (data) {
                 $("#main").html(data);
             }
@@ -825,6 +933,103 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#submitAssessment',function (e){
+        e.preventDefault();
+        var counter = $("#counter").val();
+        var i;
+        // Array
+        var partsData = [];
+        for(i =0 ; i<=counter; i++)
+        {
+            var vehiclePart = $("#vehiclePart_"+i);
+            var quantity = $("#quantity_"+i);
+            var total = $("#total_"+i);
+            var cost = $("#partPrice_"+i);
+            var contribution = $("#contribution_"+i);
+            var discount = $("#discount_"+i);
+            var remarks = $("#remarks_"+i);
+            var category = $("#category_"+i);
+            var partData = {vehiclePart : vehiclePart.val(),quantity : quantity.val(),total:total.val(),cost:cost.val(),contribution:contribution.val(),discount:discount.val(),remarks:remarks.val(),category: category.val()};
+            partsData.push(partData);
+        }
+        var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
+        var assessmentType = $('input[name="assessmentType"]:checked');
+        var assessmentID = $("#assessmentID");
+        var total = $('#total');
+        var labour = $('#labour');
+        var paint = $('#painting');
+        var miscellaneous = $('#miscellaneous');
+        var primer = $('#2kprimer');
+        var jigging = $('#jigging');
+        var reconstruction = $('#reconstruction');
+        var gas = $('#acgas');
+        var welding = $('#weldinggas');
+        var dam = $('#damkit');
+        var bumper = $('#bumperfibre');
+        var sumTotal = $("#sumTotal");
+        var pav = $("#pav");
+        var salvage = $("#salvage");
+        var totalLoss = $("#total_loss");
+        var note = CKEDITOR.instances['notes'].getData();
+        var cause = CKEDITOR.instances['cause'].getData();
+        var jobsData = {
+            total : total.val(),
+            labour : labour.val(),
+            paint : paint.val(),
+            miscellaneous : miscellaneous.val(),
+            primer : primer.val(),
+            jigging : jigging.val(),
+            reconstruction : reconstruction.val(),
+            gas : gas.val(),
+            welding : welding.val(),
+            dam : dam.val(),
+            bumper : bumper.val(),
+            sumTotal : sumTotal.val(),
+            pav : pav.val(),
+            salvage : salvage.val(),
+            totalLoss : totalLoss.val(),
+            cause : cause,
+            note : note
+        };
+
+        var image_upload = new FormData();
+        // Attach file
+        // formData.append('image', $('input[type=file]')[0].files[0]);
+        var files = $('input[type=file]')[0].files;
+        let totalImages = files.length; //Total Images
+        let images = $('input[type=file]')[0];
+        for (let i = 0; i < totalImages; i++) {
+            image_upload.append('images' + i, images.files[i]);
+        }
+        image_upload.append('totalImages', totalImages);
+        image_upload.append('assessmentID', assessmentID.val());
+        image_upload.append('assessmentType', assessmentType.val());
+        image_upload.append('isDraft', isDraft);
+        image_upload.append('jobsData',JSON.stringify(jobsData));
+        image_upload.append('partsData',JSON.stringify(partsData));
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: image_upload,
+            url: '/assessor/submitAssessment',
+            success: function (data) {
+                // $("#main").html(data);
+            }
+
+        });
+    });
+    $('select').formSelect();
 });
 
 function isNotEmpty(caller) {

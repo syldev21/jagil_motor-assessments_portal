@@ -82,8 +82,8 @@ class HeadAssessorController extends Controller
                     Jubilee Insurance
                 ",
                         ];
-                        InfobipEmailHelper::sendEmail($email, $email_add);
-                        SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
+//                        InfobipEmailHelper::sendEmail($email, $email_add);
+//                        SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
                         Notification::send($assessor, new AssignClaim($claim));
                     }
                     $response = array(
@@ -147,8 +147,8 @@ class HeadAssessorController extends Controller
                     Jubilee Insurance
                 ",
                     ];
-                    InfobipEmailHelper::sendEmail($email, $email_add);
-                    SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
+//                    InfobipEmailHelper::sendEmail($email, $email_add);
+//                    SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
                     Notification::send($assessor, new AssignClaim($claim));
                 }
                 $response = array(
@@ -175,7 +175,7 @@ class HeadAssessorController extends Controller
     public function fetchClaims(Request $request)
     {
         try {
-            $claims = Claim::where("dateCreated", '>', Carbon::now()->subDays(3))->with('assessment')->get();
+            $claims = Claim::where("dateCreated", '>', Carbon::now()->subDays(3))->orderBy('dateCreated', 'DESC')->with('assessment')->get();
             $assessors = User::role('Assessor')->get();
             return view('head-assessor.claims', ['claims' => $claims, 'assessors' => $assessors]);
         }catch (\Exception $e)

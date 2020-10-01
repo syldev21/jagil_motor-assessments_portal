@@ -27,7 +27,7 @@ class Config
     const NO_RECORDS_FOUND = 3000;
     const RECORD_ALREADY_EXISTS = 5000;
     const INVALID_PAYLOAD = 6000;
-    const GENERIC_ERROR_MESSAGE = "We are experiencing technical difficult, Forward the issue to admin";
+    const GENERIC_ERROR_MESSAGE = "We are experiencing technical difficulty, Forward the issue to admin";
     const ACTIVE = 1;
     const INACTIVE = 0;
     static $CUSTOMER_TYPE = array(
@@ -45,7 +45,7 @@ class Config
                 "text" => "Assigned"
             ),
             "RE-INSPECTED" => array(
-                "id" => 2,
+                "id" => 3,
                 "text" => "Re-Assigned"
             ),
             "RELEASED"=> array(
@@ -99,4 +99,94 @@ class Config
     const VAT = 16;
     const VAT_PERCENTAGE = '16%';
     const TOTAL_PERCENTAGE = self::INITIAL_PERCENTAGE + self::VAT;
+
+    static $JOB_TYPES = array(
+        "LABOUR" =>array(
+            "ID" => 1,
+            "TITLE" => "Labour"
+        ),
+        "PAINTING" =>array(
+            "ID" => 2,
+            "TITLE" => "Painting"
+        ),
+        "MISCELLANEOUS" =>array(
+            "ID" => 3,
+            "TITLE" => "Miscellaneous"
+        ),
+        "PRIMER" =>array(
+            "ID" => 4,
+            "TITLE" => "2k Primer"
+        ),
+        "JIGGING" =>array(
+            "ID" => 5,
+            "TITLE" => "Jigging"
+        ),
+        "RECONSTRUCTION" =>array(
+            "ID" => 6,
+            "TITLE" => "Reconstruction"
+        ),
+        "AC_GAS" =>array(
+            "ID" => 7,
+            "TITLE" => "AC/Gas"
+        ),
+        "WELDING_GAS" =>array(
+            "ID" => 8,
+            "TITLE" => "Welding/Gas"
+        ),
+        "BUMPER_FIBRE" =>array(
+            "ID" => 9,
+            "TITLE" => "Bumper Fibre"
+        ),
+        "DAM_KIT" =>array(
+            "ID" => 10,
+            "TITLE" => "Dam Kit"
+        ),
+    );
+    static $JOB_CATEGORIES = array(
+        "REPAIR" => array(
+            "ID" => 1,
+            "TITLE" => "Repair"
+        ),
+        "REPLACE" => array(
+            "ID" => 2,
+            "TITLE" => "Replace"
+        ),
+        "N/A" => array(
+            "ID" => 3,
+            "TITLE" => "Not Applicable"
+        ),
+    );
+    static $ASSESSMENT_SEGMENTS = array(
+        "ASSESSMENT" => array(
+            "ID" => 1,
+            "TITLE" => "Assessment"
+        ),
+        "RE_ASSESSMENT" => array(
+            "ID" => 2,
+            "TITLE" => "Re-assessment"
+        ),
+        "INSPECTION" => array(
+            "ID" => 3,
+            "TITLE" => "Inspection"
+        ),
+        "RE_INSPECTION" => array(
+            "ID" => 4,
+            "TITLE" => "Re-inspection"
+        ),
+        "SUPPLEMENTARY" => array(
+            "ID" => 5,
+            "TITLE" => "Supplementary"
+        )
+    );
+
+    static $DOCUMENT_TYPES =array(
+        "IMAGE"=>array(
+            "ID" => 1,
+            "TITLE" => "IMAGE"
+        ),
+        "PDF"=>array(
+            "ID" => 2,
+            "TITLE" => "pdf"
+        )
+    );
 }
