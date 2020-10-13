@@ -17,7 +17,8 @@ class CreateAssessmentsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('claimID')->unsigned();
             $table->bigInteger('assessmentID')->default(0);
-            $table->bigInteger('userID')->unsigned();
+            $table->bigInteger('assessedBy')->unsigned();
+            $table->dateTime('assessedAt')->nullable();
             $table->bigInteger('garageID')->nullable();
             $table->bigInteger('assessmentTypeID')->nullable();
             $table->double('pav')->nullable();
@@ -27,7 +28,12 @@ class CreateAssessmentsTable extends Migration
             $table->longText('cause')->nullable();
             $table->longText('note')->nullable();
             $table->bigInteger('assessmentStatusID')->nullable();
-            $table->timestamp('approvedBy')->nullable();
+            $table->bigInteger('approvedBy')->nullable();
+            $table->dateTime('approvedAt')->nullable();
+            $table->tinyInteger('changesDue')->default(0);
+            $table->longText('reviewNote')->nullable();
+            $table->bigInteger('createdBy')->nullable();
+            $table->bigInteger('updatedBy')->nullable();
             $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('dateCreated')->nullable();
         });

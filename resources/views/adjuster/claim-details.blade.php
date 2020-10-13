@@ -53,6 +53,42 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
+                                            <input placeholder="" id="carMake" type="text" name="carMake"
+                                                   value="{{$carDetails->makeName}}" disabled>
+                                            <input type="hidden" name="carMakeCode" id="carMakeCode" value="{{$claim->carMakeCode}}">
+                                            <label for="carMake" class="active">Car Make</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="carModel" type="text" name="carModel"
+                                                   value="{{$carDetails->modelName}}" disabled>
+                                            <input type="hidden" name="carModelCode" id="carModelCode" value="{{$claim->carModelCode}}">
+                                            <label for="carModel" class="active">Car Model</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="yom" type="text" name="yom"
+                                                   value="{{$claim->yom}}" disabled>
+                                            <label for="yom" class="active">Year Of Make</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col m4 s12">
+                                            <input placeholder="" id="engineNumber" type="text" name="engineNumber"
+                                                   value="{{$claim->engineNumber}}" disabled>
+                                            <label for="engineNumber" class="active">Engine Number</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="chassisNumber" type="text" name="chassisNumber"
+                                                   value="{{$claim->chassisNumber}}" disabled>
+                                            <label for="chassisNumber" class="active">Chassis Number</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="claimType" type="text" name="claimType"
+                                                   VALUE="{{$claim->claimType}}" disabled>
+                                            <label for="claimType" class="active">Claim Type</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col m4 s12">
                                             <input id="excess" type="text" name="excess" value="{{$claim->excess}}"
                                                    disabled>
                                             <label for="excess" class="active">Excess</label>
@@ -63,17 +99,12 @@
                                             <label for="sumInsured" class="active">Sum Insured</label>
                                         </div>
                                         <div class="input-field col m4 s12">
-                                            <input id="claimType" type="text" name="claimType"
-                                                   VALUE="{{$claim->claimType}}" disabled>
-                                            <label for="claimType" class="active">Claim Type</label>
+                                            <input id="location" type="text" name="location"
+                                                   value="{{\App\Location::where(["id"=>$claim->location])->first()->name }}" disabled>
+                                            <label for="location" class="active">Location</label>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="input-field col m4 s12">
-                                            <input id="location" type="text" name="location"
-                                                   value="{{$claim->location}}" disabled>
-                                            <label for="location" class="active">Location</label>
-                                        </div>
                                         @if(isset($claim->customer))
                                         <input type="hidden" name="email" id="email"
                                                value="{{$claim->customer->email}}">
@@ -85,7 +116,6 @@
                                         @endif
                                         </div>
                                     </div>
-                                </div>
                                 <div class="row">
                                     <div class="col s12">
                                         <h4 class="card-title float-left">Insurer Details</h4>
@@ -155,6 +185,15 @@
                                         <h4 class="card-title float-left">Claim Documents</h4>
                                     </div>
                                     <div class="divider"></div>
+                                    <div class="row">
+                                        @if(count($claim->documents) > 0)
+                                            @foreach($claim->documents as $document)
+                                                <div class="col s4">
+                                                    <img class="responsive-img" src="{{url('documents/'.$document->name) }}">
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -163,4 +202,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

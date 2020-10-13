@@ -1,31 +1,42 @@
-@include('_partials.header')
-@include('_partials.navbar')
-@include('_partials.sidebar')
-<!-- Page Length Options -->
-<div id="main">
-    <div class="row">
+<div class="row">
 
-        <div
-            class="content-wrapper-before  gradient-45deg-red-pink">
-        </div>
+    <div
+        class="content-wrapper-before  gradient-45deg-red-pink">
+    </div>
 
 
-        <div class="col s12">
-            <div class="container">
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="row">
-                                    <h4 class="card-title float-left">Upload Claim Documents</h4>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="row">
-                                    <div class="col s12">
-                                        <div class="col s12 m8 l9">
-                                            <input type="file" id="input-file-now-custom-2" class="dropify" data-height="500" multiple />
+    <div class="col s12">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <h4 class="card-title float-left">Upload Claim Documents</h4>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <form action="#" enctype="multipart/form-data"
+                                          data-allowed-file-extensions='["jpeg", "jpg", "png"]' id="assessmentForm">
+                                        <div class="row">
+                                            <div class="input-field col m12 s12">
+                                                <div class="input-images" id="images"></div>
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="row">
+                                            <div class="input-field col m9 s12">
+                                                <small>Only <span
+                                                        class="red-text text-darken-3">JPEG,JPG & PNG</span> files
+                                                    are allowed</small>
+                                            </div>
+                                            <div class="input-field col m3 s12">
+                                                <input type="hidden" name="claimID" value="{{$claim->id}}" id="claimID">
+                                                <input type="submit" class="waves-effect waves-dark btn next-step"
+                                                       value="UPLOAD" id="uploadDocuments"/>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -35,5 +46,3 @@
         </div>
     </div>
 </div>
-@include('_partials.settings')
-@include('_partials.footer')

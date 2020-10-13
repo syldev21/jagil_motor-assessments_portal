@@ -10,7 +10,7 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <h4 class="card-title float-left">{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}} Assessments</h4>
+                                <h4 class="card-title float-left">Claim Assessments</h4>
                             </div>
                             <div class="row">
                                 <div class="row">
@@ -48,9 +48,6 @@
                                             <th>No</th>
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
-                                            @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                <th>Approver</th>
-                                            @endif
                                             <th>Assessor</th>
                                             <th>Status</th>
                                             <th>Operation</th>
@@ -65,10 +62,7 @@
                                                         <a href="#" data-id="{{$assessment->id}}" id="assessmentDetails">{{$assessment['claim']['claimNo']}}</a>
                                                     </td>
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
-                                                    @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                        <td>{{isset($assessment->approver) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver) ? $assessment->approver->lastName : ''}}</td>
-                                                    @endif
-                                                    <td>{{isset($assessment->assessor) ? $assessment->assessor->firstName : ''}} {{isset($assessment->assessor) ? $assessment->assessor->lastName : ''}}</td>
+                                                    <td>{{$assessment['user']['name']}}</td>
                                                     @if($assessment['assessmentStatusID']  == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                         <td>
                                                             <button
@@ -106,7 +100,7 @@
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
-                                                                <li><a href="#" data-id="{{$assessment->id}}" id="assessmentReport"><i
+                                                                <li><a href="#" data-id="{{$assessment->id}}" id="manager-assessment-report"><i
                                                                             class="material-icons">picture_as_pdf</i>View
                                                                         Assessment Report</a></li>
                                                             @endif

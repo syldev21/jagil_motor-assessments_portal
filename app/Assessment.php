@@ -10,9 +10,9 @@ class Assessment extends Model
     protected $connection = "mysql";
     protected $table = "assessments";
     protected $primaryKey = "id";
-    protected $fillable = ['claimID','assessmentID','userID','garageID','assessmentTypeID','pav','salvage',
+    protected $fillable = ['claimID','assessmentID','assessedBy','assessedAt','garageID','assessmentTypeID','pav','salvage',
         'totalLoss','totalCost','cause','note',
-        'assessmentStatusID','approvedBy',
+        'assessmentStatusID','approvedBy','approvedAt','changesDue','reviewNote','createdBy','updatedBy',
         'dateModified','dateCreated'];
     public $timestamps= false;
 
@@ -22,5 +22,13 @@ class Assessment extends Model
     public function user()
     {
         return $this->belongsTo(User::class,'userID','id');
+    }
+    public function approver()
+    {
+        return $this->belongsTo(User::class,'approvedBy','id');
+    }
+    public function assessor()
+    {
+        return $this->belongsTo(User::class,'assessedBy','id');
     }
 }

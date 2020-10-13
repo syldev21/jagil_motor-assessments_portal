@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assessment;
 use App\AssessmentItem;
+use App\CarModel;
 use App\Claim;
 use App\ClaimTracker;
 use App\Document;
@@ -42,117 +43,194 @@ class AdjusterController extends Controller
 
     public function fetchPremiaClaims(Request $request)
     {
-//        $claims = array(
+//        $claims = array (
 //            0 =>
-//                array(
-//                    'CLM_NO' => 'C/101/1001/2020/000973',
-//                    'CLM_POL_NO' => 'P/101/1001/2019/004307',
-//                    'VEH_REG_NO' => 'KCJ 878R',
-//                    'SUM_INSURED' => '800000',
-//                    'CLM_LOSS_DT' => '09/08/2020',
-//                    'CLM_INTM_DT' => '28/08/2020 16:15',
-//                    'EXCESS_AMT' => '15000',
-//                    'CLAIM_TYPE' => 'Assessment',
-//                    'CUST_CODE' => 'K71005098',
-//                    'CUST_NAME' => 'Mr.DAVID MUTITU  KAMAU',
-//                    'CUST_MOBILE_NO' => '74158845',
-//                    'CUST_EMAIL1' => 'faridikim @gmail.co ',
-//                    'BRANCH' => 'Jubctr',
+//                array (
+//                    'CLM_NO' => 'C/109/1001/2020/000023',
+//                    'CLM_POL_NO' => 'P/109/1001/2018/000016/01/02',
+//                    'VEH_REG_NO' => 'KCM 945H',
+//                    'VEH_MAKE' => 'I003',
+//                    'VEH_MODEL' => 'I003012',
+//                    'VEH_CHASSIS_NO' => 'ADMARRIJR64809178',
+//                    'VEH_ENG_NO' => '4JKIRD5866',
+//                    'VEH_MFG_YR' => '2017',
+//                    'SUM_INSURED' => '2900000',
+//                    'EXCESS_AMT' => '290000',
+//                    'CLM_LOSS_DT' => '2020-10-01 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-02 00:00:00',
+//                    'CLAIM_TYPE' => 'Windscreen',
+//                    'CUST_CODE' => '1550343',
+//                    'CUST_NAME' => 'CHARLES KOGI KARANI\\CO-OP BANK LTD',
+//                    'CUST_MOBILE_NO' => '0727163728',
+//                    'CUST_EMAIL1' => 'muthurograce@gmail.com',
+//                    'BRANCH' => 'Meru',
 //                ),
 //            1 =>
-//                array(
-//                    'CLM_NO' => 'C/101/1001/202',
-//                    'CLM_POL_NO' => 'P/101/1001/20',
-//                    'VEH_REG_NO' => 'KCL 265K',
-//                    'SUM_INSURED' => '650000',
-//                    'CLM_LOSS_DT' => '25/08/2020',
-//                    'CLM_INTM_DT' => '28/08/2020',
-//                    'EXCESS_AMT' => '15000',
-//                    'CLAIM_TYPE' => 'Assessment',
-//                    'CUST_CODE' => 'K71005098',
-//                    'CUST_NAME' => 'Mr.DAVID MUTITU KAMAU',
-//                    'CUST_MOBILE_NO' => 74158845,
-//                    'CUST_EMAIL1' => 'faridikim @gmail.com ',
+//                array (
+//                    'CLM_NO' => 'C/101/1002/2020/002381',
+//                    'CLM_POL_NO' => 'P/101/1002/2019/004498/01',
+//                    'VEH_REG_NO' => 'KBQ 491P',
+//                    'VEH_MAKE' => 'T009',
+//                    'VEH_MODEL' => 'T009004',
+//                    'VEH_CHASSIS_NO' => 'JTMZE31V90D003699',
+//                    'VEH_ENG_NO' => '3ZRA427084',
+//                    'VEH_MFG_YR' => '2010',
+//                    'SUM_INSURED' => '1620000',
+//                    'EXCESS_AMT' => '40500',
+//                    'CLM_LOSS_DT' => '2020-09-02 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-02 00:00:00',
+//                    'CLAIM_TYPE' => 'Windscreen',
+//                    'CUST_CODE' => '1515806',
+//                    'CUST_NAME' => 'LOISE MWIHAKI MUNGAI',
+//                    'CUST_MOBILE_NO' => '712124425',
+//                    'CUST_EMAIL1' => 'mathew.kongo@gmail.com',
 //                    'BRANCH' => 'Jubctr',
 //                ),
 //            2 =>
-//                array(
-//                    'CLM_NO' => 'C/101/1001/2020/0009',
-//                    'CLM_POL_NO' => 'P/101/1001/2018/001',
-//                    'VEH_REG_NO' => 'KCS 641L',
-//                    'SUM_INSURED' => '720000',
-//                    'CLM_LOSS_DT' => '26/08/2020',
-//                    'CLM_INTM_DT' => '28/08/2020 13:03',
-//                    'EXCESS_AMT' => '15000',
-//                    'CLAIM_TYPE' => 'Assessment',
-//                    'CUST_CODE' => 'K71005098',
-//                    'CUST_NAME' => 'Mr.DAVID MUTITU  KAMAU',
-//                    'CUST_MOBILE_NO' => '74158845',
-//                    'CUST_EMAIL1' => 'faridikim@gmail.com',
+//                array (
+//                    'CLM_NO' => 'C/101/1002/2020/002376',
+//                    'CLM_POL_NO' => 'P/101/1002/2019/009751/01',
+//                    'VEH_REG_NO' => 'KCD 171X',
+//                    'VEH_MAKE' => 'M010',
+//                    'VEH_MODEL' => 'M010037',
+//                    'VEH_CHASSIS_NO' => 'WDD2040412A208896',
+//                    'VEH_ENG_NO' => 'A208896',
+//                    'VEH_MFG_YR' => '2008',
+//                    'SUM_INSURED' => '1700000',
+//                    'EXCESS_AMT' => '42500',
+//                    'CLM_LOSS_DT' => '2020-09-25 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-01 00:00:00',
+//                    'CLAIM_TYPE' => 'Assessement',
+//                    'CUST_CODE' => '1361331',
+//                    'CUST_NAME' => 'SHEILA KATHAMBI MUGAMBI',
+//                    'CUST_MOBILE_NO' => '0722204142',
+//                    'CUST_EMAIL1' => 'kathambi2000@gmail.com',
 //                    'BRANCH' => 'Jubctr',
 //                ),
 //            3 =>
-//                array(
-//                    'CLM_NO' => 'C/101/1001/2020/000970',
-//                    'CLM_POL_NO' => 'P/101/1001/2019/002366/01',
-//                    'VEH_REG_NO' => 'KCS 249D',
-//                    'SUM_INSURED' => '590000',
-//                    'CLM_LOSS_DT' => '27/08/2020',
-//                    'CLM_INTM_DT' => '28/08/2020 12:50',
-//                    'EXCESS_AMT' => '15000',
-//                    'CLAIM_TYPE' => 'Assessment',
-//                    'CUST_CODE' => 'K71005098',
-//                    'CUST_NAME' => 'Mr.DAVID MUTITU  KAMAU',
-//                    'CUST_MOBILE_NO' => '74158845',
-//                    'CUST_EMAIL1' => 'faridikim@gmail.com',
+//                array (
+//                    'CLM_NO' => 'C/101/1001/2020/001079',
+//                    'CLM_POL_NO' => 'P/101/1001/2019/000156/01',
+//                    'VEH_REG_NO' => 'KCT 440C',
+//                    'VEH_MAKE' => 'M009',
+//                    'VEH_MODEL' => 'M009001',
+//                    'VEH_CHASSIS_NO' => 'DE3FS-355226',
+//                    'VEH_ENG_NO' => 'ZJ-899982',
+//                    'VEH_MFG_YR' => '2011',
+//                    'SUM_INSURED' => '550000',
+//                    'EXCESS_AMT' => '0',
+//                    'CLM_LOSS_DT' => '2020-09-28 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-01 00:00:00',
+//                    'CLAIM_TYPE' => 'Windscreen',
+//                    'CUST_CODE' => 'K10010583',
+//                    'CUST_NAME' => 'EVERLYN KAGENDO KANGERWE',
+//                    'CUST_MOBILE_NO' => '0722915553',
+//                    'CUST_EMAIL1' => 'nyaganewton89@gmail.com',
 //                    'BRANCH' => 'Jubctr',
 //                ),
 //            4 =>
-//                array(
-//                    'CLM_NO' => 'C/101/1001/2020/000967',
-//                    'CLM_POL_NO' => 'P/101/1001/2020/000473',
-//                    'VEH_REG_NO' => 'KCX 764U',
-//                    'SUM_INSURED' => '720000',
-//                    'CLM_LOSS_DT' => '27/08/2020',
-//                    'CLM_INTM_DT' => '27/08/2020 16:09',
-//                    'EXCESS_AMT' => '15000',
-//                    'CLAIM_TYPE' => 'Assessment',
-//                    'CUST_CODE' => 'K71005098',
-//                    'CUST_NAME' => 'Mr.DAVID MUTITU  KAMAU',
-//                    'CUST_MOBILE_NO' => '74158845',
-//                    'CUST_EMAIL1' => 'faridikim@gmail.com',
+//                array (
+//                    'CLM_NO' => 'C/101/1001/2020/001080',
+//                    'CLM_POL_NO' => 'P/101/1001/2019/001313/01',
+//                    'VEH_REG_NO' => 'KCR 265M',
+//                    'VEH_MAKE' => 'T009',
+//                    'VEH_MODEL' => 'T009052',
+//                    'VEH_CHASSIS_NO' => 'KSP130 - 2018425',
+//                    'VEH_ENG_NO' => '1KR - 1225754',
+//                    'VEH_MFG_YR' => '2011',
+//                    'SUM_INSURED' => '630000',
+//                    'EXCESS_AMT' => '0',
+//                    'CLM_LOSS_DT' => '2020-09-24 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-01 00:00:00',
+//                    'CLAIM_TYPE' => 'Windscreen',
+//                    'CUST_CODE' => 'K10008909',
+//                    'CUST_NAME' => 'LEE KIPKIRUI BETT',
+//                    'CUST_MOBILE_NO' => '0726318121',
+//                    'CUST_EMAIL1' => 'carolinewambu1985@gmail.com',
 //                    'BRANCH' => 'Jubctr',
 //                ),
 //            5 =>
-//                array(
-//                    'CLM_NO' => 'C/101/1001/2020/000953',
-//                    'CLM_POL_NO' => 'P/101/1001/2020/000081',
-//                    'VEH_REG_NO' => 'KCH 033Z',
-//                    'SUM_INSURED' => '3000000',
-//                    'CLM_LOSS_DT' => '21/08/2020',
-//                    'CLM_INTM_DT' => '24/08/2020 16:50',
-//                    'EXCESS_AMT' => '15000',
-//                    'CLAIM_TYPE' => 'Assessment',
-//                    'CUST_CODE' => 'K71005098',
-//                    'CUST_NAME' => 'Mr.DAVID MUTITU KAMAU',
-//                    'CUST_MOBILE_NO' => '74158845',
-//                    'CUST_EMAIL1' => 'faridikim@gmail.com',
-//                    'BRANCH' => 'Jubctr',
+//                array (
+//                    'CLM_NO' => 'C/104/1002/2020/000108',
+//                    'CLM_POL_NO' => 'P/104/1002/2019/000143/01',
+//                    'VEH_REG_NO' => 'KCR 425G',
+//                    'VEH_MAKE' => 'V004',
+//                    'VEH_MODEL' => 'V004001',
+//                    'VEH_CHASSIS_NO' => 'KCR 425G TBA',
+//                    'VEH_ENG_NO' => 'KCR 425G TBA',
+//                    'VEH_MFG_YR' => '2011',
+//                    'SUM_INSURED' => '1120000',
+//                    'EXCESS_AMT' => '28000',
+//                    'CLM_LOSS_DT' => '2020-09-01 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-01 00:00:00',
+//                    'CLAIM_TYPE' => 'Assessement',
+//                    'CUST_CODE' => '1325330',
+//                    'CUST_NAME' => 'ROSE WAMBUI MUIGAI',
+//                    'CUST_MOBILE_NO' => '725542875',
+//                    'CUST_EMAIL1' => 'rurwa@yahoo.co.uk',
+//                    'BRANCH' => 'Mombasa',
 //                ),
 //            6 =>
-//                array(
-//                    'CLM_NO' => 'C/101/1001/2020/000943',
-//                    'CLM_POL_NO' => 'P/101/1001/2019/002323/01',
-//                    'VEH_REG_NO' => 'KBG 125K',
-//                    'SUM_INSURED' => '500000',
-//                    'CLM_LOSS_DT' => '10/08/2020',
-//                    'CLM_INTM_DT' => '21/08/2020 10:49',
-//                    'EXCESS_AMT' => '15000',
-//                    'CLAIM_TYPE' => 'Assessment',
-//                    'CUST_CODE' => 'K71005098',
-//                    'CUST_NAME' => 'Mr.DAVID MUTITU  KAMAU',
-//                    'CUST_MOBILE_NO' => '74158845',
-//                    'CUST_EMAIL1' => 'faridikim@gmail.com',
+//                array (
+//                    'CLM_NO' => 'C/101/1002/2020/002382',
+//                    'CLM_POL_NO' => 'B/101/1002/2018/000006/0411/01',
+//                    'VEH_REG_NO' => 'KCB 681N',
+//                    'VEH_MAKE' => 'N003',
+//                    'VEH_MODEL' => 'N003035',
+//                    'VEH_CHASSIS_NO' => 'C11-162685',
+//                    'VEH_ENG_NO' => 'HR15-227439A',
+//                    'VEH_MFG_YR' => '2007',
+//                    'SUM_INSURED' => '760000',
+//                    'EXCESS_AMT' => '19000',
+//                    'CLM_LOSS_DT' => '2020-09-30 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-01 00:00:00',
+//                    'CLAIM_TYPE' => 'Assessement',
+//                    'CUST_CODE' => '1160009',
+//                    'CUST_NAME' => 'HANNAH NYAMBURA WAWERU',
+//                    'CUST_MOBILE_NO' => '0721559318',
+//                    'CUST_EMAIL1' => 'Hannah.Nyambura@jubileekenya.com',
+//                    'BRANCH' => 'Jubctr',
+//                ),
+//            7 =>
+//                array (
+//                    'CLM_NO' => 'C/101/1001/2020/001081',
+//                    'CLM_POL_NO' => 'P/101/1001/2019/000393/01',
+//                    'VEH_REG_NO' => 'KCT 838H',
+//                    'VEH_MAKE' => 'T009',
+//                    'VEH_MODEL' => 'T009004',
+//                    'VEH_CHASSIS_NO' => 'KDY231-8007875',
+//                    'VEH_ENG_NO' => '1KD-2104416',
+//                    'VEH_MFG_YR' => '2011',
+//                    'SUM_INSURED' => '1700000',
+//                    'EXCESS_AMT' => '0',
+//                    'CLM_LOSS_DT' => '2020-09-30 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-01 00:00:00',
+//                    'CLAIM_TYPE' => 'Assessement',
+//                    'CUST_CODE' => 'K10015639',
+//                    'CUST_NAME' => 'SAMUEL NJOROGE NJOGU',
+//                    'CUST_MOBILE_NO' => '0706573969',
+//                    'CUST_EMAIL1' => 'sairichie45@gmail.com',
+//                    'BRANCH' => 'Jubctr',
+//                ),
+//            8 =>
+//                array (
+//                    'CLM_NO' => 'C/101/1002/2020/002383',
+//                    'CLM_POL_NO' => 'P/101/1002/2019/000560/01',
+//                    'VEH_REG_NO' => 'KCK 481L',
+//                    'VEH_MAKE' => 'T009',
+//                    'VEH_MODEL' => 'T009076',
+//                    'VEH_CHASSIS_NO' => 'NZT260-3052856',
+//                    'VEH_ENG_NO' => 'INZ-D526579',
+//                    'VEH_MFG_YR' => '2009',
+//                    'SUM_INSURED' => '1100000',
+//                    'EXCESS_AMT' => '27500',
+//                    'CLM_LOSS_DT' => '2020-09-26 00:00:00',
+//                    'CLM_INTM_DT' => '2020-10-02 00:00:00',
+//                    'CLAIM_TYPE' => 'Assessement',
+//                    'CUST_CODE' => '1489146',
+//                    'CUST_NAME' => 'CHRISTINE NADZUA MWANGOLO',
+//                    'CUST_MOBILE_NO' => '727692714',
+//                    'CUST_EMAIL1' => NULL,
 //                    'BRANCH' => 'Jubctr',
 //                ),
 //        );
@@ -177,13 +255,17 @@ class AdjusterController extends Controller
     {
         $claim = json_decode($request->getContent(), true);
         $locations = Location::all();
-        return view('adjuster.claim-form', ['claim' => $claim,'locations' =>$locations]);
+        $carDetails = CarModel::where(["modelCode" => $claim['VEH_MODEL']])->first();
+        return view('adjuster.claim-form', ['claim' => $claim,'locations' =>$locations,'carDetails'=>$carDetails]);
     }
     public function claimDetails(Request $request,$claimID)
     {
-        $claim = Claim::where(["id"=>$claimID])->with('customer')->with('assessment')->first();
+        $claim = Claim::where(["id"=>$claimID])->with('customer')->with('assessment')->with('documents')->first();
+
+        $carDetails = CarModel::where(["modelCode" => isset($claim->carModelCode) ? $claim->carModelCode : 0])->first();
+
         $assessments =Assessment::where(['claimID' => $claim->id])->with('user')->get();
-        return view('adjuster.claim-details', ['claim' => $claim,"assessments" =>$assessments]);
+        return view('adjuster.claim-details', ['claim' => $claim,"assessments" =>$assessments,"carDetails"=>$carDetails]);
     }
 
     public function addClaim(Request $request)
@@ -205,6 +287,11 @@ class AdjusterController extends Controller
             $location = $request->location;
             $originalExcess = $request->originalExcess;
             $originalSumInsured = $request->originalSumInsured;
+            $carMakeCode = $request->carMakeCode;
+            $carModelCode =$request->carModelCode;
+            $yom = $request->yom;
+            $engineNumber = $request->engineNumber;
+            $chassisNumber = $request->chassisNumber;
 
             $claims = Claim::where(['claimNo' => $claimNo])->limit(1)->get();
             if (count($claims) == 0) {
@@ -227,7 +314,9 @@ class AdjusterController extends Controller
                         "lastName" => $lastName,
                         "fullname" => $fullName,
                         "customerType" => Config::$CUSTOMER_TYPE['INSURED_CUSTOMER'],
-                        "email" => $email
+                        "email" => $email,
+                        "createdBy" => Auth::id(),
+                        "dateCreated" => $curDate
                     ]);
                     $claimID = 0;
                     if ($customerID > 0) {
@@ -236,6 +325,11 @@ class AdjusterController extends Controller
                             "policyNo" => $policyNo,
                             "branch" => $branch,
                             "vehicleRegNo" => $vehicleRegNo,
+                            "carMakeCode" => $carMakeCode,
+                            "carModelCode" => $carModelCode,
+                            "engineNumber" => $engineNumber,
+                            "chassisNumber" => $chassisNumber,
+                            "yom" => $yom,
                             "customerCode" => $customerCode,
                             "claimType" => $claimType,
                             "sumInsured" => $sumInsured,
@@ -244,6 +338,7 @@ class AdjusterController extends Controller
                             "intimationDate" => $intimationDate,
                             "loseDate" => $loseDate,
                             "location" => $location,
+                            "createdBy" => Auth::id(),
                             "dateCreated" => $curDate
                         ]);
                         StatusTracker::create([
@@ -251,6 +346,7 @@ class AdjusterController extends Controller
                             "newStatus"=> Config::$STATUSES['CLAIM']['UPLOADED']['id'],
                             "oldStatus" => Config::DEFAULT_STATUS,
                             "statusType" => Config::$STATUS_TYPES["CLAIM"],
+                            "createdBy" => Auth::id(),
                             "dateCreated" => $curDate
                         ]);
                         if($originalExcess != $excess || $originalSumInsured != $sumInsured)
@@ -260,15 +356,18 @@ class AdjusterController extends Controller
                                 'claimID' => $claimID,
                                 'claimNo' => $claimNo,
                                 'policyNo' => $policyNo,
-                                'createdBy' => $createdBy,
                                 'excess' =>    $originalExcess,
                                 'sumInsured' => $originalSumInsured,
-                                'location' => $location
+                                'location' => $location,
+                                'createdBy' => $createdBy,
+                                'dateCreated' => $curDate
                             ]);
                             if($claimTrackerID > 0)
                             {
                                 Claim::where(['id' => $claimID])->update([
-                                    "changed" => Config::ACTIVE
+                                    "changed" => Config::ACTIVE,
+                                    "updatedBy"=> Auth::id(),
+                                    "dateModified" => $curDate
                                 ]);
                             }
                         }
@@ -289,6 +388,11 @@ class AdjusterController extends Controller
                         "policyNo" => $policyNo,
                         "branch" => $branch,
                         "vehicleRegNo" => $vehicleRegNo,
+                        "carMakeCode" => $carMakeCode,
+                        "carModelCode" => $carModelCode,
+                        "engineNumber" => $engineNumber,
+                        "chassisNumber" => $chassisNumber,
+                        "yom" => $yom,
                         "customerCode" => $customerCode,
                         "claimType" => $claimType,
                         "sumInsured" => $sumInsured,
@@ -297,6 +401,7 @@ class AdjusterController extends Controller
                         "intimationDate" => $intimationDate,
                         "loseDate" => $loseDate,
                         "location" => $location,
+                        "createdBy" => Auth::id(),
                         "dateCreated" => $curDate
                     ]);
                     $response = array(
@@ -398,7 +503,7 @@ class AdjusterController extends Controller
         }
         return $response;
     }
-    public function fetchAssessments(Request $request)
+    public function fetchAllAssessments(Request $request)
     {
         try {
             $assessments = Assessment::orderBy('dateCreated', 'DESC')->with('claim')->get();
@@ -409,33 +514,12 @@ class AdjusterController extends Controller
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
-    public function fetchAssignedAssessments(Request $request)
+    public function assessments(Request $request)
     {
+        $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where('assessmentStatusID','=',Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])->with('claim')->with('user')->get();
-            return view('adjuster.assessments',['assessments' => $assessments]);
-        }catch (\Exception $e)
-        {
-            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
-                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
-        }
-    }
-    public function fetchDraftAssessments(Request $request)
-    {
-        try {
-            $assessments = Assessment::where('assessmentStatusID','=',Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])->with('claim')->with('user')->get();
-            return view('adjuster.assessments',['assessments' => $assessments]);
-        }catch (\Exception $e)
-        {
-            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
-                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
-        }
-    }
-    public function fetchAssessedAssessments(Request $request)
-    {
-        try {
-            $assessments = Assessment::where('assessmentStatusID','=',Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])->with('claim')->with('user')->get();
-            return view('adjuster.assessments',['assessments' => $assessments]);
+            $assessments = Assessment::where('assessmentStatusID','=',$assessmentStatusID)->with('claim')->with('user')->with('approver')->with('assessor')->get();
+            return view('adjuster.assessments',['assessments' => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         }catch (\Exception $e)
         {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
@@ -456,14 +540,16 @@ class AdjusterController extends Controller
     }
     public function editClaimForm(Request $request,$claimID)
     {
-        $claim = Claim::where(["id"=>$claimID])->with('customer')->first();
-        return view("adjuster.edit-claim-form",['claim' => $claim]);
+        $claim = Claim::where(["id"=>$claimID])->with('customer')->with('documents')->first();
+        $carDetails = CarModel::where(["modelCode" => isset($claim->carModelCode) ? $claim->carModelCode : 0])->first();
+        return view("adjuster.edit-claim-form",['claim' => $claim,'carDetails' =>$carDetails]);
     }
 
     public function updateClaim(Request $request)
     {
         try {
             $claimID= $request->claimID;
+            $totalImages = $request->totalImages;
             $claim = Claim::where(['id' => $claimID])->first();
             if($claim->id > 0)
             {
@@ -477,19 +563,58 @@ class AdjusterController extends Controller
                     'claimID' => $claimID,
                     'claimNo' => $claimNo,
                     'policyNo' => $policyNo,
-                    'createdBy' => $createdBy,
                     'excess' => $oldexcess,
                     'sumInsured' => $oldsumInsured,
-                    'location' => $oldLocation
+                    'location' => $oldLocation,
+                    'createdBy' => $createdBy,
+                    'dateCreated' => $this->functions->curlDate()
                 ]);
                 if($claimTrackerID > 0)
                 {
-                    Claim::where(['id' => $claimID])->update([
+                    $claimResult=Claim::where(['id' => $claimID])->update([
                         "sumInsured" => isset($request->sumInsured) ? $request->sumInsured : $oldsumInsured,
                         "excess" => isset($request->excess) ? $request->excess : $oldexcess,
                         "location" => isset($request->location) ? $request->location : $oldLocation,
                         "changed" => Config::ACTIVE
                     ]);
+                    if($claimResult >= 0)
+                    {
+//                        $documents = Document::where(["claimID" => $claim->id])->get();
+//                        if(count($documents) > 0) {
+//                            $affectedDocumentRows = Document::where(["claimID" => $claim->id])->delete();
+//                            if ($affectedDocumentRows > 0) {
+//                                foreach ($documents as $document) {
+//                                    $image_path = "documents/".$document->name;  // Value is not URL but directory file path
+//                                    if (File::exists($image_path)) {
+//                                        File::delete($image_path);
+//                                    }
+//                                }
+//                            }
+//                        }
+                        for ($x = 0; $x < $totalImages; $x++) {
+                            if ($request->hasFile('images' . $x)) {
+                                $file = $request->file('images' . $x);
+                                $filename = $file->getClientOriginalName();
+                                $extension = $file->getClientOriginalExtension();
+                                $path = $file->getRealPath();
+                                $size = $file->getSize();
+                                $picture = date('His') . '-' . $filename;
+                                //Save files in below folder path, that will make in public folder
+                                $file->move(public_path('documents/'), $picture);
+                                $documents = Document::create([
+                                    "claimID" => $claimID,
+                                    "name" => $picture,
+                                    "mime" => $extension,
+                                    "size" => $size,
+                                    "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
+                                    "url" => $path,
+                                    "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"],
+                                    "createdBy" => Auth::id(),
+                                    "dateCreated" => $this->functions->curlDate()
+                                ]);
+                            }
+                        }
+                    }
                 }
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,

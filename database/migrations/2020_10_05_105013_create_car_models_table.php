@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCarMakesTable extends Migration
+class CreateCarModelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateCarMakesTable extends Migration
      */
     public function up()
     {
-        Schema::create('car_makes', function (Blueprint $table) {
+        Schema::create('car_models', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->nullable();
-            $table->integer('updatedBy')->nullable();
-            $table->integer('createdBy')->nullable();
+            $table->string('makeCode');
+            $table->string('makeName');
+            $table->string('modelCode');
+            $table->string('modelName');
+            $table->bigInteger('modifiedBy')->nullable();
+            $table->bigInteger('createdBy')->nullable();
             $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('dateCreated')->nullable();
         });
@@ -30,6 +33,6 @@ class CreateCarMakesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('car_makes');
+        Schema::dropIfExists('car_models');
     }
 }

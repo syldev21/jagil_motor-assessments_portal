@@ -16,6 +16,7 @@ class CreateDocumentsTable extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
+            $table->bigInteger('claimID')->nullable();
             $table->bigInteger('assessmentID')->nullable();
             $table->integer('documentType')->nullable();
             $table->integer('segment')->nullable();

@@ -74,26 +74,26 @@
                 <ul class="collapsible collapsible-sub" data-collapsible="accordion">
 
                     <li class="">
-                        <a href="#" class="sidenav-link" id="fetchAssignedAssessments">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">assignment_ind</i>
                             <span data-i18n="ChartJS">Assigned</span>
                         </a>
                     </li>
 
                     <li class="">
-                        <a href="#" class="sidenav-link" id="fetchDraftAssessments">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">drafts</i>
                             <span data-i18n="Chartist">is-draft</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" class="sidenav-link" id="fetchAssessedAssessments">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Chartist">Assessed</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" class="sidenav-link">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">check_box</i>
                             <span data-i18n="Chartist">Approved</span>
                         </a>
@@ -133,6 +133,7 @@
         <li class="bold ">
             <a href="#" id="assessorAssessments">Assessor</a>
             <a href="#" id="headAssessorClaims">Head Assessor</a>
+            <a href="#" id="assessmentManagerAssessments">Assessment Manager</a>
         </li>
     </ul>
     <div class="navigation-background"></div>

@@ -48,13 +48,15 @@ body {
     background: red; !important;
     cursor: default;
 }
-ul.stepper.horizontal {
-    min-height: 950px !important;
-}
 .hideTotalLose,.hideTotals{
     display: none;
 }
 #authorityToGarage{
 
+}
+ul.stepper.horizontal .step .step-content .step-actions{
+    position: absolute !important;
+    bottom:auto !important;
+    left: auto !important;
 }
 

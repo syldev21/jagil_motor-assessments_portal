@@ -50,6 +50,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Claim Number</th>
+                                            <th>Intimation Date</th>
                                             <th>Registration Number</th>
                                             <th>Status</th>
                                             <th>Sum Insured</th>
@@ -64,6 +65,7 @@
                                                     <td>
                                                         <a href="#" data-id="{{$claim['id']}}" id="claimDetails">{{$claim['claimNo']}}</a>
                                                     </td>
+                                                    <td>{{$claim['intimationDate']}}</td>
                                                     <td>{{$claim['vehicleRegNo']}}</td>
                                                     @if($claim['claimStatusID']  == \App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id'])
                                                         <td>
@@ -92,19 +94,6 @@
                                                     <td>
                                                         {{$claim['sumInsured']}}
                                                     </td>
-                                                    {{--                                                    <td>--}}
-                                                    {{--                                                        <div class="input-field col s12">--}}
-                                                    {{--                                                            <select id="garage{{$loop->iteration}}" name="garage{{$loop->iteration}}" class="garage">--}}
-                                                    {{--                                                                <option value="">Select Garage</option>--}}
-                                                    {{--                                                                @if(count($garages) >0)--}}
-                                                    {{--                                                                    @foreach($garages as $garage)--}}
-                                                    {{--                                                                        <option value="{{$garage->garageID}}">{{$garage->name}}</option>--}}
-                                                    {{--                                                                    @endforeach--}}
-                                                    {{--                                                                @endif--}}
-                                                    {{--                                                            </select>--}}
-                                                    {{--                                                        </div>--}}
-                                                    {{--                                                    </td>--}}
-
                                                     <td>
                                                         <!-- Dropdown Trigger -->
                                                         <a class='dropdown-trigger' href='#'
@@ -120,7 +109,7 @@
                                                                 <a href="#" id="editClaimForm" data-id="{{$claim['id']}}"><i
                                                                         class="material-icons">edit</i>Edit</a></li>
                                                             <li>
-                                                                <a href="{{ url("/adjuster/uploadDocumentsForm/".$claim['id']) }}"><i
+                                                                <a href="#" id="uploadDocumentsForm" data-id="{{$claim['id']}}"><i
                                                                         class="material-icons">file_upload</i> Upload
                                                                     Document</a></li>
                                                             <li><a href="#"><i

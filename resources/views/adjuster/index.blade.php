@@ -66,13 +66,6 @@
                                                 <td>{{$claim['VEH_REG_NO']}}</td>
                                                 <td>{{$claim['CLM_INTM_DT']}}</td>
                                                 <td>{{$claim['SUM_INSURED']}}</td>
-                                                <td>
-                                                    {{--                                                    <form method="post" action="{{ url('/adjuster/claim-form') }}">--}}
-                                                    {{--                                                        @csrf--}}
-                                                    {{--                                                        <input type="hidden" name="claim[]" id="claim" value="{{json_encode($claim)}}">--}}
-                                                    {{--                                                        <button class="float-right btn cyan waves-effect waves-effect waves-light"><i class="material-icons left">add_circle_outline</i> Upload Claim</button>--}}
-                                                    {{--                                                    </form>--}}
-                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>

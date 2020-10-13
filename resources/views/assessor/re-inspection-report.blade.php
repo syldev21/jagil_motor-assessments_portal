@@ -64,6 +64,7 @@
                                         <table class="centered responsive-table">
                                             <thead>
                                             <tr>
+                                                <th>S/N</th>
                                                 <th>Vehicle</th>
                                                 <th>Quantity</th>
                                                 <th>Part Price</th>
@@ -76,46 +77,50 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <?php
+                                                $count =0;
+                                            ?>
                                             @foreach($assessmentItems as $assessmentItem)
                                                 <tr>
-                                                    <td><input id="quantity_0" placeholder="" type="text" name="quantity[]"
+                                                    <td>{{$loop->iteration}}</td>
+                                                    <td><input id="vehiclePart_{{$count}}" placeholder="" type="text" name="vehiclePart[]"
                                                                value="{{$assessmentItem->part->name}}" disabled/>
                                                     </td>
                                                     <td>
-                                                        <input id="quantity_0" placeholder="" type="text" name="quantity[]"
+                                                        <input id="quantity_{{$count}}" placeholder="" type="text" name="quantity[]"
                                                                value="{{$assessmentItem->quantity}}" disabled/>
                                                     </td>
                                                     <td>
-                                                        <input id="partPrice_0" placeholder="" type="text" name="partPrice[]"
+                                                        <input id="partPrice_{{$count}}" placeholder="" type="text" name="partPrice[]"
                                                                value="{{$assessmentItem->cost}}" disabled/>
                                                     </td>
                                                     <td>
-                                                        <input id="contribution_0" placeholder="" type="text"
+                                                        <input id="contribution_{{$count}}" placeholder="" type="text"
                                                                name="contribution[]" value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}" disabled/>
                                                     </td>
                                                     <td>
-                                                        <input id="total_0" placeholder="" type="text" name="total[]" value="{{$assessmentItem->total}}" class="total"
+                                                        <input id="total_{{$count}}" placeholder="" type="text" name="total[]" value="{{$assessmentItem->total}}" class="total"
                                                                disabled/>
                                                     </td>
                                                     <td>
-                                                        <input id="total_0" placeholder="" type="text" name="total[]" value="{{$assessmentItem->remark->name}}" class="total"
+                                                        <input id="remarks_{{$count}}" placeholder="" type="text" name="remarks[]" value="{{$assessmentItem->remark->name}}" class="total"
                                                                disabled/>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox"/>
+                                                            <input type="checkbox" name="re_inspection[]" id="re_inspection_{{$count}}" value="{{$assessmentItem->segment}}" @if($assessmentItem->segment == \App\Conf\Config::$ASSESSMENT_SEGMENTS["INSPECTION"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox"/>
+                                                            <input type="checkbox" name="repaired[]" id="repaired_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["REPAIR"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" />
+                                                            <input type="checkbox" name="cil[]" id="cil_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
@@ -159,7 +164,7 @@
                                             <input type="hidden" name="counter" id="counter">
                                             <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessments->id}}">
                                             <input type="submit" class="waves-effect waves-dark btn next-step"
-                                                   value="SUBMIT" id="submitAssessment"/>
+                                                   value="SUBMIT" id="submitReinspection"/>
                                             <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                             </button>
                                         </div>

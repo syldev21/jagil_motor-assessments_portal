@@ -53,13 +53,33 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
-                                            <input id="excess" type="text" name="excess" value="{{$claim->excess}}">
-                                            <label for="excess" class="active">Excess</label>
+                                            <input placeholder="" id="carMake" type="text" name="carMake"
+                                                   value="{{$carDetails->makeName}}" disabled>
+                                            <input type="hidden" name="carMakeCode" id="carMakeCode" value="{{$carDetails->carMakeCode}}">
+                                            <label for="carMake" class="active">Car Make</label>
                                         </div>
                                         <div class="input-field col m4 s12">
-                                            <input id="sumInsured" type="text" name="sumInsured"
-                                                   VALUE="{{$claim->sumInsured}}">
-                                            <label for="sumInsured" class="active">Sum Insured</label>
+                                            <input id="carModel" type="text" name="carModel"
+                                                   value="{{$carDetails->modelName}}" disabled>
+                                            <input type="hidden" name="carModelCode" id="carModelCode" value="{{$carDetails->carModelCode}}">
+                                            <label for="carModel" class="active">Car Model</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="yom" type="text" name="yom"
+                                                   value="{{$claim['yom']}}" disabled>
+                                            <label for="yom" class="active">Year Of Make</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col m4 s12">
+                                            <input placeholder="" id="engineNumber" type="text" name="engineNumber"
+                                                   value="{{$claim['engineNumber']}}" disabled>
+                                            <label for="engineNumber" class="active">Engine Number</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="chassisNumber" type="text" name="chassisNumber"
+                                                   value="{{$claim['chassisNumber']}}" disabled>
+                                            <label for="chassisNumber" class="active">Chassis Number</label>
                                         </div>
                                         <div class="input-field col m4 s12">
                                             <input id="claimType" type="text" name="claimType"
@@ -69,16 +89,47 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
+                                            <input id="excess" type="text" name="excess" value="{{$claim->excess}}">
+                                            <input type="hidden" name="oldExcess" id="oldExcess" value="{{$claim->excess}}">
+                                            <label for="excess" class="active">Excess</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="sumInsured" type="text" name="sumInsured"
+                                                   VALUE="{{$claim->sumInsured}}">
+                                            <input type="hidden" name="oldSumInsured" id="oldSumInsured" value="{{$claim->sumInsured}}">
+                                            <label for="sumInsured" class="active">Sum Insured</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
                                             <input id="customerCode" type="text" name="customerCode"
                                                    value="{{$claim->customerCode}}" disabled>
                                             <label for="customerCode" class="active">Client Code</label>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="input-field col m4 s12">
                                             <input id="location" type="text" name="location"
                                                    VALUE="{{$claim->location}}">
                                             <label for="location" class="active">Location</label>
                                             <input type="hidden" value="{{$claim->id}}" name="claimID" id="claimID">
                                         </div>
+                                    </div>
+                                    @if(count($claim->documents)>0)
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <div class="col s12">
+                                                <input type="hidden" value="{{$claim->documents}}" name="imagesArray" id="imagesArray">
+                                                <form action="#" enctype="multipart/form-data" data-allowed-file-extensions='["jpeg", "jpg", "png"]' id="editClaimForm">
+                                                    <div class="input-images" id="images"></div>
+                                                </form>
+                                                <small>Only <span
+                                                        class="red-text text-darken-3">JPEG,JPG & PNG</span> files
+                                                    are allowed</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <div class="row">
+                                        <div class="col m8 s12"></div>
                                         <div class="input-field col m4 s12">
                                             <a href="#"
                                                class="float-right btn cyan waves-effect waves-effect waves-light"

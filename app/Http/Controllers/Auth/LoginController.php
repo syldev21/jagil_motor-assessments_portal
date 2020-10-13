@@ -50,15 +50,15 @@ class LoginController extends Controller
     {
         if($user->hasRole('Adjuster'))
         {
-            return redirect('/adjuster/uploadClaims');
+            return redirect('/home');
         }
         else if($user->hasRole('Assessor'))
         {
-            return redirect('/assessor/assessments');
+            return redirect('/home');
         }
         else if($user->hasRole('Head Assessor'))
         {
-            return redirect('head-assessor/claims');
+            return redirect('/home');
         }
     }
 }

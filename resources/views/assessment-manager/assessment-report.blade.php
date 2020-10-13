@@ -77,35 +77,35 @@
                                         <tr>
                                             <td>Registered No.</td>
 
-                                            <td>{{$assessment['claim']['vehicleRegNo']}}</td>
+                                            <td></td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Year of manufacture</td>
 
-                                            <td>{{$assessment['claim']['yom']}}</td>
+                                            <td></td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Chassis No.</td>
 
-                                            <td>{{$assessment['claim']['chassisNumber']}}</td>
+                                            <td></td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Make</td>
 
-                                            <td>{{$assessment['claim']['carMakeCode']}}</td>
+                                            <td></td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Model</td>
 
-                                            <td>{{$assessment['claim']['carModelCode']}}</td>
+                                            <td></td>
 
                                         </tr>
 
@@ -279,16 +279,16 @@
                                         </tr>
 
                                         @foreach($jobDetails as $jobDetail)
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>{{$jobDetail['name']}}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>{{ number_format($jobDetail['cost']) }}</td>
-                                            <td></td>
-                                        </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{$jobDetail['name']}}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{ number_format($jobDetail['cost']) }}</td>
+                                                <td></td>
+                                            </tr>
                                         @endforeach
 
                                         @if($assessment['assessmentTypeID'] != 2)
@@ -387,7 +387,7 @@
 
                                             <p>For: JUBILEE INS. CO</p>
 
-{{--                                            <p>Assessor: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
+                                            {{--                                            <p>Assessor: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
 
                                             <p>Date: {{ date('l jS F Y', strtotime($assessment['dateCreated'])) }}</p>
 
@@ -403,7 +403,7 @@
 
                                             <p>For: JUBILEE INS. CO</p>
 
-{{--                                            <p>Assessor: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
+                                            {{--                                            <p>Assessor: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
 
                                             <p>Date: {{ date('l jS F Y', strtotime($assessment['dateCreated'])) }}</p>
 
@@ -412,21 +412,21 @@
                                         </div>
 
                                     @endif
-                                        @if($assessment['totalLoss'] != '')
+                                    @if($assessment['totalLoss'] != '')
 
-                                            <div class="col-md-12 content-group">
+                                        <div class="col-md-12 content-group">
 
-                                                <h4>PAV: {{ number_format($assessment['pav']) }}</h4>
+                                            <h4>PAV: {{ number_format($assessment['pav']) }}</h4>
 
-                                                <h4>Salvage: {{ number_format($assessment['salvage']) }}</h4>
+                                            <h4>Salvage: {{ number_format($assessment['salvage']) }}</h4>
 
-                                                <h4>Total Loss: {{ number_format($assessment['totalLoss']) }}</h4>
+                                            <h4>Total Loss: {{ number_format($assessment['totalLoss']) }}</h4>
 
 
 
-                                            </div>
+                                        </div>
 
-                                        @endif
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">
@@ -435,22 +435,169 @@
 
                                     <p>{!! $assessment['note'] !!}</p>
 
-{{--                                    <p>Assessed By: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
+                                    {{--                                    <p>Assessed By: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
                                 </div>
                             </div>
                             @foreach($documents->chunk(4) as $chunk)
-                            <div class="row">
-                                @foreach($chunk as $document)
-                                    <div class="col s3">
-                                        <img class="responsive-img materialboxed" src="{{url('documents/'.$document['name']) }}">
-                                    </div>
-                                @endforeach
-                            </div>
+                                <div class="row">
+                                    @foreach($chunk as $document)
+                                        <div class="col s3">
+                                            <img class="responsive-img" src="{{url('documents/'.$document['name']) }}">
+                                        </div>
+                                    @endforeach
+                                </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s4">
+                    <a id="triggerChangeRequests" data-target="changeRequest" class="btn orange darken-2">Request Changes</a>
+                </div>
+                <div class="col s4">
+                    <!-- Modal Trigger -->
+                    <button id="triggerApprove" data-target="approve" class="btn blue lighten-2 btn">Approve/Halt/Cancel</button>
+                </div>
+                <div class="col s4">
+                    <a id="triggerDiscount" data-target="discount" class="btn teal darken-2">Apply Discount</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s8">
+                    <!-- Modal Structure -->
+                    <div id="approve" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-body clearfix">
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p>Review Assessment</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
+                                        <div class="col m4">
+                                            <label>
+                                                <input name="assessmentReviewType" type="radio"
+                                                       class="with-gap assessmentReviewType" value="{{\App\Conf\Config::APPROVE}}"/>
+                                                <span>Approve</span>
+                                            </label>
+                                        </div>
+                                        <div class="col m4">
+                                            <label>
+                                                <input name="assessmentReviewType" type="radio"
+                                                       class="with-gap assessmentReviewType" value="{{App\Conf\Config::HALT}}"/>
+                                                <span>Halt</span>
+                                            </label>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m12 s12">
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <span>Report</span>
+                                            </div>
+                                        </div>
+                                        <textarea id="report" class="materialize-textarea">
+
+                                        </textarea>
+                                        <script>
+                                            CKEDITOR.replace('report', {
+                                                language: 'en',
+                                                uiColor: '',
+                                                height: $(this).attr('height')
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m8 s12">
+                                    </div>
+                                    <div class="input-field col m4 s12">
+                                        <a href="#" class="btn blue lighten-2 waves-effect" id="reviewAssessment">Submit</a>
+                                        <a class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s2"></div>
+            </div>
+
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s8">
+                    <!-- Modal Structure -->
+                    <div id="discount" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+                            </div>
+                            <div class="modal-body clearfix">
+                                <div class="row">
+                                    <div class="input-field col m12 s12">
+                                        <input type="text" name="discount" id="discount">
+                                        <label for="discount" class="active">Apply Discount</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m8 s12">
+                                    </div>
+                                    <div class="input-field col m4 s12">
+                                        <a href="#" class="btn blue lighten-2 waves-effect">Submit</a>
+                                        <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s2"></div>
+            </div>
+
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s8">
+                    <!-- Modal Structure -->
+                    <div id="changeRequest" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="input-field col m12 s12">
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <span class="float-left">Request Changes On Report</span>
+                                                <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+                                            </div>
+                                        </div>
+                                        <textarea name="changes" id="changes" class="materialize-textarea clearfix">
+
+                                        </textarea>
+                                        <script>
+                                            CKEDITOR.replace('changes', {
+                                                language: 'en',
+                                                uiColor: ''
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m8 s12">
+                                    </div>
+                                    <div class="input-field col m4 s12">
+                                        <a href="#" class="btn blue lighten-2 waves-effect">Submit</a>
+                                        <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s2"></div>
+            </div>
+            <br/>
         </div>
     </div>
 </div>

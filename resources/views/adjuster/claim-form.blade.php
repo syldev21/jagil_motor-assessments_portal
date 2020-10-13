@@ -54,6 +54,42 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
+                                            <input placeholder="" id="carMake" type="text" name="carMake"
+                                                   value="{{$carDetails->makeName}}" disabled>
+                                            <input type="hidden" name="carMakeCode" id="carMakeCode" value="{{$claim['VEH_MAKE']}}">
+                                            <label for="carMake" class="active">Car Make</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="carModel" type="text" name="carModel"
+                                                   value="{{$carDetails->modelName}}" disabled>
+                                            <input type="hidden" name="carModelCode" id="carModelCode" value="{{$claim['VEH_MODEL']}}">
+                                            <label for="carModel" class="active">Car Model</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="yom" type="text" name="yom"
+                                                   value="{{$claim['VEH_MFG_YR']}}" disabled>
+                                            <label for="yom" class="active">Year Of Make</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col m4 s12">
+                                            <input placeholder="" id="engineNumber" type="text" name="engineNumber"
+                                                   value="{{$claim['VEH_ENG_NO']}}" disabled>
+                                            <label for="engineNumber" class="active">Engine Number</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="chassisNumber" type="text" name="chassisNumber"
+                                                   value="{{$claim['VEH_CHASSIS_NO']}}" disabled>
+                                            <label for="chassisNumber" class="active">Chassis Number</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input id="claimType" type="text" name="claimType"
+                                                   VALUE="{{$claim['CLAIM_TYPE']}}" disabled>
+                                            <label for="claimType" class="active">Claim Type</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col m4 s12">
                                             <input type="hidden" value="{{$claim['EXCESS_AMT']}}" id="originalExcess">
                                             <input id="excess" type="text" name="excess"
                                                    value="{{$claim['EXCESS_AMT']}}">
@@ -66,18 +102,6 @@
                                             <label for="sumInsured" class="active">Sum Insured</label>
                                         </div>
                                         <div class="input-field col m4 s12">
-                                            <input id="claimType" type="text" name="claimType"
-                                                   VALUE="{{$claim['CLAIM_TYPE']}}" disabled>
-                                            <label for="claimType" class="active">Claim Type</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col m4 s12">
-                                            <input id="customerCode" type="text" name="customerCode"
-                                                   value="{{$claim['CUST_CODE']}}" disabled>
-                                            <label for="customerCode" class="active">Client Code</label>
-                                        </div>
-                                        <div class="input-field col m4 s12">
                                             <select id="location"required name="location">
                                                 <option value="">Select Location</option>
                                                 @if(count($locations)>0)
@@ -86,6 +110,13 @@
                                                     @endforeach
                                                 @endif
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col m4 s12">
+                                            <input id="customerCode" type="text" name="customerCode"
+                                                   value="{{$claim['CUST_CODE']}}" disabled>
+                                            <label for="customerCode" class="active">Client Code</label>
                                         </div>
                                         <input type="hidden" name="email" id="email" value="{{$claim['CUST_EMAIL1']}}">
                                         <input type="hidden" name="fullName" id="fullName"

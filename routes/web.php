@@ -45,13 +45,11 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->get('/uploadDocumentsForm/{claimID}','AdjusterController@uploadDocumentsForm');
     $router->get('/assignAssessor','AdjusterController@assignAssessor');
     $router->post('/search','AdjusterController@searchClaim');
-    $router->get('/assessments','AdjusterController@fetchAssessments');
+    $router->get('/fetch-all-assessments','AdjusterController@fetchAllAssessments');
+    $router->post('/assessments','AdjusterController@assessments');
     $router->get('/editClaimForm/{id}','AdjusterController@editClaimForm');
     $router->get('/fetchUploadedClaims','AdjusterController@fetchUploadedClaims');
     $router->get('/assignedClaims','AdjusterController@assignedClaims');
-    $router->get('/fetchAssignedAssessments','AdjusterController@fetchAssignedAssessments');
-    $router->get('/fetchAssessedAssessments','AdjusterController@fetchAssessedAssessments');
-    $router->get('/fetchDraftAssessments','AdjusterController@fetchDraftAssessments');
     $router->get('/assessment-details/{assessmentID}','AdjusterController@assessmentDetails');
     $router->post('/updateClaim','AdjusterController@updateClaim');
     $router->post('/filterPremia11ClaimsByDate','AdjusterController@filterPremia11ClaimsByDate');
@@ -69,6 +67,7 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->get('/fillAssessmentReport/{id}','AssessorController@fillAssessmentReport');
     $router->get('/fillReInspectionReport/{id}','AssessorController@fillReInspectionReport');
     $router->post('/submitAssessment','AssessorController@submitAssessment');
+    $router->post('/uploadDocuments','AssessorController@uploadDocuments');
 
 
 });
@@ -81,6 +80,15 @@ $router->group(['prefix' => 'head-assessor'], function($router)
     $router->post('/assignAssessor','HeadAssessorController@assignAssessor');
     $router->post('/reAssignAssessor','HeadAssessorController@reAssignAssessor');
     $router->get('/assessments','HeadAssessorController@fetchAssessments');
+});
+
+// Assessment Manager
+$router->group(['prefix' => 'assessment-manager'], function($router)
+{
+    //Motor  assessment Assessor Module
+    $router->get('/assessments','AssessmentManagerController@assessments');
+    $router->post('/assessment-report','AssessmentManagerController@assessmentReport');
+    $router->post('/review-assessment','ApproverController@reviewAssessment');
 });
 
 // Admin Routes

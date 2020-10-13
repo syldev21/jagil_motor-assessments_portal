@@ -11,7 +11,7 @@ class CustomerMaster extends Model
     protected $table = "customer_masters";
     protected $primaryKey = "id";
     protected $fillable = ['customerCode','MSISDN','firstName','middleName','lastName','fullName',
-        'customerType','email','idNumber','location','latitude','longitude','dateModified','dateCreated'];
+        'customerType','email','idNumber','location','latitude','longitude','createdBy','updatedBy','dateModified','dateCreated'];
     public $timestamps= false;
 
     public function claim()

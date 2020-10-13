@@ -34,6 +34,20 @@ class Config
         "INSURED_CUSTOMER" => 'I',
         "GARAGE_CUSTOMER" => 'G'
     );
+    static $DISPLAY_STATUSES = array(
+        "CLAIM" => array(
+           1 => "Uploaded",
+           2=> "Assigned",
+           3 => "Re-assigned",
+           4 => "Released"
+        ),
+        "ASSESSMENT" => array(
+            1 => "Assigned",
+            2 => "Drafted",
+            3 => "Assessed",
+            4 => "Approved"
+        )
+    );
     static $STATUSES = array(
         "CLAIM" => array(
             "UPLOADED" => array(
@@ -60,7 +74,7 @@ class Config
             ),
             "IS-DRAFT" => array(
                 "id" => 2,
-                "text" => "Is Draft"
+                "text" => "Drafted"
             ),
             "ASSESSED" => array(
                 "id" => 3,
@@ -85,7 +99,8 @@ class Config
         "ASSESSOR" => "Assessor",
         "ADJUSTER" => "Adjuster",
         "ADMIN" => "Admin",
-        "HEAD-ASSESSOR" => "Head Assessor"
+        "HEAD-ASSESSOR" => "Head Assessor",
+        "ASSESSMENT-MANAGER" => "Assessment Center Manager"
     );
 
     const START_YEAR = 1960;
@@ -151,9 +166,9 @@ class Config
             "ID" => 2,
             "TITLE" => "Replace"
         ),
-        "N/A" => array(
+        "CIL" => array(
             "ID" => 3,
-            "TITLE" => "Not Applicable"
+            "TITLE" => "Cash In Lieu"
         ),
     );
     static $ASSESSMENT_SEGMENTS = array(
@@ -189,4 +204,16 @@ class Config
             "TITLE" => "pdf"
         )
     );
+    const ASSESSMENT_TYPES = array(
+        "AUTHORITY_TO_GARAGE" => 1,
+        "CASH_IN_LIEU" => 2,
+        "TOTAL_LOSS" => 3
+    );
+
+    const APPROVE = 1;
+    const HALT =2;
+
+    const ASSESSMENT_MANAGER = "Assessment Center Manager";
+
+    const JUBILEE_NO_REPLY_EMAIL = "noreply@jubileeinsurance.com";
 }

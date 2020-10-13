@@ -1,7 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="28f28530-4f6d-4ec9-b5fe-7463e4cfbe2d" name="Default Changelist" comment="" />
+    <list default="true" id="28f28530-4f6d-4ec9-b5fe-7463e4cfbe2d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/css/image-zoom.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/image-zoom.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/assessment-manager/assessment-report.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/assessment-manager/assessments.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/motor-assessments-portal_v2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/motor-assessments-portal_v2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Assessment.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Assessment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/CarMake.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/CarModel.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Claim.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Claim.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Conf/Config.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Conf/Config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/CustomerMaster.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/CustomerMaster.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Document.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Document.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Helper/SMSHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helper/SMSHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdjusterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdjusterController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssessorController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssessorController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HeadAssessorController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HeadAssessorController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_08_133847_create_claims_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_08_133847_create_claims_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_08_144205_create_customer_masters_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_08_144205_create_customer_masters_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_08_191436_create_assessments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_08_191436_create_assessments_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_17_045736_create_car_models_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_17_050253_create_car_makes_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_24_060726_create_documents_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_24_060726_create_documents_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/documents/180919-car1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/documents/180920-car2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/documents/180920-car3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/documents/180920-car4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/documents/180920-car5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/_partials/footer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/_partials/footer.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/_partials/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/_partials/header.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/_partials/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/_partials/sidebar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/assessment-report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/assessment-report.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/assessments.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/assessments.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/claim-details.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/claim-details.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/claim-form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/claim-form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/claims.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/claims.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/edit-claim-form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/edit-claim-form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/file-upload.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/file-upload.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/assessor/assessment-report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assessor/assessment-report.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/assessor/re-inspection-report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assessor/re-inspection-report.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/includes/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/includes/login.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +83,9 @@
         <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -111,6 +180,8 @@
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
       <path value="$PROJECT_DIR$/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/vendor/netresearch/jsonmapper" />
+      <path value="$PROJECT_DIR$/vendor/infobip/infobip-api-php-client" />
     </include_path>
   </component>
   <component name="ProjectId" id="1hCAzMbH5X3av4uV3rjafb2r2Fv" />
@@ -119,19 +190,20 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mariadb" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../motor_assessment_portal" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/css" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\motor-assessments-portal_v2\public\css" />
+      <recent name="C:\xampp\htdocs\motor-assessments-portal_v2\public\js" />
       <recent name="C:\xampp\htdocs\laravel\public\css" />
       <recent name="C:\xampp\htdocs\laravel\public\js" />
       <recent name="C:\xampp\htdocs\laravel\resources\views\_partials" />
-      <recent name="C:\xampp\htdocs\laravel\routes" />
-      <recent name="C:\xampp\htdocs\laravel\resources\views\adjuster" />
     </key>
   </component>
   <component name="RunManager">
@@ -158,60 +230,83 @@
       <workItem from="1600169731394" duration="42358000" />
       <workItem from="1600277228166" duration="24910000" />
       <workItem from="1600345642736" duration="22130000" />
+      <workItem from="1600756369802" duration="1703000" />
+      <workItem from="1600761926327" duration="83737000" />
+      <workItem from="1601271358832" duration="50199000" />
+      <workItem from="1601838517163" duration="596000" />
+      <workItem from="1601855160377" duration="53893000" />
+      <workItem from="1602451910945" duration="21746000" />
+      <workItem from="1602564250943" duration="1727000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="275" y="22" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602569866652">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="22" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1602569866652" />
     <state x="437" y="166" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1599568314726">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="437" y="166" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1599568314726" />
-    <state x="413" y="119" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1600350891579">
+    <state x="413" y="119" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1601300518887">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="413" y="119" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1600350891579" />
+    <state x="413" y="119" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1601300518887" />
     <state x="92" y="92" width="1182" height="544" key="DiffContextDialog" timestamp="1599643300978">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="92" y="92" width="1182" height="544" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1599643300978" />
-    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1600308912094">
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1600766317697">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1600308912094" />
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1600766317697" />
     <state x="462" y="87" key="NewPhpClassDialog" timestamp="1599511928960">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="462" y="87" key="NewPhpClassDialog/0.0.1366.728@0.0.1366.728" timestamp="1599511928960" />
-    <state x="517" y="287" key="NewPhpFileDialog" timestamp="1600413127870">
+    <state x="517" y="287" key="NewPhpFileDialog" timestamp="1601293776020">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="517" y="287" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1600413127870" />
+    <state x="517" y="287" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1601293776020" />
     <state x="184" y="9" key="SettingsEditor" timestamp="1600418722238">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1600418722238" />
-    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1599811449512">
+    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1602496586131">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1599811449511" />
+    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1602496586131" />
     <state x="462" y="0" width="920" height="567" key="dock-window-1" timestamp="1599643301002">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="462" y="0" width="920" height="567" key="dock-window-1/0.0.1366.728@0.0.1366.728" timestamp="1599643301002" />
-    <state x="390" y="97" width="585" height="592" key="find.popup" timestamp="1600415574275">
+    <state x="390" y="97" width="585" height="592" key="find.popup" timestamp="1602509320234">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="390" y="97" width="585" height="592" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1600415574274" />
-    <state x="339" y="162" width="672" height="677" key="run.anything.popup" timestamp="1600416320296">
+    <state x="390" y="97" width="585" height="592" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1602509320234" />
+    <state x="339" y="162" width="672" height="677" key="run.anything.popup" timestamp="1602503981768">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="162" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1600416320296" />
-    <state x="339" y="17" width="672" height="678" key="search.everywhere.popup" timestamp="1600171999970">
+    <state x="339" y="162" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1602503981768" />
+    <state x="339" y="17" width="672" height="678" key="search.everywhere.popup" timestamp="1602506117674">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="17" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1600171999970" />
+    <state x="339" y="17" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1602506117674" />
   </component>
 </project>

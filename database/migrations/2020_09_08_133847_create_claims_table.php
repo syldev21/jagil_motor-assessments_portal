@@ -19,6 +19,8 @@ class CreateClaimsTable extends Migration
             $table->string('policyNo')->unique();
             $table->string('branch')->nullable();
             $table->string('vehicleRegNo')->nullable();
+            $table->string('carMakeCode')->nullable();
+            $table->string('carModelCode')->nullable();
             $table->bigInteger('garageID')->nullable();
             $table->bigInteger('centerID')->nullable();
             $table->string('customerCode')->nullable();

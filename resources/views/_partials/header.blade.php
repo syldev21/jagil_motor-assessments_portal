@@ -23,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href=" {{ asset('css/pages/login.css') }} ">
 
     <link rel="stylesheet" type="text/css" href=" {{ asset('css/style.css') }} ">
+    <link rel="stylesheet" type="text/css" href=" {{ asset('css/image-zoom.min.css') }} ">
     <!-- BEGIN: VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href=" {{ asset('vendors/animate-css/animate.css') }} ">
     <link rel="stylesheet" type="text/css" href=" {{ asset('vendors/chartist-js/chartist.min.css') }} ">

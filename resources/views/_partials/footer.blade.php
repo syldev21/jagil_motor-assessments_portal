@@ -50,6 +50,7 @@
 <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
 <!-- jQueryValidation Plugin -->
 <script type="text/javascript" src="{{ asset('js/image-uploader.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/image-zoom.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
 <script type="text/javascript">
     var stepper = document.querySelector('.stepper');

@@ -10,7 +10,7 @@ class Claim extends Model
     protected $connection = "mysql";
     protected $table = "claims";
     protected $primaryKey = "id";
-    protected $fillable = ['claimNo','policyNo','branch','vehicleRegNo','garageID','centerID','customerCode','claimType',
+    protected $fillable = ['claimNo','policyNo','branch','vehicleRegNo','carMakeCode','carModelCode','engineNumber','chassisNumber','yom','garageID','centerID','customerCode','claimType',
         'sumInsured','excess','intimationDate','loseDate','location','changed','createdBy','updatedBy','claimStatusID','dateModified','dateCreated'];
     public $timestamps= false;
 
@@ -23,5 +23,14 @@ class Claim extends Model
     }
     public function claimtracker() {
         return $this->hasMany(ClaimTracker::class, 'claimID', 'id');
+    }
+
+    public function carModel()
+    {
+        return $this->belongsTo(CarModel::class, 'carModelCode', 'carModelCode');
+    }
+    public function documents()
+    {
+        return $this->hasMany(Document::class,'claimID','id');
     }
 }

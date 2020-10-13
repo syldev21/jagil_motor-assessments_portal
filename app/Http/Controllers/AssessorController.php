@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Assessment;
 use App\AssessmentItem;
-use App\CarMake;
 use App\CarModel;
 use App\Conf\Config;
 use App\Document;
@@ -46,20 +45,123 @@ class AssessorController extends Controller
     {
         $draftAssessment = Assessment::where(['id' => $assessmentID,'assessmentStatusID'=>Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
-        $carModels = CarModel::all();
+        $carDetails = CarModel::where(["modelCode" =>isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
         $remarks = Remarks::all();
         $parts = Part::all();
         $assessmentItems = AssessmentItem::where(["assessmentID"=> isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID"=> isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
-        echo json_encode($jobDetails);
-        exit();
-        return view('assessor.assessment-report',['assessment' => $assessment,'carModels' => $carModels,'remarks' => $remarks,'parts'=>$parts,'assessmentItems'=> $assessmentItems,"jobDetails"=>$jobDetails,"draftAssessment"=>$draftAssessment]);
+        $jobDraftDetail = [];
+        foreach ($jobDetails as $jobDetail)
+        {
+
+            if($jobDetail->jobType == Config::$JOB_TYPES["LABOUR"]["ID"])
+            {
+                $jobDraftDetail["Labour"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["PAINTING"]["ID"])
+            {
+                $jobDraftDetail["Painting"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["MISCELLANEOUS"]["ID"])
+            {
+                $jobDraftDetail["Miscellaneous"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["PRIMER"]["ID"])
+            {
+                $jobDraftDetail["2k Primer"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["JIGGING"]["ID"])
+            {
+                $jobDraftDetail["Jigging"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["RECONSTRUCTION"]["ID"])
+            {
+                $jobDraftDetail["Reconstruction"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["AC_GAS"]["ID"])
+            {
+                $jobDraftDetail["AC/Gas"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["WELDING_GAS"]["ID"])
+            {
+                $jobDraftDetail["Welding/Gas"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["BUMPER_FIBRE"]["ID"])
+            {
+                $jobDraftDetail["Bumper Fibre"]= $jobDetail->cost;
+            }
+            if($jobDetail->jobType == Config::$JOB_TYPES["DAM_KIT"]["ID"])
+            {
+                $jobDraftDetail["Dam Kit"]= $jobDetail->cost;
+            }
+        }
+
+        return view('assessor.assessment-report',['assessment' => $assessment,'remarks' => $remarks,'parts'=>$parts,'assessmentItems'=> $assessmentItems,"jobDraftDetail"=>$jobDraftDetail,"draftAssessment"=>$draftAssessment,"carDetails"=> $carDetails]);
     }
     public function fillReInspectionReport(Request $request,$assessmentID)
     {
         $assessments = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $assessmentItems = AssessmentItem::where(["assessmentID"=> $assessmentID])->with("part")->get();
         return view('assessor.re-inspection-report',['assessments' => $assessments,'assessmentItems'=>$assessmentItems]);
+    }
+    public function uploadDocuments(Request $request)
+    {
+        try{
+            $totalImages = $request->totalImages;
+            $claimID = $request->claimID;
+            //Loop for getting files with index like image0, image1
+            $response = array();
+            for ($x = 0; $x < $totalImages; $x++) {
+
+                if ($request->hasFile('images' . $x)) {
+                    $file = $request->file('images' . $x);
+                    $filename = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $path = $file->getRealPath();
+                    $size = $file->getSize();
+                    $picture = date('His') . '-' . $filename;
+                    //Save files in below folder path, that will make in public folder
+                    $file->move(public_path('documents/'), $picture);
+                    $documents = Document::create([
+                        "claimID" => $claimID,
+                        "name" => $picture,
+                        "mime" => $extension,
+                        "size" => $size,
+                        "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
+                        "url" => $path,
+                        "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
+                    ]);
+                    if($documents->id > 0)
+                    {
+                        $response = array(
+                            "STATUS_CODE" => Config::SUCCESS_CODE,
+                            "STATUS_MESSAGE" => "Congratulations! Your documents has been uploaded successfully"
+                        );
+                    }else
+                    {
+                        $response = array(
+                            "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                            "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                        );
+                    }
+                }else
+                {
+                    $response = array(
+                        "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                        "STATUS_MESSAGE" => "Invalid data, Confirm your data and try again later"
+                    );
+                }
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "Documents not uploaded an error. An error occurred ".$e->getMessage());
+        }
+        return json_encode($response);
     }
     public function submitAssessment(Request $request)
     {
@@ -71,6 +173,31 @@ class AssessorController extends Controller
             $isDraft = $request->isDraft;
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
+            $drafted = $request->drafted;
+            if($drafted == 1)
+            {
+                $affectedRows=AssessmentItem::where(["assessmentID"=>$assessmentID])->delete();
+                if($affectedRows>0)
+                {
+                    $affectedJobDetailRows =JobDetail::where(["assessmentID"=>$assessmentID])->delete();
+                    if($affectedJobDetailRows > 0)
+                    {
+                        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+                        if(count($documents) > 0) {
+                            $affectedDocumentRows = Document::where(["assessmentID" => $assessmentID])->delete();
+                            if ($affectedDocumentRows > 0) {
+                                foreach ($documents as $document) {
+                                    $image_path = "documents/".$document->name;  // Value is not URL but directory file path
+                                    if (File::exists($image_path)) {
+                                        File::delete($image_path);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
             //Loop for getting files with index like image0, image1
             for ($x = 0; $x < $totalImages; $x++) {
 
@@ -169,8 +296,10 @@ class AssessorController extends Controller
                         "pav" => $pav,
                         "totalCost" => $total,
                         "totalLoss" => $totalLoss,
-                        "assessmentTypeID" =>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'],
-                        "assessmentStatusID" => $assessmentStatusID
+                        "assessmentTypeID" =>$assessmentType,
+                        "assessmentStatusID" => $assessmentStatusID,
+                        "assessedAt" => $curDate,
+                        "dateModified" => $curDate
                     ]);
                     $detail = JobDetail::where('assessmentID', $assessmentID)->exists();
                     $jobs = array();
@@ -290,14 +419,40 @@ class AssessorController extends Controller
                         }
                         foreach ($jobs as $job)
                         {
-                            JobDetail::create($job);
+                            $jobDetail = JobDetail::create($job);
+                            if($isDraft == 1 & $jobDetail->id > 0)
+                            {
+                                $response = array(
+                                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                                    "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
+                                );
+                            }else if($isDraft == 0 & $jobDetail->id > 0)
+                            {
+                                $response = array(
+                                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                                    "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
+                                );
+                            }else
+                            {
+                                $response = array(
+                                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                                );
+                                $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                                    "An assessment was not created. An error occured");
+                            }
                         }
                     }
                 }
         }catch (\Exception $e)
         {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to create an assessments. Error message " . $e->getMessage());
         }
+        return json_encode($response);
     }
 }

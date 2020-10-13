@@ -15,6 +15,7 @@ use App\Helper\InfobipEmailHelper;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
 class HeadAssessorController extends Controller
@@ -36,8 +37,9 @@ class HeadAssessorController extends Controller
             if (isset($request->claimID) && isset($request->assessor)) {
                 $assessmentID = Assessment::insertGetId([
                     "claimID" => $request->claimID,
-                    "userID" => $request->assessor,
+                    "assessedBy" => $request->assessor,
                     "assessmentStatusID" => Config::$STATUSES["ASSESSMENT"]["ASSIGNED"]["id"],
+                    "createdBy" => Auth::id(),
                     "dateCreated" => $curlDate
                 ]);
                 if ($assessmentID > 0) {

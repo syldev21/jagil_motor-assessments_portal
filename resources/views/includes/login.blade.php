@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="input-field col s12 m12 l12  login-text">
                     <input type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}/>
-                    <label for="remember-me">{{ __('Remember Me') }}</label>
+                    <label for="remember">{{ __('Remember Me') }}</label>
                 </div>
             </div>
             <div class="row">
