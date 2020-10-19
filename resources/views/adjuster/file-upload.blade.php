@@ -18,7 +18,7 @@
                             <div class="row">
                                 <div class="col s12">
                                     <form action="#" enctype="multipart/form-data"
-                                          data-allowed-file-extensions='["jpeg", "jpg", "png"]' id="assessmentForm">
+                                          data-allowed-file-extensions='["jpeg", "jpg", "png","pdf"]' id="assessmentForm">
                                         <div class="row">
                                             <div class="input-field col m12 s12">
                                                 <div class="input-images" id="images"></div>
@@ -27,7 +27,7 @@
                                         <div class="row">
                                             <div class="input-field col m9 s12">
                                                 <small>Only <span
-                                                        class="red-text text-darken-3">JPEG,JPG & PNG</span> files
+                                                        class="red-text text-darken-3">JPEG,JPG,PNG & PDF</span> files
                                                     are allowed</small>
                                             </div>
                                             <div class="input-field col m3 s12">

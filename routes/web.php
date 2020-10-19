@@ -78,6 +78,7 @@ $router->group(['prefix' => 'head-assessor'], function($router)
 {
     //Motor  assessment Assessor Module
     $router->get('/claims','HeadAssessorController@fetchClaims');
+    $router->post('/claims','HeadAssessorController@claims');
     $router->post('/assignAssessor','HeadAssessorController@assignAssessor');
     $router->post('/reAssignAssessor','HeadAssessorController@reAssignAssessor');
     $router->get('/assessments','HeadAssessorController@fetchAssessments');

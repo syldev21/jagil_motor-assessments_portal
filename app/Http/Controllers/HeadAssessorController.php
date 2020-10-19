@@ -191,6 +191,27 @@ class HeadAssessorController extends Controller
             );
         }
     }
+    public function claims(Request $request)
+    {
+        try {
+            $claimStatusID = $request->claimStatusID;
+
+            $claims = Claim::with("assessment")
+                ->where("claimStatusID", "=",$claimStatusID)
+                ->where("dateCreated", '>', Carbon::now()->subDays(3))
+                ->orderBy('dateCreated', 'DESC')->with('assessment')->get();
+            $assessors = User::role('Assessor')->get();
+            return view('head-assessor.claims', ['claims' => $claims, 'assessors' => $assessors,"claimStatusID" => $claimStatusID]);
+        }catch (\Exception $e)
+        {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to fetch claims " . $e->getMessage());
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+        }
+    }
 
     public function fetchAssessments(Request $request)
     {

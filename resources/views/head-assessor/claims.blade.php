@@ -10,7 +10,7 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <h4 class="card-title float-left">Claims</h4>
+                                <h4 class="card-title float-left">{{\App\Conf\Config::$DISPLAY_STATUSES["CLAIM"][$claimStatusID]}} Claims</h4>
                             </div>
                             <div class="row">
                                 <div class="row">

@@ -522,6 +522,33 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','.head-assessor-claims',function (e){
+        e.preventDefault();
+        var claimStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'claimStatusID' : claimStatusID
+            },
+
+            url: '/head-assessor/claims',
+
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
     $("body").on('click','#assessorAssessments',function (e){
         e.preventDefault();
         $.ajaxSetup({
@@ -748,6 +775,32 @@ $(document).ready(function () {
                 'assessmentStatusID' : assessmentStatusID
             },
             url: '/assessor/assessments',
+
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
+    $(".head-assessor-fetch-assessments").on('click',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
+            url: '/head-assessor/claims',
 
             success: function (data) {
                 $("#main").html(data);
