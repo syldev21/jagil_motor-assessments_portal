@@ -29,19 +29,19 @@ class AssessorController extends Controller
         $this->log = new CustomLogger();
         $this->functions = new GeneralFunctions();
     }
-    public function fetchAssessments(Request $request)
+
+    public function assessments(Request $request)
     {
         $id = Auth::id();
+        $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::orderBy('dateCreated', 'DESC')->with('claim')->get();
-            return view('assessor.assessments',["assessments" => $assessments]);
-        }catch (\Exception $e)
-        {
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
+        } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
-
     public function fillAssessmentReport(Request $request,$assessmentID)
     {
         $draftAssessment = Assessment::where(['id' => $assessmentID,'assessmentStatusID'=>Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']])->with('claim')->first();
@@ -182,8 +182,6 @@ class AssessorController extends Controller
                     echo $filename;
                 }
             }
-            echo $totalImages;
-            exit();
             if($drafted == 1)
             {
                 $affectedRows=AssessmentItem::where(["assessmentID"=>$assessmentID])->delete();

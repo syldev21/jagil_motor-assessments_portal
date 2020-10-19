@@ -729,6 +729,32 @@ $(document).ready(function () {
 
         });
     });
+    $(".assessor-fetch-assessments").on('click',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
+            url: '/assessor/assessments',
+
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
     $("#fetchDraftAssessments").on('click',function (e){
         e.preventDefault();
         $.ajaxSetup({

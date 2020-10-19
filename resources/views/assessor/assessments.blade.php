@@ -12,7 +12,7 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <h4 class="card-title float-left">Claim Assessments</h4>
+                                <h4 class="card-title float-left">{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}} Assessments</h4>
                                 {{--                                    <a href="{{ url('adjuster/claim-form') }}" class="float-right btn cyan waves-effect waves-effect waves-light"><i class="material-icons left">add_circle_outline</i> Add Claim</a>--}}
                             </div>
                             <div class="row">

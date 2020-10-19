@@ -63,7 +63,8 @@ $router->group(['prefix' => 'adjuster'], function($router)
 $router->group(['prefix' => 'assessor'], function($router)
 {
     //Motor  assessment User Module
-    $router->get('/assessments','AssessorController@fetchAssessments');
+//    $router->get('/assessments','AssessorController@fetchAssessments');
+    $router->post('/assessments','AssessorController@assessments');
     $router->get('/fillAssessmentReport/{id}','AssessorController@fillAssessmentReport');
     $router->get('/fillReInspectionReport/{id}','AssessorController@fillReInspectionReport');
     $router->post('/submitAssessment','AssessorController@submitAssessment');
