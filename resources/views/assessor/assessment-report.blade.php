@@ -325,7 +325,7 @@
                                                 <div class="row">
                                                     <div class="col m4">
                                                         <label>
-                                                            <input name="assessmentType" type="radio"
+                                                            <input name="assessmentType" type="radio" onclick="findTotal()"
                                                                    class="with-gap assessmentType" value="1"
                                                                    @if(isset($draftAssessment->assessmentTypeID))
                                                                         @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["AUTHORITY_TO_GARAGE"]) checked @endif
@@ -338,7 +338,7 @@
                                                     </div>
                                                     <div class="col m4">
                                                         <label>
-                                                            <input name="assessmentType" type="radio"
+                                                            <input name="assessmentType" type="radio" onclick="findTotal()"
                                                                    class="with-gap assessmentType" value="2"
                                                                    @if(isset($draftAssessment->assessmentTypeID))
                                                                         @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["CASH_IN_LIEU"]) checked @endif
@@ -349,7 +349,7 @@
                                                     </div>
                                                     <div class="col m4">
                                                         <label>
-                                                            <input name="assessmentType" type="radio"
+                                                            <input name="assessmentType" type="radio" onclick="findTotal()"
                                                                    class="with-gap assessmentType" value="3"
                                                                    @if(isset($draftAssessment->assessmentTypeID))
                                                                         @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"]) checked @endif
@@ -441,8 +441,8 @@
                                                                     <div class="col m9">
                                                                         <h6>Total</h6>
                                                                         <div class="input-field">
-                                                                            <input placeholder="" id="sumTotal"
-                                                                                   type="text" name="sumTotal"
+                                                                            <input placeholder="" id="sumTotals"
+                                                                                   type="text" name="sumTotals"
                                                                                    value="{{isset($draftAssessment->totalCost) ? $draftAssessment->totalCost : null}}" class="border-fields"/>
                                                                            </div>
                                                                     </div>
@@ -682,7 +682,7 @@
             result = result * tax;
 
         }
-
+        document.getElementById('sumTotals').value = Math.round(result);
         document.getElementById('sumTotal').value = Math.round(result);
 
     }
