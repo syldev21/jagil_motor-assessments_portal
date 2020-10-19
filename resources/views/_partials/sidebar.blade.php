@@ -250,11 +250,11 @@
                 <span class="menu-title" data-i18n="logout">Logout</span>
             </a>
         </li>
-        <li class="bold ">
-            <a href="#" id="assessorAssessments">Assessor</a>
-            <a href="#" id="headAssessorClaims">Head Assessor</a>
-            <a href="#" id="assessmentManagerAssessments">Assessment Manager</a>
-        </li>
+{{--        <li class="bold ">--}}
+{{--            <a href="#" id="assessorAssessments">Assessor</a>--}}
+{{--            <a href="#" id="headAssessorClaims">Head Assessor</a>--}}
+{{--            <a href="#" id="assessmentManagerAssessments">Assessment Manager</a>--}}
+{{--        </li>--}}
     </ul>
     <div class="navigation-background"></div>
     <a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only"
