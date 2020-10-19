@@ -21,23 +21,28 @@ class RedirectIfAuthenticated
 
             if (Auth::user()->hasRole('Manager')){
 
-                return redirect('/claims-list');
+                return redirect('/home');
             }
             if (Auth::user()->hasRole('Assessor')) {
 
-                return redirect('/assessor/assessments');
+                return redirect('/home');
 
             }
 
             if (Auth::user()->hasRole('Head Assessor')) {
 
-                return redirect('/head-assessor/claims');
+                return redirect('/home');
 
             }
 
             if (Auth::user()->hasRole('Adjuster')) {
 
-                return redirect('/adjuster/uploadClaims');
+                return redirect('/home');
+
+            }
+            if (Auth::user()->hasRole('Assessment Manager')) {
+
+                return redirect('/home');
 
             }
 
