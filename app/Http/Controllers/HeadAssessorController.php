@@ -84,8 +84,8 @@ class HeadAssessorController extends Controller
                     Jubilee Insurance
                 ",
                         ];
-//                        InfobipEmailHelper::sendEmail($email, $email_add);
-//                        SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
+                        InfobipEmailHelper::sendEmail($email, $email_add);
+                        SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
                         Notification::send($assessor, new AssignClaim($claim));
                     }
                     $response = array(
@@ -150,8 +150,8 @@ class HeadAssessorController extends Controller
                     Jubilee Insurance
                 ",
                     ];
-//                    InfobipEmailHelper::sendEmail($email, $email_add);
-//                    SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
+                    InfobipEmailHelper::sendEmail($email, $email_add);
+                    SMSHelper::sendSMS('Hello '. $assessor->firstName .', You have been assigned to assess a claim. Vehicle registration: ' .$claim->vehicleRegNo. ', Location: ' .$location. '', $assessor->MSISDN);
                     Notification::send($assessor, new AssignClaim($claim));
                 }
                 $response = array(

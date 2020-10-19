@@ -441,8 +441,8 @@ class AdjusterController extends Controller
                             Jubilee Insurance.
                         ",
                             ];
-//                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-//                            SMSHelper::sendSMS('Hello '. $headAssessor->firstName .', A new claim : '.$claimNo.' has been created. You are required to assign an assessor',$headAssessor->MSISDN);
+                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                            SMSHelper::sendSMS('Hello '. $headAssessor->firstName .', A new claim : '.$claimNo.' has been created. You are required to assign an assessor',$headAssessor->MSISDN);
                             $claim = Claim::where(['id' => $claimID])->first();
                             Notification::send($headAssessors, new NewClaimNotification($claim));
                         }
