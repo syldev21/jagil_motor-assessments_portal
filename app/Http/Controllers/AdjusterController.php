@@ -27,6 +27,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
 
 class AdjusterController extends Controller
@@ -548,87 +549,82 @@ class AdjusterController extends Controller
     public function updateClaim(Request $request)
     {
         try {
-            $claimID= $request->claimID;
+            $claimID = $request->claimID;
             $totalImages = $request->totalImages;
             $claim = Claim::where(['id' => $claimID])->first();
-            if($claim->id > 0)
-            {
+            if ($claim->id > 0) {
                 $oldexcess = $claim->excess;
                 $oldsumInsured = $claim->sumInsured;
                 $oldLocation = $claim->location;
                 $claimNo = $claim->claimNo;
                 $policyNo = $claim->policyNo;
                 $createdBy = Auth::id();
-                $claimTrackerID =ClaimTracker::insertGetId([
-                    'claimID' => $claimID,
-                    'claimNo' => $claimNo,
-                    'policyNo' => $policyNo,
-                    'excess' => $oldexcess,
-                    'sumInsured' => $oldsumInsured,
-                    'location' => $oldLocation,
-                    'createdBy' => $createdBy,
-                    'dateCreated' => $this->functions->curlDate()
-                ]);
-                if($claimTrackerID > 0)
-                {
-                    $claimResult=Claim::where(['id' => $claimID])->update([
-                        "sumInsured" => isset($request->sumInsured) ? $request->sumInsured : $oldsumInsured,
-                        "excess" => isset($request->excess) ? $request->excess : $oldexcess,
-                        "location" => isset($request->location) ? $request->location : $oldLocation,
-                        "changed" => Config::ACTIVE
+                if ($oldexcess != $request->excess || $oldsumInsured != $request->sumInsured) {
+                    $claimTrackerID = ClaimTracker::insertGetId([
+                        'claimID' => $claimID,
+                        'claimNo' => $claimNo,
+                        'policyNo' => $policyNo,
+                        'excess' => $oldexcess,
+                        'sumInsured' => $oldsumInsured,
+                        'location' => $oldLocation,
+                        'createdBy' => $createdBy,
+                        'dateCreated' => $this->functions->curlDate()
                     ]);
-                    if($claimResult >= 0)
-                    {
-//                        $documents = Document::where(["claimID" => $claim->id])->get();
-//                        if(count($documents) > 0) {
-//                            $affectedDocumentRows = Document::where(["claimID" => $claim->id])->delete();
-//                            if ($affectedDocumentRows > 0) {
-//                                foreach ($documents as $document) {
-//                                    $image_path = "documents/".$document->name;  // Value is not URL but directory file path
-//                                    if (File::exists($image_path)) {
-//                                        File::delete($image_path);
-//                                    }
-//                                }
-//                            }
-//                        }
-                        for ($x = 0; $x < $totalImages; $x++) {
-                            if ($request->hasFile('images' . $x)) {
-                                $file = $request->file('images' . $x);
-                                $filename = $file->getClientOriginalName();
-                                $extension = $file->getClientOriginalExtension();
-                                $path = $file->getRealPath();
-                                $size = $file->getSize();
-                                $picture = date('His') . '-' . $filename;
-                                //Save files in below folder path, that will make in public folder
-                                $file->move(public_path('documents/'), $picture);
-                                $documents = Document::create([
-                                    "claimID" => $claimID,
-                                    "name" => $picture,
-                                    "mime" => $extension,
-                                    "size" => $size,
-                                    "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
-                                    "url" => $path,
-                                    "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"],
-                                    "createdBy" => Auth::id(),
-                                    "dateCreated" => $this->functions->curlDate()
-                                ]);
+                    if ($claimTrackerID > 0) {
+                        $claimResult = Claim::where(['id' => $claimID])->update([
+                            "sumInsured" => isset($request->sumInsured) ? $request->sumInsured : $oldsumInsured,
+                            "excess" => isset($request->excess) ? $request->excess : $oldexcess,
+                            "location" => isset($request->location) ? $request->location : $oldLocation,
+                            "changed" => Config::ACTIVE
+                        ]);
+                    }
+                }
+                $documents = Document::where(["claimID" => $claim->id])->get();
+                if (count($documents) > 0) {
+                    $affectedDocumentRows = Document::where(["claimID" => $claim->id])->delete();
+                    if ($affectedDocumentRows > 0) {
+                        foreach ($documents as $document) {
+                            $image_path = "documents/" . $document->name;  // Value is not URL but directory file path
+                            if (File::exists($image_path)) {
+                                File::delete($image_path);
                             }
                         }
+                    }
+                }
+                for ($x = 0; $x < $totalImages; $x++) {
+                    if ($request->hasFile('images' . $x)) {
+                        $file = $request->file('images' . $x);
+                        $filename = $file->getClientOriginalName();
+                        $extension = $file->getClientOriginalExtension();
+                        $path = $file->getRealPath();
+                        $size = $file->getSize();
+                        $picture = date('His') . '-' . $filename;
+                        //Save files in below folder path, that will make in public folder
+                        $file->move(public_path('documents/'), $picture);
+                        $documents = Document::create([
+                            "claimID" => $claimID,
+                            "name" => $picture,
+                            "mime" => $extension,
+                            "size" => $size,
+                            "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
+                            "url" => $path,
+                            "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"],
+                            "createdBy" => Auth::id(),
+                            "dateCreated" => $this->functions->curlDate()
+                        ]);
                     }
                 }
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
                     "STATUS_MESSAGE" => "Congratulation!, You have successfully Updated Claim"
                 );
-            }else
-            {
+            } else {
                 $response = array(
                     "STATUS_CODE" => Config::NO_RECORDS_FOUND,
                     "STATUS_MESSAGE" => "Claim for this request does not exist"
                 );
             }
-        }catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $response = array(
                 "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
                 "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE

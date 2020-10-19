@@ -121,11 +121,12 @@ class HeadAssessorController extends Controller
         try {
             if (isset($request->claimID) && isset($request->assessor)) {
                 Assessment::where(["claimID" => $request->claimID, "assessmentStatusID" => Config::$STATUSES["ASSESSMENT"]["ASSIGNED"]["id"]])->update([
-                    "userID" => $request->assessor,
+                    "assessedBy" => $request->assessor,
+                    "createdBy" => Auth::id(),
                     "dateModified" => $curlDate
                 ]);
-                $assessor = User::where(['userID' => $request->assessor])->first();
-                $claim = Claim::where(['claimID' => $request->claimID])->first();
+                $assessor = User::where(['id' => $request->assessor])->first();
+                $claim = Claim::where(['id' => $request->claimID])->first();
                 $location = isset($claim->location) ? $claim->location : '';
                 if ($assessor->id > 0) {
                     $email_add = $assessor->email;
@@ -177,7 +178,7 @@ class HeadAssessorController extends Controller
     public function fetchClaims(Request $request)
     {
         try {
-            $claims = Claim::where("dateCreated", '>', Carbon::now()->subDays(3))->orderBy('dateCreated', 'DESC')->with('assessment')->get();
+            $claims = Claim::with("assessment")->where("dateCreated", '>', Carbon::now()->subDays(3))->orderBy('dateCreated', 'DESC')->with('assessment')->get();
             $assessors = User::role('Assessor')->get();
             return view('head-assessor.claims', ['claims' => $claims, 'assessors' => $assessors]);
         }catch (\Exception $e)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Conf\Config;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -52,11 +53,26 @@ class LoginController extends Controller
         {
             return redirect('/home');
         }
-        else if($user->hasRole('Assessor'))
+        else if($user->hasRole(Config::$ROLES['ASSESSOR']))
         {
             return redirect('/home');
         }
-        else if($user->hasRole('Head Assessor'))
+        else if($user->hasRole(Config::$ROLES['ADJUSTER']))
+        {
+            return redirect('/home');
+        }else if($user->hasRole(Config::$ROLES['HEAD-ASSESSOR']))
+        {
+            return redirect('/home');
+        }
+        else if($user->hasRole(Config::$ROLES['ASSISTANT-HEAD']))
+        {
+            return redirect('/home');
+        }
+        else if($user->hasRole(Config::$ROLES['ASSESSMENT-MANAGER']))
+        {
+            return redirect('/home');
+        }
+        else if($user->hasRole(Config::$ROLES['RE-INSPECTION-OFFICER']))
         {
             return redirect('/home');
         }

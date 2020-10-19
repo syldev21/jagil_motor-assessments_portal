@@ -23,8 +23,6 @@ class RedirectIfAuthenticated
 
                 return redirect('/claims-list');
             }
-
-
             if (Auth::user()->hasRole('Assessor')) {
 
                 return redirect('/assessor/assessments');

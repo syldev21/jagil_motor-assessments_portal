@@ -26,25 +26,86 @@ class AdminController extends Controller
         $roles = Role::all();
         return view('admin.index',["roles" => $roles,"users" => $users]);
     }
+
     public function assignRole(Request $request)
     {
-        if(isset($request->roleID) && isset($request->userID))
-        {
-            $user =  User::find($request->userID);
-            $user->assignRole([$request->roleID]);
+        try {
+            if(isset($request->roles))
+            {
+                $user = User::find($request->userID);
+
+                $ids = Role::whereIn('name', $request->roles)->pluck('id')->toArray();
+
+                $user->syncRoles($ids);
+            }else
+            {
+                $user = User::find($request->userID);
+
+                $ids=$user->roles->pluck('id')->toArray();
+                $user->roles()->detach($ids);
+            }
+
             $response = array(
                 "STATUS_CODE" => Config::SUCCESS_CODE,
                 "STATUS_MESSAGE" => "Role assigned successfully"
             );
-        }else
-        {
+        } catch (\Exception $e) {
             $response = array(
-                "STATUS_CODE" => Config::INVALID_PAYLOAD,
-                "STATUS_MESSAGE" => "Invalid payload"
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
             );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to assign a claim. Error message " . $e->getMessage());
         }
 
         return json_encode($response);
 
+    }
+    public function listUsers(Request $request)
+    {
+        $users = User::with('roles')->get();
+        return view("admin.users",['users' =>$users]);
+    }
+    public function registerUserForm(Request $request)
+    {
+        $roles = Role::all();
+        return view('admin.add-user',["roles" =>$roles]);
+    }
+    public function registerUser(Request $request)
+    {
+        try{
+            if(isset($request->firstName) && isset($request->middleName) && isset($request->lastName)
+            && isset($request->email) && isset($request->userType) && isset($request->MSISDN))
+            {
+                User::create([
+                    "firstName"=>$request->firstName,
+                    "middleName" => $request->middleName,
+                    "lastName" => $request->lastName,
+                    "email" => $request->email,
+                    "userType" => $request->userType,
+                    "MSISDN" => $request->MSISDN
+                ]);
+                $response = array(
+                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                    "STATUS_MESSAGE" => "Congratulations User created successfully"
+                );
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Invalid registration details"
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to register user. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
     }
 }

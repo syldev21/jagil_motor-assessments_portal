@@ -95,7 +95,10 @@ $router->group(['prefix' => 'assessment-manager'], function($router)
 $router->group(['prefix' => 'admin'], function($router)
 {
     //Motor  assessment Assessor Module
+    $router->post('/listUsers','AdminController@listUsers');
     $router->get('/assignRoleForm','AdminController@assignRoleForm');
+    $router->get('/registerUserForm','AdminController@registerUserForm');
     $router->post('/assignRole','AdminController@assignRole');
+    $router->post('/registerUser','AdminController@registerUser');
 });
 

@@ -16,6 +16,7 @@ use App\Remarks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class AssessorController extends Controller
 {
@@ -174,6 +175,15 @@ class AssessorController extends Controller
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
+            for ($x = 0; $x < $totalImages; $x++) {
+                if ($request->hasFile('images' . $x)) {
+                    $file = $request->file('images' . $x);
+                    $filename = $file->getClientOriginalName();
+                    echo $filename;
+                }
+            }
+            echo $totalImages;
+            exit();
             if($drafted == 1)
             {
                 $affectedRows=AssessmentItem::where(["assessmentID"=>$assessmentID])->delete();

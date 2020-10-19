@@ -484,6 +484,11 @@
                                                     </label>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col m6">
+                                            </div>
                                             <div class="step-actions">
                                                 <input type="hidden" name="counter" id="counter">
                                                 <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">

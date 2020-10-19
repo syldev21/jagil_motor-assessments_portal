@@ -100,8 +100,13 @@
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             <li>
                                                                 <a href="#" id="fillAssessmentReport" data-id="{{$assessment['id']}}"><i
-                                                                        class="material-icons">insert_drive_file</i>Fill
-                                                                    Report</a></li>
+                                                                        class="material-icons">insert_drive_file</i>
+                                                                    @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
+                                                                        Submit Assessment
+                                                                    @else
+                                                                        Fill Report
+                                                                    @endif
+                                                                </a></li>
                                                             <li>
                                                                 <a href="#" id="fillReInspectionReport" data-id="{{$assessment['id']}}"><i
                                                                         class="material-icons">insert_drive_file</i>Re-Inspection Report</a></li>

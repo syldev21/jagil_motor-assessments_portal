@@ -100,7 +100,9 @@ class Config
         "ADJUSTER" => "Adjuster",
         "ADMIN" => "Admin",
         "HEAD-ASSESSOR" => "Head Assessor",
-        "ASSESSMENT-MANAGER" => "Assessment Center Manager"
+        "ASSESSMENT-MANAGER" => "Assessment Manager",
+        "ASSISTANT-HEAD" => "Assistant Head",
+        "RE-INSPECTION-OFFICER" => "Re-inspection Officer",
     );
 
     const START_YEAR = 1960;
@@ -216,4 +218,15 @@ class Config
     const ASSESSMENT_MANAGER = "Assessment Center Manager";
 
     const JUBILEE_NO_REPLY_EMAIL = "noreply@jubileeinsurance.com";
+
+    static $USER_TYPES = array(
+        array(
+            "ID" =>1,
+            "NAME" => "Internal"
+        ),
+        array(
+            "ID" =>2,
+            "NAME" => "External"
+        )
+    );
 }

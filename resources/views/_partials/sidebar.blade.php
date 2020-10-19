@@ -112,11 +112,11 @@
                 <ul class="collapsible collapsible-sub" data-collapsible="accordion">
 
                     <li class="">
-                        <a href="app-invoice-list.html"
-                           class=" "
+                        <a href="#"
+                           class="listUsers"
                         >
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span data-i18n="Invoice List">Rechnungsliste</span>
+                            <i class="material-icons">person</i>
+                            <span data-i18n="Invoice List">Users</span>
                         </a>
                     </li>
                 </ul>
