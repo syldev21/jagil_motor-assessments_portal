@@ -213,11 +213,12 @@ class HeadAssessorController extends Controller
         }
     }
 
-    public function fetchAssessments(Request $request)
+    public function assessments(Request $request)
     {
         try {
-            $assessments = Assessment::orderBy('dateCreated', 'DESC')->with('claim')->get();
-            return view('head-assessor.assessments',["assessments" => $assessments]);
+            $assessmentStatusID = $request->assessmentStatusID;
+            $assessments = Assessment::where(["assessmentStatusID" =>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('claim')->get();
+            return view('head-assessor.assessments',["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         }catch (\Exception $e)
         {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .

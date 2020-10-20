@@ -782,7 +782,7 @@ $(document).ready(function () {
 
         });
     });
-    $(".head-assessor-fetch-assessments").on('click',function (e){
+    $(".head-assessor-assessments").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
         $.ajaxSetup({
@@ -800,7 +800,7 @@ $(document).ready(function () {
             data : {
                 'assessmentStatusID' : assessmentStatusID
             },
-            url: '/head-assessor/claims',
+            url: '/head-assessor/assessments',
 
             success: function (data) {
                 $("#main").html(data);

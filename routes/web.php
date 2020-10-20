@@ -81,7 +81,7 @@ $router->group(['prefix' => 'head-assessor'], function($router)
     $router->post('/claims','HeadAssessorController@claims');
     $router->post('/assignAssessor','HeadAssessorController@assignAssessor');
     $router->post('/reAssignAssessor','HeadAssessorController@reAssignAssessor');
-    $router->get('/assessments','HeadAssessorController@fetchAssessments');
+    $router->get('/assessments','HeadAssessorController@assessments');
 });
 
 // Assessment Manager
