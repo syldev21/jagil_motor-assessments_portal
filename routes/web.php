@@ -76,18 +76,19 @@ $router->group(['prefix' => 'assessor'], function($router)
 // Head Assessor Routes
 $router->group(['prefix' => 'head-assessor'], function($router)
 {
-    //Motor  assessment Assessor Module
+    //Motor  Head Assessor Module
     $router->get('/claims','HeadAssessorController@fetchClaims');
     $router->post('/claims','HeadAssessorController@claims');
     $router->post('/assignAssessor','HeadAssessorController@assignAssessor');
     $router->post('/reAssignAssessor','HeadAssessorController@reAssignAssessor');
     $router->post('/assessments','HeadAssessorController@assessments');
+    $router->post('/assessment-report','HeadAssessorController@assessmentReport');
 });
 
 // Assessment Manager
 $router->group(['prefix' => 'assessment-manager'], function($router)
 {
-    //Motor  assessment Assessor Module
+    //Motor  assessment Manager Module
     $router->get('/assessments','AssessmentManagerController@assessments');
     $router->post('/assessment-report','AssessmentManagerController@assessmentReport');
     $router->post('/review-assessment','ApproverController@reviewAssessment');

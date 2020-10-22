@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Assessment;
+use App\AssessmentItem;
 use App\Claim;
+use App\CustomerMaster;
+use App\Document;
 use App\Helper\SMSHelper;
+use App\JobDetail;
 use App\Notifications\AssignClaim;
 use App\StatusTracker;
 use App\Conf\Config;
@@ -224,5 +228,17 @@ class HeadAssessorController extends Controller
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
+    }
+
+    public function assessmentReport(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+        return view("head-assessor.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents]);
     }
 }

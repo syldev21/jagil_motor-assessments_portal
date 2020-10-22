@@ -907,6 +907,32 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#head-assessor-assessment-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/head-assessor/assessment-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
     $("body").on('click','#assessmentDetails',function (e){
         e.preventDefault();
         var id = $(this).data("id");
