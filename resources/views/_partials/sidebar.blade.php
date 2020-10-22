@@ -219,7 +219,7 @@
             </div>
         </li>
         @endhasrole
-        @hasrole('Admin')
+        @hasanyrole('Admin|Head Assessor')
         <li class="bold ">
             <a class="collapsible-header"
                href="javascript:void(0) "
@@ -241,7 +241,7 @@
                 </ul>
             </div>
         </li>
-        @endhasrole
+        @endhasanyrole
         <li class="bold ">
             <a class="waves-effect waves-light "
                href="{{ route('user.logout') }}"

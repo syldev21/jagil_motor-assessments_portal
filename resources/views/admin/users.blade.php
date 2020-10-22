@@ -13,7 +13,9 @@
                         <div class="card-content">
                             <div class="row">
                                 <h4 class="card-title float-left">User Management</h4>
+                                @hasrole('Admin')
                                 <a href="#" id="registerUserForm" class="float-right btn cyan darken-3 waves-effect waves-effect waves-light"><i class="material-icons left">add_circle_outline</i> Add User</a>
+                                @endhasrole
                                 <br/>
                             </div>
                             <div class="divider"></div>
