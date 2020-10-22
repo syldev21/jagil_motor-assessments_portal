@@ -175,13 +175,6 @@ class AssessorController extends Controller
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
-            for ($x = 0; $x < $totalImages; $x++) {
-                if ($request->hasFile('images' . $x)) {
-                    $file = $request->file('images' . $x);
-                    $filename = $file->getClientOriginalName();
-                    echo $filename;
-                }
-            }
             if($drafted == 1)
             {
                 $affectedRows=AssessmentItem::where(["assessmentID"=>$assessmentID])->delete();

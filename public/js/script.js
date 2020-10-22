@@ -1439,22 +1439,22 @@ $(document).ready(function () {
                     data: image_upload,
                     url: '/assessor/submitAssessment',
                     success: function (data) {
-                        // var result = $.parseJSON(data);
-                        // if (result.STATUS_CODE == SUCCESS_CODE) {
-                        //     Swal.fire({
-                        //         icon: 'success',
-                        //         title: result.STATUS_MESSAGE,
-                        //         showConfirmButton: false,
-                        //         timer: 3000
-                        //     })
-                        // } else {
-                        //     Swal.fire({
-                        //         icon: 'error',
-                        //         title: result.STATUS_MESSAGE,
-                        //         showConfirmButton: false,
-                        //         timer: 3000
-                        //     })
-                        // }
+                        var result = $.parseJSON(data);
+                        if (result.STATUS_CODE == SUCCESS_CODE) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        }
                     }
 
                 });
