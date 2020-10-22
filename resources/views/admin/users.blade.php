@@ -26,9 +26,13 @@
                                         <tr>
                                             <th>S/N</th>
                                             <th>Email</th>
+                                            @hasrole('Admin')
                                             <th>Admin</th>
+                                            @endhasrole
                                             <th>Assessor</th>
+                                            @hasrole('Admin')
                                             <th>Adjuster</th>
+                                            @endhasrole
                                             <th>Head Assessor</th>
                                             <th>Assistant Head</th>
                                             <th>Assessment Manager</th>
@@ -49,24 +53,28 @@
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$user->email}}</td>
+                                                @hasrole('Admin')
                                                 <td>
                                                         <label>
                                                             <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['ADMIN'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['ADMIN']}}"/>
                                                             <span></span>
                                                         </label>
                                                 </td>
+                                                @endhasrole
                                                 <td>
                                                     <label>
                                                         <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['ASSESSOR'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['ASSESSOR']}}"/>
                                                         <span></span>
                                                     </label>
                                                 </td>
+                                                @hasrole('Admin')
                                                 <td>
                                                     <label>
                                                         <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['ADJUSTER'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['ADJUSTER']}}"/>
                                                         <span></span>
                                                     </label>
                                                 </td>
+                                                @endhasrole
                                                 <td>
                                                     <label>
                                                         <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['HEAD-ASSESSOR'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['HEAD-ASSESSOR']}}"/>

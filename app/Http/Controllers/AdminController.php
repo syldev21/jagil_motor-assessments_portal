@@ -63,7 +63,14 @@ class AdminController extends Controller
     }
     public function listUsers(Request $request)
     {
-        $users = User::with('roles')->get();
+        if(auth()->user()->hasRole(Config::$ROLES['HEAD-ASSESSOR']))
+        {
+            $users = User::role([Config::$ROLES['ASSESSOR'],Config::$ROLES['HEAD-ASSESSOR'],Config::$ROLES['ASSISTANT-HEAD'],Config::$ROLES['ASSESSMENT-MANAGER']])->get();
+
+        }else
+        {
+            $users = User::with('roles')->get();
+        }
         return view("admin.users",['users' =>$users]);
     }
     public function registerUserForm(Request $request)
