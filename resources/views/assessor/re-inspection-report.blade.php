@@ -61,7 +61,7 @@
                                 <li class="step">
                                     <div class="step-title waves-effect waves-dark">Assembly</div>
                                     <div class="step-content">
-                                        <table class="centered responsive-table">
+                                        <table class="centered responsive-table" id="reinspectionTable">
                                             <thead>
                                             <tr>
                                                 <th>S/N</th>
@@ -72,7 +72,8 @@
                                                 <th>Total</th>
                                                 <th>Remarks</th>
                                                 <th>Done</th>
-                                                <th>Repair/Replace</th>
+                                                <th>Repair</th>
+                                                <th>Replace</th>
                                                 <th>CIL</th>
                                             </tr>
                                             </thead>
@@ -120,6 +121,12 @@
                                                     </td>
                                                     <td>
                                                         <label>
+                                                            <input type="checkbox" name="replace[]" id="replace_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["REPLACE"]["ID"]) checked @endif/>
+                                                            <span></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
                                                             <input type="checkbox" name="cil[]" id="cil_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
@@ -148,16 +155,6 @@
                                                 <small>Only <span
                                                         class="red-text text-darken-3">JPEG,JPG & PNG</span> files
                                                     are allowed</small>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col m6">
-                                                <div class="input-field">
-                                                    <label>
-                                                        <input type="checkbox" id="isDraft" value="0"/>
-                                                        <span>Save as Draft</span>
-                                                    </label>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="step-actions">

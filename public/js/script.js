@@ -1455,6 +1455,11 @@ $(document).ready(function () {
         var i;
         // Array
         var partsData = [];
+        var additionalLabour = $("#additionalLabour").val();
+        var lessLabour = $("#lessLabour").val();
+        var table = $("#reinspectionTable");
+        var repaired = table.find( "input[name='repaired[]']" ).val();
+        alert(repaired);
         for(i =0 ; i<=counter; i++)
         {
             var vehiclePart = $("#vehiclePart_"+i);
