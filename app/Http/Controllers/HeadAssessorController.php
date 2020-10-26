@@ -10,6 +10,7 @@ use App\Document;
 use App\Helper\SMSHelper;
 use App\JobDetail;
 use App\Notifications\AssignClaim;
+use App\Notifications\ClaimApproved;
 use App\StatusTracker;
 use App\Conf\Config;
 use App\Garage;
@@ -221,7 +222,7 @@ class HeadAssessorController extends Controller
     {
         try {
             $assessmentStatusID = $request->assessmentStatusID;
-            $assessments = Assessment::where(["assessmentStatusID" =>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('claim')->get();
+            $assessments = Assessment::where(["assessmentStatusID" =>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('claim')->with('assessor')->get();
             return view('head-assessor.assessments',["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         }catch (\Exception $e)
         {
@@ -240,5 +241,88 @@ class HeadAssessorController extends Controller
         $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
         return view("head-assessor.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents]);
+    }
+    public function reviewAssessment(Request $request)
+    {
+        try {
+            if(isset($request->assessmentReviewType))
+            {
+                $assessment = Assessment::where(["id" => $request->assessmentID])->first();
+                if ($request->assessmentReviewType == Config::APPROVE) {
+                    $approved = Assessment::where(["id" =>$request->assessmentID])->update([
+                        "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id'],
+                        "changesDue" => 0,
+                        "reviewNote" => isset($request->report) ? $request->report : null,
+                        "approvedBy" => Auth::id(),
+                        "approvedAt" => $this->functions->curlDate()
+                    ]);
+                    if ($approved) {
+                        $claim = Claim::where(["id" =>$assessment->claimID])->first();
+                        $adjusterID = $claim->createdBy;
+                        $adjuster = User::where(["id" => $adjusterID])->first();
+                        $link = 'assessment-report/' . $request->assessmentID;
+                        $name = $adjuster->name;
+                        $email = $adjuster->email;
+                        $MSISDN = $adjuster->MSISDN;
+                        $vehicleReg  = $claim->vehicleRegNo;
+                        $claimNo = $claim->claimNo;
+                        $reviewNote = $request->report;
+                        $role = Config::$ROLES['ASSESSMENT-MANAGER'];
+
+                        $message = [
+                            'subject' => "Assessment Report - " .$vehicleReg,
+                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'message' =>"
+                        Hello ".$name.", <br>
+
+                        This is in regards to claim number <strong>".$claimNo." </strong> <br>
+
+                        The assessment is approved and complete. Find attached report. <br> <br>
+
+                            <b><i><u>Notes</u></i></b> <br>
+
+                            <i> ".$reviewNote." </i><br><br>
+
+                        Regards, <br><br>
+
+                        ".$role.", <br>
+
+                        Claims Department, <br>
+
+                        Jubilee Insurance Company
+                    ",
+                        ];
+
+                        InfobipEmailHelper::sendEmail($message, $email);
+                        SMSHelper::sendSMS('Hello '. $name .', Assessment for claimNo '.$claimNo.' has been approved',$MSISDN);
+                        Notification::send($adjuster, new ClaimApproved($claim));
+                        $response = array(
+                            "STATUS_CODE" => Config::SUCCESS_CODE,
+                            "STATUS_MESSAGE" => "Heads up! You have successfully approved an assessment"
+                        );
+                    }
+                }else if($request->assessmentReviewType == Config::HALT)
+                {
+
+                }
+
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Invalid data. Check your data and try again"
+                );
+            }
+
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to approve or halt a claim " . $e->getMessage());
+        }
+        return json_encode($response);
     }
 }

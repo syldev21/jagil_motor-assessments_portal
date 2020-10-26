@@ -3,8 +3,6 @@
     <div
         class="content-wrapper-before  gradient-45deg-red-pink">
     </div>
-
-
     <div class="col s12">
         <div class="container">
             <div class="row">
@@ -44,28 +42,24 @@
                             <div class="divider"></div>
                             <div class="row">
                                 <div class="col s12">
-                                    <table id="data-table-simple" class="display">
+                                    <table id="page-length-option" class="display">
                                         <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>Claim Number</th>
-                                            <th>Intimation Date</th>
                                             <th>Registration Number</th>
                                             <th>Status</th>
-                                            <th>Sum Insured</th>
-                                            <th>Created</th>
+                                            <th>Assessor</th>
+                                            {{--                                                <th>Garage</th>--}}
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($claims as $claim)
                                             <form class="assignForm">
-                                                <tr @if($claim->changed == 1) style="padding: 14px;border-left: 2px solid #ee6e73;" @else style="padding: 14px;border-left: 2px solid #37ad52;" @endif>
+                                                <tr>
                                                     <td>{{$loop->iteration}}</td>
-                                                    <td>
-                                                        <a href="#" data-id="{{$claim['id']}}" id="claimDetails">{{$claim['claimNo']}}</a>
-                                                    </td>
-                                                    <td>{{$claim['intimationDate']}}</td>
+                                                    <td><a href="#" data-id="{{$claim['id']}}" id="claimDetails">{{$claim['claimNo']}}</a></td>
                                                     <td>{{$claim['vehicleRegNo']}}</td>
                                                     @if($claim['claimStatusID']  == \App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id'])
                                                         <td>
@@ -89,14 +83,50 @@
                                                         </td>
                                                     @endif
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
-                                                           id="claimID{{$loop->iteration}}"
-                                                           value="{{$claim['claimID']}}" class="claimID">
+                                                           id="claimID{{$loop->iteration}}" value="{{$claim['id']}}"
+                                                           class="claimID">
                                                     <td>
-                                                        {{$claim['sumInsured']}}
+                                                        <div class="input-field">
+                                                            <select class="browser-default"
+                                                                    id="assessor{{$loop->iteration}}"
+                                                                    name="assessor{{$loop->iteration}}" required>
+                                                                <option value="">Select Assessor</option>
+                                                                @if(count($assessors)>0)
+                                                                    <?php
+                                                                    $assessorID =0;
+                                                                    ?>
+                                                                    @foreach($assessors as $assessor)
+                                                                        <?php
+                                                                        $assessments = $claim->assessment;
+                                                                        if(count($assessments)>0)
+                                                                            {
+                                                                            foreach ($assessments as $assessment) {
+                                                                                if ($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']) {
+                                                                                    $assessorID = $assessment->assessedBy;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        ?>
+                                                                        <option
+                                                                            value="{{$assessor->id}}" @if($assessor->id == $assessorID) selected @endif>{{$assessor->firstName}} {{$assessor->lastName}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
+                                                        </div>
                                                     </td>
-                                                    <td>
-                                                        {{\Carbon\Carbon::parse($claim['dateCreated'])->diffForHumans()}}
-                                                    </td>
+                                                    {{--                                                    <td>--}}
+                                                    {{--                                                        <div class="input-field col s12">--}}
+                                                    {{--                                                            <select id="garage{{$loop->iteration}}" name="garage{{$loop->iteration}}" class="garage">--}}
+                                                    {{--                                                                <option value="">Select Garage</option>--}}
+                                                    {{--                                                                @if(count($garages) >0)--}}
+                                                    {{--                                                                    @foreach($garages as $garage)--}}
+                                                    {{--                                                                        <option value="{{$garage->garageID}}">{{$garage->name}}</option>--}}
+                                                    {{--                                                                    @endforeach--}}
+                                                    {{--                                                                @endif--}}
+                                                    {{--                                                            </select>--}}
+                                                    {{--                                                        </div>--}}
+                                                    {{--                                                    </td>--}}
+
                                                     <td>
                                                         <!-- Dropdown Trigger -->
                                                         <a class='dropdown-trigger' href='#'
@@ -108,21 +138,26 @@
                                                         <!-- Dropdown Structure -->
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
+                                                            <li><a href="#!"><i class="material-icons">edit</i>Edit</a>
+                                                            </li>
                                                             <li>
-                                                                <a href="#" id="editClaimForm" data-id="{{$claim['id']}}"><i
-                                                                        class="material-icons">edit</i>Edit</a></li>
-                                                            <li>
-                                                                <a href="#" id="uploadDocumentsForm" data-id="{{$claim['id']}}"><i
+                                                                <a href="{{ url("/adjuster/uploadDocumentsForm/".$claim['claimID']) }}"><i
                                                                         class="material-icons">file_upload</i> Upload
                                                                     Document</a></li>
-                                                            <li><a href="#"><i
+                                                            @if($claim['claimStatusID'] == \App\Conf\Config::$STATUSES['CLAIM']['ASSIGNED']['id'])
+                                                                <li><a href="#"
+                                                                       onclick="reAssignAssessor({{$loop->iteration}})"><i
+                                                                            class="material-icons">assignment_late</i>Re-assign
+                                                                        Assessor</a></li>
+                                                            @else
+                                                                <li><a href="#"
+                                                                       onclick="assignAssessor({{$loop->iteration}})"><i
+                                                                            class="material-icons">assignment_ind</i>Assign
+                                                                        Assessor</a></li>
+                                                            @endif
+                                                            <li><a href="#!"><i
                                                                         class="material-icons">picture_as_pdf</i>
                                                                     Release Letter</a></li>
-                                                            @if($claim->changed == 1)
-                                                            <li><a href="#" data-id="{{$claim['id']}}" id="claimExceptionDetail"><i
-                                                                        class="material-icons">picture_as_pdf</i>
-                                                                    Exception Report</a></li>
-                                                            @endif
                                                         </ul>
 
                                                     </td>
@@ -140,4 +175,3 @@
         </div>
     </div>
 </div>
-

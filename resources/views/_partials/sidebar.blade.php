@@ -22,7 +22,7 @@
             <a class="navigation-header-text">Quick Operations</a>
             <i class="navigation-header-icon material-icons">more_horiz</i>
         </li>
-        @hasrole('Adjuster')
+        @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
         <li class="bold ">
             <a class="collapsible-header"
                href="javascript:void(0) "
@@ -40,25 +40,25 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" class="sidenav-link" id="fetchUploadedClaims">
+                        <a href="#" class="sidenav-link fetch-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id']}}">
                             <i class="material-icons">reorder</i>
                             <span data-i18n="ChartJS">Uploaded</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" class="sidenav-link" id="assignedClaims">
+                        <a href="#" class="sidenav-link fetch-claims"  data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['ASSIGNED']['id']}}">
                             <i class="material-icons">assignment_ind</i>
                             <span data-i18n="Chartist">Assigned</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" class="sidenav-link">
+                        <a href="#" class="sidenav-link fetch-claims"  data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['RE-INSPECTED']['id']}}">
                             <i class="material-icons">assignment_turned_in</i>
                             <span data-i18n="Chartist">Re-inspected</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" class="sidenav-link">
+                        <a href="#" class="sidenav-link fetch-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['RELEASED']['id']}}">
                             <i class="material-icons">next_week</i>
                             <span data-i18n="Chartist">Released</span>
                         </a>
@@ -67,7 +67,7 @@
             </div>
         </li>
         @endhasrole
-        @hasrole('Adjuster')
+        @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
         <li class="bold ">
             <a class="collapsible-header" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
@@ -79,33 +79,45 @@
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">assignment_ind</i>
-                            <span data-i18n="ChartJS">Assigned</span>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']]}}</span>
                         </a>
                     </li>
 
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">drafts</i>
-                            <span data-i18n="Chartist">is-draft</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">compare_arrows</i>
-                            <span data-i18n="Chartist">Assessed</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link fetch-assessments">
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}" class="sidenav-link fetch-assessments">
-                            <i class="material-icons">check_box</i>
-                            <span data-i18n="Chartist">Approved</span>
+                            <i class="material-icons">done_all</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link fetch-assessments">
+                            <i class="material-icons">announcement</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </li>
         @endhasrole
-        @hasrole('Assessor')
+        @hasrole(\App\Conf\Config::$ROLES["ASSESSOR"])
         <li class="bold ">
             <a class="collapsible-header" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
@@ -117,33 +129,45 @@
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']}}" class="sidenav-link assessor-fetch-assessments">
                             <i class="material-icons">assignment_ind</i>
-                            <span data-i18n="ChartJS">Assigned</span>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']]}}</span>
                         </a>
                     </li>
 
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']}}" class="sidenav-link assessor-fetch-assessments">
                             <i class="material-icons">drafts</i>
-                            <span data-i18n="Chartist">is-draft</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}" class="sidenav-link assessor-fetch-assessments">
                             <i class="material-icons">compare_arrows</i>
-                            <span data-i18n="Chartist">Assessed</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link assessor-fetch-assessments">
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}" class="sidenav-link assessor-fetch-assessments">
-                            <i class="material-icons">check_box</i>
-                            <span data-i18n="Chartist">Approved</span>
+                            <i class="material-icons">done_all</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link assessor-fetch-assessments">
+                            <i class="material-icons">announcement</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </li>
         @endhasrole
-        @hasrole('Head Assessor')
+        @hasrole(\App\Conf\Config::$ROLES["HEAD-ASSESSOR"])
         <li class="bold ">
             <a class="collapsible-header"
                href="javascript:void(0) "
@@ -181,7 +205,7 @@
             </div>
         </li>
         @endhasrole
-        @hasrole('Head Assessor')
+        @hasrole(\App\Conf\Config::$ROLES["HEAD-ASSESSOR"])
         <li class="bold ">
             <a class="collapsible-header" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
@@ -193,26 +217,110 @@
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']}}" class="sidenav-link head-assessor-assessments">
                             <i class="material-icons">assignment_ind</i>
-                            <span data-i18n="ChartJS">Assigned</span>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']]}}</span>
                         </a>
                     </li>
 
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']}}" class="sidenav-link head-assessor-assessments">
                             <i class="material-icons">drafts</i>
-                            <span data-i18n="Chartist">is-draft</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}" class="sidenav-link head-assessor-assessments">
                             <i class="material-icons">compare_arrows</i>
-                            <span data-i18n="Chartist">Assessed</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link head-assessor-assessments">
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}" class="sidenav-link head-assessor-assessments">
-                            <i class="material-icons">check_box</i>
-                            <span data-i18n="Chartist">Approved</span>
+                            <i class="material-icons">done_all</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link head-assessor-assessments">
+                            <i class="material-icons">announcement</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        @endhasrole
+        @hasrole(\App\Conf\Config::$ROLES["ASSISTANT-HEAD"])
+        <li class="bold ">
+            <a class="collapsible-header" href="javascript:void(0)">
+                <i class="material-icons">assessment</i>
+                <span class="menu-title" data-i18n="Chart">Assessments</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
+                            <i class="material-icons">compare_arrows</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
+                            <i class="material-icons">done_all</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
+                            <i class="material-icons">announcement</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        @endhasrole
+        @hasrole(\App\Conf\Config::$ROLES["ASSESSMENT-MANAGER"])
+        <li class="bold ">
+            <a class="collapsible-header" href="javascript:void(0)">
+                <i class="material-icons">assessment</i>
+                <span class="menu-title" data-i18n="Chart">Assessments</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}" class="sidenav-link assessment-manager-assessments">
+                            <i class="material-icons">compare_arrows</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link assessment-manager-assessments">
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}" class="sidenav-link assessment-manager-assessments">
+                            <i class="material-icons">done_all</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link assessment-manager-assessments">
+                            <i class="material-icons">announcement</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
                 </ul>
@@ -250,11 +358,6 @@
                 <span class="menu-title" data-i18n="logout">Logout</span>
             </a>
         </li>
-{{--        <li class="bold ">--}}
-{{--            <a href="#" id="assessorAssessments">Assessor</a>--}}
-{{--            <a href="#" id="headAssessorClaims">Head Assessor</a>--}}
-{{--            <a href="#" id="assessmentManagerAssessments">Assessment Manager</a>--}}
-{{--        </li>--}}
     </ul>
     <div class="navigation-background"></div>
     <a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only"

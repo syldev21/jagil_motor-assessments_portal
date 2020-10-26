@@ -459,7 +459,9 @@
                     <!-- Modal Trigger -->
                     <button id="triggerApprove" data-target="approve" class="btn blue lighten-2 btn">Approve/Halt/Cancel</button>
                 </div>
-
+                <div class="col s4">
+                    <a id="triggerDiscount" data-target="discount" class="btn teal darken-2">Apply Discount</a>
+                </div>
             </div>
             <div class="row">
                 <div class="col s2"></div>
@@ -513,8 +515,39 @@
                                     <div class="input-field col m8 s12">
                                     </div>
                                     <div class="input-field col m4 s12">
-                                        <a href="#" class="btn blue lighten-2 waves-effect" id="review-head-assessor-assessment">Submit</a>
+                                        <a href="#" class="btn blue lighten-2 waves-effect" id="reviewAssessment">Submit</a>
                                         <a class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s2"></div>
+            </div>
+
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s8">
+                    <!-- Modal Structure -->
+                    <div id="discount" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+                            </div>
+                            <div class="modal-body clearfix">
+                                <div class="row">
+                                    <div class="input-field col m12 s12">
+                                        <input type="text" name="discount" id="discount">
+                                        <label for="discount" class="active">Apply Discount</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m8 s12">
+                                    </div>
+                                    <div class="input-field col m4 s12">
+                                        <a href="#" class="btn blue lighten-2 waves-effect">Submit</a>
+                                        <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
                                     </div>
                                 </div>
                             </div>

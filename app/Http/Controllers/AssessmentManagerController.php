@@ -22,11 +22,12 @@ class AssessmentManagerController extends Controller
         $this->functions = new GeneralFunctions();
     }
 
-    public function assessments()
+    public function assessments(Request $request)
     {
+        $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::orderBy('dateCreated', 'DESC')->with('claim')->get();
-            return view('assessment-manager.assessments', ["assessments" => $assessments]);
+            $assessments = Assessment::where(["assessmentStatusID"=>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('claim')->get();
+            return view('assessment-manager.assessments', ["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());

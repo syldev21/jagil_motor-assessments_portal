@@ -53,6 +53,7 @@
                                             @endif
                                             <th>Assessor</th>
                                             <th>Status</th>
+                                            <th>{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}}</th>
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
@@ -64,6 +65,7 @@
                                                     <td>
                                                         <a href="#" data-id="{{$assessment->id}}" id="assessmentDetails">{{$assessment['claim']['claimNo']}}</a>
                                                     </td>
+                                                    <?php $date = ''?>
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                         <td>{{isset($assessment->approver) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver) ? $assessment->approver->lastName : ''}}</td>
@@ -74,26 +76,32 @@
                                                             <button
                                                                 class="btn red lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['text'] }}</button>
                                                         </td>
+                                                        <?php $date = $assessment['dateCreated'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
                                                         <td>
                                                             <button
                                                                 class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['text']}}</button>
                                                         </td>
+                                                        <?php $date = $assessment['assessedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
                                                         <td>
                                                             <button
                                                                 class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['text']}}</button>
                                                         </td>
+                                                        <?php $date = $assessment['assessedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                         <td>
                                                             <button
                                                                 class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
                                                         </td>
+                                                        <?php $date = $assessment['approvedAt'] ?>
                                                     @endif
+                                                    <td>
+                                                        {{\Carbon\Carbon::parse($date)->diffForHumans()}}
+                                                    </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
                                                            id="claimID{{$loop->iteration}}"
                                                            value="{{$assessment['claimID']}}" class="claimID">
-
                                                     <td>
                                                         <!-- Dropdown Trigger -->
                                                         <a class='dropdown-trigger' href='#'

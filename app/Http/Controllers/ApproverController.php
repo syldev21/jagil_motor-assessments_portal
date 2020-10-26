@@ -36,8 +36,8 @@ class ApproverController extends Controller
                         "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
                         "changesDue" => 0,
                         "reviewNote" => isset($request->report) ? $request->report : null,
-                        "approvedBy" => Auth::id(),
-                        "approvedAt" => $this->functions->curlDate()
+                        "finalApprovalBy" => Auth::id(),
+                        "finalApprovedAt" => $this->functions->curlDate()
                     ]);
                     if ($approved) {
                         $claim = Claim::where(["id" =>$assessment->claimID])->first();
@@ -76,8 +76,8 @@ class ApproverController extends Controller
                     ",
                         ];
 
-                        InfobipEmailHelper::sendEmail($message, $email);
-                        SMSHelper::sendSMS('Hello '. $name .', Assessment for claimNo '.$claimNo.' has been approved',$MSISDN);
+//                        InfobipEmailHelper::sendEmail($message, $email);
+//                        SMSHelper::sendSMS('Hello '. $name .', Assessment for claimNo '.$claimNo.' has been approved',$MSISDN);
                         Notification::send($adjuster, new ClaimApproved($claim));
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,

@@ -453,52 +453,6 @@ $(document).ready(function () {
 
         });
     });
-    $("body").on('click','#fetchUploadedClaims',function (e){
-        e.preventDefault();
-        $.ajaxSetup({
-
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-            }
-
-        });
-        $.ajax({
-
-            type: 'GET',
-
-            url: '/adjuster/fetchUploadedClaims',
-
-            success: function (data) {
-                $("#main").html(data);
-            }
-
-        });
-    });
-    $("#assignedClaims").on('click',function (e){
-        e.preventDefault();
-        $.ajaxSetup({
-
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-            }
-
-        });
-        $.ajax({
-
-            type: 'GET',
-
-            url: '/adjuster/assignedClaims',
-
-            success: function (data) {
-                $("#main").html(data);
-            }
-
-        });
-    });
     $("body").on('click','#headAssessorClaims',function (e){
         e.preventDefault();
         $.ajaxSetup({
@@ -572,8 +526,9 @@ $(document).ready(function () {
 
         });
     });
-    $("body").on('click','#assessmentManagerAssessments',function (e){
+    $("body").on('click','.assessment-manager-assessments',function (e){
         e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
         $.ajaxSetup({
 
             headers: {
@@ -585,8 +540,10 @@ $(document).ready(function () {
         });
         $.ajax({
 
-            type: 'GET',
-
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
             url: '/assessment-manager/assessments',
 
             success: function (data) {
@@ -756,6 +713,32 @@ $(document).ready(function () {
 
         });
     });
+    $(".fetch-claims").on('click',function (e){
+        e.preventDefault();
+        var claimStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'claimStatusID' : claimStatusID
+            },
+            url: '/adjuster/fetch-claims',
+
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
     $(".assessor-fetch-assessments").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
@@ -808,8 +791,9 @@ $(document).ready(function () {
 
         });
     });
-    $("#fetchDraftAssessments").on('click',function (e){
+    $(".assistant-head-assessor-assessments").on('click',function (e){
         e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
         $.ajaxSetup({
 
             headers: {
@@ -821,36 +805,14 @@ $(document).ready(function () {
         });
         $.ajax({
 
-            type: 'GET',
-
-            url: '/adjuster/fetchDraftAssessments',
-
-            success: function (data) {
-                $("#main").html(data);
-            }
-
-        });
-    });
-    $("body").on('click','#fetchAssessedAssessments',function (e){
-        e.preventDefault();
-        $.ajaxSetup({
-
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-            }
-
-        });
-        $.ajax({
-
-            type: 'GET',
-
-            url: '/adjuster/fetchAssessedAssessments',
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
+            url: '/assistant-head-assessor/assessments',
 
             success: function (data) {
                 $("#main").html(data);
-                $('.materialboxed').materialbox();
             }
 
         });
@@ -898,6 +860,32 @@ $(document).ready(function () {
             type: 'POST',
 
             url: '/assessment-manager/assessment-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
+    $("body").on('click','#assessor-assessment-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/assessor/assessment-report',
             data : {
                 assessmentID : assessmentID
             },
@@ -1633,6 +1621,52 @@ $(document).ready(function () {
                 report : report
             },
             url: '/assessment-manager/review-assessment',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+
+        });
+
+
+    });
+    $("body").on('click','#review-head-assessor-assessment',function (e){
+        e.preventDefault();
+        var assessmentID = $("#assessmentID").val();
+        var assessmentReviewType = $("input[name='assessmentReviewType']:checked").val();
+        var report = CKEDITOR.instances['report'].getData();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentID : assessmentID,
+                assessmentReviewType : assessmentReviewType,
+                report : report
+            },
+            url: '/head-assessor/review-assessment',
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {

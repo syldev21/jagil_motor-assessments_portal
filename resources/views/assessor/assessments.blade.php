@@ -52,6 +52,7 @@
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
                                             <th>Status</th>
+                                            <th>{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}}</th>
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
@@ -62,27 +63,35 @@
                                                     <td>{{$loop->iteration}}</td>
                                                     <td><a href="#" data-id="{{$assessment['claim']['id']}}" id="claimDetails">{{$assessment['claim']['claimNo']}}</a></td>
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
+                                                    <?php $date = ''?>
                                                     @if($assessment['assessmentStatusID']  == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                         <td>
                                                             <button
                                                                 class="btn red lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['text'] }}</button>
                                                         </td>
+                                                        <?php $date = $assessment['dateCreated'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
                                                         <td>
                                                             <button
                                                                 class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['text']}}</button>
                                                         </td>
+                                                        <?php $date = $assessment['assessedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
                                                         <td>
                                                             <button
                                                                 class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['text']}}</button>
                                                         </td>
+                                                        <?php $date = $assessment['assessedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                         <td>
                                                             <button
                                                                 class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
                                                         </td>
+                                                        <?php $date = $assessment['approvedAt'] ?>
                                                     @endif
+                                                    <td>
+                                                        {{\Carbon\Carbon::parse($date)->diffForHumans()}}
+                                                    </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
                                                            id="claimID{{$loop->iteration}}"
                                                            value="{{$assessment['claimID']}}" class="claimID">
@@ -99,14 +108,23 @@
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             <li>
-                                                                <a href="#" id="fillAssessmentReport" data-id="{{$assessment['id']}}"><i
-                                                                        class="material-icons">insert_drive_file</i>
-                                                                    @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
-                                                                        Submit Assessment
-                                                                    @else
-                                                                        Fill Report
-                                                                    @endif
-                                                                </a></li>
+                                                                @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
+                                                                    <a href="#" id="fillAssessmentReport"
+                                                                       data-id="{{$assessment['id']}}"><i
+                                                                            class="material-icons">insert_drive_file</i>Submit
+                                                                        Assessment </a>
+                                                                @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
+                                                                    <a href="#" id="fillAssessmentReport"
+                                                                       data-id="{{$assessment['id']}}"><i
+                                                                            class="material-icons">insert_drive_file</i>Fill
+                                                                        Report </a>
+                                                                @else
+                                                                    <a href="#" id="assessor-assessment-report"
+                                                                       data-id="{{$assessment['id']}}"><i
+                                                                            class="material-icons">insert_drive_file</i>View
+                                                                        Assessment Report </a>
+                                                                @endif
+                                                            </li>
                                                             <li>
                                                                 <a href="#" id="fillReInspectionReport" data-id="{{$assessment['id']}}"><i
                                                                         class="material-icons">insert_drive_file</i>Re-Inspection Report</a></li>

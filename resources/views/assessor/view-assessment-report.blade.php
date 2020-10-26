@@ -77,35 +77,35 @@
                                         <tr>
                                             <td>Registered No.</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['vehicleRegNo']}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Year of manufacture</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['yom']}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Chassis No.</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['chassisNumber']}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Make</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['carMakeCode']}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Model</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['carModelCode']}}</td>
 
                                         </tr>
 
@@ -442,7 +442,7 @@
                                 <div class="row">
                                     @foreach($chunk as $document)
                                         <div class="col s3">
-                                            <img class="responsive-img" src="{{url('documents/'.$document['name']) }}">
+                                            <img class="responsive-img materialboxed" src="{{url('documents/'.$document['name']) }}">
                                         </div>
                                     @endforeach
                                 </div>
@@ -451,120 +451,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col s4">
-                    <a id="triggerChangeRequests" data-target="changeRequest" class="btn orange darken-2">Request Changes</a>
-                </div>
-                <div class="col s4">
-                    <!-- Modal Trigger -->
-                    <button id="triggerApprove" data-target="approve" class="btn blue lighten-2 btn">Approve/Halt/Cancel</button>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col s2"></div>
-                <div class="col s8">
-                    <!-- Modal Structure -->
-                    <div id="approve" class="modal">
-                        <div class="modal-content">
-                            <div class="modal-body clearfix">
-                                <div class="row">
-                                    <div class="col s12">
-                                        <p>Review Assessment</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
-                                    <div class="col m4">
-                                        <label>
-                                            <input name="assessmentReviewType" type="radio"
-                                                   class="with-gap assessmentReviewType" value="{{\App\Conf\Config::APPROVE}}"/>
-                                            <span>Approve</span>
-                                        </label>
-                                    </div>
-                                    <div class="col m4">
-                                        <label>
-                                            <input name="assessmentReviewType" type="radio"
-                                                   class="with-gap assessmentReviewType" value="{{App\Conf\Config::HALT}}"/>
-                                            <span>Halt</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col m12 s12">
-                                        <div class="row">
-                                            <div class="col s12">
-                                                <span>Report</span>
-                                            </div>
-                                        </div>
-                                        <textarea id="report" class="materialize-textarea">
-
-                                        </textarea>
-                                        <script>
-                                            CKEDITOR.replace('report', {
-                                                language: 'en',
-                                                uiColor: '',
-                                                height: $(this).attr('height')
-                                            });
-                                        </script>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col m8 s12">
-                                    </div>
-                                    <div class="input-field col m4 s12">
-                                        <a href="#" class="btn blue lighten-2 waves-effect" id="review-head-assessor-assessment">Submit</a>
-                                        <a class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s2"></div>
-            </div>
-
-            <div class="row">
-                <div class="col s2"></div>
-                <div class="col s8">
-                    <!-- Modal Structure -->
-                    <div id="changeRequest" class="modal">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="input-field col m12 s12">
-                                        <div class="row">
-                                            <div class="col s12">
-                                                <span class="float-left">Request Changes On Report</span>
-                                                <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
-                                            </div>
-                                        </div>
-                                        <textarea name="changes" id="changes" class="materialize-textarea clearfix">
-
-                                        </textarea>
-                                        <script>
-                                            CKEDITOR.replace('changes', {
-                                                language: 'en',
-                                                uiColor: ''
-                                            });
-                                        </script>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col m8 s12">
-                                    </div>
-                                    <div class="input-field col m4 s12">
-                                        <a href="#" class="btn blue lighten-2 waves-effect">Submit</a>
-                                        <a href="#" class="modal-action modal-close btn red darken-2 waves-effect">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s2"></div>
-            </div>
-            <br/>
         </div>
     </div>
 </div>
+
+

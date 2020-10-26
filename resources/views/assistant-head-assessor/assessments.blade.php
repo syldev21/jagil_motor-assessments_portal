@@ -91,22 +91,10 @@
                                                                 class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['text']}}</button>
                                                         </td>
                                                         <?php $date = $assessment['assessedAt'] ?>
-                                                    @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id'])
-                                                        <td>
-                                                            <button
-                                                                class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['text']}}</button>
-                                                        </td>
-                                                        <?php $date = $assessment['approvedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                         <td>
                                                             <button
-                                                                class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
-                                                        </td>
-                                                        <?php $date = $assessment['finalApprovedAt'] ?>
-                                                    @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'])
-                                                        <td>
-                                                            <button
-                                                                class="btn red lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['text']}}</button>
+                                                                class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
                                                         </td>
                                                         <?php $date = $assessment['approvedAt'] ?>
                                                     @endif

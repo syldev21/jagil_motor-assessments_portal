@@ -45,7 +45,9 @@ class Config
             1 => "Assigned",
             2 => "Drafted",
             3 => "Assessed",
-            4 => "Approved"
+            4 => "Semi-Approved",
+            5=> "Approved",
+            6=> "Changes Due"
         )
     );
     static $STATUSES = array(
@@ -80,9 +82,17 @@ class Config
                 "id" => 3,
                 "text" => "Assessed"
             ),
-            "APPROVED" => array(
+            "SEMI-APPROVED" => array(
                 "id" => 4,
+                "text" => "Semi-Approved"
+            ),
+            "APPROVED" => array(
+                "id" => 5,
                 "text" => "Approved"
+            ),
+            "CHANGES-DUE" => array(
+                "id" => 6,
+                "text" => "Changes Due"
             )
         )
     );
@@ -211,6 +221,11 @@ class Config
         "CASH_IN_LIEU" => 2,
         "TOTAL_LOSS" => 3
     );
+    const DISPLAY_ASSESSMENT_TYPES = array(
+        1 => "Authority to garage",
+        2 => "Cash in Lieu",
+        3 => "Total Loss"
+    );
 
     const APPROVE = 1;
     const HALT =2;
@@ -220,13 +235,14 @@ class Config
     const JUBILEE_NO_REPLY_EMAIL = "noreply@jubileeinsurance.com";
 
     static $USER_TYPES = array(
-        array(
-            "ID" =>1,
+        "INTERNAL" => array(
+            "ID" => 1,
             "NAME" => "Internal"
         ),
-        array(
-            "ID" =>2,
+        "EXTERNAL" => array(
+            "ID" => 2,
             "NAME" => "External"
         )
     );
+    const HEAD_ASSESSOR_THRESHOLD = 300000;
 }
