@@ -21,7 +21,7 @@
                                         <div class="row">
                                             <div class="input-field col m3 s12">
                                                 <input type="hidden" value="{{isset($draftAssessment->id) ? 1 : 0}}" id="drafted" name="drafted">
-                                                <input placeholder="" id="chassisNumber" type="text" name="chassisNumber" value="{{$assessment->claim->chassisNumber}}" disabled/>
+                                                <input placeholder="" id="chassisNumber" type="text" name="chassisNumber" value="{{$assessment->claim->chassisNumber}}"/>
                                                 <label for="chassisNumber" class="active">Chassis Number</label>
                                             </div>
                                             <div class="input-field col m2 s12">
