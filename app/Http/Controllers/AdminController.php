@@ -89,6 +89,7 @@ class AdminController extends Controller
                     "middleName" => $request->middleName,
                     "lastName" => $request->lastName,
                     "email" => $request->email,
+                    "name" => $request->firstName." ".$request->middleName." ".$request->lastName,
                     "userType" => $request->userType,
                     "MSISDN" => $request->MSISDN
                 ]);
