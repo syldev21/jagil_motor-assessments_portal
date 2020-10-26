@@ -91,7 +91,8 @@ class AdminController extends Controller
                     "email" => $request->email,
                     "name" => $request->firstName." ".$request->middleName." ".$request->lastName,
                     "userType" => $request->userType,
-                    "MSISDN" => $request->MSISDN
+                    "MSISDN" => $request->MSISDN,
+                    "password"=>bcrypt(Config::DEFAULT_PASSWORD)
                 ]);
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,

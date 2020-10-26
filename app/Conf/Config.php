@@ -245,4 +245,6 @@ class Config
         )
     );
     const HEAD_ASSESSOR_THRESHOLD = 300000;
+
+    const DEFAULT_PASSWORD = "123456";
 }
