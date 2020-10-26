@@ -45,7 +45,7 @@ class Config
             1 => "Assigned",
             2 => "Drafted",
             3 => "Assessed",
-            4 => "Semi-Approved",
+            4 => "Provisional Approval",
             5=> "Approved",
             6=> "Changes Due"
         )
@@ -82,9 +82,9 @@ class Config
                 "id" => 3,
                 "text" => "Assessed"
             ),
-            "SEMI-APPROVED" => array(
+            "PROVISIONAL-APPROVAL" => array(
                 "id" => 4,
-                "text" => "Semi-Approved"
+                "text" => "Provisional Approval"
             ),
             "APPROVED" => array(
                 "id" => 5,

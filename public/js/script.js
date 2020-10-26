@@ -1275,8 +1275,6 @@ $(document).ready(function () {
         var reconstruction = $('#reconstruction');
         var gas = $('#acgas');
         var welding = $('#weldinggas');
-        var dam = $('#damkit');
-        var bumper = $('#bumperfibre');
         var sumTotal = $("#sumTotal");
         var pav = $("#pav");
         var salvage = $("#salvage");
@@ -1293,8 +1291,6 @@ $(document).ready(function () {
             reconstruction : reconstruction.val(),
             gas : gas.val(),
             welding : welding.val(),
-            dam : dam.val(),
-            bumper : bumper.val(),
             sumTotal : sumTotal.val(),
             pav : pav.val(),
             salvage : salvage.val(),

@@ -226,8 +226,6 @@ class AssessorController extends Controller
             $reconstruction = !empty($jobsData['reconstruction']) ? $jobsData['reconstruction'] : 0;
             $gas = !empty($jobsData['gas']) ? $jobsData['gas'] : 0;
             $welding = !empty($jobsData['welding']) ? $jobsData['welding'] : 0;
-            $dam = !empty($jobsData['dam']) ? $jobsData['dam'] : 0;
-            $bumper = !empty($jobsData['bumper']) ? $jobsData['bumper'] : 0;
             $sumTotal = !empty($jobsData['sumTotal']) ? $jobsData['sumTotal'] : 0;
             $pav = !empty($jobsData['pav']) ? $jobsData['pav'] : 0;
             $salvage = !empty($jobsData['salvage']) ? $jobsData['salvage'] : 0;
@@ -272,8 +270,7 @@ class AssessorController extends Controller
 
                 //Sum of other charges
                 $others = (is_numeric($labour)) + (is_numeric($paint)) + (is_numeric($miscellaneous)) + (is_numeric($primer))
-                    + (is_numeric($jigging)) + (is_numeric($reconstruction)) + (is_numeric($gas)) + (is_numeric($welding))
-                    + (is_numeric($bumper)) + (is_numeric($dam));
+                    + (is_numeric($jigging)) + (is_numeric($reconstruction)) + (is_numeric($gas)) + (is_numeric($welding));
 
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * 1.14;
@@ -379,26 +376,6 @@ class AssessorController extends Controller
                             "jobType" => Config::$JOB_TYPES["WELDING_GAS"]["ID"],
                             "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
                             "cost" => $welding
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($bumper > 0) {
-                        $job = array(
-                            "assessmentID" => $assessmentID,
-                            "name" => Config::$JOB_TYPES["BUMPER_FIBRE"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["BUMPER_FIBRE"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "cost" => $bumper
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($dam > 0) {
-                        $job = array(
-                            "assessmentID" => $assessmentID,
-                            "name" => Config::$JOB_TYPES["DAM_KIT"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["DAM_KIT"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "cost" => $dam
                         );
                         $jobs[] = $job;
                     }

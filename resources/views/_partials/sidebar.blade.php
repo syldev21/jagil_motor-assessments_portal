@@ -96,9 +96,9 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link fetch-assessments">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">done</i>
-                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -146,9 +146,9 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link assessor-fetch-assessments">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link assessor-fetch-assessments">
                             <i class="material-icons">done</i>
-                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -234,9 +234,9 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link head-assessor-assessments">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link head-assessor-assessments">
                             <i class="material-icons">done</i>
-                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -270,9 +270,9 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
                             <i class="material-icons">done</i>
-                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -306,9 +306,9 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']}}" class="sidenav-link assessment-manager-assessments">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link assessment-manager-assessments">
                             <i class="material-icons">done</i>
-                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['SEMI-APPROVED']['id']]}}</span>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">

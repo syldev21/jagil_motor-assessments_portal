@@ -299,26 +299,6 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>Bumper Fibre :</td>
-                                                        <td>
-                                                            <div class="input-field">
-                                                                <input placeholder="" id="bumperfibre" type="text"
-                                                                       name="bumperfibre" value="{{ isset($jobDraftDetail['Bumper Fibre']) ? $jobDraftDetail['Bumper Fibre'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Dam Kit :</td>
-                                                        <td>
-                                                            <div class="input-field">
-                                                                <input placeholder="" id="damkit" type="text"
-                                                                       name="damkit" value="{{ isset($jobDraftDetail['Dam Kit']) ? $jobDraftDetail['Dam Kit'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
                                                 </table>
                                             </div>
                                             <div class="col m7">
@@ -629,10 +609,6 @@
 
         var welding = document.getElementById('weldinggas').value;
 
-        var dam = document.getElementById('damkit').value;
-
-        var bumper = document.getElementById('bumperfibre').value;
-
         var assessmentType = document.querySelector('input[name="assessmentType"]:checked').value;
 
         var total = 0;
@@ -651,15 +627,13 @@
 
             + parseFloat( "0" + jigging ) + parseFloat( "0" + reconstruction ) + parseFloat( "0" + gas ) + parseFloat( "0" + welding )
 
-            + parseFloat( "0" + dam ) + parseFloat( "0" + total ) + parseFloat( "0" + bumper );
+            + parseFloat( "0" + total );
 
 
 
         var cil = parseFloat( "0" + labour ) + parseFloat( "0" + paint ) + parseFloat( "0" + miscellaneous ) + parseFloat( "0" + primer )
 
-            + parseFloat( "0" + jigging ) + parseFloat( "0" + reconstruction ) + parseFloat( "0" + gas ) + parseFloat( "0" + welding )
-
-            + parseFloat( "0" + dam ) + parseFloat( "0" + bumper );
+            + parseFloat( "0" + jigging ) + parseFloat( "0" + reconstruction ) + parseFloat( "0" + gas ) + parseFloat( "0" + welding );
 
         if("{{$assessment->claim->intimationDate}}" > "{{\App\Conf\Config::VAT_REDUCTION_DATE}}")
         {
