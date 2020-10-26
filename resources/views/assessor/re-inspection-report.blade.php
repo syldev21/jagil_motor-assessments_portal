@@ -71,10 +71,10 @@
                                                 <th>Contribution</th>
                                                 <th>Total</th>
                                                 <th>Remarks</th>
-                                                <th>Done</th>
+                                                <th>Done/Replace</th>
                                                 <th>Repair</th>
-                                                <th>Replace</th>
                                                 <th>CIL</th>
+                                                <th>Re-Used</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -109,7 +109,7 @@
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="re_inspection[]" id="re_inspection_{{$count}}" value="{{$assessmentItem->segment}}" @if($assessmentItem->segment == \App\Conf\Config::$ASSESSMENT_SEGMENTS["INSPECTION"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="replaced[]" id="replaced{{$count}}" value="{{$assessmentItem->segment}}" @if($assessmentItem->segment == \App\Conf\Config::$ASSESSMENT_SEGMENTS["INSPECTION"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
@@ -121,13 +121,13 @@
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="replace[]" id="replace_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["REPLACE"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="cil[]" id="cil_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="cil[]" id="cil_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="re_used[]" id="re_used{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
