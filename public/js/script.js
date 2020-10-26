@@ -843,7 +843,7 @@ $(document).ready(function () {
 
         });
     });
-    $("body").on('click','#manager-assessment-report',function (e){
+    $("body").on('click','#assessment-manager-assessment-report',function (e){
         e.preventDefault();
         var assessmentID = $(this).data("id");
         $.ajaxSetup({
