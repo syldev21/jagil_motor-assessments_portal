@@ -294,7 +294,9 @@ class AdjusterController extends Controller
             $engineNumber = $request->engineNumber;
             $chassisNumber = $request->chassisNumber;
 
-            $claims = Claim::where(['claimNo' => $claimNo])->limit(1)->get();
+            $claims = Claim::where(['claimNo' => $claimNo])
+                ->orWhere('policyNo',$policyNo)
+                ->limit(1)->get();
             if (count($claims) == 0) {
                 $customers = CustomerMaster::where(['customerCode' => $customerCode])->limit(1)->get();
                 if (count($customers) == 0) {
