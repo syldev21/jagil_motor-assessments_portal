@@ -441,8 +441,7 @@
 
                                     <p>{!! $assessment['note'] !!}</p>
 
-{{--                                    <p>Assessed By: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
-                                </div>
+                                    <td>{{$approver->firstName}} {{$approver->firstName}}</td>                                </div>
                             </div>
                             @foreach($documents->chunk(4) as $chunk)
                             <div class="row">

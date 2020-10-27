@@ -119,7 +119,8 @@
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Submit
                                                                         Assessment </a>
-                                                                @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
+                                                                @endif
+                                                                @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                     <a href="#" id="fillAssessmentReport"
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Fill
@@ -131,15 +132,11 @@
                                                                         Assessment Report </a>
                                                                 @endif
                                                             </li>
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                             <li>
                                                                 <a href="#" id="fillReInspectionReport" data-id="{{$assessment['id']}}"><i
                                                                         class="material-icons">insert_drive_file</i>Re-Inspection Report</a></li>
-                                                            <li><a href="#!"><i class="material-icons">edit</i>Edit</a>
-                                                            </li>
                                                             <li>
-                                                                <a href="{{ url("/adjuster/uploadDocumentsForm/".$assessment['claim']['claimID']) }}"><i
-                                                                        class="material-icons">file_upload</i> Upload
-                                                                    Document</a></li>
                                                             <li><a href="#!"><i
                                                                         class="material-icons">compare_arrows</i>View
                                                                     Re-inspection</a></li>
@@ -149,6 +146,7 @@
                                                             <li><a href="#!"><i
                                                                         class="material-icons">picture_as_pdf</i>
                                                                     Release Letter</a></li>
+                                                            @endif
                                                         </ul>
 
                                                     </td>

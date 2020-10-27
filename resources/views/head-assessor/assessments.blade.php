@@ -68,7 +68,7 @@
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
                                                     <?php $date = ''?>
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                        <td>{{auth()->user()->roles->pluck('name')[0]}}</td>
+
                                                     @endif
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
                                                         <td>{{isset($assessment['assessor']) ? $assessment['assessor']['firstName'].' '.$assessment['assessor']['lastName'] : ''}}</td>
@@ -128,12 +128,12 @@
                                                         <!-- Dropdown Structure -->
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
-                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
+                                                            @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                 <li><a href="#" data-id="{{$assessment->id}}" id="head-assessor-assessment-report"><i
                                                                             class="material-icons">picture_as_pdf</i>View
                                                                         Assessment Report</a></li>
                                                             @endif
-                                                                @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                                     <li><a href="#!"><i
                                                                                 class="material-icons">compare_arrows</i>View
                                                                             Re-inspection</a></li>

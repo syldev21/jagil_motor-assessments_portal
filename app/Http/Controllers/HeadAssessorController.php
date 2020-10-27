@@ -222,7 +222,7 @@ class HeadAssessorController extends Controller
     {
         try {
             $assessmentStatusID = $request->assessmentStatusID;
-            $assessments = Assessment::where(["assessmentStatusID" =>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('claim')->with('assessor')->get();
+            $assessments = Assessment::where(["assessmentStatusID" =>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('assessor')->get();
             return view('head-assessor.assessments',["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         }catch (\Exception $e)
         {

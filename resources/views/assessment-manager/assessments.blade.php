@@ -131,6 +131,7 @@
                                                                 <li><a href="#" data-id="{{$assessment->id}}" id="assessment-manager-assessment-report"><i
                                                                             class="material-icons">picture_as_pdf</i>View
                                                                         Assessment Report</a></li>
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                             <li><a href="#!"><i
                                                                         class="material-icons">compare_arrows</i>View
                                                                     Re-inspection</a></li>
@@ -140,6 +141,7 @@
                                                             <li><a href="#!"><i
                                                                         class="material-icons">picture_as_pdf</i>
                                                                     Release Letter</a></li>
+                                                            @endif
                                                         </ul>
 
                                                     </td>

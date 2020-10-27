@@ -60,17 +60,60 @@
                             <div class="row">
                                 <div class="col s12">
                                     <table class="table table-bordered">
-                                        <thead>
+                                        <table class="table table-bordered">
+                                            <thead>
 
-                                        <tr>
+                                            <tr>
 
-                                            <th class="text-uppercase"><strong>Vehicle Particulars</strong></th>
+                                                <th class="text-uppercase"><strong>Vehicle Particulars</strong></th>
 
-                                            <th><strong>Logbook</strong></th>
+                                                <th><strong>Logbook</strong></th>
 
-                                        </tr>
+                                            </tr>
 
-                                        </thead>
+                                            </thead>
+
+                                            <tbody>
+
+                                            <tr>
+                                                <td>Registered No.</td>
+
+                                                <td>{{$assessment['claim']['vehicleRegNo']}}</td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>Year of manufacture</td>
+
+                                                <td>{{$assessment['claim']['yom']}}</td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>Chassis No.</td>
+
+                                                <td>{{$assessment['claim']['chassisNumber']}}</td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>Make</td>
+
+                                                <td>{{$assessment['claim']['carMakeCode']}}</td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>Model</td>
+
+                                                <td>{{$assessment['claim']['carModelCode']}}</td>
+
+                                            </tr>
+
+                                            </tbody>
+
+
+                                        </table>
 
                                         <tbody>
 
