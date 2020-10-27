@@ -232,6 +232,14 @@ class AssessorController extends Controller
             $totalLoss = !empty($jobsData['totalLoss']) ? $jobsData['totalLoss'] : 0;
             $cause = !empty($jobsData['cause']) ? $jobsData['cause'] : null;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
+            $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
+            if($chassisNumber != '')
+            {
+                $assessment= Assessment::where(['id' =>$assessmentID])->first();
+                Claim::where(['id'=>$assessment->claimID])->update([
+                    "chassisNumber"=>$chassisNumber
+                ]);
+            }
             foreach ($partsData as $partDetail) {
                 $part = $partDetail['vehiclePart'];
                 $quantity = $partDetail['quantity'];
@@ -583,6 +591,8 @@ class AssessorController extends Controller
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
         $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
-        return view("assessor.view-assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents]);
+        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
+        return view("assessor.view-assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
     }
 }

@@ -25,8 +25,7 @@ class AssistantHeadAssessorController extends Controller
     {
         try {
             $assessmentStatusID = $request->assessmentStatusID;
-            $assessments = Assessment::where(["assessments.assessmentStatusID" =>$assessmentStatusID,'assessments.assessmentTypeID'=> Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']])
-                ->where("assessments.totalCost","<",Config::HEAD_ASSESSOR_THRESHOLD)
+            $assessments = Assessment::where("totalCost","<",Config::HEAD_ASSESSOR_THRESHOLD)
                 ->join('users','users.id','=','assessments.assessedBy')
                 ->where('users.userTypeID','=',Config::$USER_TYPES['INTERNAL']['ID'])
                 ->select('assessments.*')

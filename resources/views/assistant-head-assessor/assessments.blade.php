@@ -49,7 +49,7 @@
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
                                             @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                            <th>Approved By</th>
+                                                <th>Approved By</th>
                                             @endif
                                             @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
                                                 <th>Assessed By</th>

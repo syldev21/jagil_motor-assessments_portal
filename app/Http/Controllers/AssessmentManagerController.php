@@ -9,6 +9,7 @@ use App\Document;
 use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
 use App\JobDetail;
+use App\User;
 use Illuminate\Http\Request;
 
 class AssessmentManagerController extends Controller
@@ -44,6 +45,8 @@ class AssessmentManagerController extends Controller
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
         $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
-        return view("assessment-manager.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents]);
+        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
+        return view("assessment-manager.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
     }
 }

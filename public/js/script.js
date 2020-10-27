@@ -1276,7 +1276,8 @@ $(document).ready(function () {
         var gas = $('#acgas');
         var welding = $('#weldinggas');
         var sumTotal = $("#sumTotal");
-        var pav = $("#pav");
+        var pav = $("#PAV");
+        var chassisNumber = $("#chassisNumber");
         var salvage = $("#salvage");
         var totalLoss = $("#total_loss");
         var note = CKEDITOR.instances['notes'].getData();
@@ -1293,6 +1294,7 @@ $(document).ready(function () {
             welding : welding.val(),
             sumTotal : sumTotal.val(),
             pav : pav.val(),
+            chassisNumber : chassisNumber.val(),
             salvage : salvage.val(),
             totalLoss : totalLoss.val(),
             cause : cause,

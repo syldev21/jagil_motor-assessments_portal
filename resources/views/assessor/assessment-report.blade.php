@@ -37,8 +37,8 @@
                                                 <label for="YOM" class="active">YOM</label>
                                             </div>
                                             <div class="input-field col m3 s12">
-                                                <input placeholder="" id="PAV" type="text" name="PAV" value=""/>
-                                                <label for="PAV">PAV</label>
+                                                <input placeholder="" id="PAV" type="text" name="PAV" required/>
+                                                <label for="PAV">PAV <span style="color: red">*</span></label>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -677,81 +677,4 @@
         document.getElementById('total_loss').value = totalLoss
 
     }
-    const inputs=document.querySelectorAll('input');
-
-    document.addEventListener('keyup',function(e){
-
-        var val=e.target.attributes.id.value;
-        if((val=='quantity_'+t))
-        {
-            var patterns={
-
-                val:/^([1-9][0-9]?[0-9]?|1000)$/,
-
-
-
-            };
-            if(patterns.val.test(e.target.value))
-            {
-                e.target.classList.remove("invalid");
-
-
-
-                document.getElementById("validateStepTwo").disabled=false;
-            }else{
-                e.target.className='invalid';
-
-
-
-                document.getElementById("validateStepTwo").disabled=true;
-            }
-        }
-
-        else if((val=='contribution_'+t)|| (val=='discount_'+t))
-        {
-            var patterns={
-
-                val:/^([1-9][0-9]?|100)$/,
-
-            };
-            if(patterns.val.test(e.target.value))
-            {
-                e.target.classList.remove("invalid");
-
-                document.getElementById("validateStepTwo").disabled=false;
-            }else{
-                e.target.className='invalid';
-
-
-                document.getElementById("validateStepOne").disabled=true;
-
-                document.getElementById("validateStepTwo").disabled=true;
-            }
-        }
-
-        else{
-            var patterns={
-                val:/^\d+$/,
-
-            };
-            if(patterns.val.test(e.target.value))
-            {
-                e.target.classList.remove("invalid");
-
-
-                document.getElementById("validateStepOne").disabled=false;
-
-            }else{
-                e.target.className='invalid';
-
-
-                document.getElementById("validateStepOne").disabled=true;
-
-            }
-        }
-
-    });
-    document.getElementById("validateStepOne").disabled=true;
-
-    document.getElementById("validateStepTwo").disabled=true;
 </script>

@@ -50,7 +50,7 @@
                                     <ul class="list-unstyled center-align">
                                         <li class="col s3">Policy Number: <h6>{{$assessment['claim']['policyNo']}}</h6>
                                         </li>
-                                        <li class="col s3">Adjuster: <h6></h6></li>
+                                        <li class="col s3">Adjuster: <h6>{{$adjuster->firstName." ".$adjuster->lastName}}</h6></li>
                                         <li class="col s3">Insured: <h6>{{$insured['fullName']}}</h6></li>
                                         <li class="col s3">Claim Number: <h6>{{$assessment['claim']['claimNo']}}</h6>
                                         </li>
@@ -427,6 +427,12 @@
                                         </div>
 
                                     @endif
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <br/>
+                                    <p><b>Assessor : {{$assessor->firstName}} {{$assessor->lastName}}</b></p>
                                 </div>
                             </div>
                             <div class="row">
