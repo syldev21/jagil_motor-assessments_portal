@@ -496,6 +496,13 @@
 @endif
 <script type="text/javascript">
     var t =0;
+    $(document).ready(function() {
+        $("#vehiclePart_"+t).select2({dropdownAutoWidth : true, width: '160px'});
+
+        $('body').on('click','#addPart',function(){
+            $("#vehiclePart_"+t).select2({dropdownAutoWidth : true, width: '160px'});
+        });
+    });
     $("body").on('click','#addPart',function (){
         t = t + 1;
         $("#counter").val(t);
