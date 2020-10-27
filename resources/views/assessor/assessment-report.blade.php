@@ -70,7 +70,7 @@
                                             </div>
                                         </div>
                                             <div class="step-actions">
-                                                <button class="waves-effect waves-dark btn next-step"
+                                                <button id="validateStepOne" class="waves-effect waves-dark btn next-step"
                                                         data-validator="validateStepOne">CONTINUE
                                                 </button>
                                                 <button class="waves-effect waves-dark btn-flat previous-step">
@@ -172,7 +172,7 @@
                                                             </td>
                                                             <td>
                                                                 <input id="quantity_0" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
-                                                                       value=""/>
+                                                                       value="" maxlength="3"/>
                                                             </td>
                                                             <td>
                                                                 <input id="partPrice_0" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
@@ -180,11 +180,11 @@
                                                             </td>
                                                             <td>
                                                                 <input id="contribution_0" placeholder="" type="text"
-                                                                       name="contribution[]" oninput="getTotal(0)" value=""/>
+                                                                       name="contribution[]" oninput="getTotal(0)" value="" maxlength="2"/>
                                                             </td>
                                                             <td>
                                                                 <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
-                                                                       value="" required/>
+                                                                       value="" maxlength="2" required/>
                                                             </td>
                                                             <td>
                                                                 <input id="total_0" placeholder="" type="text" name="total[]" value="" class="total"
@@ -435,7 +435,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="step-actions">
-                                                <button class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                                                <button id="validateStepTwo" class="waves-effect waves-dark btn next-step">CONTINUE</button>
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                                 </button>
                                             </div>
@@ -515,7 +515,7 @@
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="quantity_'+t+'" oninput="getTotal('+t+')" placeholder="quantity" type="text" name="quantity[]"\n' +
-            '                                                                   value=""/>\n' +
+            '                                                                   value="" maxlength="3"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="partPrice_'+t+'" oninput="getTotal('+t+')" placeholder="part price" type="text" name="partPrice[]"\n' +
@@ -523,11 +523,11 @@
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="contribution_'+t+'" placeholder="contribution" type="text"\n' +
-            '                                                                   name="contribution[]" oninput="getTotal('+t+')" value=""/>\n' +
+            '                                                                   name="contribution[]" oninput="getTotal('+t+')" value="" maxlength="2"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="discount_'+t+'" oninput="getTotal('+t+')" placeholder="discount" type="text" name="discount[]"\n' +
-            '                                                                   value="" required/>\n' +
+            '                                                                   value="" required maxlength="2"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="total_'+t+'" placeholder="" type="text" name="total[]" value="" class="total"\n' +
@@ -677,4 +677,81 @@
         document.getElementById('total_loss').value = totalLoss
 
     }
+    const inputs=document.querySelectorAll('input');
+
+    document.addEventListener('keyup',function(e){
+
+        var val=e.target.attributes.id.value;
+        if((val=='quantity_'+t))
+        {
+            var patterns={
+
+                val:/^([1-9][0-9]?[0-9]?|1000)$/,
+
+
+
+            };
+            if(patterns.val.test(e.target.value))
+            {
+                e.target.classList.remove("invalid");
+
+
+
+                document.getElementById("validateStepTwo").disabled=false;
+            }else{
+                e.target.className='invalid';
+
+
+
+                document.getElementById("validateStepTwo").disabled=true;
+            }
+        }
+
+        else if((val=='contribution_'+t)|| (val=='discount_'+t))
+        {
+            var patterns={
+
+                val:/^([1-9][0-9]?|100)$/,
+
+            };
+            if(patterns.val.test(e.target.value))
+            {
+                e.target.classList.remove("invalid");
+
+                document.getElementById("validateStepTwo").disabled=false;
+            }else{
+                e.target.className='invalid';
+
+
+                document.getElementById("validateStepOne").disabled=true;
+
+                document.getElementById("validateStepTwo").disabled=true;
+            }
+        }
+
+        else{
+            var patterns={
+                val:/^\d+$/,
+
+            };
+            if(patterns.val.test(e.target.value))
+            {
+                e.target.classList.remove("invalid");
+
+
+                document.getElementById("validateStepOne").disabled=false;
+
+            }else{
+                e.target.className='invalid';
+
+
+                document.getElementById("validateStepOne").disabled=true;
+
+            }
+        }
+
+    });
+    document.getElementById("validateStepOne").disabled=true;
+
+    document.getElementById("validateStepTwo").disabled=true;
 </script>
