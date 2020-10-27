@@ -37,8 +37,8 @@
                                                 <label for="YOM" class="active">YOM</label>
                                             </div>
                                             <div class="input-field col m3 s12">
-                                                <input placeholder="" id="PAV" type="text" name="PAV" required/>
-                                                <label for="PAV">PAV <span style="color: red">*</span></label>
+                                                <input placeholder="" id="PAV" type="text" name="PAV" value="{{isset($draftAssessment->pav) ? $draftAssessment->pav : null }}" required/>
+                                                <label for="PAV" class="active">PAV <span style="color: red">*</span></label>
                                             </div>
                                         </div>
                                         <div class="row">
