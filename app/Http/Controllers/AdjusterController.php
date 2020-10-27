@@ -647,7 +647,9 @@ class AdjusterController extends Controller
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
         $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
-        return view("adjuster.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents]);
+        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
+        return view("adjuster.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
     }
 
     public function claims(Request $request)

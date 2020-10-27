@@ -182,6 +182,10 @@ class Config
             "ID" => 3,
             "TITLE" => "Cash In Lieu"
         ),
+        "REUSE" => array(
+            "ID" => 4,
+            "TITLE" => "Re_used"
+        )
     );
     static $ASSESSMENT_SEGMENTS = array(
         "ASSESSMENT" => array(
