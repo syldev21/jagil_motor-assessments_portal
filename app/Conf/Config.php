@@ -126,6 +126,7 @@ class Config
     const VAT = 16;
     const VAT_PERCENTAGE = '16%';
     const TOTAL_PERCENTAGE = self::INITIAL_PERCENTAGE + self::VAT;
+    const MARK_UP = 0.9;
 
     static $JOB_TYPES = array(
         "LABOUR" =>array(

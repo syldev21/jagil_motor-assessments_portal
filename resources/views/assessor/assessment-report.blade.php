@@ -130,7 +130,7 @@
                                                         </td>
                                                         <td>
                                                             <input id="discount_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
-                                                                   value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}" required/>
+                                                                   value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}"/>
                                                         </td>
                                                         <td>
                                                             <input id="total_{{$count}}" placeholder="" type="text" name="total[]" value="{{$assessmentItem->total}}" class="total"
@@ -184,7 +184,7 @@
                                                             </td>
                                                             <td>
                                                                 <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
-                                                                       value="" maxlength="2" required/>
+                                                                       value="" maxlength="2"/>
                                                             </td>
                                                             <td>
                                                                 <input id="total_0" placeholder="" type="text" name="total[]" value="" class="total"
@@ -534,7 +534,7 @@
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="discount_'+t+'" oninput="getTotal('+t+')" placeholder="discount" type="text" name="discount[]"\n' +
-            '                                                                   value="" required maxlength="2"/>\n' +
+            '                                                                   value="" maxlength="2"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="total_'+t+'" placeholder="" type="text" name="total[]" value="" class="total"\n' +

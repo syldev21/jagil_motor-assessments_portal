@@ -1275,7 +1275,7 @@ $(document).ready(function () {
             var discount = $("#discount_"+i);
             var remarks = $("#remarks_"+i);
             var category = $("#category_"+i);
-            var partData = {vehiclePart : vehiclePart.val(),quantity : quantity.val(),total:total.val(),cost:cost.val(),contribution:contribution.val(),discount:discount.val(),remarks:remarks.val(),category: category.val()};
+            var partData = {vehiclePart : vehiclePart.val(),quantity : quantity.val().length > 0 ? quantity.val() : 0,total:total.val().length > 0 ? total.val() : 0,cost:cost.val().length > 0 ? cost.val() : 0,contribution:contribution.val().length > 0 ? contribution.val() : 0,discount:discount.val().length > 0 ? discount.val() : 0,remarks:remarks.val(),category: category.val()};
             partsData.push(partData);
         }
         var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
