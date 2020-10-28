@@ -68,7 +68,7 @@
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
                                                     <?php $date = ''?>
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                        <td>{{auth()->user()->roles->pluck('name')[0]}}</td>
+                                                        <td>{{$assessment->approver->firstName}} {{$assessment->approver->firstName}}</td>
                                                     @endif
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
                                                         <td>{{isset($assessment['assessor']) ? $assessment['assessor']['firstName'].' '.$assessment['assessor']['lastName'] : ''}}</td>

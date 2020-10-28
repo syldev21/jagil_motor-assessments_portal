@@ -1,3 +1,7 @@
+@include('_partials.header')
+@include('_partials.navbar')
+@include('_partials.sidebar')
+<div id="main">
 <div class="row">
 
     <div
@@ -459,5 +463,6 @@
         </div>
     </div>
 </div>
-
-
+</div>
+@include('_partials.settings')
+@include('_partials.footer')

@@ -838,7 +838,11 @@ $(document).ready(function () {
                 assessmentID : assessmentID
             },
             success: function (data) {
-                $("#main").html(data);
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
             }
 
         });
@@ -864,7 +868,11 @@ $(document).ready(function () {
                 assessmentID : assessmentID
             },
             success: function (data) {
-                $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+                // $("#main").html(data);
             }
 
         });
@@ -890,7 +898,11 @@ $(document).ready(function () {
                 assessmentID : assessmentID
             },
             success: function (data) {
-                $("#main").html(data);
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
             }
 
         });
@@ -916,7 +928,11 @@ $(document).ready(function () {
                 assessmentID : assessmentID
             },
             success: function (data) {
-                $("#main").html(data);
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
             }
 
         });
@@ -1450,32 +1466,52 @@ $(document).ready(function () {
     $("body").on('click','#submitReinspection',function (e){
         e.preventDefault();
         var counter = $("#counter").val();
-        var i;
+        // var i;
         // Array
         var partsData = [];
+        var assessmentID = $("#assessmentID");
         var additionalLabour = $("#additionalLabour").val();
         var lessLabour = $("#lessLabour").val();
-        var table = $("#reinspectionTable");
-        var repaired = table.find( "input[name='repaired[]']" ).val();
-        alert(repaired);
-        for(i =0 ; i<=counter; i++)
-        {
-            var vehiclePart = $("#vehiclePart_"+i);
-            var quantity = $("#quantity_"+i);
-            var total = $("#total_"+i);
-            var cost = $("#partPrice_"+i);
-            var contribution = $("#contribution_"+i);
-            var discount = $("#discount_"+i);
-            var remarks = $("#remarks_"+i);
-            var category = $("#category_"+i);
-            var partData = {vehiclePart : vehiclePart.val(),quantity : quantity.val(),total:total.val(),cost:cost.val(),contribution:contribution.val(),discount:discount.val(),remarks:remarks.val(),category: category.val()};
-            partsData.push(partData);
-        }
-        var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
-        var drafted = $("#drafted");
-        var jobsData = {
-            total : total.val()
-        };
+        var repaired = [];
+        var replaced = [];
+        var cil = [];
+        var reused = [];
+        $.each($("input[name='repaired[]']:checked"), function(){
+            repaired.push($(this).val());
+        });
+        $.each($("input[name='replaced[]']:checked"), function(){
+            replaced.push($(this).val());
+        });
+        $.each($("input[name='cil[]']:checked"), function(){
+            cil.push($(this).val());
+        });
+        $.each($("input[name='reused[]']:checked"), function(){
+            reused.push($(this).val());
+        });
+        // for(i =0 ; i<counter; i++)
+        // {
+        //     var vehiclePart = $("#vehiclePart_"+i);
+        //     var quantity = $("#quantity_"+i);
+        //     var total = $("#total_"+i);
+        //     var cost = $("#partPrice_"+i);
+        //     var contribution = $("#contribution_"+i);
+        //     var discount = $("#discount_"+i);
+        //     var remarks = $("#remarks_"+i);
+        //     var category = $("#category_"+i);
+        //     var assessmentItemID =$("#assessmentItemID_"+i);
+        //     var partData = {assessmentItemID : assessmentItemID.val(),vehiclePart : vehiclePart.val(),quantity : quantity.val(),total:total.val(),cost:cost.val(),
+        //         contribution:contribution.val(),discount:discount.val(),
+        //         remarks:remarks.val(),category: category.val(),
+        //         repaired : repaired.val(), replaced : replaced.val(),
+        //         cil : cil.val(),re_used : re_used.val()
+        //     };
+        //     partsData.push(partData);
+        // }
+        // var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
+        // var drafted = $("#drafted");
+        // var jobsData = {
+        //     total : total.val()
+        // };
 
         var image_upload = new FormData();
         // Attach file
@@ -1486,13 +1522,20 @@ $(document).ready(function () {
         for (let i = 0; i < totalImages; i++) {
             image_upload.append('images' + i, images.files[i]);
         }
-        image_upload.append('totalImages', totalImages);
+        // image_upload.append('totalImages', totalImages);
         image_upload.append('assessmentID', assessmentID.val());
-        image_upload.append('assessmentType', assessmentType.val());
-        image_upload.append('isDraft', isDraft);
-        image_upload.append('drafted', drafted.val());
-        image_upload.append('jobsData',JSON.stringify(jobsData));
-        image_upload.append('partsData',JSON.stringify(partsData));
+        // image_upload.append('assessmentType', assessmentType.val());
+        // image_upload.append('isDraft', isDraft);
+        // image_upload.append('drafted', drafted.val());
+        // image_upload.append('jobsData',JSON.stringify(jobsData));
+        // image_upload.append('partsData',JSON.stringify(partsData));
+        image_upload.append('repaired',JSON.stringify(repaired));
+        image_upload.append('replaced',JSON.stringify(replaced));
+        image_upload.append('cil',JSON.stringify(cil));
+        image_upload.append('reused',JSON.stringify(reused));
+        image_upload.append('reused',JSON.stringify(reused));
+        image_upload.append('add_labor',additionalLabour);
+        image_upload.append('labor',lessLabour);
         $.ajaxSetup({
 
             headers: {
@@ -1508,7 +1551,7 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             data: image_upload,
-            url: '/assessor/submitAssessment',
+            url: '/assessor/submitReInspection',
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {

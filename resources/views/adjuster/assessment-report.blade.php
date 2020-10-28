@@ -1,3 +1,8 @@
+
+@include('_partials.header')
+@include('_partials.navbar')
+@include('_partials.sidebar')
+<div id="main">
 <div class="row">
 
     <div
@@ -431,17 +436,11 @@
                             </div>
                             <div class="row">
                                 <div class="col s12">
-                                    <br/>
-                                    <p><b>Assessor : {{$assessor->firstName}} {{$assessor->lastName}}</b></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s12">
                                     <h5 class="underline">Notes</h5>
 
                                     <p>{!! $assessment['note'] !!}</p>
 
-                                    <td>{{$approver->firstName}} {{$approver->firstName}}</td>                                </div>
+                                    <p>Assessed By: {{$assessor->firstName}} {{$assessor->lastName}}</p>                              </div>
                             </div>
                             @foreach($documents->chunk(4) as $chunk)
                             <div class="row">
@@ -459,5 +458,9 @@
         </div>
     </div>
 </div>
+</div>
+@include('_partials.settings')
+@include('_partials.footer')
+
 
 

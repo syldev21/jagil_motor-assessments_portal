@@ -84,7 +84,9 @@
                                             @foreach($assessmentItems as $assessmentItem)
                                                 <tr>
                                                     <td>{{$loop->iteration}}</td>
-                                                    <td><input id="vehiclePart_{{$count}}" placeholder="" type="text" name="vehiclePart[]"
+                                                    <td>
+                                                        <input type="hidden" id="assessmentItemID_{{$count}}" value="{{$assessmentItem->id}}">
+                                                        <input id="vehiclePart_{{$count}}" placeholder="" type="text" name="vehiclePart[]"
                                                                value="{{$assessmentItem->part->name}}" disabled/>
                                                     </td>
                                                     <td>
@@ -109,29 +111,30 @@
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="replaced[]" id="replaced{{$count}}" value="{{$assessmentItem->segment}}" @if($assessmentItem->segment == \App\Conf\Config::$ASSESSMENT_SEGMENTS["INSPECTION"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="replaced[]" value="{{$assessmentItem->id}}" @if($assessmentItem->segment == \App\Conf\Config::$ASSESSMENT_SEGMENTS["INSPECTION"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="repaired[]" id="repaired_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["REPAIR"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="repaired[]" value="{{$assessmentItem->id}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["REPAIR"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="cil[]" id="cil_{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="cil[]" value="{{$assessmentItem->id}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="re_used[]" id="re_used{{$count}}" value="{{$assessmentItem->category}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="reused[]" value="{{$assessmentItem->id}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                 </tr>
+                                                <?php $count ++; ?>
                                             @endforeach
                                             </tbody>
                                         </table>
@@ -158,7 +161,7 @@
                                             </div>
                                         </div>
                                         <div class="step-actions">
-                                            <input type="hidden" name="counter" id="counter">
+                                            <input type="hidden" name="counter" id="counter" value="{{$count}}">
                                             <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessments->id}}">
                                             <input type="submit" class="waves-effect waves-dark btn next-step"
                                                    value="SUBMIT" id="submitReinspection"/>

@@ -65,6 +65,7 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->get('/fillAssessmentReport/{id}','AssessorController@fillAssessmentReport');
     $router->get('/fillReInspectionReport/{id}','AssessorController@fillReInspectionReport');
     $router->post('/submitAssessment','AssessorController@submitAssessment');
+    $router->post('/submitReInspection','AssessorController@submitReInspection');
     $router->post('/uploadDocuments','AssessorController@uploadDocuments');
     $router->post('/assessment-report','AssessorController@assessmentReport');
 

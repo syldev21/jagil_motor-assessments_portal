@@ -595,4 +595,50 @@ class AssessorController extends Controller
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
         return view("assessor.view-assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
     }
+    public function submitReInspection(Request $request)
+    {
+        try {
+            $assessment = Assessment::where(['id'=> $request->assessmentID])->first();
+            $claim = Claim::where(["id"=> $assessment->claimID])->first();
+
+            $labor = 0;
+            $addLabor = 0;
+            $subAmount = 0;
+            $priceChange = 0;
+            $assessmentTotal = 0;
+            $supplementaryTotal = 0;
+            $finalTotal = 0;
+
+            if ($request->labor != '' && $request->labor != 0) {
+                $labor = $request->labor;
+            }
+
+            if ($request->add_labor != '' && $request->add_labor != 0) {
+                $addLabor = $request->add_labor;
+            }
+
+            //Assessment Total
+            $sumAssessmentParts = AssessmentItem::where('assessmentID', $request->assessmentID)->sum('total');
+
+            $sumAssessmentDetails = JobDetail::where(["assessmentID"=>$request->assessmentID])->sum('cost');
+            $status = $assessment->assessmentTypeID;
+
+            if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                $assessmentTotal = (($sumAssessmentParts + ($sumAssessmentDetails) * Config::CURRENT_TOTAL_PERCENTAGE)/Config::INITIAL_PERCENTAGE);
+            } else {
+                $assessmentTotal = (($sumAssessmentParts * Config::MARK_UP) + $sumAssessmentDetails);
+            }
+
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to create a re-inspection " . $e->getMessage());
+        }
+
+        return json_encode($response);
+    }
 }
