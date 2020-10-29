@@ -82,35 +82,35 @@
                                         <tr>
                                             <td>Registered No.</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['vehicleRegNo']}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Year of manufacture</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['yom']}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Chassis No.</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['chassisNumber']}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Make</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['carMakeCode']}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Model</td>
 
-                                            <td></td>
+                                            <td>{{$assessment['claim']['carModelCode']}}</td>
 
                                         </tr>
 
