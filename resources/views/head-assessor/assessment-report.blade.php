@@ -510,10 +510,13 @@
 
                                         </textarea>
                                         <script>
-                                            CKEDITOR.replace('report', {
-                                                language: 'en',
-                                                uiColor: '',
-                                                height: $(this).attr('height')
+                                            document.addEventListener("DOMContentLoaded", function(event) {
+                                                //do work
+                                                CKEDITOR.replace('report', {
+                                                    language: 'en',
+                                                    uiColor: '',
+                                                    height: $(this).attr('height')
+                                                });
                                             });
                                         </script>
                                     </div>
@@ -552,10 +555,12 @@
 
                                         </textarea>
                                         <script>
-                                            CKEDITOR.replace('changes', {
-                                                language: 'en',
-                                                uiColor: ''
-                                            });
+                                            document.addEventListener("DOMContentLoaded", function(event) {
+                                               CKEDITOR.replace('changes', {
+                                                   language: 'en',
+                                                   uiColor: ''
+                                               });
+                                           });
                                         </script>
                                     </div>
                                 </div>

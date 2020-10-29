@@ -513,10 +513,12 @@
 
                                         </textarea>
                                         <script>
+                                            document.addEventListener("DOMContentLoaded", function(event) {
                                             CKEDITOR.replace('report', {
                                                 language: 'en',
                                                 uiColor: '',
                                                 height: $(this).attr('height')
+                                            });
                                             });
                                         </script>
                                     </div>
@@ -586,9 +588,11 @@
 
                                         </textarea>
                                         <script>
+                                            document.addEventListener("DOMContentLoaded", function(event) {
                                             CKEDITOR.replace('changes', {
                                                 language: 'en',
                                                 uiColor: ''
+                                            });
                                             });
                                         </script>
                                     </div>
