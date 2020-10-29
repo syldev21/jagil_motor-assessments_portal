@@ -1412,7 +1412,7 @@ $(document).ready(function () {
             }
             $.each(imageParse, function (key, value) {
                 async function createFile() {
-                    let response = await fetch('http://127.0.0.1:8001/documents/' + value.name);
+                    let response = await fetch('/documents/' + value.name);
                     let data = await response.blob();
                     let metadata = {
                         type: 'image/jpeg'
