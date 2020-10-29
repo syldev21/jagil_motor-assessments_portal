@@ -107,7 +107,7 @@
                                                         {{\Carbon\Carbon::parse($date)->diffForHumans()}}
                                                     </td>
                                                     <td>
-                                                        {{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']]}}
+                                                        {{ isset($assessment['assessmentTypeID'])  ?  \App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']] : ''}}
                                                     </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
                                                            id="claimID{{$loop->iteration}}"
