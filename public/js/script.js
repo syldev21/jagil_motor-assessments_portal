@@ -309,50 +309,61 @@ $(document).ready(function () {
         var image_upload = new FormData();
 
         var imagesArray = $("#imagesArray").val();
-        var imageParse = JSON.parse(imagesArray);
-        var counter = 0;
+        if(typeof imagesArray === 'undefined')
+        {
 
-        var imgArray = [];
+        }else {
+            var imageParse = JSON.parse(imagesArray);
+            var counter = 0;
 
-        $(".uploaded-image img").each(function() {
-            var imgsrc = this.src;
-            var n = imgsrc.split("/");
-            var result = n[n.length - 1];
-            imgArray.push(result);
-        });
-        imageParse = imageParse.filter(function( obj ) {
-            return imgArray.includes(obj.name);
-        });
+            var imgArray = [];
 
-        console.log(imageParse);
+            $(".uploaded-image img").each(function () {
+                var imgsrc = this.src;
+                var n = imgsrc.split("/");
+                var result = n[n.length - 1];
+                imgArray.push(result);
+            });
+            imageParse = imageParse.filter(function (obj) {
+                return imgArray.includes(obj.name);
+            });
 
-        var files = $('input[type=file]')[0].files;
-        let totalImages = files.length; //Total Images
-        let images = $('input[type=file]')[0];
-        var img = [];
-        for (let i = 0; i < totalImages; i++) {
-            var increment = imageParse.length+i;
-            image_upload.append('images' + increment, images.files[i]);
+            console.log(imageParse);
+
+            var files = $('input[type=file]')[0].files;
+            var totalImages = files.length; //Total Images
+            let images = $('input[type=file]')[0];
+            var img = [];
+            for (let i = 0; i < totalImages; i++) {
+                var increment = imageParse.length + i;
+                image_upload.append('images' + increment, images.files[i]);
+            }
+            $.each(imageParse, function (key, value) {
+                async function createFile() {
+                    let response = await fetch('/documents/' + value.name);
+                    let data = await response.blob();
+                    let metadata = {
+                        type: 'image/jpeg'
+                    };
+                    let file = new File([data], value.name, metadata);
+                    img.push(file);
+                }
+
+                createFile();
+                counter++;
+            });
         }
-        $.each(imageParse, function (key, value) {
-            async function createFile() {
-                let response = await fetch('/documents/' + value.name);
-                let data = await response.blob();
-                let metadata = {
-                    type: 'image/jpeg'
-                };
-                let file = new File([data],value.name, metadata);
-                img.push(file);
-            }
-            createFile();
-            counter++;
-        });
         setTimeout(function () {
-            for (let i = 0; i < img.length; i++) {
-                image_upload.append('images' + i, img[i]);
+            if(typeof imagesArray === 'undefined')
+            {
+                image_upload.append('totalImages', '');
+            }else {
+                for (let i = 0; i < img.length; i++) {
+                    image_upload.append('images' + i, img[i]);
 
+                }
+                image_upload.append('totalImages', imageParse.length+totalImages);
             }
-        image_upload.append('totalImages', imageParse.length+totalImages);
         image_upload.append('sumInsured', sumInsured.val());
         image_upload.append('excess', excess.val());
         image_upload.append('location', location.val());
