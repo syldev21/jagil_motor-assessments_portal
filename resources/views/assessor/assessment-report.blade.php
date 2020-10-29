@@ -470,7 +470,7 @@
                                             <div class="col m6">
                                             </div>
                                             <div class="step-actions">
-                                                <input type="hidden" name="counter" id="counter">
+                                                <input type="hidden" name="counter" id="counter" value="{{isset($count) ? $count : ''}}">
                                                 <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
                                                 <input type="submit" class="waves-effect waves-dark btn next-step"
                                                        value="SUBMIT" id="submitAssessment"/>
