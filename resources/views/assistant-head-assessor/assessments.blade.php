@@ -56,6 +56,7 @@
                                             @endif
                                             <th>Status</th>
                                             <th>{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}}</th>
+                                           <th>Type</th>
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
@@ -106,6 +107,9 @@
                                                     @endif
                                                     <td>
                                                         {{\Carbon\Carbon::parse($date)->diffForHumans()}}
+                                                    </td>
+                                                    <td>
+                                                        {{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']]}}
                                                     </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
                                                            id="claimID{{$loop->iteration}}"

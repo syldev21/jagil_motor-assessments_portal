@@ -445,7 +445,7 @@
                                     <h5 class="underline">Notes</h5>
 
                                     <p>{!! $assessment['note'] !!}</p>
-{{--                                    <p>Assessed By: {{$assessor->firstName}} {{$assessor->lastName}}</p>--}}
+                                    <p>Assessed By: {{$assessor->firstName}} {{$assessor->lastName}}</p>
                                 </div>
                             </div>
                             @foreach($documents->chunk(4) as $chunk)
