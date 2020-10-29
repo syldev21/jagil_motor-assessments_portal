@@ -51,7 +51,7 @@
                                             @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                             <th>Approved By</th>
                                             @endif
-                                            @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
+                                            @if($assessmentStatusID != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                 <th>Assessed By</th>
                                             @endif
                                             <th>Status</th>
@@ -69,10 +69,10 @@
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
                                                     <?php $date = ''?>
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                        <td>{{$approver->firstName}} {{$approver->firstName}}</td>
+                                                        <td>{{$assessment->approver->firstName}} {{$assessment->approver->firstName}}</td>
                                                     @endif
-                                                    @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
-                                                        <td>{{isset($assessment['assessor']) ? $assessment['assessor']['firstName'].' '.$assessment['assessor']['lastName'] : ''}}</td>
+                                                    @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
+                                                        <td>{{isset($assessment->assessor) ? $assessment->assessor->firstName.' '.$assessment->assessor->lastName : ''}}</td>
                                                     @endif
                                                     @if($assessment['assessmentStatusID']  == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                         <td>
