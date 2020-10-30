@@ -24,22 +24,24 @@
                                             </div>
                                             <div class="input-field col m4 s12">
                                                 <input placeholder="" id="lessLabour" type="text" name="lessLabour"
-                                                       value=""/>
-                                                <label for="lessLabour">Less Labour</label>
+                                                       value="{{isset($inspections->labor) ? $inspections->labor : ''}}"/>
+                                                <label for="lessLabour" @if(isset($inspections->labor)) class="active" @endif>Less Labour</label>
                                             </div>
                                             <div class="input-field col m1 s12">
 
                                             </div>
                                             <div class="input-field col m4 s12">
-                                                <input placeholder="" id="additionalLabour" type="text" name="additionalLabour" value=""/>
-                                                <label for="additionalLabour">Additional labour to garage</label>
+                                                <input placeholder="" id="additionalLabour" type="text" name="additionalLabour" value="{{isset($inspections->addLabor) ? $inspections->addLabor : ''}}"/>
+                                                <label for="additionalLabour" @if(isset($inspections->addLabor)) class="active" @endif>Additional labour to garage</label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col m12 s12">
                                                 <p>Notes</p>
                                                 <textarea id="notes" class="materialize-textarea notes"
-                                                          name="notes"></textarea>
+                                                          name="notes">
+                                                    {{isset($inspections->notes) ? $inspections->notes : ''}}
+                                                </textarea>
                                                 <script>
                                                     CKEDITOR.replace('notes', {
                                                         language: 'en',

@@ -1483,6 +1483,7 @@ $(document).ready(function () {
         var assessmentID = $("#assessmentID");
         var additionalLabour = $("#additionalLabour").val();
         var lessLabour = $("#lessLabour").val();
+        var notes = CKEDITOR.instances['notes'].getData();
         var repaired = [];
         var replaced = [];
         var cil = [];
@@ -1546,6 +1547,7 @@ $(document).ready(function () {
         image_upload.append('reused',JSON.stringify(reused));
         image_upload.append('add_labor',additionalLabour);
         image_upload.append('labor',lessLabour);
+        image_upload.append('notes',notes);
         $.ajaxSetup({
 
             headers: {

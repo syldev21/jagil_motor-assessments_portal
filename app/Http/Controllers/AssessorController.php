@@ -605,6 +605,7 @@ class AssessorController extends Controller
             $cil = json_decode($request->cil,true);
             $reused = json_decode($request->reused,true);
             $assessmentID = $request->assessmentID;
+            $notes = isset($request->notes) ? $request->notes : '';
             $assessment = Assessment::where(['id'=> $request->assessmentID])->first();
             $claim = Claim::where(["id"=> $assessment->claimID])->first();
 
@@ -708,6 +709,7 @@ class AssessorController extends Controller
                         ->update([
                             'labor' => $labor,
                             'addLabor' => $addLabor,
+                            'notes' => $notes,
                             'total' => $finalTotal,
                             'notes' => $request->notes,
                             'modifiedBy' => Auth::user()->id,
@@ -719,6 +721,7 @@ class AssessorController extends Controller
                         'assessmentID' => $assessmentID,
                         'labor' => $labor,
                         'addLabor' => $addLabor,
+                        'notes' => $notes,
                         'total' => $finalTotal,
                         'createdBy' => Auth::user()->id,
                         'notes' => $request->notes,
