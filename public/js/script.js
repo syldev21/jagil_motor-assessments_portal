@@ -1490,7 +1490,7 @@ $(document).ready(function () {
         $.each($("input[name='repaired[]']:checked"), function(){
             repaired.push($(this).val());
         });
-        $.each($("input[name='replaced[]']:checked"), function(){
+        $.each($("input[name='replacePart[]']:checked"), function(){
             replaced.push($(this).val());
         });
         $.each($("input[name='cil[]']:checked"), function(){
@@ -1543,7 +1543,6 @@ $(document).ready(function () {
         image_upload.append('repaired',JSON.stringify(repaired));
         image_upload.append('replaced',JSON.stringify(replaced));
         image_upload.append('cil',JSON.stringify(cil));
-        image_upload.append('reused',JSON.stringify(reused));
         image_upload.append('reused',JSON.stringify(reused));
         image_upload.append('add_labor',additionalLabour);
         image_upload.append('labor',lessLabour);

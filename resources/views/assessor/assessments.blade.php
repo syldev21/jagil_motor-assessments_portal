@@ -129,39 +129,44 @@
                                                         <!-- Dropdown Structure -->
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
-                                                            <li>
-                                                                @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
+                                                                <li>
                                                                     <a href="#" id="fillAssessmentReport"
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Submit
                                                                         Assessment </a>
-                                                                @endif
-                                                                @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
+                                                                </li>
+                                                            @endif
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
+                                                                <li>
                                                                     <a href="#" id="fillAssessmentReport"
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Fill
                                                                         Report </a>
-                                                                @else
+                                                                </li>
+                                                            @else
+                                                                <li>
                                                                     <a href="#" id="assessor-assessment-report"
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>View
                                                                         Assessment Report </a>
-                                                                @endif
-                                                            </li>
+                                                                </li>
+                                                            @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                            <li>
-                                                                <a href="#" id="fillReInspectionReport" data-id="{{$assessment['id']}}"><i
-                                                                        class="material-icons">insert_drive_file</i>Re-Inspection Report</a></li>
-                                                            <li>
-                                                            <li><a href="#!"><i
-                                                                        class="material-icons">compare_arrows</i>View
-                                                                    Re-inspection</a></li>
-                                                            <li><a href="#!"><i
-                                                                        class="material-icons">picture_as_pdf</i>View
-                                                                    Re-inspection Letter</a></li>
-                                                            <li><a href="#!"><i
-                                                                        class="material-icons">picture_as_pdf</i>
-                                                                    Release Letter</a></li>
+                                                                <li>
+                                                                    <a href="#" id="fillReInspectionReport"
+                                                                       data-id="{{$assessment['id']}}"><i
+                                                                            class="material-icons">insert_drive_file</i>Re-Inspection
+                                                                        Report</a></li>
+                                                                <li><a href="#!"><i
+                                                                            class="material-icons">compare_arrows</i>Price
+                                                                        Change</a></li>
+                                                                <li><a href="#!"><i
+                                                                            class="material-icons">picture_as_pdf</i>Add
+                                                                        Supplementary Report</a></li>
+                                                                <li><a href="#!"><i
+                                                                            class="material-icons">picture_as_pdf</i>Claim
+                                                                        Form</a></li>
                                                             @endif
                                                         </ul>
 

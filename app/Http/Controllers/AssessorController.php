@@ -18,6 +18,7 @@ use App\JobDetail;
 use App\Notifications\NewAssessmentNotification;
 use App\Notifications\NewClaimNotification;
 use App\Part;
+use App\ReInspection;
 use App\Remarks;
 use App\User;
 use Illuminate\Http\Request;
@@ -100,9 +101,10 @@ class AssessorController extends Controller
 
     public function fillReInspectionReport(Request $request, $assessmentID)
     {
-        $assessments = Assessment::where(['id' => $assessmentID])->with('claim')->first();
+        $assessments = Assessment::where(['id' => $assessmentID])->with('claim')->with('reInspection')->first();
+        $inspections = ReInspection::where(['assessmentID'=>isset($assessments) ? $assessments->id : 0])->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with("part")->get();
-        return view('assessor.re-inspection-report', ['assessments' => $assessments, 'assessmentItems' => $assessmentItems]);
+        return view('assessor.re-inspection-report', ['assessments' => $assessments, 'assessmentItems' => $assessmentItems,'inspections'=>$inspections]);
     }
 
     public function uploadDocuments(Request $request)
@@ -598,6 +600,11 @@ class AssessorController extends Controller
     public function submitReInspection(Request $request)
     {
         try {
+            $repaired = json_decode($request->repaired,true);
+            $replaced = json_decode($request->replaced,true);
+            $cil = json_decode($request->cil,true);
+            $reused = json_decode($request->reused,true);
+            $assessmentID = $request->assessmentID;
             $assessment = Assessment::where(['id'=> $request->assessmentID])->first();
             $claim = Claim::where(["id"=> $assessment->claimID])->first();
 
@@ -627,6 +634,134 @@ class AssessorController extends Controller
                 $assessmentTotal = (($sumAssessmentParts + ($sumAssessmentDetails) * Config::CURRENT_TOTAL_PERCENTAGE)/Config::INITIAL_PERCENTAGE);
             } else {
                 $assessmentTotal = (($sumAssessmentParts * Config::MARK_UP) + $sumAssessmentDetails);
+            }
+            if (isset($repaired) || isset($replaced) || isset($cil) || count($reused)) {
+                if (isset($repaired)) {
+                    AssessmentItem::where('assessmentID', $assessmentID)
+                        ->whereIn('id', $repaired)
+                        ->update([
+                            'reInspectionType' => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                            'reInspection' => Config::ACTIVE
+                        ]);
+                }
+                if (isset($replaced)) {
+                    AssessmentItem::where('assessmentID', $assessmentID)
+                        ->whereIn('id', $replaced)
+                        ->update([
+                            'reInspectionType' => Config::$JOB_CATEGORIES['REPLACE']['ID'],
+                            'reInspection' => Config::ACTIVE
+                        ]);
+                }
+                if (isset($cil)) {
+                    AssessmentItem::where('assessmentID', $assessmentID)
+                        ->whereIn('id', $cil)
+                        ->update([
+                            'reInspectionType' => Config::$JOB_CATEGORIES['CIL']['ID'],
+                            'reInspection' => Config::ACTIVE
+                        ]);
+                }
+                if (isset($reused)) {
+                    AssessmentItem::where('assessmentID', $assessmentID)
+                        ->whereIn('id', $reused)
+                        ->update([
+                            'reInspectionType' => Config::$JOB_CATEGORIES['REUSE']['ID'],
+                            'reInspection' => Config::ACTIVE
+                        ]);
+                }
+
+                $unReInspectedAmount = AssessmentItem::where('assessmentID', $assessmentID)
+                    ->where('reInspection', 0)
+                    ->sum('total');
+
+                $award = AssessmentItem::where('assessmentID', $assessmentID)
+                    ->where('reInspection', 0)
+                    ->where('reInspectionType', Config::$JOB_CATEGORIES['CIL']['ID'])
+                    ->sum('total');
+
+                $unReInspectedParts = AssessmentItem::where('assessmentID', $assessmentID)
+                    ->where('reInspection', 0)
+                    ->get();
+
+                if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+//                    $priceChange = $priceChange * 1.14;
+                    $unReInspectedAmount = (Config::CURRENT_TOTAL_PERCENTAGE/Config::INITIAL_PERCENTAGE) * $unReInspectedAmount;
+                    $labor = $labor * (Config::CURRENT_TOTAL_PERCENTAGE/Config::INITIAL_PERCENTAGE);
+                    $addLabor = $addLabor * (Config::CURRENT_TOTAL_PERCENTAGE/Config::INITIAL_PERCENTAGE);
+                    $finalTotal = ($assessmentTotal + $addLabor) - ($unReInspectedAmount + $labor);
+                    // dd($assessmentTotal , $addLabor , $priceChange , $supplementaryTotal, $unReInspectedAmount , $labor);
+                } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
+                    $priceChange = $priceChange * Config::MARK_UP;
+                    $unReInspectedAmount = Config::MARK_UP * $unReInspectedAmount;
+                    $finalTotal = ($assessmentTotal + $addLabor) - ($unReInspectedAmount + $labor);
+                }
+
+                if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                    $subAmount = (Config::MARK_UP * $award) + $labor;
+                } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
+                    $subAmount = (Config::MARK_UP * $award) + $labor;
+                }
+
+                $inspected = ReInspection::where('assessmentID', $assessmentID)->first();
+
+                if (count($inspected) > 0) {
+                    ReInspection::where('assessmentID',$assessmentID)
+                        ->update([
+                            'labor' => $labor,
+                            'add_labor' => $addLabor,
+                            'total' => $finalTotal,
+                            'notes' => $request->notes,
+                            'modifiedBy' => Auth::user()->id,
+                            'dateModified' => date('Y-m-d H:i:s')
+                        ]);
+                }else
+                {
+                    ReInspection::create([
+                        'assessmentID' => $assessmentID,
+                        'labor' => $labor,
+                        'add_labor' => $addLabor,
+                        'total' => $finalTotal,
+                        'createdBy' => Auth::user()->id,
+                        'notes' => $request->notes,
+                        'dateCreated' => date('Y-m-d H:i:s'),
+                    ]);
+                }
+                $pdf = [
+                    'assessor' => Auth::user()->name,
+                    'amount' => $finalTotal,
+                    'vehicle_reg' => $claim->vehicleRegNo,
+                    'dateCreated' => $assessment->dateCreated,
+                    'day' => date('Y-m-d'),
+                    'insured' => $claim->customer,
+                    'claim' => $claim->claimNo,
+                    'subAmount' => $subAmount,
+                    'parts' => $unReInspectedParts,
+                    'labor' => $labor,
+                    'addLabor' => $addLabor
+                ];
+
+                $string = str_replace('/', '-', $claim->claimNo);
+
+//                $officerRole = Role::where('name', 'Re-inspection Officer')->first()->id;
+//                $officers = DB::table('model_has_roles')->whereIn('role_id', [$officerRole])->pluck('user_id')->toArray();
+//                $officerEmails = User::whereIn('id', $officers)->pluck('email')->toArray();
+//                $adjusterRole = Role::where('name', 'Adjuster')->first()->id;
+//                $adjusters = DB::table('user_has_roles')->whereIn('role_id', [$adjusterRole])->pluck('user_id')->toArray();
+//                $adjusterEmails = User::whereIn('id', $adjusters)->pluck('email')->toArray();
+//                $headAssessor = User::role('Head Assessor')->first();
+//
+//                $cc = array_merge($officerEmails, $adjusterEmails, [Auth::user()->email]);
+//
+//                $data = [
+//                    'reg' => $claim->vehicleRegNo,
+//                    'claim' => $claim->claimNo,
+//                    'headName' => $headAssessor->name,
+//                    'headEmail' => $headAssessor->email,
+//                    'cc' => $cc
+//                ];
+                $response = array(
+                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                    "STATUS_MESSAGE" => "Congratulations, Re-inspection saved successfully"
+                );
             }
 
         }catch (\Exception $e)

@@ -25,6 +25,8 @@ class CreateAssessmentItemsTable extends Migration
             $table->longText('remarks')->nullable();
             $table->integer('assessmentItemType')->nullable();
             $table->tinyInteger('category')->default(0);
+            $table->tinyInteger('reInspection')->default(0);
+            $table->integer('reInspectionType')->nullable();
             $table->integer('segment')->default(0);
             $table->integer('modifiedBy')->nullable();
             $table->integer('createdBy')->nullable();

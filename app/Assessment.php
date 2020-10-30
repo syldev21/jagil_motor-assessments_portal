@@ -31,4 +31,12 @@ class Assessment extends Model
     {
         return $this->belongsTo(User::class,'assessedBy','id');
     }
+    public function garage()
+    {
+        return $this->belongsTo(Garage::class,'garageID','id');
+    }
+    public function reInspection()
+    {
+      return $this->belongsTo(ReInspection::class,'assessmentID','id');
+    }
 }

@@ -111,25 +111,25 @@
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="replaced[]" value="{{$assessmentItem->id}}" @if($assessmentItem->segment == \App\Conf\Config::$ASSESSMENT_SEGMENTS["INSPECTION"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="replacePart[]" value="{{$assessmentItem->id}}" @if($assessmentItem->reInspection) == \App\Conf\Config::ACTIVE) @if($assessmentItem->reInspectionType == \App\Conf\Config::$JOB_CATEGORIES['REPLACE']["ID"]) checked @endif @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="repaired[]" value="{{$assessmentItem->id}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["REPAIR"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="repaired[]" value="{{$assessmentItem->id}}" @if($assessmentItem->reInspection == \App\Conf\Config::ACTIVE) @if($assessmentItem->reInspectionType == \App\Conf\Config::$JOB_CATEGORIES["REPAIR"]["ID"]) checked @endif @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="cil[]" value="{{$assessmentItem->id}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="cil[]" value="{{$assessmentItem->id}}" @if($assessmentItem->reInspection == \App\Conf\Config::ACTIVE) @if($assessmentItem->reInspectionType == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
                                                     <td>
                                                         <label>
-                                                            <input type="checkbox" name="reused[]" value="{{$assessmentItem->id}}" @if($assessmentItem->category == \App\Conf\Config::$JOB_CATEGORIES["CIL"]["ID"]) checked @endif/>
+                                                            <input type="checkbox" name="reused[]" value="{{$assessmentItem->id}}" @if($assessmentItem->reInspection == \App\Conf\Config::ACTIVE) @if($assessmentItem->reInspectionType == \App\Conf\Config::$JOB_CATEGORIES["REUSE"]["ID"]) checked @endif @endif/>
                                                             <span></span>
                                                         </label>
                                                     </td>
