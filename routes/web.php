@@ -68,6 +68,7 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->post('/submitReInspection','AssessorController@submitReInspection');
     $router->post('/uploadDocuments','AssessorController@uploadDocuments');
     $router->post('/assessment-report','AssessorController@assessmentReport');
+    $router->post('/re-assessment-report','AssessorController@reInspectionReport');
 
 
 });

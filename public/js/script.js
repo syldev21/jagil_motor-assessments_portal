@@ -918,6 +918,36 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#assessor-view-re-inspection-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/assessor/re-assessment-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
     $("body").on('click','#head-assessor-assessment-report',function (e){
         e.preventDefault();
         var assessmentID = $(this).data("id");

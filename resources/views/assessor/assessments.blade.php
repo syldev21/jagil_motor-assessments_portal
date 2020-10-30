@@ -158,6 +158,11 @@
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Re-Inspection
                                                                         Report</a></li>
+                                                                    <li>
+                                                                    <a href="#" id="assessor-view-re-inspection-report"
+                                                                       data-id="{{$assessment['id']}}"><i
+                                                                            class="material-icons">insert_drive_file</i>View Re-Inspection
+                                                                        Report</a></li>
                                                                 <li><a href="#!"><i
                                                                             class="material-icons">compare_arrows</i>Price
                                                                         Change</a></li>
