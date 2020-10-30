@@ -707,7 +707,7 @@ class AssessorController extends Controller
                     ReInspection::where('assessmentID',$assessmentID)
                         ->update([
                             'labor' => $labor,
-                            'add_labor' => $addLabor,
+                            'addLabor' => $addLabor,
                             'total' => $finalTotal,
                             'notes' => $request->notes,
                             'modifiedBy' => Auth::user()->id,
@@ -718,7 +718,7 @@ class AssessorController extends Controller
                     ReInspection::create([
                         'assessmentID' => $assessmentID,
                         'labor' => $labor,
-                        'add_labor' => $addLabor,
+                        'addLabor' => $addLabor,
                         'total' => $finalTotal,
                         'createdBy' => Auth::user()->id,
                         'notes' => $request->notes,
