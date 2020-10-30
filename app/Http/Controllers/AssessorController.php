@@ -635,7 +635,7 @@ class AssessorController extends Controller
             } else {
                 $assessmentTotal = (($sumAssessmentParts * Config::MARK_UP) + $sumAssessmentDetails);
             }
-            if (isset($repaired) || isset($replaced) || isset($cil) || count($reused)) {
+            if (isset($repaired) || isset($replaced) || isset($cil) || isset($reused)) {
                 if (isset($repaired)) {
                     AssessmentItem::where('assessmentID', $assessmentID)
                         ->whereIn('id', $repaired)
@@ -701,7 +701,7 @@ class AssessorController extends Controller
                     $subAmount = (Config::MARK_UP * $award) + $labor;
                 }
 
-                $inspected = ReInspection::where('assessmentID', $assessmentID)->first();
+                $inspected = ReInspection::where('assessmentID', $assessmentID)->get();
 
                 if (count($inspected) > 0) {
                     ReInspection::where('assessmentID',$assessmentID)
