@@ -121,6 +121,9 @@
                                                                 class="Medium material-icons">expand_more</i></a>
 
                                                         <!-- Dropdown Structure -->
+                                                        <?php
+                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->first();
+                                                        ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
 {{--                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])--}}
@@ -131,6 +134,10 @@
                                                             <li><a href="#!"><i
                                                                         class="material-icons">compare_arrows</i>View
                                                                     Re-inspection</a></li>
+                                                            @if(isset($claimForm->name))
+                                                            <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
+                                                                        class="material-icons">compare_arrows</i>Claim Form</a></li>
+                                                            @endif
                                                             <li><a href="#!"><i
                                                                         class="material-icons">picture_as_pdf</i>View
                                                                     Re-inspection Letter</a></li>

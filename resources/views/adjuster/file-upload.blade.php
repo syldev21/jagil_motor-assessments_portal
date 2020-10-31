@@ -27,8 +27,29 @@
                                         <div class="row">
                                             <div class="input-field col m9 s12">
                                                 <small>Only <span
-                                                        class="red-text text-darken-3">JPEG,JPG,PNG & PDF</span> files
+                                                        class="red-text text-darken-3">JPEG,JPG,PNG</span> files
                                                     are allowed</small>
+                                            </div>
+                                            <div class="input-field col m3 s12">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col m6 s12">
+                                                <div class="file-field input-field">
+                                                    <div class="btn">
+                                                        <span>Claim Form</span>
+                                                        <input type="file" id="claimFormpdf" name="claimFormpdf">
+                                                    </div>
+                                                    <div class="file-path-wrapper">
+                                                        <input class="file-path validate" type="text" placeholder="Upload pdf file">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col m6 s12">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col m9 s12">
                                             </div>
                                             <div class="input-field col m3 s12">
                                                 <input type="hidden" name="claimID" value="{{$claim->id}}" id="claimID">

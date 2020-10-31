@@ -165,6 +165,7 @@
                                         <div class="step-actions">
                                             <input type="hidden" name="counter" id="counter" value="{{$count}}">
                                             <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessments->id}}">
+                                            <input type="hidden" name="reInspected" id="reInspected" value="{{$assessments->id}}">
                                             <input type="submit" class="waves-effect waves-dark btn next-step"
                                                    value="SUBMIT" id="submitReinspection"/>
                                             <button class="waves-effect waves-dark btn-flat previous-step">BACK

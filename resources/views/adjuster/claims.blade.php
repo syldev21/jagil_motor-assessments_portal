@@ -106,6 +106,9 @@
                                                                 class="Medium material-icons">expand_more</i></a>
 
                                                         <!-- Dropdown Structure -->
+                                                        <?php
+                                                        $claimForm =\App\Document::where(['claimID'=>$claim['id'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->first();
+                                                        ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             <li>
@@ -115,6 +118,11 @@
                                                                 <a href="#" id="uploadDocumentsForm" data-id="{{$claim['id']}}"><i
                                                                         class="material-icons">file_upload</i> Upload
                                                                     Document</a></li>
+                                                            @if(isset($claimForm->name))
+                                                                <li>
+                                                                    <a href="{{asset('documents/'.$claimForm->name)}}" download><i
+                                                                            class="material-icons">file_upload</i> Claim Form</a></li>
+                                                            @endif
                                                             <li><a href="#"><i
                                                                         class="material-icons">picture_as_pdf</i>
                                                                     Release Letter</a></li>

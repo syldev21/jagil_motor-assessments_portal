@@ -113,9 +113,39 @@ class AssessorController extends Controller
             $totalImages = $request->totalImages;
             $claimID = $request->claimID;
             //Loop for getting files with index like image0, image1
-            $response = array();
+            if($request->hasFile('claimForm'))
+            {
+                $pdfs = Document::where(['claimID'=>$claimID,'documentType'=> Config::$DOCUMENT_TYPES["PDF"]["ID"]])->get();
+                if (count($pdfs) > 0) {
+                    $affectedPdfRows = Document::where(['claimID'=>$claimID,'documentType'=> Config::$DOCUMENT_TYPES["PDF"]["ID"]])->delete();
+                    if ($affectedPdfRows > 0) {
+                        foreach ($pdfs as $pdf) {
+                            $image_path = "documents/" . $pdf->name;  // Value is not URL but directory file path
+                            if (File::exists($image_path)) {
+                                File::delete($image_path);
+                            }
+                        }
+                    }
+                }
+                $file = $request->file('claimForm');
+                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $path = $file->getRealPath();
+                $size = $file->getSize();
+                $picture = date('His') . '-' . $filename;
+                //Save files in below folder path, that will make in public folder
+                $file->move(public_path('documents/'), $picture);
+                $documents = Document::create([
+                    "claimID" => $claimID,
+                    "name" => $picture,
+                    "mime" => $extension,
+                    "size" => $size,
+                    "documentType" => $documentType = Config::$DOCUMENT_TYPES["PDF"]["ID"],
+                    "url" => $path,
+                    "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
+                ]);
+            }
             for ($x = 0; $x < $totalImages; $x++) {
-
                 if ($request->hasFile('images' . $x)) {
                     $file = $request->file('images' . $x);
                     $filename = $file->getClientOriginalName();
@@ -600,11 +630,12 @@ class AssessorController extends Controller
     public function submitReInspection(Request $request)
     {
         try {
+            $assessmentID = $request->assessmentID;
+            $totalImages = $request->totalImages;
             $repaired = json_decode($request->repaired,true);
             $replaced = json_decode($request->replaced,true);
             $cil = json_decode($request->cil,true);
             $reused = json_decode($request->reused,true);
-            $assessmentID = $request->assessmentID;
             $notes = isset($request->notes) ? $request->notes : '';
             $assessment = Assessment::where(['id'=> $request->assessmentID])->first();
             $claim = Claim::where(["id"=> $assessment->claimID])->first();
@@ -717,7 +748,7 @@ class AssessorController extends Controller
                         ]);
                 }else
                 {
-                    ReInspection::create([
+                    $inspectionID = ReInspection::insertGetId([
                         'assessmentID' => $assessmentID,
                         'labor' => $labor,
                         'addLabor' => $addLabor,
@@ -727,6 +758,30 @@ class AssessorController extends Controller
                         'notes' => $request->notes,
                         'dateCreated' => date('Y-m-d H:i:s'),
                     ]);
+
+                    //Loop for getting files with index like image0, image1
+                    for ($x = 0; $x < $totalImages; $x++) {
+                        if ($request->hasFile('images' . $x)) {
+                            $file = $request->file('images' . $x);
+                            $filename = $file->getClientOriginalName();
+                            $extension = $file->getClientOriginalExtension();
+                            $path = $file->getRealPath();
+                            $size = $file->getSize();
+                            $picture = date('His') . '-' . $filename;
+                            //Save files in below folder path, that will make in public folder
+                            $file->move(public_path('documents/'), $picture);
+                            //                    $inspectionID = ReInspection::where([''=>$assessmentID])->first();
+                            Document::create([
+                                "inspectionID" => $inspectionID,
+                                "name" => $picture,
+                                "mime" => $extension,
+                                "size" => $size,
+                                "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
+                                "url" => $path,
+                                "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
+                            ]);
+                        }
+                    }
                 }
                 $pdf = [
                     'assessor' => Auth::user()->name,
@@ -787,7 +842,8 @@ class AssessorController extends Controller
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
         $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
-        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+        $reinspection = ReInspection::where(['assessmentID'=>$assessmentID])->first();
+        $documents = Document::where(["inspectionID" => $reinspection->id])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
         return view("assessor.view-re-inspection-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);

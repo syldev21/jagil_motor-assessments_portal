@@ -1530,47 +1530,17 @@ $(document).ready(function () {
         $.each($("input[name='reused[]']:checked"), function(){
             reused.push($(this).val());
         });
-        // for(i =0 ; i<counter; i++)
-        // {
-        //     var vehiclePart = $("#vehiclePart_"+i);
-        //     var quantity = $("#quantity_"+i);
-        //     var total = $("#total_"+i);
-        //     var cost = $("#partPrice_"+i);
-        //     var contribution = $("#contribution_"+i);
-        //     var discount = $("#discount_"+i);
-        //     var remarks = $("#remarks_"+i);
-        //     var category = $("#category_"+i);
-        //     var assessmentItemID =$("#assessmentItemID_"+i);
-        //     var partData = {assessmentItemID : assessmentItemID.val(),vehiclePart : vehiclePart.val(),quantity : quantity.val(),total:total.val(),cost:cost.val(),
-        //         contribution:contribution.val(),discount:discount.val(),
-        //         remarks:remarks.val(),category: category.val(),
-        //         repaired : repaired.val(), replaced : replaced.val(),
-        //         cil : cil.val(),re_used : re_used.val()
-        //     };
-        //     partsData.push(partData);
-        // }
-        // var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
-        // var drafted = $("#drafted");
-        // var jobsData = {
-        //     total : total.val()
-        // };
-
         var image_upload = new FormData();
         // Attach file
         // formData.append('image', $('input[type=file]')[0].files[0]);
         var files = $('input[type=file]')[0].files;
-        let totalImages = files.length; //Total Images
+        var totalImages = files.length; //Total Images
         let images = $('input[type=file]')[0];
         for (let i = 0; i < totalImages; i++) {
             image_upload.append('images' + i, images.files[i]);
         }
-        // image_upload.append('totalImages', totalImages);
+        image_upload.append('totalImages', totalImages);
         image_upload.append('assessmentID', assessmentID.val());
-        // image_upload.append('assessmentType', assessmentType.val());
-        // image_upload.append('isDraft', isDraft);
-        // image_upload.append('drafted', drafted.val());
-        // image_upload.append('jobsData',JSON.stringify(jobsData));
-        // image_upload.append('partsData',JSON.stringify(partsData));
         image_upload.append('repaired',JSON.stringify(repaired));
         image_upload.append('replaced',JSON.stringify(replaced));
         image_upload.append('cil',JSON.stringify(cil));
@@ -1628,8 +1598,10 @@ $(document).ready(function () {
         for (let i = 0; i < totalImages; i++) {
             image_upload.append('images' + i, images.files[i]);
         }
+        var claimForm = $('#claimFormpdf').prop('files')[0];
         image_upload.append('totalImages', totalImages);
         image_upload.append('claimID', claimID);
+        image_upload.append('claimForm', claimForm);
         $.ajaxSetup({
 
             headers: {

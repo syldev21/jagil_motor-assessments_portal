@@ -18,6 +18,7 @@ class CreateDocumentsTable extends Migration
             $table->string('name')->nullable();
             $table->bigInteger('claimID')->nullable();
             $table->bigInteger('assessmentID')->nullable();
+            $table->bigInteger('inspectionID')->nullable();
             $table->integer('documentType')->nullable();
             $table->integer('segment')->nullable();
             $table->string('mime')->nullable();
