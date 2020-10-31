@@ -127,8 +127,15 @@
                                                                 class="Medium material-icons">expand_more</i></a>
 
                                                         <!-- Dropdown Structure -->
+                                                        <?php
+                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->first();
+                                                        ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
+                                                            @if(isset($claimForm->name))
+                                                                <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
+                                                                            class="material-icons">file_download</i>Claim Form</a></li>
+                                                            @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
                                                                 <li>
                                                                     <a href="#" id="fillAssessmentReport"

@@ -121,7 +121,7 @@
                                                             @if(isset($claimForm->name))
                                                                 <li>
                                                                     <a href="{{asset('documents/'.$claimForm->name)}}" download><i
-                                                                            class="material-icons">file_upload</i> Claim Form</a></li>
+                                                                            class="material-icons">file_download</i> Claim Form</a></li>
                                                             @endif
                                                             <li><a href="#"><i
                                                                         class="material-icons">picture_as_pdf</i>
