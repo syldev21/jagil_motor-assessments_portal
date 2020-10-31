@@ -210,7 +210,7 @@
                                                 </table>
                                         <div id="addP"></div>
                                         <div class="row">
-                                            <div class="col s12">
+                                            <div class="col s12" id="dynamicPartsSelector">
                                                 <a href="#" class="btn blue lighten-2" id="addPart">Add Part <i
                                                         class="medium material-icons">add</i></a>
                                                 <a href="#" class="btn red darken-4" onclick="deletePart()">Remove <i
@@ -470,7 +470,7 @@
                                             <div class="col m6">
                                             </div>
                                             <div class="step-actions">
-                                                <input type="hidden" name="counter" id="counter" value="{{isset($count) ? $count : ''}}">
+                                                <input type="hidden" name="counter" id="counter" value="{{isset($count) ? $count-1 : 0}}">
                                                 <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
                                                 <input type="submit" class="waves-effect waves-dark btn next-step"
                                                        value="SUBMIT" id="submitAssessment"/>
@@ -497,15 +497,32 @@
 <script type="text/javascript">
     var t =0;
     $(document).ready(function() {
+
+        $("#vehiclePart_"+t).select2({dropdownAutoWidth : true, width: '160px'});
+        var partsCounter = $("#counter").val()+1;
+        for(var i=1;i<partsCounter;i++)
+        {
+            $("#vehiclePart_"+i).select2({dropdownAutoWidth : true, width: '160px'});
+        }
+
         $("#vehiclePart_"+t).select2({dropdownAutoWidth : true, width: '160px'});
 
         $('body').on('click','#addPart',function(){
             $("#vehiclePart_"+t).select2({dropdownAutoWidth : true, width: '160px'});
         });
     });
-    $("body").on('click','#addPart',function (){
-        t = t + 1;
+    $("#dynamicPartsSelector").on('click','#addPart',function (){
+        var drafted = $("#drafted").val();
+        if(drafted == 1)
+        {
+            t = $("#counter").val();
+            t++;
+        }else
+        {
+            t = t + 1;
+        }
         $("#counter").val(t);
+
         $('#addP').append('<tr class="row dynamicVehiclePart removable" id="row'+t+'">\n' +
             '                                                        <td>\n' +
             '                                                            <label>\n' +
@@ -555,6 +572,7 @@
             '                                                            </select>\n' +
             '                                                        </td>\n' +
             '                                                    </tr>');
+        $("#vehiclePart_"+t).select2({dropdownAutoWidth : true, width: '160px'});
     });
     function getTotal(t) {
 

@@ -1306,7 +1306,7 @@ $(document).ready(function () {
         var i;
         // Array
         var partsData = [];
-        for(i =0 ; i<counter; i++)
+        for(i =0 ; i<=counter; i++)
         {
             var vehiclePart = $("#vehiclePart_"+i);
             var quantity = $("#quantity_"+i);
