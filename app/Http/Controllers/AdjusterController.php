@@ -661,4 +661,36 @@ class AdjusterController extends Controller
         $claims = Claim::where("dateCreated", '>', Carbon::now()->subDays(Config::DATES_LIMIT))->where('claimStatusID','=',$claimStatusID)->get();
         return view('adjuster.claims', ['claims' => $claims, 'assessors' => $assessors,'claimStatusID'=>$claimStatusID]);
     }
+
+    //Generate release letter
+    public function generateReleaseLetter($claim_id, $download=true) {
+        $claim = Claim::where(['id'=>$claim_id])->with('customer')->first();
+
+        $role = Config::$ROLES['ADJUSTER'];
+
+        $pdf_html = view('adjuster.release-letter', compact('claim', 'role'))->render();
+        $pdf_name = str_replace('/', '', $claim->claim_no).' - '.$claim->vehicle_reg.'.pdf';
+        $pdf_path = public_path().'/release-letters';
+        $pdf_url = url('/windscreen-repairs/'.$pdf_name);
+
+        if(!is_dir($pdf_path)){
+            //Directory does not exist, so lets create it.
+            mkdir($pdf_path, 0755);
+
+            $pdf_path = $pdf_path.'/'.$pdf_name;
+        }
+
+        $pdf = app()->make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option('enable_html5_parser', true);
+        $pdf->loadHTML($pdf_html);
+
+        if($download) {
+            return $pdf->stream($pdf_name, array("Attachment" => false));
+        } else {
+
+            $pdf->save($pdf_path);
+
+            return public_path().'/windscreen-repairs/'.$pdf_name;
+        }
+    }
 }

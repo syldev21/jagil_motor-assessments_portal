@@ -126,24 +126,26 @@
                                                         ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
-{{--                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])--}}
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
                                                                 <li><a href="#" data-id="{{$assessment->id}}" id="assessmentReport"><i
                                                                             class="material-icons">picture_as_pdf</i>View
                                                                         Assessment Report</a></li>
-{{--                                                            @endif--}}
-                                                            <li><a href="#!"><i
-                                                                        class="material-icons">compare_arrows</i>View
-                                                                    Re-inspection</a></li>
+                                                            @endif
                                                             @if(isset($claimForm->name))
                                                             <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
                                                                         class="material-icons">file_download</i> Claim Form </a></li>
                                                             @endif
-                                                            <li><a href="#!"><i
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                                                                    <li><a href="#!"><i
+                                                                                class="material-icons">compare_arrows</i>View
+                                                                            Re-inspection</a></li>
+                                                                    <li><a href="#!"><i
                                                                         class="material-icons">picture_as_pdf</i>View
                                                                     Re-inspection Letter</a></li>
-                                                            <li><a href="#!"><i
+                                                            <li><a href="{{url('/adjuster/send-release-letter/'.$assessment['claimID'])}}" data-id="{{$assessment['claimID']}}" id=""><i
                                                                         class="material-icons">picture_as_pdf</i>
                                                                     Release Letter</a></li>
+                                                            @endif
                                                         </ul>
 
                                                     </td>

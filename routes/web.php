@@ -51,6 +51,8 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->post('/filterPremia11ClaimsByDate','AdjusterController@filterPremia11ClaimsByDate');
     $router->post('/claimExceptionDetail','AdjusterController@claimExceptionDetail');
     $router->post('/fetch-claims','AdjusterController@claims');
+    //Release Letter
+    $router->get('/send-release-letter/{claim_id}', 'AdjusterController@generateReleaseLetter');
 
     //Reports
     $router->post('/assessmentReport','AdjusterController@assessmentReport');
@@ -69,7 +71,8 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->post('/uploadDocuments','AssessorController@uploadDocuments');
     $router->post('/assessment-report','AssessorController@assessmentReport');
     $router->post('/re-assessment-report','AssessorController@reInspectionReport');
-
+    $router->get('/edit-assessment-report/{id}','AssessorController@editAssessmentReport');
+    $router->post('/submit-edited-assessment','AssessorController@submitEditedAssessment');
 
 });
 

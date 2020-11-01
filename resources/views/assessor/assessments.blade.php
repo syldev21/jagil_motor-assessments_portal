@@ -144,6 +144,13 @@
                                                                         Assessment </a>
                                                                 </li>
                                                             @endif
+                                                                @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
+                                                                <li>
+                                                                    <a href="#" id="view-assessor-assessment-report"
+                                                                       data-id="{{$assessment['id']}}"><i
+                                                                            class="material-icons">edit</i>Edit Assessment </a>
+                                                                </li>
+                                                            @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                 <li>
                                                                     <a href="#" id="fillAssessmentReport"
