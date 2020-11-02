@@ -113,11 +113,10 @@ class AssessorController extends Controller
             $totalImages = $request->totalImages;
             $claimID = $request->claimID;
             //Loop for getting files with index like image0, image1
-            if($request->hasFile('claimForm'))
-            {
-                $pdfs = Document::where(['claimID'=>$claimID,'documentType'=> Config::$DOCUMENT_TYPES["PDF"]["ID"]])->get();
+            if ($request->hasFile('claimForm')) {
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->get();
                 if (count($pdfs) > 0) {
-                    $affectedPdfRows = Document::where(['claimID'=>$claimID,'documentType'=> Config::$DOCUMENT_TYPES["PDF"]["ID"]])->delete();
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->delete();
                     if ($affectedPdfRows > 0) {
                         foreach ($pdfs as $pdf) {
                             $image_path = "documents/" . $pdf->name;  // Value is not URL but directory file path
@@ -144,43 +143,57 @@ class AssessorController extends Controller
                     "url" => $path,
                     "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
                 ]);
+                if($totalImages == 0)
+                {
+                    $response = array(
+                        "STATUS_CODE" => Config::SUCCESS_CODE,
+                        "STATUS_MESSAGE" => "Congratulations! Your documents has been uploaded successfully"
+                    );
+                    return json_encode($response);
+                }
             }
-            for ($x = 0; $x < $totalImages; $x++) {
-                if ($request->hasFile('images' . $x)) {
-                    $file = $request->file('images' . $x);
-                    $filename = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $path = $file->getRealPath();
-                    $size = $file->getSize();
-                    $picture = date('His') . '-' . $filename;
-                    //Save files in below folder path, that will make in public folder
-                    $file->move(public_path('documents/'), $picture);
-                    $documents = Document::create([
-                        "claimID" => $claimID,
-                        "name" => $picture,
-                        "mime" => $extension,
-                        "size" => $size,
-                        "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
-                        "url" => $path,
-                        "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
-                    ]);
-                    if ($documents->id > 0) {
-                        $response = array(
-                            "STATUS_CODE" => Config::SUCCESS_CODE,
-                            "STATUS_MESSAGE" => "Congratulations! Your documents has been uploaded successfully"
+            $documentsArray = [];
+            if ($totalImages > 0) {
+                for ($x = 0; $x < $totalImages; $x++) {
+                    if ($request->hasFile('images' . $x)) {
+                        $file = $request->file('images' . $x);
+                        $filename = $file->getClientOriginalName();
+                        $extension = $file->getClientOriginalExtension();
+                        $path = $file->getRealPath();
+                        $size = $file->getSize();
+                        $picture = date('His') . '-' . $filename;
+                        //Save files in below folder path, that will make in public folder
+                        $file->move(public_path('documents/'), $picture);
+                        $documents = array(
+                            "claimID" => $claimID,
+                            "name" => $picture,
+                            "mime" => $extension,
+                            "size" => $size,
+                            "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
+                            "url" => $path,
+                            "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
                         );
-                    } else {
-                        $response = array(
-                            "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
-                            "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
-                        );
+                        $documentsArray[] = $documents;
                     }
+                }
+                $collection = collect($documentsArray);
+                $save = Document::insert($collection->values()->all());
+                if ($save) {
+                    $response = array(
+                        "STATUS_CODE" => Config::SUCCESS_CODE,
+                        "STATUS_MESSAGE" => "Congratulations! Your documents has been uploaded successfully"
+                    );
                 } else {
                     $response = array(
-                        "STATUS_CODE" => Config::INVALID_PAYLOAD,
-                        "STATUS_MESSAGE" => "Invalid data, Confirm your data and try again later"
+                        "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                        "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
                     );
                 }
+            } else {
+                $response = array(
+                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                );
             }
         } catch (\Exception $e) {
             $response = array(
