@@ -568,7 +568,7 @@
                                     <div class="input-field col m8 s12">
                                     </div>
                                     <div class="input-field col m4 s12">
-                                        <a href="#" class="btn blue lighten-2 waves-effect">Submit</a>
+                                        <a href="#" class="btn blue lighten-2 waves-effect" id="head-assessor-request-change">Submit</a>
                                         <a href="#" class="modal-action modal-close btn red darken-2 waves-effect">Cancel</a>
                                     </div>
                                 </div>

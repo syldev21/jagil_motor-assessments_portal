@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assessment;
 use App\AssessmentItem;
+use App\ChangeRequest;
 use App\Claim;
 use App\CustomerMaster;
 use App\Document;
@@ -324,6 +325,76 @@ class HeadAssessorController extends Controller
             );
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to approve or halt a claim " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
+
+    public function requestAssessmentChange(Request $request) {
+        try {
+            $assessment = Assessment::where('id', $request->assessmentID)->first();
+            $claim = Claim::where(['id'=> $assessment->claimID])->first();
+            $assessor = User::where(['id'=>isset($assessment->assessedBy) ? $assessment->assessedBy : ''])->first();
+            $data = [
+                'id' => $request->assessmentID,
+                'assessments' => $assessment,
+                'assessor' => $assessor,
+                'claim' => $claim,
+                'change' => $request->changes,
+                'reg' => $claim->vehicleRegNo,
+                'role' => Config::$ROLES['HEAD-ASSESSOR']
+            ];
+
+            $change = new ChangeRequest();
+            $change->assessmentID = $request->assessmentID;
+            $change->changeRequest = $request->changes;
+            $change->createdBy = Auth::user()->id;
+            $change->directedTo = $data['assessor']->id;
+            $change->dateCreated = date('Y-m-d H:i:s');
+
+            $save = $change->save();
+            if ($save) {
+                Assessment::where('id', $request->assessmentID)->update([
+                    'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'],
+                    'dateModified' => date('Y-m-d H:i:s'),
+                    'updatedBy'=> Auth::user()->id
+                ]);
+                $email_add = $data['assessor']->email;
+                $email = [
+                    'subject' => 'Survey Report for - '.$data['reg'],
+                    'from_user_email' => 'noreply@jubileeinsurance.com',
+                    'message' =>"
+                    Hello ".$data['assessor']->name.", <br>
+                    This is in regards to the vehicle you've recently assessed, Registration <strong>".$data['reg']."</strong> <br>
+                    You are required to make the following change(s) <br>
+
+                    <i><u>Changes Requested</u></i>: <br>
+                    <p> ".$data['change']."</p> <br><br>
+
+                    Regards, <br><br>
+                     ".$data['role'].", <br>
+                    Claims Department, <br>
+                    Jubilee Insurance Company of Kenya.
+                ",
+                ];
+//                InfobipEmailHelper::sendEmail($email, $email_add);
+                $response = array(
+                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                    "STATUS_MESSAGE" => "Heads up! An email was sent to " .$data['assessor']->name . " with the requested changes"
+                );
+            } else {
+                $response = array(
+                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to request for changes " . $e->getMessage());
         }
         return json_encode($response);
     }

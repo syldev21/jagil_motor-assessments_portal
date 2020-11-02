@@ -107,6 +107,12 @@
                                                                 class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
                                                         </td>
                                                         <?php $date = $assessment['finalApprovedAt']; ?>
+                                                    @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'])
+                                                        <td>
+                                                            <button
+                                                                class="btn red lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['text']}}</button>
+                                                        </td>
+                                                        <?php $date = $assessment['dateModified']; ?>
                                                     @endif
                                                     <td>
                                                         {{\Carbon\Carbon::parse($date)->diffForHumans()}}
@@ -144,7 +150,7 @@
                                                                         Assessment </a>
                                                                 </li>
                                                             @endif
-                                                                @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
+                                                                @if(($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']) || ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']))
                                                                 <li>
                                                                     <a href="#" id="view-assessor-assessment-report"
                                                                        data-id="{{$assessment['id']}}"><i
