@@ -110,6 +110,12 @@ class AssessorController extends Controller
     public function uploadDocuments(Request $request)
     {
         try {
+            //--- this tries to override the default of only 2M file uploads.
+            ini_set("upload_max_filesize","25M");
+            ini_set("max_execution_time",600); //--- 10 minutes
+            ini_set("post_max_size","35M");
+            ini_set("file_uploads","On");
+
             $totalImages = $request->totalImages;
             $claimID = $request->claimID;
             //Loop for getting files with index like image0, image1
