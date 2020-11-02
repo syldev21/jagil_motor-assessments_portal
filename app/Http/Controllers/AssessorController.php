@@ -115,6 +115,7 @@ class AssessorController extends Controller
             ini_set("max_execution_time",600); //--- 10 minutes
             ini_set("post_max_size","35M");
             ini_set("file_uploads","On");
+            ini_set('memory_limit', '4096M');
 
             $totalImages = $request->totalImages;
             $claimID = $request->claimID;
