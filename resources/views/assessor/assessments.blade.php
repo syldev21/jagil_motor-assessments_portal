@@ -72,7 +72,7 @@
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
                                                     <?php $date = ''?>
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                        <td>{{$assessment->approver->firstName}} {{$assessment->approver->firstName}}</td>
+                                                        <td>{{isset($assessment->approver->firstName) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver->lastName) ? $assessment->approver->lastName : ''}}</td>
                                                     @endif
                                                     @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                         <td>{{isset($assessment->assessor) ? $assessment->assessor->firstName.' '.$assessment->assessor->lastName : ''}}</td>
