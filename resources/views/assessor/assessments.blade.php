@@ -188,8 +188,8 @@
                                                                 <li><a href="#!"><i
                                                                             class="material-icons">compare_arrows</i>Price
                                                                         Change</a></li>
-                                                                <li><a href="#!"><i
-                                                                            class="material-icons">picture_as_pdf</i>Add
+                                                                <li><a href="#!" id="fillSupplementaryReport" data-id="{{$assessment['id']}}"><i
+                                                                            class="material-icons">insert_drive_file</i>Add
                                                                         Supplementary Report</a></li>
                                                                 <li><a href="#!"><i
                                                                             class="material-icons">picture_as_pdf</i>Claim

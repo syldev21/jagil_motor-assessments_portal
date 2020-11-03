@@ -12,6 +12,7 @@ use App\Helper\SMSHelper;
 use App\JobDetail;
 use App\Location;
 use App\Notifications\NewClaimNotification;
+use App\ReInspection;
 use App\StatusTracker;
 use App\Conf\Config;
 use App\CustomerMaster;
@@ -692,5 +693,67 @@ class AdjusterController extends Controller
 
             return public_path().'/windscreen-repairs/'.$pdf_name;
         }
+    }
+
+    public function reInspectionLetter(Request  $request, $id) {
+        $assessment = Assessment::findOrFail($id);
+
+        $claimExists = Claim::where('id', $assessment->claimID)->exists();
+
+        if ($claimExists) {
+            $claim = Claim::where('id', $assessment->claimID)->first();
+            $reinspection = ReInspection::where('assessmentID', $id)->first();
+
+            $award = AssessmentItem::where('assessmentID', $id)
+                ->where('reInspectionType', Config::$JOB_CATEGORIES['CIL']['ID'])
+                ->sum('total');
+
+            $status = $assessment->assessmentTypeID;
+
+            $labor = $reinspection->labor;
+
+            if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                $subAmount = (Config::MARK_UP * $award) + $labor;
+            } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
+                $subAmount = (Config::MARK_UP * $award) + $labor;
+            }
+
+            $unReInspectedParts = AssessmentItem::where('assessmentID', $id)
+                ->whereNotIn('assessmentItemType', Config::$ASSESSMENT_TYPES_ARRAY)
+                ->get();
+            $assessor = User::where('id', $reinspection->createdBy)->first();
+            $insured = CustomerMaster::where(['customerCode'=> $claim->customerCode])->first();
+            $insuredName = isset($insured->firstName) ? $insured->firstName : '' . isset($insured->lastName) ? $insured->lastName : '';
+            $assessorName = isset($assessor->firstName) ? $assessor->firstName : ''. isset($assessor->lastName) ? $assessor->lastName : '';
+            $data = [
+                'assessor' => $assessorName,
+                'amount' => $reinspection->total,
+                'vehicleRegNo' => $claim->vehicleRegNo,
+                'assessmentDate' => $assessment->dateCreated,
+                'day' => $reinspection->dateCreated,
+                'insured' => $insuredName,
+                'claim' => $claim->claimNo,
+                'subAmount' => isset($subAmount) ? $subAmount : 0,
+                'parts' => $unReInspectedParts,
+                'labor' => $reinspection->labor,
+                'addLabor' => $reinspection->add_labor
+            ];
+        } else {
+            $data = [
+                'assessor' => null,
+                'amount' => 0,
+                'vehicleRegNo' => null,
+                'assessmentDate' => '00:00:00',
+                'day' => '00:00:00',
+                'insured' => null,
+                'claim' => null,
+                'subAmount' => 0,
+                'parts' => [],
+                'labor' => 0,
+                'addLabor' => 0
+            ];
+        }
+
+        return view('common.letter', $data);
     }
 }

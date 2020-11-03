@@ -139,7 +139,7 @@
                                                                     <li><a href="#!"><i
                                                                                 class="material-icons">compare_arrows</i>View
                                                                             Re-inspection</a></li>
-                                                                    <li><a href="#!"><i
+                                                                    <li><a href="{{url('/adjuster/re-inspection-letter/'.$assessment['id'])}}" target="_blank"><i
                                                                         class="material-icons">picture_as_pdf</i>View
                                                                     Re-inspection Letter</a></li>
                                                             <li><a href="{{url('/adjuster/send-release-letter/'.$assessment['claimID'])}}" data-id="{{$assessment['claimID']}}" id=""><i

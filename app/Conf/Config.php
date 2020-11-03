@@ -226,6 +226,7 @@ class Config
         "CASH_IN_LIEU" => 2,
         "TOTAL_LOSS" => 3
     );
+    static $ASSESSMENT_TYPES_ARRAY = array(self::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE'],self::ASSESSMENT_TYPES['CASH_IN_LIEU'],self::ASSESSMENT_TYPES['TOTAL_LOSS']);
     const DISPLAY_ASSESSMENT_TYPES = array(
         1 => "Authority to garage",
         2 => "Cash in Lieu",

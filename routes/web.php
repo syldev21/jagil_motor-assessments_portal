@@ -53,6 +53,8 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->post('/fetch-claims','AdjusterController@claims');
     //Release Letter
     $router->get('/send-release-letter/{claim_id}', 'AdjusterController@generateReleaseLetter');
+    //Re-inspection letter
+    $router->get('/re-inspection-letter/{claim_id}', 'AdjusterController@reInspectionLetter');
 
     //Reports
     $router->post('/assessmentReport','AdjusterController@assessmentReport');
@@ -65,6 +67,7 @@ $router->group(['prefix' => 'assessor'], function($router)
 //    $router->get('/assessments','AssessorController@fetchAssessments');
     $router->post('/assessments','AssessorController@assessments');
     $router->get('/fillAssessmentReport/{id}','AssessorController@fillAssessmentReport');
+    $router->get('/fillSupplementaryReport/{id}','AssessorController@fillSupplementaryReport');
     $router->get('/fillReInspectionReport/{id}','AssessorController@fillReInspectionReport');
     $router->post('/submitAssessment','AssessorController@submitAssessment');
     $router->post('/submitReInspection','AssessorController@submitReInspection');
