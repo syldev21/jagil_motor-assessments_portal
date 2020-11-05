@@ -21,6 +21,7 @@ class CreateJobDetailsTable extends Migration
             $table->integer('jobCategory')->nullable();
             $table->double('cost')->nullable();
             $table->string('remarks')->nullable();
+            $table->integer('segment')->default(0);
             $table->integer('modifiedBy')->nullable();
             $table->integer('createdBy')->nullable();
             $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));

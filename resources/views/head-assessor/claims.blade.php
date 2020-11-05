@@ -138,12 +138,6 @@
                                                         <!-- Dropdown Structure -->
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
-                                                            <li><a href="#!"><i class="material-icons">edit</i>Edit</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ url("/adjuster/uploadDocumentsForm/".$claim['claimID']) }}"><i
-                                                                        class="material-icons">file_upload</i> Upload
-                                                                    Document</a></li>
                                                             @if($claim['claimStatusID'] == \App\Conf\Config::$STATUSES['CLAIM']['ASSIGNED']['id'])
                                                                 <li><a href="#"
                                                                        onclick="reAssignAssessor({{$loop->iteration}})"><i
@@ -155,9 +149,6 @@
                                                                             class="material-icons">assignment_ind</i>Assign
                                                                         Assessor</a></li>
                                                             @endif
-                                                            <li><a href="#!"><i
-                                                                        class="material-icons">picture_as_pdf</i>
-                                                                    Release Letter</a></li>
                                                         </ul>
 
                                                     </td>

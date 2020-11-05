@@ -66,6 +66,7 @@ $router->group(['prefix' => 'assessor'], function($router)
     //Motor  assessment User Module
 //    $router->get('/assessments','AssessorController@fetchAssessments');
     $router->post('/assessments','AssessorController@assessments');
+    $router->post('/supplementaries','AssessorController@supplementaries');
     $router->get('/fillAssessmentReport/{id}','AssessorController@fillAssessmentReport');
     $router->get('/fillSupplementaryReport/{id}','AssessorController@fillSupplementaryReport');
     $router->get('/fillReInspectionReport/{id}','AssessorController@fillReInspectionReport');
@@ -73,9 +74,13 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->post('/submitReInspection','AssessorController@submitReInspection');
     $router->post('/uploadDocuments','AssessorController@uploadDocuments');
     $router->post('/assessment-report','AssessorController@assessmentReport');
+    $router->post('/supplementary-report','AssessorController@supplementaryReport');
     $router->post('/re-assessment-report','AssessorController@reInspectionReport');
     $router->get('/edit-assessment-report/{id}','AssessorController@editAssessmentReport');
+    $router->get('/edit-supplementary-report/{id}','AssessorController@editSupplementaryReport');
     $router->post('/submit-edited-assessment','AssessorController@submitEditedAssessment');
+    $router->post('/submit-edited-supplementary','AssessorController@submitEditedSupplementary');
+    $router->post('/submitSupplementary','AssessorController@submitSupplementary');
 
 });
 

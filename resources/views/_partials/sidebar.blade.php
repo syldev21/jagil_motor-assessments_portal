@@ -166,6 +166,35 @@
                 </ul>
             </div>
         </li>
+        <li class="bold ">
+            <a class="collapsible-header"
+               href="javascript:void(0) "
+            >
+                <i class="material-icons">note</i>
+                <span class="menu-title" data-i18n="settings">Supplementaries</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+
+                    <li class="">
+                        <a href="#"
+                           class="assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
+                         >
+                            <i class="material-icons">compare_arrows</i>
+                            <span data-i18n="Invoice List">Assessed</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
+                        >
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Invoice List">Approved</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["HEAD-ASSESSOR"])
         <li class="bold ">

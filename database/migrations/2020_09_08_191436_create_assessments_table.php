@@ -28,6 +28,7 @@ class CreateAssessmentsTable extends Migration
             $table->longText('cause')->nullable();
             $table->longText('note')->nullable();
             $table->bigInteger('assessmentStatusID')->nullable();
+            $table->bigInteger('segment')->nullable();
             $table->bigInteger('approvedBy')->nullable();
             $table->dateTime('approvedAt')->nullable();
             $table->bigInteger('finalApprovalBy')->nullable();

@@ -819,6 +819,32 @@ $(document).ready(function () {
 
         });
     });
+    $(".assessor-fetch-supplementaries").on('click',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
+            url: '/assessor/supplementaries',
+
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
     $(".head-assessor-assessments").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
@@ -990,6 +1016,36 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#view-assessor-supplementary-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/assessor/supplementary-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
     $("body").on('click','#view-assessor-assessment-report',function (e){
         e.preventDefault();
         var id = $(this).data("id");
@@ -1007,6 +1063,49 @@ $(document).ready(function () {
             type: 'GET',
 
             url: '/assessor/edit-assessment-report/'+id,
+
+            success: function (data) {
+                $("#main").html(data);
+                var drafted = $("#drafted").val();
+                var stepper = document.querySelector('.stepper');
+                var stepperInstace = new MStepper(stepper, {
+                    // options
+                    firstActive: 0 // this is the default
+                });
+                var finalArray = [];
+                if(drafted == 1) {
+                    var imagesArray = $("#imagesArray").val();
+                    $.each(JSON.parse(imagesArray), function (key, value) {
+                        var imgData = {id: value.id, src: "documents/" + value.name}
+                        finalArray.push(imgData);
+                    });
+                }
+                $('.input-images').imageUploader({
+                    label : "Drag & Drop Images here or click to browse",
+                    preloaded : finalArray
+                });
+                $('select').formSelect();
+            }
+
+        });
+    });
+    $("body").on('click','#edit-supplementary-report',function (e){
+        e.preventDefault();
+        var id = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'GET',
+
+            url: '/assessor/edit-supplementary-report/'+id,
 
             success: function (data) {
                 $("#main").html(data);
@@ -1258,211 +1357,230 @@ $(document).ready(function () {
             },1000);
         }
     });
-    // $("body").on('click','#submit-edited-assessment',function (e){
-    //     e.preventDefault();
-    //     var counter = $("#counter").val();
-    //     var i;
-    //     // Array
-    //     var partsData = [];
-    //     for(i =0 ; i<=counter; i++)
-    //     {
-    //         var vehiclePart = $("#vehiclePart_"+i);
-    //         var quantity = $("#quantity_"+i);
-    //         var total = $("#total_"+i);
-    //         var cost = $("#partPrice_"+i);
-    //         var contribution = $("#contribution_"+i);
-    //         var discount = $("#discount_"+i);
-    //         var remarks = $("#remarks_"+i);
-    //         var category = $("#category_"+i);
-    //         var partData = {vehiclePart : vehiclePart.val(),quantity : quantity.val().length > 0 ? quantity.val() : 0,total:total.val().length > 0 ? total.val() : 0,cost:cost.val().length > 0 ? cost.val() : 0,contribution:contribution.val().length > 0 ? contribution.val() : 0,discount:discount.val().length > 0 ? discount.val() : 0,remarks:remarks.val(),category: category.val()};
-    //         partsData.push(partData);
-    //     }
-    //     // alert(JSON.stringify(partsData));
-    //     var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
-    //     var drafted = $("#drafted");
-    //     var assessmentType = $('input[name="assessmentType"]:checked');
-    //     var assessmentID = $("#assessmentID");
-    //     var total = $('#total');
-    //     var labour = $('#labour');
-    //     var paint = $('#painting');
-    //     var miscellaneous = $('#miscellaneous');
-    //     var primer = $('#2kprimer');
-    //     var jigging = $('#jigging');
-    //     var reconstruction = $('#reconstruction');
-    //     var gas = $('#acgas');
-    //     var welding = $('#weldinggas');
-    //     var sumTotal = $("#sumTotal");
-    //     var pav = $("#PAV");
-    //     var chassisNumber = $("#chassisNumber");
-    //     var salvage = $("#salvage");
-    //     var totalLoss = $("#total_loss");
-    //     var note = CKEDITOR.instances['notes'].getData();
-    //     var cause = CKEDITOR.instances['cause'].getData();
-    //     var jobsData = {
-    //         total : total.val(),
-    //         labour : labour.val(),
-    //         paint : paint.val(),
-    //         miscellaneous : miscellaneous.val(),
-    //         primer : primer.val(),
-    //         jigging : jigging.val(),
-    //         reconstruction : reconstruction.val(),
-    //         gas : gas.val(),
-    //         welding : welding.val(),
-    //         sumTotal : sumTotal.val(),
-    //         pav : pav.val(),
-    //         chassisNumber : chassisNumber.val(),
-    //         salvage : salvage.val(),
-    //         totalLoss : totalLoss.val(),
-    //         cause : cause,
-    //         note : note
-    //     };
-    //
-    //     var image_upload = new FormData();
-    //     // Attach file
-    //     // formData.append('image', $('input[type=file]')[0].files[0]);
-    //     if(drafted.val() != 1) {
-    //         var files = $('input[type=file]')[0].files;
-    //         let totalImages = files.length; //Total Images
-    //         let images = $('input[type=file]')[0];
-    //         for (let i = 0; i < totalImages; i++) {
-    //             image_upload.append('images' + i, images.files[i]);
-    //         }
-    //         image_upload.append('totalImages', totalImages);
-    //         image_upload.append('assessmentID', assessmentID.val());
-    //         image_upload.append('assessmentType', assessmentType.val());
-    //         image_upload.append('isDraft', isDraft);
-    //         image_upload.append('drafted', drafted.val());
-    //         image_upload.append('jobsData', JSON.stringify(jobsData));
-    //         image_upload.append('partsData', JSON.stringify(partsData));
-    //         $.ajaxSetup({
-    //
-    //             headers: {
-    //
-    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //
-    //             }
-    //
-    //         });
-    //         $.ajax({
-    //
-    //             type: 'POST',
-    //             contentType: false,
-    //             processData: false,
-    //             data: image_upload,
-    //             url: '/assessor/submit-edited-assessment',
-    //             success: function (data) {
-    //                 var result = $.parseJSON(data);
-    //                 if (result.STATUS_CODE == SUCCESS_CODE) {
-    //                     Swal.fire({
-    //                         icon: 'success',
-    //                         title: result.STATUS_MESSAGE,
-    //                         showConfirmButton: false,
-    //                         timer: 3000
-    //                     })
-    //                 } else {
-    //                     Swal.fire({
-    //                         icon: 'error',
-    //                         title: result.STATUS_MESSAGE,
-    //                         showConfirmButton: false,
-    //                         timer: 3000
-    //                     })
-    //                 }
-    //             }
-    //
-    //         });
-    //     }else
-    //     {
-    //         var imagesArray = $("#imagesArray").val();
-    //         var imageParse = JSON.parse(imagesArray);
-    //         var counter = 0;
-    //
-    //         var imgArray = [];
-    //
-    //         $(".uploaded-image img").each(function() {
-    //             var imgsrc = this.src;
-    //             var n = imgsrc.split("/");
-    //             var result = n[n.length - 1];
-    //             imgArray.push(result);
-    //         });
-    //         console.log(imgArray);
-    //         imageParse = imageParse.filter(function( obj ) {
-    //             return imgArray.includes(obj.name);
-    //         });
-    //
-    //         console.log(imageParse);
-    //
-    //         var files = $('input[type=file]')[0].files;
-    //         let totalImages = files.length; //Total Images
-    //         let images = $('input[type=file]')[0];
-    //         var img = [];
-    //         for (let i = 0; i < totalImages; i++) {
-    //             var increment = imageParse.length+i;
-    //             image_upload.append('images' + increment, images.files[i]);
-    //         }
-    //         $.each(imageParse, function (key, value) {
-    //             async function createFile() {
-    //                 let response = await fetch('/documents/' + value.name);
-    //                 let data = await response.blob();
-    //                 let metadata = {
-    //                     type: 'image/jpeg'
-    //                 };
-    //                 let file = new File([data],value.name, metadata);
-    //                 img.push(file);
-    //             }
-    //             createFile();
-    //             counter++;
-    //         });
-    //         setTimeout(function () {
-    //             for (let i = 0; i < img.length; i++) {
-    //                 image_upload.append('images' + i, img[i]);
-    //
-    //             }
-    //             image_upload.append('totalImages', imageParse.length+totalImages);
-    //             image_upload.append('assessmentID', assessmentID.val());
-    //             image_upload.append('assessmentType', assessmentType.val());
-    //             image_upload.append('isDraft', isDraft);
-    //             image_upload.append('drafted', drafted.val());
-    //             image_upload.append('jobsData', JSON.stringify(jobsData));
-    //             image_upload.append('partsData', JSON.stringify(partsData));
-    //             $.ajaxSetup({
-    //
-    //                 headers: {
-    //
-    //                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //
-    //                 }
-    //
-    //             });
-    //             $.ajax({
-    //
-    //                 type: 'POST',
-    //                 contentType: false,
-    //                 processData: false,
-    //                 data: image_upload,
-    //                 url: '/assessor/submit-edited-assessment',
-    //                 success: function (data) {
-    //                     var result = $.parseJSON(data);
-    //                     if (result.STATUS_CODE == SUCCESS_CODE) {
-    //                         Swal.fire({
-    //                             icon: 'success',
-    //                             title: result.STATUS_MESSAGE,
-    //                             showConfirmButton: false,
-    //                             timer: 3000
-    //                         })
-    //                     } else {
-    //                         Swal.fire({
-    //                             icon: 'error',
-    //                             title: result.STATUS_MESSAGE,
-    //                             showConfirmButton: false,
-    //                             timer: 3000
-    //                         })
-    //                     }
-    //                 }
-    //
-    //             });
-    //         },1000);
-    //     }
-    // });
+    $("body").on('click','#submit-edited-supplementary',function (e){
+        e.preventDefault();
+        // var counter = $("#counter").val();
+        var counter = $('td input:checkbox').length;
+        var vehicleParts=$("select[id*='vehiclePart_']");
+        var quantitys=$("input[id*='quantity_']");
+        var partPrices=$("input[id*='partPrice_']");
+        var contributions=$("input[id*='contribution_']");
+        var discounts=$("input[id*='discount_']");
+        var totals=$("input[id*='total_']");
+        var remarkss=$("select[id*='remarks_']");
+        var categorys=$("select[id*='category_']");
+        var i;
+        // Array
+        var partsData = [];
+        for(i =0 ; i<counter; i++)
+        {
+
+
+
+            var vehiclePart = $('#'+(vehicleParts[i].id)).val();
+
+            var quantity = $('#'+(quantitys[i].id)).val();
+            console.log('quantity.val()');
+            console.log(quantity);
+            console.log('quantity.val()');
+            var total = $('#'+(totals[i].id)).val();
+
+
+            var cost =$('#'+(partPrices[i].id)).val();
+
+            var contribution = $('#'+(contributions[i].id)).val();
+            var discount =$('#'+(discounts[i].id)).val();
+            var remarks = $('#'+(remarkss[i].id)).val();
+            var category = $('#'+(categorys[i].id)).val();
+
+            var partData = {vehiclePart : vehiclePart,quantity : quantity.length > 0 ? quantity : 0,total:total.length > 0 ? total : 0,cost:cost.length > 0 ? cost : 0,contribution:contribution.length > 0 ? contribution : 0,discount:discount.length > 0 ? discount : 0,remarks:remarks,category: category};
+            partsData.push(partData);
+        }
+        // alert(JSON.stringify(partsData));
+        var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
+        var drafted = $("#drafted");
+        var assessmentType = $('input[name="assessmentType"]:checked');
+        var assessmentID = $("#assessmentID");
+        var total = $('#total');
+        var labour = $('#labour');
+        var paint = $('#painting');
+        var miscellaneous = $('#miscellaneous');
+        var primer = $('#2kprimer');
+        var jigging = $('#jigging');
+        var reconstruction = $('#reconstruction');
+        var gas = $('#acgas');
+        var welding = $('#weldinggas');
+        var sumTotal = $("#sumTotal");
+        var pav = $("#PAV");
+        var chassisNumber = $("#chassisNumber");
+        var salvage = $("#salvage");
+        var totalLoss = $("#total_loss");
+        var note = CKEDITOR.instances['notes'].getData();
+        var jobsData = {
+            total : total.val(),
+            labour : labour.val(),
+            paint : paint.val(),
+            miscellaneous : miscellaneous.val(),
+            primer : primer.val(),
+            jigging : jigging.val(),
+            reconstruction : reconstruction.val(),
+            gas : gas.val(),
+            welding : welding.val(),
+            sumTotal : sumTotal.val(),
+            pav : pav.val(),
+            chassisNumber : chassisNumber.val(),
+            salvage : salvage.val(),
+            totalLoss : totalLoss.val(),
+            note : note
+        };
+
+        var image_upload = new FormData();
+        // Attach file
+        // formData.append('image', $('input[type=file]')[0].files[0]);
+        if(drafted.val() != 1) {
+            var files = $('input[type=file]')[0].files;
+            let totalImages = files.length; //Total Images
+            let images = $('input[type=file]')[0];
+            for (let i = 0; i < totalImages; i++) {
+                image_upload.append('images' + i, images.files[i]);
+            }
+            image_upload.append('totalImages', totalImages);
+            image_upload.append('assessmentID', assessmentID.val());
+            image_upload.append('assessmentType', assessmentType.val());
+            image_upload.append('isDraft', isDraft);
+            image_upload.append('drafted', drafted.val());
+            image_upload.append('jobsData', JSON.stringify(jobsData));
+            image_upload.append('partsData', JSON.stringify(partsData));
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: image_upload,
+                url: '/assessor/submit-edited-supplementary',
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }
+
+            });
+        }else
+        {
+            var imagesArray = $("#imagesArray").val();
+            var imageParse = JSON.parse(imagesArray);
+            var counter = 0;
+
+            var imgArray = [];
+
+            $(".uploaded-image img").each(function() {
+                var imgsrc = this.src;
+                var n = imgsrc.split("/");
+                var result = n[n.length - 1];
+                imgArray.push(result);
+            });
+            console.log(imgArray);
+            imageParse = imageParse.filter(function( obj ) {
+                return imgArray.includes(obj.name);
+            });
+
+            console.log(imageParse);
+
+            var files = $('input[type=file]')[0].files;
+            let totalImages = files.length; //Total Images
+            let images = $('input[type=file]')[0];
+            var img = [];
+            for (let i = 0; i < totalImages; i++) {
+                var increment = imageParse.length+i;
+                image_upload.append('images' + increment, images.files[i]);
+            }
+            $.each(imageParse, function (key, value) {
+                async function createFile() {
+                    let response = await fetch('/documents/' + value.name);
+                    let data = await response.blob();
+                    let metadata = {
+                        type: 'image/jpeg'
+                    };
+                    let file = new File([data],value.name, metadata);
+                    img.push(file);
+                }
+                createFile();
+                counter++;
+            });
+            setTimeout(function () {
+                for (let i = 0; i < img.length; i++) {
+                    image_upload.append('images' + i, img[i]);
+
+                }
+                image_upload.append('totalImages', imageParse.length+totalImages);
+                image_upload.append('assessmentID', assessmentID.val());
+                image_upload.append('assessmentType', assessmentType.val());
+                image_upload.append('isDraft', isDraft);
+                image_upload.append('drafted', drafted.val());
+                image_upload.append('jobsData', JSON.stringify(jobsData));
+                image_upload.append('partsData', JSON.stringify(partsData));
+                $.ajaxSetup({
+
+                    headers: {
+
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                    }
+
+                });
+                $.ajax({
+
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    data: image_upload,
+                    url: '/assessor/submit-edited-supplementary',
+                    success: function (data) {
+                        var result = $.parseJSON(data);
+                        if (result.STATUS_CODE == SUCCESS_CODE) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        }
+                    }
+
+                });
+            },1000);
+        }
+    });
+
     $("body").on('click','#assessor-view-re-inspection-report',function (e){
         e.preventDefault();
         var assessmentID = $(this).data("id");
@@ -2133,7 +2251,6 @@ $(document).ready(function () {
         var salvage = $("#salvage");
         var totalLoss = $("#total_loss");
         var note = CKEDITOR.instances['notes'].getData();
-        var cause = CKEDITOR.instances['cause'].getData();
         var jobsData = {
             total : total.val(),
             labour : labour.val(),
@@ -2149,7 +2266,6 @@ $(document).ready(function () {
             chassisNumber : chassisNumber.val(),
             salvage : salvage.val(),
             totalLoss : totalLoss.val(),
-            cause : cause,
             note : note
         };
 
@@ -2185,7 +2301,7 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false,
                 data: image_upload,
-                url: '/assessor/submitAssessment',
+                url: '/assessor/submitSupplementary',
                 success: function (data) {
                     var result = $.parseJSON(data);
                     if (result.STATUS_CODE == SUCCESS_CODE) {
@@ -2275,7 +2391,7 @@ $(document).ready(function () {
                     contentType: false,
                     processData: false,
                     data: image_upload,
-                    url: '/assessor/submitAssessment',
+                    url: '/assessor/submitSupplementary',
                     success: function (data) {
                         var result = $.parseJSON(data);
                         if (result.STATUS_CODE == SUCCESS_CODE) {

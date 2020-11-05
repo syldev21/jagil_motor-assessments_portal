@@ -46,6 +46,7 @@ class HeadAssessorController extends Controller
                     "assessedBy" => $request->assessor,
                     "assessmentStatusID" => Config::$STATUSES["ASSESSMENT"]["ASSIGNED"]["id"],
                     "createdBy" => Auth::id(),
+                    "segment" => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'],
                     "dateCreated" => $curlDate
                 ]);
                 if ($assessmentID > 0) {
@@ -223,7 +224,7 @@ class HeadAssessorController extends Controller
     {
         try {
             $assessmentStatusID = $request->assessmentStatusID;
-            $assessments = Assessment::where(["assessmentStatusID" =>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('assessor')->get();
+            $assessments = Assessment::where(["assessmentStatusID" =>$assessmentStatusID,"segment" => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('assessor')->get();
             return view('head-assessor.assessments',["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         }catch (\Exception $e)
         {

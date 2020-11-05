@@ -23,9 +23,7 @@
                     <input id="email" type="email" name="email"  class="@error('email') invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     <label for="email" class="center-align">{{ __('E-Mail Address') }}</label>
                     @error('email')
-                    <span class="helper-text" data-error="wrong" data-success="right">
-                        <strong>{{ $message }}</strong>
-                    </span>
+                    <span class="helper-text" data-error="{{$message}}"></span>
                     @enderror
                 </div>
             </div>

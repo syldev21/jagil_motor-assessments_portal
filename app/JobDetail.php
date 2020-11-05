@@ -9,7 +9,7 @@ class JobDetail extends Model
     protected $connection = "mysql";
     protected $table = "job_details";
     protected $primaryKey = "id";
-    protected $fillable = ['assessmentID','name','jobType','jobCategory','cost','remarks','modifiedBy',
+    protected $fillable = ['assessmentID','name','jobType','jobCategory','cost','remarks','segment','modifiedBy',
         'createdBy','dateModified','dateCreated'];
     public $timestamps= false;
 }

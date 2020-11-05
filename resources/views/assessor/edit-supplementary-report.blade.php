@@ -1,14 +1,13 @@
 <div class="row">
 
-    <div
-        class="content-wrapper-before  gradient-45deg-red-pink">
+    <div class="content-wrapper-before  gradient-45deg-red-pink">
     </div>
     <div class="row">
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
                     <div class="row col s12">
-                        <h4 class="card-title float-left">Supplementary for claim Number
+                        <h4 class="card-title float-left">Assessment for claim Number
                             - {{$assessment->claim->claimNo}} </h4>
                     </div>
                     <div class="divider"></div>
@@ -16,37 +15,45 @@
                         <div class="col s12">
                             <ul class="stepper parallel horizontal">
                                 <li class="step active">
-                                    <div class="step-title waves-effect waves-dark">Supplementary Report</div>
+                                    <div class="step-title waves-effect waves-dark">Assessment Report</div>
                                     <div class="step-content">
                                         <div class="row">
                                             <div class="input-field col m3 s12">
-                                                <input type="hidden" value="{{isset($supplementaryAssessment->id) ? 1 : 0}}" id="drafted" name="drafted">
-                                                <input placeholder="" id="chassisNumber" type="text" name="chassisNumber" value="{{$assessment->claim->chassisNumber}}"/>
+                                                <input type="hidden" value="{{isset($draftAssessment->id) ? 1 : 0}}"
+                                                       id="drafted" name="drafted">
+                                                <input placeholder="" id="chassisNumber" type="text"
+                                                       name="chassisNumber"
+                                                       value="{{$assessment->claim->chassisNumber}}" />
                                                 <label for="chassisNumber" class="active">Chassis Number</label>
                                             </div>
                                             <div class="input-field col m2 s12">
-                                                <input placeholder="" id="carMake" type="text" name="carMake" value="{{$carDetails->makeName}}" disabled/>
+                                                <input placeholder="" id="carMake" type="text" name="carMake"
+                                                       value="{{$carDetails->makeName}}" disabled />
                                                 <label for="carMake" class="active">Car Make</label>
                                             </div>
                                             <div class="input-field col m2 s12">
-                                                <input placeholder="" id="carModel" type="text" name="carModel" value="{{$carDetails->modelName}}" disabled/>
+                                                <input placeholder="" id="carModel" type="text" name="carModel"
+                                                       value="{{$carDetails->modelName}}" disabled />
                                                 <label for="carModel" class="active">Car Model</label>
                                             </div>
                                             <div class="input-field col m2 s12">
-                                                <input placeholder="" id="YOM" type="text" name="YOM" value="{{$assessment->claim->yom}}" disabled/>
+                                                <input placeholder="" id="YOM" type="text" name="YOM"
+                                                       value="{{$assessment->claim->yom}}" disabled />
                                                 <label for="YOM" class="active">YOM</label>
                                             </div>
                                             <div class="input-field col m3 s12">
-                                                <input placeholder="" id="PAV" type="text" name="PAV" value="{{isset($supplementaryAssessment->pav) ? $supplementaryAssessment->pav : null }}" required/>
-                                                <label for="PAV" class="active">PAV <span style="color: red">*</span></label>
+                                                <input placeholder="" id="PAV" type="text" name="PAV"
+                                                       value="{{isset($draftAssessment->pav) ? $draftAssessment->pav : null }}"
+                                                       required />
+                                                <label for="PAV" class="active">PAV <span
+                                                        style="color: red">*</span></label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col m12 s12">
                                                 <p>Notes</p>
-                                                <textarea id="notes" class="materialize-textarea notes"
-                                                          name="notes">
-                                                    {{isset($supplementaryAssessment->note) ? $supplementaryAssessment->note : null}}
+                                                <textarea id="notes" class="materialize-textarea notes" name="notes">
+                                                    {{isset($draftAssessment->note) ? $draftAssessment->note : null}}
                                                 </textarea>
                                                 <script>
                                                     CKEDITOR.replace('notes', {
@@ -56,145 +63,162 @@
                                                 </script>
                                             </div>
                                         </div>
-                                            <div class="step-actions">
-                                                <button id="validateStepOne" class="waves-effect waves-dark btn next-step"
-                                                        data-validator="validateStepOne">CONTINUE
-                                                </button>
-                                                <button class="waves-effect waves-dark btn-flat previous-step">
-                                                    BACK
-                                                </button>
-                                            </div>
+                                        <div class="step-actions">
+                                            <button id="validateStepOne" class="waves-effect waves-dark btn next-step"
+                                                    data-validator="validateStepOne">CONTINUE
+                                            </button>
+                                            <button class="waves-effect waves-dark btn-flat previous-step">
+                                                BACK
+                                            </button>
+                                        </div>
                                     </div>
                                 </li>
                                 <li class="step">
                                     <div class="step-title waves-effect waves-dark">Replace Assembly</div>
                                     <div class="step-content">
-                                                <table class="centered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Remove</th>
-                                                        <th>Vehicle Part</th>
-                                                        <th>Quantity</th>
-                                                        <th>Part Price</th>
-                                                        <th>Contribution</th>
-                                                        <th>Discount</th>
-                                                        <th>Total</th>
-                                                        <th>Remarks</th>
-                                                        <th>Category</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @if(count($assessmentItems)>0)
-                                                    <?php
-                                                    $count = 0;
-                                                    ?>
-                                                    @foreach($assessmentItems as $assessmentItem)
+                                        <table class="centered">
+                                            <thead>
+                                            <tr>
+                                                <th>Remove</th>
+                                                <th>Vehicle Part</th>
+                                                <th>Quantity</th>
+                                                <th>Part Price</th>
+                                                <th>Contribution</th>
+                                                <th>Discount</th>
+                                                <th>Total</th>
+                                                <th>Remarks</th>
+                                                <th>Category</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @if(count($assessmentItems)>0)
+                                                <?php
+                                                $count = 0;
+                                                ?>
+                                                @foreach($assessmentItems as $assessmentItem)
                                                     <tr class="dynamicVehiclePart">
                                                         <td>
                                                             <label>
-                                                                <input type="checkbox"/>
+                                                                <input type="checkbox" />
                                                                 <span></span>
                                                             </label>
                                                         </td>
                                                         <td>
-                                                            <select id="vehiclePart_{{$count}}" name="vehiclePart[]" class="browser-default">
+                                                            <select id="vehiclePart_{{$count}}" name="vehiclePart[]"
+                                                                    class="browser-default">
                                                                 @foreach($parts as $part)
-                                                                    <option value="{{$part->id}}" @if($assessmentItem->part->id == $part->id) selected @endif>{{$part->name}}</option>
+                                                                    <option value="{{$part->id}}" @if($assessmentItem->part->id
+                                                                == $part->id) selected @endif>{{$part->name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input id="quantity_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
-                                                                   value="{{$assessmentItem->quantity}}"/>
+                                                            <input id="quantity_{{$count}}" oninput="getTotal(0)"
+                                                                   placeholder="" type="text" name="quantity[]"
+                                                                   value="{{$assessmentItem->quantity}}" />
                                                         </td>
                                                         <td>
-                                                            <input id="partPrice_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
-                                                                   value="{{$assessmentItem->cost}}"/>
+                                                            <input id="partPrice_{{$count}}" oninput="getTotal(0)"
+                                                                   placeholder="" type="text" name="partPrice[]"
+                                                                   value="{{$assessmentItem->cost}}" />
                                                         </td>
                                                         <td>
                                                             <input id="contribution_{{$count}}" placeholder="" type="text"
-                                                                   name="contribution[]" oninput="getTotal(0)" value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}"/>
+                                                                   name="contribution[]" oninput="getTotal(0)"
+                                                                   value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}" />
                                                         </td>
                                                         <td>
-                                                            <input id="discount_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
-                                                                   value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}"/>
+                                                            <input id="discount_{{$count}}" oninput="getTotal(0)"
+                                                                   placeholder="" type="text" name="discount[]"
+                                                                   value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}" />
                                                         </td>
                                                         <td>
-                                                            <input id="total_{{$count}}" placeholder="" type="text" name="total[]" value="{{$assessmentItem->total}}" class="total"
-                                                                   disabled/>
+                                                            <input id="total_{{$count}}" placeholder="" type="text"
+                                                                   name="total[]" value="{{$assessmentItem->total}}"
+                                                                   class="total" disabled />
                                                         </td>
                                                         <td>
-                                                            <select id="remarks_{{$count}}" name="remarks[]" class="browser-default">
+                                                            <select id="remarks_{{$count}}" name="remarks[]"
+                                                                    class="browser-default">
                                                                 @foreach($remarks as $remark)
-                                                                    <option value="{{$remark->id}}" @if($assessmentItem->remark->id == $remark->id) selected @endif>{{$remark->name}}</option>
+                                                                    <option value="{{$remark->id}}" @if($assessmentItem->
+                                                                remark->id == $remark->id) selected
+                                                                        @endif>{{$remark->name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <select id="category_{{$count}}" name="category[]" class="browser-default">
+                                                            <select id="category_{{$count}}" name="category[]"
+                                                                    class="browser-default">
                                                                 @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)
-                                                                    <option value="{{$category['ID']}}" @if($assessmentItem->category == $category['ID']) selected @endif>{{$category['TITLE']}}</option>
+                                                                    <option value="{{$category['ID']}}" @if($assessmentItem->
+                                                                category == $category['ID']) selected
+                                                                        @endif>{{$category['TITLE']}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </td>
                                                     </tr>
-                                                        <?php
-                                                            $count ++;
-                                                        ?>
-                                                    @endforeach
-                                                    @else
-                                                        <tr class="dynamicVehiclePart">
-                                                            <td>
-                                                                <label>
-                                                                    <input type="checkbox"/>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <select id="vehiclePart_0" name="vehiclePart[]" class="browser-default">
-                                                                    @foreach($parts as $part)
-                                                                        <option value="{{$part->id}}">{{$part->name}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <input id="quantity_0" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
-                                                                       value="" maxlength="3"/>
-                                                            </td>
-                                                            <td>
-                                                                <input id="partPrice_0" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
-                                                                       value=""/>
-                                                            </td>
-                                                            <td>
-                                                                <input id="contribution_0" placeholder="" type="text"
-                                                                       name="contribution[]" oninput="getTotal(0)" value="" maxlength="2"/>
-                                                            </td>
-                                                            <td>
-                                                                <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
-                                                                       value="" maxlength="2"/>
-                                                            </td>
-                                                            <td>
-                                                                <input id="total_0" placeholder="" type="text" name="total[]" value="" class="total"
-                                                                       disabled/>
-                                                            </td>
-                                                            <td>
-                                                                <select id="remarks_0" name="remarks[]" class="browser-default">
-                                                                    @foreach($remarks as $remark)
-                                                                        <option value="{{$remark->id}}">{{$remark->name}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <select id="category_0" name="category[]" class="browser-default">
-                                                                    @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)
-                                                                        <option value="{{$category['ID']}}">{{$category['TITLE']}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-                                                    </tbody>
-                                                </table>
+                                                    <?php
+                                                    $count ++;
+                                                    ?>
+                                                @endforeach
+                                            @else
+                                                <tr class="dynamicVehiclePart">
+                                                    <td>
+                                                        <label>
+                                                            <input type="checkbox" />
+                                                            <span></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <select id="vehiclePart_0" name="vehiclePart[]"
+                                                                class="browser-default">
+                                                            @foreach($parts as $part)
+                                                                <option value="{{$part->id}}">{{$part->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input id="quantity_0" oninput="getTotal(0)" placeholder=""
+                                                               type="text" name="quantity[]" value="" maxlength="3" />
+                                                    </td>
+                                                    <td>
+                                                        <input id="partPrice_0" oninput="getTotal(0)" placeholder=""
+                                                               type="text" name="partPrice[]" value="" />
+                                                    </td>
+                                                    <td>
+                                                        <input id="contribution_0" placeholder="" type="text"
+                                                               name="contribution[]" oninput="getTotal(0)" value=""
+                                                               maxlength="2" />
+                                                    </td>
+                                                    <td>
+                                                        <input id="discount_0" oninput="getTotal(0)" placeholder=""
+                                                               type="text" name="discount[]" value="" maxlength="2" />
+                                                    </td>
+                                                    <td>
+                                                        <input id="total_0" placeholder="" type="text" name="total[]"
+                                                               value="" class="total" disabled />
+                                                    </td>
+                                                    <td>
+                                                        <select id="remarks_0" name="remarks[]" class="browser-default">
+                                                            @foreach($remarks as $remark)
+                                                                <option value="{{$remark->id}}">{{$remark->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select id="category_0" name="category[]"
+                                                                class="browser-default">
+                                                            @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)
+                                                                <option value="{{$category['ID']}}">{{$category['TITLE']}}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            </tbody>
+                                        </table>
                                         <div id="addP"></div>
                                         <div class="row">
                                             <div class="col s12" id="dynamicPartsSelector">
@@ -212,8 +236,9 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="labour" type="text"
-                                                                       name="labour" value="{{ isset($jobDraftDetail['Labour']) ? $jobDraftDetail['Labour'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
+                                                                       name="labour"
+                                                                       value="{{ isset($jobDraftDetail['Labour']) ? $jobDraftDetail['Labour'] : null }}"
+                                                                       class="border-fields" oninput="findTotal()" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -222,8 +247,9 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="painting" type="text"
-                                                                       name="painting" value="{{ isset($jobDraftDetail['Painting']) ? $jobDraftDetail['Painting'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
+                                                                       name="painting"
+                                                                       value="{{ isset($jobDraftDetail['Painting']) ? $jobDraftDetail['Painting'] : null }}"
+                                                                       class="border-fields" oninput="findTotal()" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -232,8 +258,9 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="miscellaneous" type="text"
-                                                                       name="miscellaneous" value="{{ isset($jobDraftDetail['Miscellaneous']) ? $jobDraftDetail['Miscellaneous'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
+                                                                       name="miscellaneous"
+                                                                       value="{{ isset($jobDraftDetail['Miscellaneous']) ? $jobDraftDetail['Miscellaneous'] : null }}"
+                                                                       class="border-fields" oninput="findTotal()" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -242,8 +269,9 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="2kprimer" type="text"
-                                                                       name="2kprimer" value="{{ isset($jobDraftDetail['2k Primer']) ? $jobDraftDetail['2k Primer'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
+                                                                       name="2kprimer"
+                                                                       value="{{ isset($jobDraftDetail['2k Primer']) ? $jobDraftDetail['2k Primer'] : null }}"
+                                                                       class="border-fields" oninput="findTotal()" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -252,8 +280,9 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="jigging" type="text"
-                                                                       name="jigging" value="{{ isset($jobDraftDetail['Jigging']) ? $jobDraftDetail['Jigging'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
+                                                                       name="jigging"
+                                                                       value="{{ isset($jobDraftDetail['Jigging']) ? $jobDraftDetail['Jigging'] : null }}"
+                                                                       class="border-fields" oninput="findTotal()" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -262,8 +291,9 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="reconstruction" type="text"
-                                                                       name="reconstruction" value="{{ isset($jobDraftDetail['Reconstruction']) ? $jobDraftDetail['Reconstruction'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
+                                                                       name="reconstruction"
+                                                                       value="{{ isset($jobDraftDetail['Reconstruction']) ? $jobDraftDetail['Reconstruction'] : null }}"
+                                                                       class="border-fields" oninput="findTotal()" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -272,7 +302,9 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="acgas" type="text"
-                                                                       name="acgas" value="{{ isset($jobDraftDetail['AC/Gas']) ? $jobDraftDetail['AC/Gas'] : null }}" class="border-fields" oninput="findTotal()"/>
+                                                                       name="acgas"
+                                                                       value="{{ isset($jobDraftDetail['AC/Gas']) ? $jobDraftDetail['AC/Gas'] : null }}"
+                                                                       class="border-fields" oninput="findTotal()" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -281,8 +313,9 @@
                                                         <td>
                                                             <div class="input-field">
                                                                 <input placeholder="" id="weldinggas" type="text"
-                                                                       name="weldinggas" value="{{ isset($jobDraftDetail['Welding/Gas']) ? $jobDraftDetail['Welding/Gas'] : null }}"
-                                                                       class="border-fields" oninput="findTotal()"/>
+                                                                       name="weldinggas"
+                                                                       value="{{ isset($jobDraftDetail['Welding/Gas']) ? $jobDraftDetail['Welding/Gas'] : null }}"
+                                                                       class="border-fields" oninput="findTotal()" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -292,36 +325,42 @@
                                                 <div class="row">
                                                     <div class="col m4">
                                                         <label>
-                                                            <input name="assessmentType" type="radio" onclick="findTotal()"
-                                                                   class="with-gap assessmentType" value="1"
-                                                                   @if(isset($supplementaryAssessment->assessmentTypeID))
-                                                                        @if($supplementaryAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["AUTHORITY_TO_GARAGE"]) checked @endif
+                                                            <input name="assessmentType" type="radio"
+                                                                   onclick="findTotal()" class="with-gap assessmentType"
+                                                                   value="1" @if(isset($draftAssessment->assessmentTypeID))
+                                                                   @if($draftAssessment->assessmentTypeID ==
+                                                                   \App\Conf\Config::ASSESSMENT_TYPES["AUTHORITY_TO_GARAGE"])
+                                                                   checked @endif
                                                                    @else
-                                                                       checked
-                                                                   @endif
+                                                                   checked
+                                                                @endif
                                                             />
                                                             <span>Authority To Garage</span>
                                                         </label>
                                                     </div>
                                                     <div class="col m4">
                                                         <label>
-                                                            <input name="assessmentType" type="radio" onclick="findTotal()"
-                                                                   class="with-gap assessmentType" value="2"
-                                                                   @if(isset($supplementaryAssessment->assessmentTypeID))
-                                                                        @if($supplementaryAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["CASH_IN_LIEU"]) checked @endif
-                                                                   @endif
+                                                            <input name="assessmentType" type="radio"
+                                                                   onclick="findTotal()" class="with-gap assessmentType"
+                                                                   value="2" @if(isset($draftAssessment->assessmentTypeID))
+                                                                   @if($draftAssessment->assessmentTypeID ==
+                                                                   \App\Conf\Config::ASSESSMENT_TYPES["CASH_IN_LIEU"]) checked
+                                                                @endif
+                                                                @endif
                                                             />
                                                             <span>Cash In Lieu</span>
                                                         </label>
                                                     </div>
                                                     <div class="col m4">
                                                         <label>
-                                                            <input name="assessmentType" type="radio" onclick="findTotal()"
-                                                                   class="with-gap assessmentType" value="3"
-                                                                   @if(isset($supplementaryAssessment->assessmentTypeID))
-                                                                        @if($supplementaryAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"]) checked @endif
-                                                                   @endif
-                                                             />
+                                                            <input name="assessmentType" type="radio"
+                                                                   onclick="findTotal()" class="with-gap assessmentType"
+                                                                   value="3" @if(isset($draftAssessment->assessmentTypeID))
+                                                                   @if($draftAssessment->assessmentTypeID ==
+                                                                   \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"]) checked
+                                                                @endif
+                                                                @endif
+                                                            />
                                                             <span>Total loss</span>
                                                         </label>
                                                     </div>
@@ -333,13 +372,14 @@
                                                             <h6 class="float-left">Total:</h6>
                                                             <div class="input-field float-right">
                                                                 <input type="text"
-                                                                       value="{{isset($supplementaryAssessment->totalCost)  ? $supplementaryAssessment->totalCost : null}}" name="sumTotal" id="sumTotal"
-                                                                       class="border-fields"/>
+                                                                       value="{{isset($draftAssessment->totalCost)  ? $draftAssessment->totalCost : null}}"
+                                                                       name="sumTotal" id="sumTotal"
+                                                                       class="border-fields" />
                                                             </div>
                                                         </div>
                                                         <?php
-                                                        if(isset($supplementaryAssessment->assessmentTypeID) && $supplementaryAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"])
-                                                           $toggoleTotalLoss= " ";
+                                                        if(isset($draftAssessment->assessmentTypeID) && $draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"])
+                                                            $toggoleTotalLoss= " ";
                                                         else
                                                             $toggoleTotalLoss= "hideTotalLose";
                                                         ?>
@@ -351,10 +391,10 @@
                                                                         <td>Sum Insured :</td>
                                                                         <td>
                                                                             <div class="input-field">
-                                                                                <input placeholder=""
-                                                                                       id="sumInsured" type="text"
-                                                                                       name="sumInsured" value="{{number_format($assessment->claim->sumInsured)}}"
-                                                                                       class="border-fields"/>
+                                                                                <input placeholder="" id="sumInsured"
+                                                                                       type="text" name="sumInsured"
+                                                                                       value="{{number_format($assessment->claim->sumInsured)}}"
+                                                                                       class="border-fields" />
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -364,8 +404,9 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder="" id="pav"
                                                                                        type="text" name="pav"
-                                                                                       value="{{isset($supplementaryAssessment->pav) ? $supplementaryAssessment->pav : null }}"
-                                                                                       class="border-fields" oninput="findTotalLoss()"/>
+                                                                                       value="{{isset($draftAssessment->pav) ? $draftAssessment->pav : null }}"
+                                                                                       class="border-fields"
+                                                                                       oninput="findTotalLoss()" />
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -375,8 +416,9 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder="" id="salvage"
                                                                                        type="text" name="salvage"
-                                                                                       value="{{isset($supplementaryAssessment->salvage) ? $supplementaryAssessment->salvage : null}}"
-                                                                                       class="border-fields" oninput="findTotalLoss()"/>
+                                                                                       value="{{isset($draftAssessment->salvage) ? $draftAssessment->salvage : null}}"
+                                                                                       class="border-fields"
+                                                                                       oninput="findTotalLoss()" />
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -386,8 +428,8 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder="" id="total_loss"
                                                                                        type="text" name="total_loss"
-                                                                                       value="{{isset($supplementaryAssessment->totalLoss) ? $supplementaryAssessment->totalLoss : null}}"
-                                                                                       class="border-fields total_loss"/>
+                                                                                       value="{{isset($draftAssessment->totalLoss) ? $draftAssessment->totalLoss : null}}"
+                                                                                       class="border-fields total_loss" />
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -398,7 +440,7 @@
                                                                                 <input placeholder="" id="repair"
                                                                                        type="text" name="repair"
                                                                                        value="{{ number_format(($assessment->claim->sumInsured) * 0.5)}}"
-                                                                                       class="border-fields"/>
+                                                                                       class="border-fields" />
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -410,8 +452,9 @@
                                                                         <div class="input-field">
                                                                             <input placeholder="" id="sumTotals"
                                                                                    type="text" name="sumTotals"
-                                                                                   value="{{isset($supplementaryAssessment->totalCost) ? $supplementaryAssessment->totalCost : null}}" class="border-fields"/>
-                                                                           </div>
+                                                                                   value="{{isset($draftAssessment->totalCost) ? $draftAssessment->totalCost : null}}"
+                                                                                   class="border-fields" />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -422,7 +465,8 @@
                                         </div>
                                         <div class="row">
                                             <div class="step-actions">
-                                                <button id="validateStepTwo" class="waves-effect waves-dark btn next-step">CONTINUE</button>
+                                                <button id="validateStepTwo"
+                                                        class="waves-effect waves-dark btn next-step">CONTINUE</button>
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                                 </button>
                                             </div>
@@ -434,23 +478,37 @@
                                     <div class="step-content">
                                         <div class="row">
                                             <div class="col s12">
-                                                <form action="#" enctype="multipart/form-data" data-allowed-file-extensions='["jpeg", "jpg", "png"]' id="assessmentForm">
+                                                <form action="#" enctype="multipart/form-data"
+                                                      data-allowed-file-extensions='["jpeg", "jpg", "png"]'
+                                                      id="assessmentForm">
                                                     <div class="input-images" id="images"></div>
                                                 </form>
-                                                <small>Only <span
-                                                        class="red-text text-darken-3">JPEG,JPG & PNG</span> files
+                                                <small>Only <span class="red-text text-darken-3">JPEG,JPG & PNG</span>
+                                                    files
                                                     are allowed</small>
                                             </div>
                                         </div>
-                                        <br/>
+                                        <div class="row">
+                                            <div class="col m6">
+                                                <div class="input-field">
+                                                    <label>
+                                                        <input type="checkbox" id="isDraft" value="0" />
+                                                        {{-- <span>Save as Draft</span> --}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
                                         <div class="row">
                                             <div class="col m6">
                                             </div>
                                             <div class="step-actions">
-                                                <input type="hidden" name="counter" id="counter" value="{{isset($count) ? $count-1 : 0}}">
-                                                <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
+                                                <input type="hidden" name="counter" id="counter"
+                                                       value="{{isset($count) ? $count-1 : 0}}">
+                                                <input type="hidden" name="assessmentID" id="assessmentID"
+                                                       value="{{$assessment->id}}">
                                                 <input type="submit" class="waves-effect waves-dark btn next-step"
-                                                       value="SUBMIT" id="submitSupplementary"/>
+                                                       value="SUBMIT" id="submit-edited-supplementary" />
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                                 </button>
                                             </div>
@@ -465,11 +523,11 @@
         </div>
     </div>
 </div>
-@if(isset($supplementaryAssessment->id))
-<?php
-    $images = \App\Document::where(["assessmentID"=>$supplementaryAssessment->id])->get();
-?>
-<input type="hidden" value="{{$images}}" name="imagesArray" id="imagesArray">
+@if(isset($draftAssessment->id))
+    <?php
+    $images = \App\Document::where(["assessmentID"=>$draftAssessment->id])->get();
+    ?>
+    <input type="hidden" value="{{$images}}" name="imagesArray" id="imagesArray">
 @endif
 <script type="text/javascript">
     var t =0;
