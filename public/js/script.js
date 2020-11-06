@@ -1665,6 +1665,138 @@ $(document).ready(function () {
 
         });
     });
+    $('body').on('keyup','.current',function (){
+        var t=$(this).attr('id');
+        var val=t.split("_").pop();
+        var quantity="quantity_"+val;
+        var partPrice="partPrice_"+val;
+        var current="current_"+val;
+        var difference="difference_"+val;
+
+        var diff=parseInt($('#'+current).val())-parseInt($('#'+partPrice).val());
+
+        if(!($('#'+current).val()))
+        {
+
+            $('#'+difference).val('');
+        }else{
+            $('#'+difference).val(diff);
+        }
+
+
+
+
+    });
+    $("body").on('click','#submit-price-change',function (e){
+        e.preventDefault();
+        var counter = $('td.checks').length;
+        // var vehicleParts=$("input[id*='vehiclePart_']");
+        // var quantitys=$("input[id*='quantity_']");
+        // var partPrices=$("input[id*='partPrice_']")
+        // var currents=$("input[id*='current_']")
+        // var remarkss=$("input[id*='remarks_']");
+
+
+        var i;
+        // Array
+        var partsData = [];
+        for(i =0 ; i<counter; i++)
+        {
+            var vehiclePart = $('.vehiclePart_'+i).val();
+            var difference = $('#difference_'+i).val();
+            var partsID=$("input[class*='vehiclePart_']");
+            var partID=partsID[i].id;
+            var quantity = $('#quantity_'+i).val();
+            var current = $('#current_'+i).val();
+            var assessmentID = $("#assessmentID").val()
+            // var partData = {quantity : quantity.length > 0 ? quantity : 0,costcost : cost.length > 0 ? cost : 0,current:current.length > 0 ? current : 0,remarks:remarks,vehicleParts:vehiclePart,assessmentID:assessmentID,partID:partID,difference : difference.length > 0 ? difference : 0};
+            // var partData = {current:current.length > 0 ? current : 0,assessmentID:assessmentID,partID:partID,difference:difference.length > 0 ? difference : 0 };
+            var partData = {current:current.length > 0 ? current : 0,partID:partID,difference:difference.length > 0 ? difference : 0};
+            partsData.push(partData);
+        }
+        var image_upload = new FormData();
+        image_upload.append('partsData', JSON.stringify(partsData));
+
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: image_upload,
+            url: '/assessor/submitPriceChange',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+        });
+    });
+    $("body").on('click','#assessor-price-change',function (e){
+        e.preventDefault();
+        var id = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'GET',
+
+            url: '/assessor/view-price-change/'+id,
+
+            success: function (data) {
+                $("#main").html(data);
+                var drafted = $("#drafted").val();
+                var stepper = document.querySelector('.stepper');
+                var stepperInstace = new MStepper(stepper, {
+                    // options
+                    firstActive: 0 // this is the default
+                });
+                var finalArray = [];
+                if(drafted == 1) {
+                    var imagesArray = $("#imagesArray").val();
+                    $.each(JSON.parse(imagesArray), function (key, value) {
+                        var imgData = {id: value.id, src: "documents/" + value.name}
+                        finalArray.push(imgData);
+                    });
+                }
+                $('.input-images').imageUploader({
+                    label : "Drag & Drop Images here or click to browse",
+                    preloaded : finalArray
+                });
+                $('select').formSelect();
+            }
+
+        });
+    });
+
     $("body").on('click','#claimDetails',function (e){
         e.preventDefault();
         var id = $(this).data("id");

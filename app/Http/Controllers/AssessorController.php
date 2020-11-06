@@ -2313,4 +2313,49 @@ class AssessorController extends Controller
         return json_encode($response);
     }
 
+    public function submitPriceChange(Request $request)
+    {
+        try {
+            $partsData = json_decode($request->partsData, true);
+            foreach ($partsData as $partDetail) {
+                $partID = $partDetail['partID'];
+                $current = $partDetail['current'];
+                $difference= $partDetail['difference'];
+                AssessmentItem::where(["id"=>$partID])->update([
+                        "current"=>$current,
+                        "difference"=>$difference
+                    ]
+                );
+
+            }
+
+            $response = array(
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
+            );
+        } catch (\Exception $e) {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to create an assessments. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
+
+    public function priceChange(Request $request, $assessmentID)
+    {
+        $draftAssessment = Assessment::where(['id' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id']])->with('claim')->first();
+        $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
+        $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
+        $remarks = Remarks::all();
+        $parts = Part::all();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();;
+        $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
+        $jobDraftDetail = [];
+        return view('assessor.price', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails]);
+    }
+
+
 }

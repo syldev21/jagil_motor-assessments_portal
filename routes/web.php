@@ -81,6 +81,9 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->post('/submit-edited-assessment','AssessorController@submitEditedAssessment');
     $router->post('/submit-edited-supplementary','AssessorController@submitEditedSupplementary');
     $router->post('/submitSupplementary','AssessorController@submitSupplementary');
+    $router->post('/submit-edited-assessment','AssessorController@submitEditedAssessment');
+    $router->post('/submitPriceChange','AssessorController@submitPriceChange');
+    $router->get('/view-price-change/{id}', 'AssessorController@priceChange'); //Price Change
 
 });
 
@@ -123,4 +126,7 @@ $router->group(['prefix' => 'admin'], function($router)
     $router->post('/assignRole','AdminController@assignRole');
     $router->post('/registerUser','AdminController@registerUser');
 });
+
+// migrate
+Route::get('/users', 'MigrateController@users');
 
