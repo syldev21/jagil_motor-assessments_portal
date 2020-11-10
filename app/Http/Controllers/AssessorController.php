@@ -68,8 +68,8 @@ class AssessorController extends Controller
         $draftAssessment = Assessment::where(['id' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $remarks = Remarks::all();
-        $parts = Part::all();
+        $remarks = Remarks::select("id","name")->get();
+        $parts = Part::select("id","name")->get();
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
         $jobDraftDetail = [];
@@ -111,7 +111,8 @@ class AssessorController extends Controller
     }
     public function fillSupplementaryReport(Request $request, $assessmentID)
     {
-        $supplementaryAssessment = Assessment::where(['id' => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->first();
+        $supplementaryAssessment = Assessment::where(['id' => $assessmentID])->first();
+//        $supplementaryAssessment = Assessment::where(['id' => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
         $remarks = Remarks::all();
