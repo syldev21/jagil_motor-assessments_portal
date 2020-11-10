@@ -15,7 +15,12 @@
                         <div class="card">
                             <div class="card-content">
                                 <div class="row">
-                                    <h4 class="card-title float-left">Assessment Report</h4>
+                                    <div class="col s10">
+                                        <h4 class="card-title float-left">Re-Inspection Report</h4>
+                                    </div>
+                                    <div class="col s2">
+                                        <button type="button" class="btn-flat float-right" onclick="printDiv()"><i class="material-icons" style="font-size: 2em;">local_printshop</i></button>
+                                    </div>
                                 </div>
                                 <div class="divider"></div>
                                 <div id="printableArea">
@@ -184,7 +189,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" class="btn-flat float-right" onclick="printDiv()"><i class="material-icons">local_printshop</i></button>
                             </div>
                             </div>
                         </div>
@@ -197,28 +201,3 @@
 </div>
 @include('_partials.settings')
 @include('_partials.footer')
-<script>
-
-    function printDiv() {
-
-        var printContents = document.getElementById('printableArea').innerHTML;
-
-        var originalContents = document.body.innerHTML;
-
-
-
-        document.body.innerHTML = printContents;
-
-
-
-        window.print();
-
-
-
-        document.body.innerHTML = originalContents;
-
-    }
-
-
-
-</script>
