@@ -601,7 +601,7 @@ $(document).ready(function () {
                     label : "Drag & Drop Images here or click to browse",
                     preloaded : finalArray
                 });
-                $('select').formSelect();
+                // $('select').formSelect();
             }
 
         });
