@@ -65,8 +65,16 @@ class AssessorController extends Controller
     }
     public function fillAssessmentReport(Request $request, $assessmentID)
     {
-        $draftAssessment = Assessment::where(['id' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']])->with('claim')->first();
+//        $draftAssessment = Assessment::where(['id' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
+        $drafted = isset($assessment->assessmentStatusID) ? $assessment->assessmentStatusID : 0;
+        if($drafted == Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
+        {
+            $draftAssessment = $assessment;
+        }else
+        {
+            $draftAssessment = array();
+        }
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
         $remarks = Remarks::select("id","name")->get();
         $parts = Part::select("id","name")->get();
