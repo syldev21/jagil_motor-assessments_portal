@@ -23,7 +23,6 @@ use App\Remarks;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
@@ -77,14 +76,8 @@ class AssessorController extends Controller
             $draftAssessment = array();
         }
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $remarks = Cache::rememberForever('remarks', function()
-        {
-            return DB::table('remarks')->get();
-        });
-        $parts = Cache::rememberForever('parts', function()
-        {
-            return DB::table('parts')->get();
-        });
+        $remarks = Remarks::select("id","name")->get();
+        $parts = Part::select("id","name")->get();
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
         $jobDraftDetail = [];
