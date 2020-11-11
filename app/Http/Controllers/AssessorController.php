@@ -76,11 +76,13 @@ class AssessorController extends Controller
             $draftAssessment = array();
         }
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $remarks = Remarks::select("id","name")->get();
-        $parts = Part::select("id","name")->get();
+//        $remarks = Remarks::select("id","name")->get();
+//        $parts = Part::select("id","name")->get();
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
         $jobDraftDetail = [];
+        $remarks = [];
+        $parts = [];
         foreach ($jobDetails as $jobDetail) {
 
             if ($jobDetail->jobType == Config::$JOB_TYPES["LABOUR"]["ID"]) {
