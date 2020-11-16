@@ -134,18 +134,25 @@
 
                                                         <!-- Dropdown Structure -->
                                                         <?php
-                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->first();
-                                                        ?>
+                                                        $claim='claim';
+                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->where('name','like','%' .$claim. '%')->first();
 
+                                                        $invoice='invoice';
+                                                        $invoiceDoc =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->where('name','like','%' .$invoice. '%')->first();
+                                                        ?>
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             @if(isset($claimForm->name))
                                                                 <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
                                                                             class="material-icons">file_download</i>Claim Form</a></li>
                                                             @endif
+                                                                @if(isset($invoiceDoc->name))
+                                                                    <li><a href="{{asset('documents/'.$invoiceDoc->name)}}" download><i
+                                                                                class="material-icons">file_download</i>Invoice</a></li>
+                                                                @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
                                                                 <li>
                                                                     <a href="#" id="fillAssessmentReport"
-                                                                       data-id="{{$assessment['id']}}"><i
+                                                                       data-id="{{$assessment['id']}}" data-claimid="{{$assessment['claimID']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Submit
                                                                         Assessment </a>
                                                                 </li>
@@ -156,11 +163,13 @@
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">edit</i>Edit Assessment </a>
                                                                 </li>
+
+
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                 <li>
                                                                     <a href="#" id="fillAssessmentReport"
-                                                                       data-id="{{$assessment['id']}}"><i
+                                                                       data-id="{{$assessment['id']}}" data-claimid="{{$assessment['claimID']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Fill
                                                                         Report </a>
                                                                 </li>
@@ -192,12 +201,22 @@
                                                                                 class="material-icons">compare_arrows</i>Price
                                                                             Change</a>
                                                                     </li>
+                                                                @if($assessment['assessmentTypeID'] != \App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
                                                                 <li><a href="#!" id="fillSupplementaryReport" data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Add
                                                                         Supplementary Report</a></li>
-                                                                <li><a href="#!"><i
-                                                                            class="material-icons">picture_as_pdf</i>Claim
-                                                                        Form</a></li>
+                                                                    @foreach($asmts as $asmt )
+
+                                                                        @if($asmt->assessmentID==$assessment->id)
+
+                                                                            <li><a href="#!" id="assessment-manager-assessment-report" data-id="{{$asmt['id']}} "><i
+                                                                                        class="material-icons">insert_drive_file</i>
+                                                                                    Supplementary</a>
+                                                                            </li>
+                                                                            @endif
+
+                                                                    @endforeach
+                                                                @endif
                                                             @endif
                                                         </ul>
 
