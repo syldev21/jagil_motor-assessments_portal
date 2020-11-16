@@ -456,6 +456,24 @@
                                             </div>
                                         </div>
                                         <div class="row">
+
+                                            @if(auth()->user()->userTypeID==\App\Conf\Config::$USER_TYPES['EXTERNAL']['ID'])
+                                            <div class="input-field col m6 s12">
+                                                <div class="file-field input-field">
+                                                    <div class="btn">
+                                                        <span>Invoice </span>
+                                                        <input type="file" id="claimFormpdf" name="claimFormpdf">
+                                                    </div>
+                                                    <div class="file-path-wrapper">
+                                                        <input class="file-path validate" type="text" placeholder="Upload invoice">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
+                                            <div class="input-field col m6 s12">
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col m6">
                                                 <div class="input-field">
                                                     <label>
@@ -472,6 +490,7 @@
                                             <div class="step-actions">
                                                 <input type="hidden" name="counter" id="counter" value="{{isset($count) ? $count-1 : 0}}">
                                                 <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
+                                                <input type="hidden" name="claimID" value="{{$claim->id}}" id="claimID">
                                                 <input type="submit" class="waves-effect waves-dark btn next-step"
                                                        value="SUBMIT" id="submitAssessment"/>
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK

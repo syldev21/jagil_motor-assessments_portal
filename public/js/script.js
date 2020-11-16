@@ -566,6 +566,7 @@ $(document).ready(function () {
     $("body").on('click','#fillAssessmentReport',function (e){
         e.preventDefault();
         var id = $(this).data("id");
+        var claimID = $(this).data('claimid');
         $.ajaxSetup({
 
             headers: {
@@ -578,7 +579,9 @@ $(document).ready(function () {
         $.ajax({
 
             type: 'GET',
-
+            data : {
+                claimID : claimID
+            },
             url: '/assessor/fillAssessmentReport/'+id,
 
             success: function (data) {

@@ -44,8 +44,9 @@ class AssessorController extends Controller
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
+            $asmts=Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'], "assessedBy" => Auth::id(),'segment'=>5])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
+            return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'asmts'=>$asmts]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
@@ -57,7 +58,19 @@ class AssessorController extends Controller
         $assessmentStatusID = $request->assessmentStatusID;
         try {
             $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            return view('assessor.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
+            return view('assessor.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'assessmentStatusID'=>$assessmentStatusID,'id'=>$id]);
+        } catch (\Exception $e) {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
+        }
+    }
+    public function headAssessorFecthsupplementaries(Request $request)
+    {
+        $id = Auth::id();
+        $assessmentStatusID = $request->assessmentStatusID;
+        try {
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            return view('head-assessor.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
@@ -78,6 +91,7 @@ class AssessorController extends Controller
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
         $remarks = Remarks::select("id","name")->get();
         $parts = Part::select("id","name")->get();
+        $claim = Claim::where(['id' => $request->claimID])->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
         $jobDraftDetail = [];
@@ -114,13 +128,11 @@ class AssessorController extends Controller
                 $jobDraftDetail["Dam Kit"] = $jobDetail->cost;
             }
         }
-
-        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails]);
+        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails,'claim'=>$claim]);
     }
     public function fillSupplementaryReport(Request $request, $assessmentID)
     {
         $supplementaryAssessment = Assessment::where(['id' => $assessmentID])->first();
-//        $supplementaryAssessment = Assessment::where(['id' => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
         $remarks = Remarks::all();
@@ -180,9 +192,10 @@ class AssessorController extends Controller
             $claimID = $request->claimID;
             //Loop for getting files with index like image0, image1
             if ($request->hasFile('claimForm')) {
-                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->get();
+                $claim='claim';
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$claim. '%')->get();
                 if (count($pdfs) > 0) {
-                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->delete();
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$claim. '%')->delete();
                     if ($affectedPdfRows > 0) {
                         foreach ($pdfs as $pdf) {
                             $image_path = "documents/" . $pdf->name;  // Value is not URL but directory file path
@@ -197,7 +210,7 @@ class AssessorController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $path = $file->getRealPath();
                 $size = $file->getSize();
-                $picture = date('His') . '-' . $filename;
+                $picture = date('His') . '-' . 'claim'.'-'. $filename;
                 //Save files in below folder path, that will make in public folder
                 $file->move(public_path('documents/'), $picture);
                 $documents = Document::create([
@@ -275,6 +288,7 @@ class AssessorController extends Controller
     public function submitAssessment(Request $request)
     {
         try {
+            $claimID=$request->claimID;
             $totalImages = $request->totalImages;
             $assessmentID = $request->assessmentID;
             $partsData = json_decode($request->partsData, true);
@@ -283,6 +297,7 @@ class AssessorController extends Controller
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
+            $invoice='invoice';
             if ($drafted == 1) {
                 $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])->delete();
                 if ($affectedRows > 0) {
@@ -302,6 +317,39 @@ class AssessorController extends Controller
                         }
                     }
                 }
+
+            }
+
+            if ($request->hasFile('claimForm')) {
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')->get();
+                if (count($pdfs) > 0) {
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')->delete();
+                    if ($affectedPdfRows > 0) {
+                        foreach ($pdfs as $pdf) {
+                            $image_path = "documents/" . $pdf->name;  // Value is not URL but directory file path
+                            if (File::exists($image_path)) {
+                                File::delete($image_path);
+                            }
+                        }
+                    }
+                }
+                $file = $request->file('claimForm');
+                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $path = $file->getRealPath();
+                $size = $file->getSize();
+                $picture = date('His') . '-'. 'invoice'.'-'. $filename;
+                //Save files in below folder path, that will make in public folder
+                $file->move(public_path('documents/'), $picture);
+                $documents = Document::create([
+                    "claimID" => $claimID,
+                    "name" => $picture,
+                    "mime" => $extension,
+                    "size" => $size,
+                    "documentType" => $documentType = Config::$DOCUMENT_TYPES["PDF"]["ID"],
+                    "url" => $path,
+                    "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
+                ]);
 
             }
             //Loop for getting files with index like image0, image1
@@ -1516,7 +1564,7 @@ class AssessorController extends Controller
                 }
             }
             $assessmentItems = array();
-            $total = !empty($jobsData['total']) ? $jobsData['total'] : 0;
+//            $total = !empty($jobsData['total']) ? $jobsData['total'] : 0;
             $labour = !empty($jobsData['labour']) ? $jobsData['labour'] : 0;
             $paint = !empty($jobsData['paint']) ? $jobsData['paint'] : 0;
             $miscellaneous = !empty($jobsData['miscellaneous']) ? $jobsData['miscellaneous'] : 0;
@@ -1598,7 +1646,7 @@ class AssessorController extends Controller
                     "note" => $note,
                     "salvage" => $salvage,
                     "pav" => $pav,
-                    "totalCost" => $total,
+                    "totalCost" => $sumTotal,
                     "totalLoss" => $totalLoss,
                     "assessmentTypeID" => $assessmentType,
                     "assessmentStatusID" => $assessmentStatusID,
@@ -1963,6 +2011,7 @@ class AssessorController extends Controller
             $cause = !empty($jobsData['cause']) ? $jobsData['cause'] : null;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
             $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
+
             if ($chassisNumber != '') {
                 $assessment = Assessment::where(['id' => $assessmentID])->first();
                 Claim::where(['id' => $assessment->claimID])->update([
@@ -2325,8 +2374,14 @@ class AssessorController extends Controller
     public function submitPriceChange(Request $request)
     {
         try {
+            $totalImages = $request->totalImages;
+            $assessmentID = $request->assessmentID;
+//            $isDraft = $request->isDraft;
+//            $assessmentType = $request->assessmentType;
+//            $drafted = $request->drafted;
             $partsData = json_decode($request->partsData, true);
             foreach ($partsData as $partDetail) {
+
                 $partID = $partDetail['partID'];
                 $current = $partDetail['current'];
                 $difference= $partDetail['difference'];
@@ -2335,12 +2390,33 @@ class AssessorController extends Controller
                         "difference"=>$difference
                     ]
                 );
+            }
+            for ($x = 0; $x < $totalImages; $x++) {
 
+                if ($request->hasFile('images' . $x)) {
+                    $file = $request->file('images' . $x);
+                    $filename = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $path = $file->getRealPath();
+                    $size = $file->getSize();
+                    $picture = date('His') . '-' . $filename;
+                    //Save files in below folder path, that will make in public folder
+                    $file->move(public_path('documents/'), $picture);
+                    Document::create([
+                        "assessmentID" => $assessmentID,
+                        "name" => $picture,
+                        "mime" => $extension,
+                        "size" => $size,
+                        "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
+                        "url" => $path,
+                        "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
+                    ]);
+                }
             }
 
             $response = array(
                 "STATUS_CODE" => Config::SUCCESS_CODE,
-                "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
+                "STATUS_MESSAGE" => "Congratulation!, You have successfully implemented price change"
             );
         } catch (\Exception $e) {
             $response = array(
