@@ -959,14 +959,16 @@ class AssessorController extends Controller
                         );
                         $jobs[] = $job;
                     }
-                    foreach ($jobs as $job) {
-                        $jobDetail = JobDetail::create($job);
-                        if ($isDraft == 1 & $jobDetail->id > 0) {
+                    $collection = collect($jobs);
+
+                    $save = Document::insert($collection->values()->all());
+                    if ($save) {
+                        if ($isDraft == 1) {
                             $response = array(
                                 "STATUS_CODE" => Config::SUCCESS_CODE,
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
                             );
-                        } else if ($isDraft == 0 & $jobDetail->id > 0) {
+                        } else if ($isDraft == 0) {
                             $response = array(
                                 "STATUS_CODE" => Config::SUCCESS_CODE,
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
@@ -1006,8 +1008,8 @@ class AssessorController extends Controller
                                     Jubilee Insurance.
                                 ",
                                             ];
-//                                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-//                                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                              $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                              SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
                                               Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                         }
                                     }
@@ -1046,8 +1048,8 @@ class AssessorController extends Controller
                                     Jubilee Insurance.
                                 ",
                                             ];
-//                                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-//                                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                              $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                              SMSHelper::sendSMS('Hello ' . $assistantHeadAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $assistantHeadAssessor->MSISDN);
                                               Notification::send($assistantHeadAssessor, new NewAssessmentNotification($assessment));
                                         }
                                     }
@@ -1086,8 +1088,8 @@ class AssessorController extends Controller
                             Jubilee Insurance.
                         ",
                                         ];
-//                                        $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-//                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                        $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
                                         Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                     }
                                 }
@@ -1126,9 +1128,9 @@ class AssessorController extends Controller
                             Jubilee Insurance.
                         ",
                                         ];
-//                                        $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-//                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
-                                          Notification::send($headAssessor, new NewAssessmentNotification($assessment));
+                                        $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                        Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                     }
                                 }
                             }
