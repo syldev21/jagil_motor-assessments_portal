@@ -64,7 +64,7 @@ class NewClaimNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'message' => 'A new claim with claimNo. '.$this->claim->claimNo.'has been created on the portal. You are required to assign an Assessor',
+            'message' => 'A new claim with claimNo. '.$this->claim->claimNo.' has been created on the portal. You are required to assign an Assessor',
             'claimNo' => $this->claim->claimNo,
             'vehicleRegNo' => $this->claim->vehicleRegNo
         ];

@@ -375,6 +375,13 @@ class AdjusterController extends Controller
                                 ]);
                             }
                         }
+//                        $utility = new Utility();
+//                        $access_token = $utility->getToken();
+//                        $data = ["claimNo"=>$claimNo];
+//                        $response = $utility->getData($data, '/api/v1/b2b/general/claim/uploaded', 'POST');
+//                        $claim_data = json_decode($response->getBody()->getContents());
+//                        echo json_encode($claim_data);
+//                        exit();
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
                             "STATUS_MESSAGE" => "Congratulations!, You have successfully created a claim on the portal"
@@ -444,8 +451,8 @@ class AdjusterController extends Controller
                             Jubilee Insurance.
                         ",
                             ];
-//                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-//                            SMSHelper::sendSMS('Hello '. $headAssessor->firstName .', A new claim : '.$claimNo.' has been created. You are required to assign an assessor',$headAssessor->MSISDN);
+                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                            SMSHelper::sendSMS('Hello '. $headAssessor->firstName .', A new claim : '.$claimNo.' has been created. You are required to assign an assessor',$headAssessor->MSISDN);
                             $claim = Claim::where(['id' => $claimID])->first();
                             Notification::send($headAssessors, new NewClaimNotification($claim));
                         }
