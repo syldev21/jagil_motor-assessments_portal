@@ -12,6 +12,7 @@ use App\Helper\SMSHelper;
 use App\JobDetail;
 use App\Notifications\AssignClaim;
 use App\Notifications\ClaimApproved;
+use App\Notifications\NewChangeRequest;
 use App\StatusTracker;
 use App\Conf\Config;
 use App\Garage;
@@ -364,7 +365,7 @@ class HeadAssessorController extends Controller
                     'subject' => 'Survey Report for - '.$data['reg'],
                     'from_user_email' => 'noreply@jubileeinsurance.com',
                     'message' =>"
-                    Hello ".$data['assessor']->name.", <br>
+                    Hello ".$data['assessor']->firstName.", <br>
                     This is in regards to the vehicle you've recently assessed, Registration <strong>".$data['reg']."</strong> <br>
                     You are required to make the following change(s) <br>
 
@@ -377,10 +378,12 @@ class HeadAssessorController extends Controller
                     Jubilee Insurance Company of Kenya.
                 ",
                 ];
-//                InfobipEmailHelper::sendEmail($email, $email_add);
+                InfobipEmailHelper::sendEmail($email, $email_add);
+                SMSHelper::sendSMS('Hello '. $data['assessor']->firstName .', Check your email for changes due for vehicle Reg. '.$data['reg'],$data['assessor']->MSISDN);
+                Notification::send($assessor, new NewChangeRequest($claim));
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
-                    "STATUS_MESSAGE" => "Heads up! An email was sent to " .$data['assessor']->name . " with the requested changes"
+                    "STATUS_MESSAGE" => "Heads up! An email was sent to " .$data['assessor']->firstName . " with the requested changes"
                 );
             } else {
                 $response = array(
