@@ -15,9 +15,15 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <h4 class="card-title float-left">Assessment Report</h4>
+                                <div class="col s10">
+                                    <h4 class="card-title float-left">Assessment Report</h4>
+                                </div>
+                                <div class="col s2">
+                                    <button type="button" class="btn teal float-right" onclick="printDiv()"><i class="material-icons" style="font-size: 2em;">local_printshop</i></button>
+                                </div>
                             </div>
                             <div class="divider"></div>
+                            <div id="printableArea">
                             <div class="row">
                                 <div class="col s5">
 
@@ -456,6 +462,7 @@
                                     @endforeach
                                 </div>
                             @endforeach
+                        </div>
                         </div>
                     </div>
                 </div>

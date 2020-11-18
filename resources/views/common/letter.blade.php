@@ -19,7 +19,7 @@
                                         <h4 class="card-title float-left">Re-Inspection Report</h4>
                                     </div>
                                     <div class="col s2">
-                                        <button type="button" class="btn-flat float-right" onclick="printDiv()"><i class="material-icons" style="font-size: 2em;">local_printshop</i></button>
+                                        <button type="button" class="btn teal float-right" onclick="printDiv()"><i class="material-icons" style="font-size: 2em;">local_printshop</i></button>
                                     </div>
                                 </div>
                                 <div class="divider"></div>

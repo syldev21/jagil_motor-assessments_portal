@@ -76,8 +76,8 @@ class ApproverController extends Controller
                     ",
                         ];
 
-//                        InfobipEmailHelper::sendEmail($message, $email);
-//                        SMSHelper::sendSMS('Hello '. $name .', Assessment for claimNo '.$claimNo.' has been approved',$MSISDN);
+                        InfobipEmailHelper::sendEmail($message, $email);
+                        SMSHelper::sendSMS('Hello '. $name .', Assessment for claimNo '.$claimNo.' has been approved',$MSISDN);
                         Notification::send($adjuster, new ClaimApproved($claim));
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
