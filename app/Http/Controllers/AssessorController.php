@@ -1422,7 +1422,7 @@ class AssessorController extends Controller
 
     public function editAssessmentReport(Request $request, $assessmentID)
     {
-        $draftAssessment = Assessment::where(['id' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']])->with('claim')->first();
+        $draftAssessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
         $remarks = Remarks::all();
