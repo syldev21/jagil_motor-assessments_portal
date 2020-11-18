@@ -554,14 +554,16 @@ class AssessorController extends Controller
                         );
                         $jobs[] = $job;
                     }
-                    foreach ($jobs as $job) {
-                        $jobDetail = JobDetail::create($job);
-                        if ($isDraft == 1 & $jobDetail->id > 0) {
+                    $collection = collect($jobs);
+
+                    $save = JobDetail::insert($collection->values()->all());
+                    if ($save) {
+                        if ($isDraft == 1) {
                             $response = array(
                                 "STATUS_CODE" => Config::SUCCESS_CODE,
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
                             );
-                        } else if ($isDraft == 0 & $jobDetail->id > 0) {
+                        } else if ($isDraft == 0) {
                             $response = array(
                                 "STATUS_CODE" => Config::SUCCESS_CODE,
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
@@ -961,7 +963,7 @@ class AssessorController extends Controller
                     }
                     $collection = collect($jobs);
 
-                    $save = Document::insert($collection->values()->all());
+                    $save = JobDetail::insert($collection->values()->all());
                     if ($save) {
                         if ($isDraft == 1) {
                             $response = array(
@@ -1008,6 +1010,8 @@ class AssessorController extends Controller
                                     Jubilee Insurance.
                                 ",
                                             ];
+                                            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                                                "Head assessor details ".json_encode($data));
                                               $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
                                               SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
                                               Notification::send($headAssessor, new NewAssessmentNotification($assessment));
