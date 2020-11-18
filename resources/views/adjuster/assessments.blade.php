@@ -126,7 +126,7 @@
                                                         ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
-                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'])
+                                                            @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                 <li><a href="#" data-id="{{$assessment->id}}" id="assessmentReport"><i
                                                                             class="material-icons">picture_as_pdf</i>View
                                                                         Assessment Report</a></li>
