@@ -263,26 +263,26 @@ class HeadAssessorController extends Controller
                     ]);
                     if ($approved) {
                         $claim = Claim::where(["id" =>$assessment->claimID])->first();
-                        $adjusterID = $claim->createdBy;
-                        $adjuster = User::where(["id" => $adjusterID])->first();
+                        $assessorID = $assessment->assessedBy;
+                        $assessor = User::where(["id" => $assessorID])->first();
                         $link = 'assessment-report/' . $request->assessmentID;
-                        $name = $adjuster->name;
-                        $email = $adjuster->email;
-                        $MSISDN = $adjuster->MSISDN;
+                        $firstName = $assessor->firstName;
+                        $email = $assessor->email;
+                        $MSISDN = $assessor->MSISDN;
                         $vehicleReg  = $claim->vehicleRegNo;
                         $claimNo = $claim->claimNo;
                         $reviewNote = $request->report;
-                        $role = Config::$ROLES['ASSESSMENT-MANAGER'];
+                        $role = Config::$ROLES['HEAD-ASSESSOR'];
 
                         $message = [
                             'subject' => "Assessment Report - " .$vehicleReg,
                             'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'message' =>"
-                        Hello ".$name.", <br>
+                        Hello ".$firstName.", <br>
 
                         This is in regards to claim number <strong>".$claimNo." </strong> <br>
 
-                        The assessment is approved and complete. Find attached report. <br> <br>
+                        The assessment has been provisionally approved waiting for final approval. Find attached report. <br> <br>
 
                             <b><i><u>Notes</u></i></b> <br>
 
@@ -299,8 +299,8 @@ class HeadAssessorController extends Controller
                         ];
 
                         InfobipEmailHelper::sendEmail($message, $email);
-                        SMSHelper::sendSMS('Hello '. $name .', Assessment for claimNo '.$claimNo.' has been approved',$MSISDN);
-                        Notification::send($adjuster, new ClaimApproved($claim));
+                        SMSHelper::sendSMS('Hello '. $firstName .', Assessment for claimNo '.$claimNo.' has been provisionally approved',$MSISDN);
+                        Notification::send($assessor, new ClaimApproved($claim));
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
                             "STATUS_MESSAGE" => "Heads up! You have successfully approved an assessment"
