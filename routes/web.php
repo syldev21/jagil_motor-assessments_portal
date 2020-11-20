@@ -96,9 +96,13 @@ $router->group(['prefix' => 'head-assessor'], function($router)
     $router->post('/assignAssessor','HeadAssessorController@assignAssessor');
     $router->post('/reAssignAssessor','HeadAssessorController@reAssignAssessor');
     $router->post('/assessments','HeadAssessorController@assessments');
+    $router->post('/supplementaries','HeadAssessorController@supplementaries');
+    $router->post('/supplementary-report','HeadAssessorController@supplementaryReport');
     $router->post('/assessment-report','HeadAssessorController@assessmentReport');
     $router->post('/review-assessment','HeadAssessorController@reviewAssessment');
+    $router->post('/review-supplementary','HeadAssessorController@reviewSupplementary');
     $router->post('/request-assessment-change','HeadAssessorController@requestAssessmentChange');
+    $router->post('/request-supplementary-change','HeadAssessorController@requestSupplementaryChange');
 });
 
 // Assessment Manager
@@ -107,7 +111,12 @@ $router->group(['prefix' => 'assessment-manager'], function($router)
     //Motor  assessment Manager Module
     $router->post('/assessments','AssessmentManagerController@assessments');
     $router->post('/assessment-report','AssessmentManagerController@assessmentReport');
-    $router->post('/review-assessment','ApproverController@reviewAssessment');
+    $router->post('/review-assessment','AssessmentManagerController@reviewAssessment');
+    $router->post('/review-supplementary','AssessmentManagerController@reviewSupplementary');
+    $router->post('/supplementaries','AssessmentManagerController@supplementaries');
+    $router->post('/supplementary-report','AssessmentManagerController@supplementaryReport');
+    $router->post('/request-assessment-change','AssessmentManagerController@requestAssessmentChange');
+    $router->post('/request-supplementary-change','AssessmentManagerController@requestSupplementaryChange');
 });
 // Assistant head Assessor
 $router->group(['prefix' => 'assistant-head-assessor'], function($router)
@@ -125,6 +134,11 @@ $router->group(['prefix' => 'admin'], function($router)
     $router->get('/registerUserForm','AdminController@registerUserForm');
     $router->post('/assignRole','AdminController@assignRole');
     $router->post('/registerUser','AdminController@registerUser');
+});
+$router->group(['prefix' => 'migration'], function($router)
+{
+    //Motor  assessment Assessor Module
+    $router->post('/claims','AdminController@claims');
 });
 
 // migrate
