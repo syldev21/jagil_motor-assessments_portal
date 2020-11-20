@@ -13,6 +13,7 @@ use App\JobDetail;
 use App\Notifications\AssignClaim;
 use App\Notifications\ClaimApproved;
 use App\Notifications\NewChangeRequest;
+use App\PriceChange;
 use App\StatusTracker;
 use App\Conf\Config;
 use App\Garage;
@@ -578,6 +579,55 @@ class HeadAssessorController extends Controller
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to request for changes " . $e->getMessage());
         }
+        return json_encode($response);
+    }
+
+    public function priceChangeReport(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
+        return view("head-assessor.price-change-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+    }
+
+    public function reviewPriceChange(Request $request)
+    {
+        try {
+            $curlDate = $this->functions->curlDate();
+            $assessmentID = $request->assessmentID;
+            $update = PriceChange::where('assessmentID', $assessmentID)->update([
+                'approvedBy' => Auth::user()->id,
+                'approvedAt' => $curlDate
+            ]);
+            if($update)
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                    "STATUS_MESSAGE" => "Congratulation!, You have approved price change request"
+                );
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to approve price change " . $e->getMessage());
+        }
+
         return json_encode($response);
     }
 }

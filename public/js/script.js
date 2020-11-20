@@ -1804,13 +1804,6 @@ $(document).ready(function () {
     $("body").on('click','#submit-price-change',function (e){
         e.preventDefault();
         var counter = $('td.checks').length;
-        // var vehicleParts=$("input[id*='vehiclePart_']");
-        // var quantitys=$("input[id*='quantity_']");
-        // var partPrices=$("input[id*='partPrice_']")
-        // var currents=$("input[id*='current_']")
-        // var remarkss=$("input[id*='remarks_']");
-
-
         var i;
         // Array
         var partsData = [];
@@ -1830,42 +1823,152 @@ $(document).ready(function () {
         }
         var image_upload = new FormData();
         image_upload.append('partsData', JSON.stringify(partsData));
-
-        $.ajaxSetup({
-
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
+        // var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
+        // var drafted = $("#drafted");
+        // var assessmentType = $('input[name="assessmentType"]:checked');
+        var assessmentID = $("#assessmentID");
+        var drafted = $("#drafted");
+        var image_upload = new FormData();
+        // Attach file
+        // formData.append('image', $('input[type=file]')[0].files[0]);
+        if(drafted.val() != 1) {
+            var files = $('input[type=file]')[0].files;
+            let totalImages = files.length; //Total Images
+            let images = $('input[type=file]')[0];
+            for (let i = 0; i < totalImages; i++) {
+                image_upload.append('images' + i, images.files[i]);
             }
+            image_upload.append('totalImages', totalImages);
+            image_upload.append('assessmentID', assessmentID.val());
+            // image_upload.append('assessmentType', assessmentType.val());
+            // image_upload.append('isDraft', isDraft);
+            image_upload.append('drafted', drafted.val());
+            image_upload.append('partsData', JSON.stringify(partsData));
+            $.ajaxSetup({
 
-        });
-        $.ajax({
+                headers: {
 
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            data: image_upload,
-            url: '/assessor/submitPriceChange',
-            success: function (data) {
-                var result = $.parseJSON(data);
-                if (result.STATUS_CODE == SUCCESS_CODE) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
                 }
+
+            });
+            $.ajax({
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: image_upload,
+                url: '/assessor/submitPriceChange',
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }
+
+            });
+        }else
+        {
+            var imagesArray = $("#imagesArray").val();
+            var imageParse = JSON.parse(imagesArray);
+            var counter = 0;
+
+            var imgArray = [];
+
+            $(".uploaded-image img").each(function() {
+                var imgsrc = this.src;
+                var n = imgsrc.split("/");
+                var result = n[n.length - 1];
+                imgArray.push(result);
+            });
+            console.log(imgArray);
+            imageParse = imageParse.filter(function( obj ) {
+                return imgArray.includes(obj.name);
+            });
+
+            console.log(imageParse);
+
+            var files = $('input[type=file]')[0].files;
+            let totalImages = files.length; //Total Images
+            let images = $('input[type=file]')[0];
+            var img = [];
+            for (let i = 0; i < totalImages; i++) {
+                var increment = imageParse.length+i;
+                image_upload.append('images' + increment, images.files[i]);
             }
-        });
+            $.each(imageParse, function (key, value) {
+                async function createFile() {
+                    let response = await fetch('/documents/' + value.name);
+                    let data = await response.blob();
+                    let metadata = {
+                        type: 'image/jpeg'
+                    };
+                    let file = new File([data],value.name, metadata);
+                    img.push(file);
+                }
+                createFile();
+                counter++;
+            });
+            setTimeout(function () {
+                for (let i = 0; i < img.length; i++) {
+                    image_upload.append('images' + i, img[i]);
+
+                }
+                image_upload.append('totalImages', imageParse.length+totalImages);
+                image_upload.append('assessmentID', assessmentID.val());
+                // image_upload.append('isDraft', isDraft);
+                // image_upload.append('drafted', drafted.val());
+                image_upload.append('partsData', JSON.stringify(partsData));
+                $.ajaxSetup({
+
+                    headers: {
+
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                    }
+
+                });
+                $.ajax({
+
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    data: image_upload,
+                    url: '/assessor/submitPriceChange',
+                    success: function (data) {
+                        var result = $.parseJSON(data);
+                        if (result.STATUS_CODE == SUCCESS_CODE) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        }
+                    }
+
+                });
+            },1000);
+        }
     });
     $("body").on('click','#assessor-price-change',function (e){
         e.preventDefault();
@@ -1903,9 +2006,70 @@ $(document).ready(function () {
                 }
                 $('.input-images').imageUploader({
                     label : "Drag & Drop Images here or click to browse",
-                    preloaded : finalArray
+
                 });
                 $('select').formSelect();
+            }
+
+        });
+    });
+
+    $("body").on('click','#head-assessor-view-price-change',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/head-assessor/price-change-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
+    $("body").on('click','#assessor-view-price-change',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/assessor/price-change-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
             }
 
         });
@@ -2976,6 +3140,52 @@ $(document).ready(function () {
                 report : report
             },
             url: '/head-assessor/review-assessment',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+
+        });
+
+
+    });
+    $("body").on('click','#head-assessor-review-price-change',function (e){
+        e.preventDefault();
+        var assessmentID = $("#assessmentID").val();
+        var assessmentReviewType = $("input[name='assessmentReviewType']:checked").val();
+        var report = CKEDITOR.instances['report'].getData();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentID : assessmentID,
+                assessmentReviewType : assessmentReviewType,
+                report : report
+            },
+            url: '/head-assessor/review-price-change',
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {

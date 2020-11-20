@@ -108,8 +108,6 @@
                                                 ?>
                                                 @foreach($assessmentItems as $assessmentItem)
                                                     <tr class="dynamicVehiclePart">
-
-
                                                         <td class="checks">
                                                             <input class="center-align vehiclePart_{{$count}}" disabled type="text" id="{{$assessmentItem->id}} " name="vehiclePart[]" value="{{ $assessmentItem->part->name }}">
                                                         </td>
@@ -167,41 +165,37 @@
                                     </div>
                                 </li>
                                 <li class="step">
-                                    <div class="step-title waves-effect waves-dark">Upload Images</div>
+                                    <div class="step-title waves-effect waves-dark">Upload Image</div>
                                     <div class="step-content">
-                                        {{--                                        <div class="row">--}}
-                                        {{--                                            <div class="col s12">--}}
-                                        {{--                                                <form action="#" enctype="multipart/form-data"--}}
-                                        {{--                                                      data-allowed-file-extensions='["jpeg", "jpg", "png"]'--}}
-                                        {{--                                                      id="assessmentForm">--}}
-                                        {{--                                                    <div class="input-images" id="images"></div>--}}
-                                        {{--                                                </form>--}}
-                                        {{--                                                <small>Only <span class="red-text text-darken-3">JPEG,JPG & PNG</span>--}}
-                                        {{--                                                    files--}}
-                                        {{--                                                    are allowed</small>--}}
-                                        {{--                                            </div>--}}
-                                        {{--                                        </div>--}}
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <form action="#" enctype="multipart/form-data" data-allowed-file-extensions='["jpeg", "jpg", "png"]' id="assessmentForm">
+                                                    <div class="input-images" id="images"></div>
+                                                </form>
+                                                <small>Only <span
+                                                        class="red-text text-darken-3">JPEG,JPG & PNG</span> files
+                                                    are allowed</small>
+                                            </div>
+                                        </div>
                                         {{--                                        <div class="row">--}}
                                         {{--                                            <div class="col m6">--}}
                                         {{--                                                <div class="input-field">--}}
                                         {{--                                                    <label>--}}
-                                        {{--                                                        <input type="checkbox" id="isDraft" value="0" />--}}
-                                        {{--                                                        --}}{{-- <span>Save as Draft</span> --}}
+                                        {{--                                                        <input  type="checkbox" id="isDraft" value="0"/>--}}
+                                        {{--                                                        <span>Save as Draft</span>--}}
                                         {{--                                                    </label>--}}
                                         {{--                                                </div>--}}
                                         {{--                                            </div>--}}
                                         {{--                                        </div>--}}
-                                        <br />
+                                        <br/>
                                         <div class="row">
                                             <div class="col m6">
                                             </div>
                                             <div class="step-actions">
-                                                <input type="hidden" name="counter" id="counter"
-                                                       value="{{isset($count) ? $count-1 : 0}}">
-                                                <input type="hidden" name="assessmentID" id="assessmentID"
-                                                       value="{{$assessment->id}}">
+                                                <input type="hidden" name="counter" id="counter" value="{{isset($count) ? $count-1 : 0}}">
+                                                <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
                                                 <input type="submit" class="waves-effect waves-dark btn next-step"
-                                                       value="SUBMIT" id="submit-price-change" />
+                                                       value="SUBMIT" id="submit-price-change"/>
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                                 </button>
                                             </div>
@@ -338,7 +332,7 @@
     }
 
     function getPriceChange(i) {
-        alert('i');
+
         var price = document.getElementById('quantity_'+i).value;
 
         var initial = document.getElementById('partPrice_'+i).value;

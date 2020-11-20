@@ -253,4 +253,17 @@ class Config
     const HEAD_ASSESSOR_THRESHOLD = 300000;
 
     const DEFAULT_PASSWORD = "123456";
+
+    static $CHANGES=array(
+
+        "PRICE-CHANGE"=>array(
+            "id"=>1,
+            "text"=>"pending price change approval"
+        ),
+        "CHANGE-REQUEST"=>array(
+            "id"=>2,
+            "text"=>"pending change request approval"
+        )
+
+    );
 }

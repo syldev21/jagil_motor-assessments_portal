@@ -200,9 +200,16 @@
                                                                         <a   href="#"
                                                                              id="assessor-price-change"
                                                                              data-id="{{$assessment['id']}}"><i
-                                                                                class="material-icons">compare_arrows</i>Price
-                                                                            Change</a>
+                                                                                class="material-icons">compare_arrows</i>Price Change</a>
                                                                     </li>
+                                                                @if($assessment->priceChange > 0)
+                                                                    <li>
+                                                                        <a   href="#"
+                                                                             id="assessor-view-price-change"
+                                                                             data-id="{{$assessment['id']}}"><i
+                                                                                class="material-icons">compare_arrows</i>View Price Change Report</a>
+                                                                    </li>
+                                                                @endif
                                                                 @if($assessment['assessmentTypeID'] != \App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
                                                                 <li><a href="#!" id="fillSupplementaryReport" data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Add

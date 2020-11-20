@@ -18,6 +18,7 @@ use App\JobDetail;
 use App\Notifications\NewAssessmentNotification;
 use App\Notifications\NewClaimNotification;
 use App\Part;
+use App\PriceChange;
 use App\ReInspection;
 use App\Remarks;
 use App\User;
@@ -2382,9 +2383,6 @@ class AssessorController extends Controller
         try {
             $totalImages = $request->totalImages;
             $assessmentID = $request->assessmentID;
-//            $isDraft = $request->isDraft;
-//            $assessmentType = $request->assessmentType;
-//            $drafted = $request->drafted;
             $partsData = json_decode($request->partsData, true);
             foreach ($partsData as $partDetail) {
 
@@ -2393,10 +2391,44 @@ class AssessorController extends Controller
                 $difference= $partDetail['difference'];
                 AssessmentItem::where(["id"=>$partID])->update([
                         "current"=>$current,
-                        "difference"=>$difference
+                        "difference"=>$difference,
                     ]
                 );
             }
+
+            Assessment::where("id",$assessmentID)->update([
+                "changeTypeID"=>Config::$CHANGES["PRICE-CHANGE"]["id"],
+            ]);
+
+            $difference = AssessmentItem::where('assessmentID', $assessmentID)
+                ->whereNotNull('current')
+                ->sum('difference');
+
+            $assessment = Assessment::where('id', $assessmentID)->first();
+
+
+            if ($assessment->assessmentTypeID == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                $difference = ((Config::CURRENT_TOTAL_PERCENTAGE)/Config::INITIAL_PERCENTAGE * $difference);
+                $price_change = $assessment->totalCost +  $difference;
+            } else {
+                $difference = (Config::MARK_UP * $difference);
+                $price_change = $assessment->totalCost + $difference;
+            }
+
+            $update = Assessment::where('id', $assessmentID)
+                ->update([
+                    'priceChange' => $difference,
+                    'totalChange' => $price_change
+                ]);
+
+            $priceChange = PriceChange::firstOrNew(array('assessmentID' => $assessmentID));
+            $priceChange->assessedBy = Auth::user()->id;
+            $priceChange->previousTotal = $assessment->totalCost;
+            $priceChange->currentTotal = $price_change;
+            $priceChange->priceDifference = $difference;
+
+            $priceChange->save();
+
             for ($x = 0; $x < $totalImages; $x++) {
 
                 if ($request->hasFile('images' . $x)) {
@@ -2419,7 +2451,6 @@ class AssessorController extends Controller
                     ]);
                 }
             }
-
             $response = array(
                 "STATUS_CODE" => Config::SUCCESS_CODE,
                 "STATUS_MESSAGE" => "Congratulation!, You have successfully implemented price change"
@@ -2448,5 +2479,17 @@ class AssessorController extends Controller
         return view('assessor.price', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails]);
     }
 
-
+    public function priceChangeReport(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
+        return view("assessor.price-change-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+    }
 }

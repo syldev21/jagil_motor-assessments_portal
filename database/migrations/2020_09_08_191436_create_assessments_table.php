@@ -25,9 +25,12 @@ class CreateAssessmentsTable extends Migration
             $table->double('salvage')->nullable();
             $table->double('totalLoss')->nullable();
             $table->double('totalCost')->nullable();
+            $table->double('totalChange')->nullable();
+            $table->double('priceChange')->nullable();
             $table->longText('cause')->nullable();
             $table->longText('note')->nullable();
             $table->bigInteger('assessmentStatusID')->nullable();
+            $table->bigInteger('changeTypeID')->nullable();
             $table->bigInteger('segment')->nullable();
             $table->bigInteger('approvedBy')->nullable();
             $table->dateTime('approvedAt')->nullable();

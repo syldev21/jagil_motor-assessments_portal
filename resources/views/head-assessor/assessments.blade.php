@@ -140,6 +140,16 @@
                                                                             class="material-icons">picture_as_pdf</i>View
                                                                         Assessment Report</a></li>
                                                             @endif
+                                                                @if($assessment['changeTypeID'] == \App\Conf\Config::$CHANGES["PRICE-CHANGE"]["id"])
+                                                                    <li>
+                                                                        <a   href="#"
+                                                                             id="head-assessor-view-price-change"
+
+                                                                             data-id="{{$assessment['id']}}"><i
+                                                                                class="material-icons">compare_arrows</i>view Price
+                                                                            Change</a>
+                                                                    </li>
+                                                                @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                                     <li><a href="#!"><i
                                                                                 class="material-icons">compare_arrows</i>View

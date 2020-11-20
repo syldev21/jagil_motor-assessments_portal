@@ -244,6 +244,10 @@
 
                                             <th class="col-sm-2 text-bold">Total</th>
 
+                                            <th class="col-sm-2 text-bold">Price Change</th>
+
+                                            <th class="col-sm-2 text-bold">Price Diff</th>
+
                                             <th class="col-sm-2 text-bold">Remarks</th>
                                         </tr>
 
@@ -271,6 +275,10 @@
                                                 <td>{{ $assessmentItem['discount'] }}</td>
 
                                                 <td>{{ number_format($assessmentItem['total']) }}</td>
+
+                                                <td>{{ number_format($assessmentItem['current']) }}</td>
+
+                                                <td>{{ number_format($assessmentItem['difference']) }}</td>
 
                                                 <td>{{ $assessmentItem['remark']['name'] }}</td>
 
