@@ -27,6 +27,10 @@ class Assessment extends Model
     {
         return $this->belongsTo(User::class,'approvedBy','id');
     }
+    public function final_approver()
+    {
+        return $this->belongsTo(User::class,'finalApprovalBy','id');
+    }
     public function assessor()
     {
         return $this->belongsTo(User::class,'assessedBy','id');

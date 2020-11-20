@@ -29,7 +29,7 @@ class AssistantHeadAssessorController extends Controller
                 ->join('users','users.id','=','assessments.assessedBy')
                 ->where('users.userTypeID','=',Config::$USER_TYPES['INTERNAL']['ID'])
                 ->select('assessments.*')
-                ->orderBy('assessments.dateCreated', 'DESC')->with('claim')->with('assessor')->get();
+                ->orderBy('assessments.dateCreated', 'DESC')->with('claim')->with('assessor')->with('approver')->with('final_approver')->get();
             return view('assistant-head-assessor.assessments',["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         }catch (\Exception $e)
         {

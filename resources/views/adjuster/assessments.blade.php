@@ -50,6 +50,7 @@
                                             <th>Registration Number</th>
                                             @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                 <th>Approver</th>
+                                                <th>Final Approver</th>
                                             @endif
                                             <th>Assessor</th>
                                             <th>Status</th>
@@ -70,6 +71,7 @@
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                         <td>{{isset($assessment->approver) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver) ? $assessment->approver->lastName : ''}}</td>
+                                                        <td>{{isset($assessment->final_approver->firstName) ? $assessment->final_approver->firstName : ''}} {{isset($assessment->final_approver->lastName) ? $assessment->final_approver->lastName : ''}}</td>
                                                     @endif
                                                     <td>{{isset($assessment->assessor) ? $assessment->assessor->firstName : ''}} {{isset($assessment->assessor) ? $assessment->assessor->lastName : ''}}</td>
                                                     @if($assessment['assessmentStatusID']  == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])

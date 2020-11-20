@@ -36,7 +36,7 @@ class AssessmentManagerController extends Controller
     {
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where(["assessmentStatusID"=>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('approver')->with('assessor')->with('claim')->get();
+            $assessments = Assessment::where(["assessmentStatusID"=>$assessmentStatusID])->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->get();
             return view('assessment-manager.assessments', ["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .

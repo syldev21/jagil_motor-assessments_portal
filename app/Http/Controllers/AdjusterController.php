@@ -498,7 +498,7 @@ class AdjusterController extends Controller
     {
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where('assessmentStatusID','=',$assessmentStatusID)->with('claim')->with('user')->with('approver')->with('assessor')->get();
+            $assessments = Assessment::where('assessmentStatusID','=',$assessmentStatusID)->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->get();
             return view('adjuster.assessments',['assessments' => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         }catch (\Exception $e)
         {

@@ -44,8 +44,8 @@ class AssessorController extends Controller
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $asmts=Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'], "assessedBy" => Auth::id(),'segment'=>5])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $asmts=Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'], "assessedBy" => Auth::id(),'segment'=>5])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'asmts'=>$asmts]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
