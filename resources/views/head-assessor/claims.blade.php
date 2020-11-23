@@ -93,22 +93,13 @@
                                                                 <option value="">Select Assessor</option>
                                                                 @if(count($assessors)>0)
                                                                     <?php
-                                                                    $assessorID =0;
+                                                                    $assessments = $claim->assessment;
                                                                     ?>
                                                                     @foreach($assessors as $assessor)
-                                                                        <?php
-                                                                        $assessments = $claim->assessment;
-                                                                        if(count($assessments)>0)
-                                                                            {
-                                                                            foreach ($assessments as $assessment) {
-                                                                                if ($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']) {
-                                                                                    $assessorID = $assessment->assessedBy;
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        ?>
+                                                                        @foreach($assessments as $assessment)
                                                                         <option
-                                                                            value="{{$assessor->id}}" @if($assessor->id == $assessorID) selected @endif>{{$assessor->firstName}} {{$assessor->lastName}}</option>
+                                                                            value="{{$assessor->id}}" @if($assessor->id == isset($assessment->assessedBy) ? $assessment->assessedBy : 0) selected @endif>{{$assessor->firstName}} {{$assessor->lastName}}</option>
+                                                                        @endforeach
                                                                     @endforeach
                                                                 @endif
                                                             </select>
