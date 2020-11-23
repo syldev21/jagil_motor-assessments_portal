@@ -84,6 +84,7 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->post('/submit-edited-assessment','AssessorController@submitEditedAssessment');
     $router->post('/submitPriceChange','AssessorController@submitPriceChange');
     $router->get('/view-price-change/{id}', 'AssessorController@priceChange'); //Price Change
+    $router->post('/price-change-report','AssessorController@priceChangeReport');
 
 });
 
@@ -103,6 +104,8 @@ $router->group(['prefix' => 'head-assessor'], function($router)
     $router->post('/review-supplementary','HeadAssessorController@reviewSupplementary');
     $router->post('/request-assessment-change','HeadAssessorController@requestAssessmentChange');
     $router->post('/request-supplementary-change','HeadAssessorController@requestSupplementaryChange');
+    $router->post('/price-change-report','HeadAssessorController@priceChangeReport');
+    $router->post('/review-price-change','HeadAssessorController@reviewPriceChange');
 });
 
 // Assessment Manager

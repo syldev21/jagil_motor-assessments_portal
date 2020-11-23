@@ -276,9 +276,17 @@
 
                                                 <td>{{ number_format($assessmentItem['total']) }}</td>
 
-                                                <td>{{ number_format($assessmentItem['current']) }}</td>
+                                                <td>
+                                                    @if(isset($assessmentItem['current']))
+                                                    {{ number_format($assessmentItem['current']) }}
+                                                    @endif
+                                                </td>
 
-                                                <td>{{ number_format($assessmentItem['difference']) }}</td>
+                                                <td>
+                                                    @if(isset($assessmentItem['difference']))
+                                                    {{ number_format($assessmentItem['difference']) }}
+                                                    @endif
+                                                </td>
 
                                                 <td>{{ $assessmentItem['remark']['name'] }}</td>
 
@@ -294,7 +302,7 @@
                                             <td></td>
                                             <td></td>
                                             <td>{{ number_format(\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')) }}</td>
-                                            <td>-</td>
+                                            <td></td>
                                         </tr>
 
                                         @foreach($jobDetails as $jobDetail)
@@ -368,7 +376,13 @@
                                             <td class="text-bold">Grand Total</td>
                                             <td></td>
                                             <td></td>
-                                            <td>{{ number_format($assessment['totalCost']) }}</td>
+                                            <td>
+                                                @if(isset($assessment['totalChange']))
+                                                {{ number_format($assessment['totalChange']) }}
+                                                @else
+                                                    {{ number_format($assessment['totalCost']) }}
+                                                @endif
+                                            </td>
                                             <td></td>
                                         </tr>
 
@@ -382,7 +396,7 @@
                             </div>
                             <div class="row">
                                 <div class="col s12">
-                                    @if($assessment['assessmentTypeID'] == 1)
+                                    @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE'])
 
                                         <div class="">
 
