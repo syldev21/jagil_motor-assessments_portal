@@ -116,6 +116,37 @@
                 </ul>
             </div>
         </li>
+
+        <li class="bold ">
+            <a class="collapsible-header" href="javascript:void(0)">
+                <i class="material-icons">filter_none</i>
+                <span class="menu-title" data-i18n="Chart">Claim Categories</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']}}" class="sidenav-link fetch-claims-by-type">
+                            <i class="material-icons">build</i>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU']}}" class="sidenav-link fetch-claims-by-type">
+                            <i class="material-icons">attach_money</i>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS']}}" class="sidenav-link fetch-claims-by-type">
+                            <i class="material-icons">assignment_ind</i>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS']]}}</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </li>
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["ASSESSOR"])
         <li class="bold ">

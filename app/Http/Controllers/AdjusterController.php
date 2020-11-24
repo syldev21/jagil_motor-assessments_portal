@@ -506,6 +506,18 @@ class AdjusterController extends Controller
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
+    public function fetchClaimsByType(Request $request)
+    {
+        $assessmentTypeID = $request->assessmentTypeID;
+        try {
+            $assessments = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],'assessmentTypeID' =>$assessmentTypeID])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->get();
+            return view('adjuster.assessment-types',['assessments' => $assessments,'assessmentStatusID'=>Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],'assessmentTypeID'=>$assessmentTypeID]);
+        }catch (\Exception $e)
+        {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
+        }
+    }
     public function assessmentDetails(Request $request,$assessmentID)
     {
         try {

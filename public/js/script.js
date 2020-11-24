@@ -770,6 +770,32 @@ $(document).ready(function () {
 
         });
     });
+    $(".fetch-claims-by-type").on('click',function (e){
+        e.preventDefault();
+        var assessmentTypeID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'assessmentTypeID' : assessmentTypeID
+            },
+            url: '/adjuster/fetch-claims-by-type',
+
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
     $(".fetch-claims").on('click',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
@@ -1818,7 +1844,11 @@ $(document).ready(function () {
             var assessmentID = $("#assessmentID").val()
             // var partData = {quantity : quantity.length > 0 ? quantity : 0,costcost : cost.length > 0 ? cost : 0,current:current.length > 0 ? current : 0,remarks:remarks,vehicleParts:vehiclePart,assessmentID:assessmentID,partID:partID,difference : difference.length > 0 ? difference : 0};
             // var partData = {current:current.length > 0 ? current : 0,assessmentID:assessmentID,partID:partID,difference:difference.length > 0 ? difference : 0 };
-            var partData = {current:current.length > 0 ? current : 0,partID:partID,difference:difference.length > 0 ? difference : 0};
+            var partData = {
+                current: current.length > 0 ? current : 0,
+                partID: partID,
+                difference: difference.length > 0 ? difference : 0
+            };
             partsData.push(partData);
         }
         var image_upload = new FormData();
