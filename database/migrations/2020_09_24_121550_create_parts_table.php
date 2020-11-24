@@ -18,8 +18,8 @@ class CreatePartsTable extends Migration
             $table->string('name');
             $table->integer('modifiedBy')->nullable();
             $table->integer('createdBy')->nullable();
-            $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->dateTime('dateCreated')->nullable();
+            $table->dateTime('dateModified')->nullable();
+            $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

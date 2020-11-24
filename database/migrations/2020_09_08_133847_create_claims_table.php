@@ -16,7 +16,7 @@ class CreateClaimsTable extends Migration
         Schema::create('claims', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('claimNo')->unique();
-            $table->string('policyNo')->unique();
+            $table->string('policyNo')->nullable();
             $table->string('branch')->nullable();
             $table->string('vehicleRegNo')->nullable();
             $table->string('carMakeCode')->nullable();
@@ -34,8 +34,8 @@ class CreateClaimsTable extends Migration
             $table->integer('createdBy')->nullable();
             $table->integer('updatedBy')->nullable();
             $table->integer('claimStatusID')->nullable();
-            $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->dateTime('dateCreated')->nullable();
+            $table->dateTime('dateModified')->nullable();
+            $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

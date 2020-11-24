@@ -27,8 +27,8 @@ class CreateDocumentsTable extends Migration
             $table->string('url')->nullable();
             $table->integer('modifiedBy')->nullable();
             $table->integer('createdBy')->nullable();
-            $table->timestamp('dateModified')->nullable();
-            $table->dateTime('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->dateTime('dateModified')->nullable();
+            $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

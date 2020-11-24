@@ -21,8 +21,8 @@ class CreateCarModelsTable extends Migration
             $table->string('modelName');
             $table->bigInteger('modifiedBy')->nullable();
             $table->bigInteger('createdBy')->nullable();
-            $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->dateTime('dateCreated')->nullable();
+            $table->dateTime('dateModified')->nullable();
+            $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

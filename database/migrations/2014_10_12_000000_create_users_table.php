@@ -38,8 +38,8 @@ class CreateUsersTable extends Migration
             $table->boolean('online')->default(0);
             $table->integer('durationOnline')->default(0);
             $table->boolean('accountLocked')->default(0);
-            $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->dateTime('dateCreated')->nullable();
+            $table->dateTime('dateModified')->nullable();
+            $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->rememberToken();
         });
     }

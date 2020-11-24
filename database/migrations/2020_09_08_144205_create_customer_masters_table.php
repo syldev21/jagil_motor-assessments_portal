@@ -29,8 +29,8 @@ class CreateCustomerMastersTable extends Migration
             $table->string('longitude')->nullable();
             $table->bigInteger('updatedBy')->nullable();
             $table->bigInteger('createdBy')->nullable();
-            $table->timestamp('dateModified')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->dateTime('dateCreated')->nullable();
+            $table->dateTime('dateModified')->nullable();
+            $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

@@ -18,8 +18,8 @@ class CreateRemarksTable extends Migration
             $table->string('name')->nullable();
             $table->integer('updatedBy')->nullable();
             $table->integer('createdBy')->nullable();
-            $table->timestamp('dateModified')->nullable();
-            $table->dateTime('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->dateTime('dateModified')->nullable();
+            $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

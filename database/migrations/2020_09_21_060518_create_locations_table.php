@@ -19,7 +19,7 @@ class CreateLocationsTable extends Migration
             $table->bigInteger('createdBy')->nullable();
             $table->bigInteger('updatedBy')->nullable();
             $table->dateTime('dateModified')->nullable();
-            $table->dateTime('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
