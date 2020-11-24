@@ -21,6 +21,8 @@ class CreateAssessmentItemsTable extends Migration
             $table->double('contribution')->nullable();
             $table->integer('discount')->nullable();
             $table->double('cost')->nullable();
+            $table->double('current')->nullable();
+            $table->double('difference')->nullable();
             $table->double('total')->nullable();
             $table->longText('remarks')->nullable();
             $table->integer('assessmentItemType')->nullable();
