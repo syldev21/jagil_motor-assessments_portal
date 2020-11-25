@@ -266,4 +266,6 @@ class Config
         )
 
     );
+
+    const CACHE_EXPIRY_PERIOD = 33600;
 }

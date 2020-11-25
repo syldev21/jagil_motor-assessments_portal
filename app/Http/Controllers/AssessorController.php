@@ -24,6 +24,7 @@ use App\Remarks;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
@@ -91,7 +92,10 @@ class AssessorController extends Controller
         }
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
         $remarks = Remarks::select("id","name")->get();
-        $parts = Part::select("id","name")->get();
+//        $parts = Part::select("id","name")->get();
+        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Part::select("id","name")->get();
+        });
         $claim = Claim::where(['id' => $request->claimID])->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
