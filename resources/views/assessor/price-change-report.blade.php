@@ -210,7 +210,7 @@
 
                                                         <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 
-                                                        <tr><td></td><td></td><td></td><td class="text-bold">Total parts cost</td><td></td><td></td><td></td><td></td><td>{{ number_format(\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('current')) }}</td><td></td></tr>
+                                                        <tr><td></td><td></td><td></td><td class="text-bold">Total parts cost</td><td></td><td></td><td></td><td></td><td>{{ number_format(\App\Assessment::where('id', $assessment['id'])->sum('totalChange')) }}</td><td></td></tr>
 
                                                         @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE'])
                                                             @if($assessment['dateCreated'] > App\Conf\Config::VAT_REDUCTION_DATE)

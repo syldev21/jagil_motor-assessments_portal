@@ -42,7 +42,7 @@
                             <div class="divider"></div>
                             <div class="row">
                                 <div class="col s12">
-                                    <table id="page-length-option" class="display">
+                                    <table id="data-table-simple" class="display">
                                         <thead>
                                         <tr>
                                             <th>No</th>

@@ -483,6 +483,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -510,6 +517,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -533,6 +547,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -559,6 +580,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -766,6 +794,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -792,6 +827,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -818,6 +860,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -840,6 +889,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -866,6 +922,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -892,6 +955,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -918,6 +988,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -944,6 +1021,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -970,6 +1054,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
@@ -996,6 +1087,13 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });

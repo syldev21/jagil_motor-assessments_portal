@@ -532,7 +532,7 @@
             </a>
         </li>
         <li class="bold ">
-            <a class="waves-effect waves-light sidenav-link"
+            <a class="waves-effect waves-light"
                href="{{ route('user.logout') }}"
             >
                 <i class="material-icons">power_settings_new</i>

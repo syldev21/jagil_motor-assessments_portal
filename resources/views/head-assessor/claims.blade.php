@@ -42,7 +42,7 @@
                             <div class="divider"></div>
                             <div class="row">
                                 <div class="col s12">
-                                    <table id="page-length-option" class="display">
+                                    <table id="data-table-simple" class="display">
                                         <thead>
                                         <tr>
                                             <th>No</th>
@@ -93,13 +93,22 @@
                                                                 <option value="">Select Assessor</option>
                                                                 @if(count($assessors)>0)
                                                                     <?php
-                                                                    $assessments = $claim->assessment;
+                                                                    $assessorID =0;
                                                                     ?>
                                                                     @foreach($assessors as $assessor)
-                                                                        @foreach($assessments as $assessment)
+                                                                        <?php
+                                                                        $assessments = $claim->assessment;
+                                                                        if(count($assessments)>0)
+                                                                            {
+                                                                            foreach ($assessments as $assessment) {
+                                                                                if ($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']) {
+                                                                                    $assessorID = $assessment->assessedBy;
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        ?>
                                                                         <option
-                                                                            value="{{$assessor->id}}" @if($assessor->id == isset($assessment->assessedBy) ? $assessment->assessedBy : 0) selected @endif>{{$assessor->firstName}} {{$assessor->lastName}}</option>
-                                                                        @endforeach
+                                                                            value="{{$assessor->id}}" @if($assessor->id == $assessorID) selected @endif>{{$assessor->firstName}} {{$assessor->lastName}}</option>
                                                                     @endforeach
                                                                 @endif
                                                             </select>

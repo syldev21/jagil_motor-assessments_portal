@@ -125,8 +125,10 @@
                                                value="{{$claim['CUST_MOBILE_NO']}}">
                                         <div class="input-field col m4 s12">
                                             <a href="#"
-                                               class="float-right btn cyan waves-effect waves-effect waves-light"
-                                               id="addClaim"> <i class="material-icons right">send</i>Submit</a>
+                                               class="float-right btn  waves-effect waves-effect waves-light"
+                                               id="addClaim"> <i class="material-icons right">send</i>
+                                                Submit
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

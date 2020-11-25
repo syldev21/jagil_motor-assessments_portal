@@ -19,7 +19,7 @@
                     <li class="dropdown-language">
                         <a class="waves-effect waves-block waves-light translation-button" href="#"
                            data-target="translation-dropdown">
-                            <span class="flag-icon flag-icon-gb"></span>
+{{--                            <span class="flag-icon flag-icon-gb"></span>--}}
                         </a>
                     </li>
                     <li class="hide-on-med-and-down">
@@ -42,7 +42,7 @@
                         <a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);"
                            data-target="profile-dropdown">
             <span class="avatar-status avatar-online">
-              <img src="{{ url('images/avatar/avatar-7.png') }}" alt="avatar"><i></i>
+              <img src="{{ url('images/avatar/user.png') }}" alt="avatar"><i></i>
             </span>
                         </a>
                     </li>
