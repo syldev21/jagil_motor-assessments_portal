@@ -788,7 +788,7 @@ $(document).ready(function () {
             data : {
                 'assessmentTypeID' : assessmentTypeID
             },
-            url: '/adjuster/fetch-claims-by-type',
+            url: '/common/fetch-claims-by-type',
 
             success: function (data) {
                 $("#main").html(data);
@@ -815,6 +815,28 @@ $(document).ready(function () {
                 'claimStatusID' : claimStatusID
             },
             url: '/adjuster/fetch-claims',
+
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
+    $(".re-inspections").on('click',function (e){
+        e.preventDefault();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/common/fetch-re-inspections',
 
             success: function (data) {
                 $("#main").html(data);

@@ -1388,6 +1388,12 @@ class AssessorController extends Controller
 //                    'headEmail' => $headAssessor->email,
 //                    'cc' => $cc
 //                ];
+                Claim::where(["id"=> $assessment->claimID])->update([
+                    "claimStatusID" => Config::$STATUSES['CLAIM']['RE-INSPECTED']['id']
+                ]);
+                Assessment::where(['id'=> $request->assessmentID])->update([
+                    "segment" =>Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']
+                ]);
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
                     "STATUS_MESSAGE" => "Congratulations, Re-inspection saved successfully"

@@ -296,7 +296,6 @@ class AdjusterController extends Controller
             $chassisNumber = $request->chassisNumber;
 
             $claims = Claim::where(['claimNo' => $claimNo])
-                ->orWhere('policyNo',$policyNo)
                 ->limit(1)->get();
             if (count($claims) == 0) {
                 $customers = CustomerMaster::where(['customerCode' => $customerCode])->limit(1)->get();
@@ -500,18 +499,6 @@ class AdjusterController extends Controller
         try {
             $assessments = Assessment::where('assessmentStatusID','=',$assessmentStatusID)->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->get();
             return view('adjuster.assessments',['assessments' => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
-        }catch (\Exception $e)
-        {
-            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
-                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
-        }
-    }
-    public function fetchClaimsByType(Request $request)
-    {
-        $assessmentTypeID = $request->assessmentTypeID;
-        try {
-            $assessments = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],'assessmentTypeID' =>$assessmentTypeID])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->get();
-            return view('adjuster.assessment-types',['assessments' => $assessments,'assessmentStatusID'=>Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],'assessmentTypeID'=>$assessmentTypeID]);
         }catch (\Exception $e)
         {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .

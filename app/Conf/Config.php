@@ -62,7 +62,7 @@ class Config
             ),
             "RE-INSPECTED" => array(
                 "id" => 3,
-                "text" => "Re-Assigned"
+                "text" => "Re-inspected"
             ),
             "RELEASED"=> array(
                 "id" => 4,

@@ -10,6 +10,7 @@ class AssessmentItem extends Model
     protected $table = "assessment_items";
     protected $primaryKey = "id";
     protected $fillable = ['assessmentID','partID','quantity','contribution','discount','cost',
+        'current','difference',
         'total','remarks','assessmentItemType','category','reInspection','reInspectionType','segment','modifiedBy',
         'createdBy','dateModified','dateCreated'];
     public $timestamps= false;

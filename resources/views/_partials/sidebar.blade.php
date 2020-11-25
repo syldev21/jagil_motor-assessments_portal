@@ -24,7 +24,7 @@
         </li>
         @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
         <li class="bold ">
-            <a class="collapsible-header"
+            <a class="collapsible-header sidenav-link"
                href="javascript:void(0) "
             >
                 <i class="material-icons">view_list</i>
@@ -69,7 +69,7 @@
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
         <li class="bold ">
-            <a class="collapsible-header" href="javascript:void(0)">
+            <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
                 <span class="menu-title" data-i18n="Chart">Assessments</span>
             </a>
@@ -116,41 +116,10 @@
                 </ul>
             </div>
         </li>
-
-        <li class="bold ">
-            <a class="collapsible-header" href="javascript:void(0)">
-                <i class="material-icons">filter_none</i>
-                <span class="menu-title" data-i18n="Chart">Claim Categories</span>
-            </a>
-            <div class="collapsible-body">
-                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
-
-                    <li class="">
-                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']}}" class="sidenav-link fetch-claims-by-type">
-                            <i class="material-icons">build</i>
-                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']]}}</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU']}}" class="sidenav-link fetch-claims-by-type">
-                            <i class="material-icons">attach_money</i>
-                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU']]}}</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS']}}" class="sidenav-link fetch-claims-by-type">
-                            <i class="material-icons">assignment_ind</i>
-                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS']]}}</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </li>
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["ASSESSOR"])
         <li class="bold ">
-            <a class="collapsible-header" href="javascript:void(0)">
+            <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
                 <span class="menu-title" data-i18n="Chart">Assessments</span>
             </a>
@@ -198,7 +167,7 @@
             </div>
         </li>
         <li class="bold ">
-            <a class="collapsible-header"
+            <a class="collapsible-header sidenav-link"
                href="javascript:void(0) "
             >
                 <i class="material-icons">note</i>
@@ -209,7 +178,7 @@
 
                     <li class="">
                         <a href="#"
-                           class="assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
+                           class="assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
                          >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
@@ -217,7 +186,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}"
+                           class="assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}"
                         >
                             <i class="material-icons">done</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -225,7 +194,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
+                           class="assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
                         >
                             <i class="material-icons">done</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
@@ -233,7 +202,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}"
+                           class="assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}"
                         >
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
@@ -245,7 +214,7 @@
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["HEAD-ASSESSOR"])
         <li class="bold ">
-            <a class="collapsible-header"
+            <a class="collapsible-header sidenav-link"
                href="javascript:void(0) "
             >
                 <i class="material-icons">view_list</i>
@@ -283,7 +252,7 @@
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["HEAD-ASSESSOR"])
         <li class="bold ">
-            <a class="collapsible-header" href="javascript:void(0)">
+            <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
                 <span class="menu-title" data-i18n="Chart">Assessments</span>
             </a>
@@ -331,7 +300,7 @@
             </div>
         </li>
         <li class="bold ">
-            <a class="collapsible-header"
+            <a class="collapsible-header sidenav-link"
                href="javascript:void(0) "
             >
                 <i class="material-icons">note</i>
@@ -378,7 +347,7 @@
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["ASSISTANT-HEAD"])
         <li class="bold ">
-            <a class="collapsible-header" href="javascript:void(0)">
+            <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
                 <span class="menu-title" data-i18n="Chart">Assessments</span>
             </a>
@@ -414,7 +383,7 @@
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["ASSESSMENT-MANAGER"])
         <li class="bold ">
-            <a class="collapsible-header" href="javascript:void(0)">
+            <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
                 <span class="menu-title" data-i18n="Chart">Assessments</span>
             </a>
@@ -448,7 +417,7 @@
             </div>
         </li>
         <li class="bold ">
-            <a class="collapsible-header"
+            <a class="collapsible-header sidenav-link"
                href="javascript:void(0) "
             >
                 <i class="material-icons">note</i>
@@ -459,7 +428,7 @@
 
                     <li class="">
                         <a href="#"
-                           class="assessment-manager-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
+                           class="assessment-manager-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
                         >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
@@ -467,7 +436,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="assessment-manager-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}"
+                           class="assessment-manager-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}"
                         >
                             <i class="material-icons">done</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -475,7 +444,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="assessment-manager-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
+                           class="assessment-manager-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
                         >
                             <i class="material-icons">done</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
@@ -483,12 +452,50 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="assessment-manager-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}"
+                           class="assessment-manager-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}"
                         >
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
+                </ul>
+            </div>
+        </li>
+        @endhasrole
+        @hasanyrole('Admin|Head Assessor|Assistant Head|Assessment Manager|Adjuster|Assessor')
+        <li class="">
+            <a href="#" class="re-inspections sidenav-link">
+                <i class="material-icons">assignment_turned_in</i>
+                <span data-i18n="ChartJS">Re-inspections</span>
+            </a>
+        </li>
+        <li class="bold ">
+            <a class="collapsible-header sidenav-link" href="javascript:void(0)">
+                <i class="material-icons">filter_none</i>
+                <span class="menu-title" data-i18n="Chart">Claim Categories</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']}}" class="sidenav-link fetch-claims-by-type">
+                            <i class="material-icons">build</i>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU']}}" class="sidenav-link fetch-claims-by-type">
+                            <i class="material-icons">attach_money</i>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS']}}" class="sidenav-link fetch-claims-by-type">
+                            <i class="material-icons">assignment_ind</i>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[\App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS']]}}</span>
+                        </a>
+                    </li>
+
                 </ul>
             </div>
         </li>
@@ -517,7 +524,7 @@
         </li>
         @endhasanyrole
         <li class="bold ">
-            <a class="waves-effect waves-light "
+            <a class="waves-effect waves-light sidenav-link"
                href="#"
             >
                 <i class="material-icons">compare_arrows</i>
@@ -525,7 +532,7 @@
             </a>
         </li>
         <li class="bold ">
-            <a class="waves-effect waves-light "
+            <a class="waves-effect waves-light sidenav-link"
                href="{{ route('user.logout') }}"
             >
                 <i class="material-icons">power_settings_new</i>
