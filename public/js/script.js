@@ -701,12 +701,24 @@ $(document).ready(function () {
             success: function (data) {
                 $("#main").html(data);
                 $('select').formSelect();
+                var imagesCount = $("#imagesCount").val();
                 var stepper = document.querySelector('.stepper');
                 var stepperInstace = new MStepper(stepper, {
                     // options
                     firstActive: 0 // this is the default
                 });
-                $('.input-images').imageUploader({label : "Drag & Drop Images here or click to browse"});
+                var finalArray = [];
+                if(imagesCount > 0) {
+                    var imagesArray = $("#imagesArray").val();
+                    $.each(JSON.parse(imagesArray), function (key, value) {
+                        var imgData = {id: value.id, src: "documents/" + value.name}
+                        finalArray.push(imgData);
+                    });
+                }
+                $('.input-images').imageUploader({
+                    label: "Drag & Drop Images here or click to browse",
+                    preloaded: finalArray
+                });
             }
 
         });

@@ -386,7 +386,7 @@
                                     <div class="row">
                                         @foreach($chunk as $document)
                                             <div class="col s3">
-                                                <img class="responsive-img materialboxed" src="{{url('documents/'.$document['name']) }}">
+                                                <img class="responsive-img" src="{{url('documents/'.$document['name']) }}">
                                             </div>
                                         @endforeach
                                     </div>

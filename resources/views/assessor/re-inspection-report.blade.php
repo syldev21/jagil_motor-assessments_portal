@@ -181,6 +181,13 @@
         </div>
     </div>
 </div>
+@if(isset($inspections->id))
+    <?php
+    $images = \App\Document::where(["inspectionID"=>$inspections->id])->get();
+    ?>
+    <input type="hidden" value="{{$images}}" name="imagesArray" id="imagesArray">
+    <input type="hidden" value="{{count($images)}}" id="imagesCount">
+@endif
 <script type="text/javascript">
 
 </script>

@@ -46,8 +46,11 @@ class AssessorController extends Controller
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
+            $segmentIds = array(Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'],Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']);
             $asmts=Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'], "assessedBy" => Auth::id(),'segment'=>5])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
+                ->whereIn('segment', $segmentIds)
+                ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'asmts'=>$asmts]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
@@ -1308,10 +1311,9 @@ class AssessorController extends Controller
                 } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
                     $subAmount = (Config::MARK_UP * $award) + $labor;
                 }
-
-                $inspected = ReInspection::where('assessmentID', $assessmentID)->get();
-
-                if (count($inspected) > 0) {
+                $inspection = ReInspection::where(['assessmentID'=> $assessmentID])->first();
+                if (isset($inspection->id)) {
+                    $inspectionID = $inspection->inspectionID;
                     ReInspection::where('assessmentID',$assessmentID)
                         ->update([
                             'labor' => $labor,
@@ -1322,6 +1324,21 @@ class AssessorController extends Controller
                             'modifiedBy' => Auth::user()->id,
                             'dateModified' => date('Y-m-d H:i:s')
                         ]);
+                    if($totalImages >0)
+                    {
+                        $documents = Document::where(['inspectionID' => $inspection->inspectionID])->get();
+                        if (count($documents) > 0) {
+                            $affectedPdfRows = Document::where(['inspectionID' => $inspection->inspectionID])->delete();
+                            if ($affectedPdfRows > 0) {
+                                foreach ($documents as $document) {
+                                    $image_path = "documents/" . $document->name;  // Value is not URL but directory file path
+                                    if (File::exists($image_path)) {
+                                        File::delete($image_path);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }else
                 {
                     $inspectionID = ReInspection::insertGetId([
@@ -1334,7 +1351,9 @@ class AssessorController extends Controller
                         'notes' => $request->notes,
                         'dateCreated' => date('Y-m-d H:i:s'),
                     ]);
-
+                }
+                if($totalImages > 0)
+                {
                     //Loop for getting files with index like image0, image1
                     for ($x = 0; $x < $totalImages; $x++) {
                         if ($request->hasFile('images' . $x)) {
@@ -1354,7 +1373,8 @@ class AssessorController extends Controller
                                 "size" => $size,
                                 "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
                                 "url" => $path,
-                                "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
+                                "segment" => Config::$ASSESSMENT_SEGMENTS["RE_INSPECTION"]["ID"],
+                                ""
                             ]);
                         }
                     }

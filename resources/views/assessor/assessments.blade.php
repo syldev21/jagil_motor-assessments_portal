@@ -189,6 +189,7 @@
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Re-Inspection
                                                                         Report</a></li>
+                                                                    @if($assessment['segment'] == \App\Conf\Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID'])
                                                                         <li>
                                                                             <a href="#"
                                                                                id="assessor-view-re-inspection-report"
@@ -196,6 +197,7 @@
                                                                                     class="material-icons">insert_drive_file</i>View
                                                                                 Re-Inspection
                                                                                 Report</a></li>
+                                                                    @endif
                                                                     <li>
                                                                         <a   href="#"
                                                                              id="assessor-price-change"
