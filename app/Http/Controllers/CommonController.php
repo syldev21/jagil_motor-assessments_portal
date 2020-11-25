@@ -28,9 +28,10 @@ class CommonController extends Controller
         try {
             $asmts=Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
             ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            $assessments = Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
-                ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID'])
-            ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $assessments = Assessment::
+//            whereIn('assessmentStatusID', $assessmentStatusIDs)
+//            where('segment','=',Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID'])
+            with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             return view('common.re-inspections', ['assessments' => $assessments, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],'asmts'=>$asmts]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
