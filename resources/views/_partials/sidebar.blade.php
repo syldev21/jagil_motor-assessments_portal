@@ -311,7 +311,7 @@
 
                     <li class="">
                         <a href="#"
-                           class="head-assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
+                           class="head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
                         >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
@@ -319,7 +319,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="head-assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}"
+                           class="head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}"
                         >
                             <i class="material-icons">done</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -327,7 +327,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="head-assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
+                           class="head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
                         >
                             <i class="material-icons">done</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
@@ -335,7 +335,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                           class="head-assessor-fetch-supplementaries" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}"
+                           class="head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}"
                         >
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
