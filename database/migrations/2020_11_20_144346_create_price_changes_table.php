@@ -17,9 +17,9 @@ class CreatePriceChangesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('assessmentID')->unsigned();
             $table->bigInteger('assessedBy')->nullable();
-            $table->float('previousTotal')->nullable();
-            $table->float('currentTotal')->nullable();
-            $table->float('priceDifference')->nullable();
+            $table->double('previousTotal')->nullable();
+            $table->double('currentTotal')->nullable();
+            $table->double('priceDifference')->nullable();
             $table->bigInteger('approvedBy')->nullable();
             $table->dateTime('approvedAt')->nullable();
             $table->tinyInteger('finalApproved')->nullable();
