@@ -25,6 +25,7 @@ class CreatePriceChangesTable extends Migration
             $table->tinyInteger('finalApproved')->nullable();
             $table->bigInteger('finalApprover')->nullable();
             $table->dateTime('finalApprovedAt')->nullable();
+            $table->tinyInteger('changed')->nullable();
             $table->bigInteger('modifiedBy')->nullable();
             $table->bigInteger('createdBy')->nullable();
             $table->dateTime('dateModified')->nullable();
