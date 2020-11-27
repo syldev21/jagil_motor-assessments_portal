@@ -89,13 +89,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
-                                            <input id="excess" type="text" name="excess" value="{{$claim->excess}}">
+                                            <input id="excess" type="text" name="excess" value="{{$claim->excess}}" disabled>
                                             <input type="hidden" name="oldExcess" id="oldExcess" value="{{$claim->excess}}">
                                             <label for="excess" class="active">Excess</label>
                                         </div>
                                         <div class="input-field col m4 s12">
                                             <input id="sumInsured" type="text" name="sumInsured"
-                                                   VALUE="{{$claim->sumInsured}}">
+                                                   VALUE="{{$claim->sumInsured}}" disabled>
                                             <input type="hidden" name="oldSumInsured" id="oldSumInsured" value="{{$claim->sumInsured}}">
                                             <label for="sumInsured" class="active">Sum Insured</label>
                                         </div>
@@ -108,7 +108,7 @@
                                     <div class="row">
                                         <div class="input-field col m4 s12">
                                             <input id="location" type="text" name="location"
-                                                   VALUE="{{$claim->location}}">
+                                                   VALUE="{{\App\Location::where(["id"=>$claim->location])->first()->name }}" disabled>
                                             <label for="location" class="active">Location</label>
                                             <input type="hidden" value="{{$claim->id}}" name="claimID" id="claimID">
                                         </div>

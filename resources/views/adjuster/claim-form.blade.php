@@ -92,13 +92,13 @@
                                         <div class="input-field col m4 s12">
                                             <input type="hidden" value="{{$claim['EXCESS_AMT']}}" id="originalExcess">
                                             <input id="excess" type="text" name="excess"
-                                                   value="{{$claim['EXCESS_AMT']}}">
+                                                   value="{{$claim['EXCESS_AMT']}}" disabled>
                                             <label for="excess" class="active">Excess</label>
                                         </div>
                                         <div class="input-field col m4 s12">
                                             <input type="hidden" value="{{$claim['SUM_INSURED']}}" id="originalSumInsured">
                                             <input id="sumInsured" type="text" name="sumInsured"
-                                                   VALUE="{{$claim['SUM_INSURED']}}">
+                                                   VALUE="{{$claim['SUM_INSURED']}}" disabled>
                                             <label for="sumInsured" class="active">Sum Insured</label>
                                         </div>
                                         <div class="input-field col m4 s12">
