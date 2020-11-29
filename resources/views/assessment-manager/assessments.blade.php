@@ -101,10 +101,35 @@
                                                         </td>
                                                         <?php $date = $assessment['approvedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                        <td>
-                                                            <button
-                                                                class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
-                                                        </td>
+                                                        <?php
+                                                        $Pchange=\App\PriceChange::where(['assessmentID'=>$assessment['id']])->first();
+                                                        $change=isset($Pchange)?$Pchange:'false';
+                                                        ?>
+
+                                                            @if($change=='false')
+                                                                <td>
+                                                                    <button
+                                                                        class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
+                                                                </td>
+{{--                                                                <td>--}}
+{{--                                                                    <button--}}
+{{--                                                                        class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['PRICE-CHANGE']['AM-APPROVE']['text']}}</button>--}}
+{{--                                                                </td>--}}
+                                                            @else
+                                                                @if(($change->finalApproved==1))
+                                                                    <td>
+                                                                        <button
+                                                                            class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
+                                                                    </td>
+                                                                @else
+                                                                    <td>
+                                                                        <button
+                                                                            class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['PRICE-CHANGE']['AM-APPROVE']['text']}}</button>
+                                                                    </td>
+
+                                                                @endif
+                                                            @endif
+
                                                         <?php $date = $assessment['finalApprovedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'])
                                                         <td>
@@ -137,6 +162,28 @@
                                                                 <li><a href="#" data-id="{{$assessment->id}}" id="assessment-manager-assessment-report"><i
                                                                             class="material-icons">picture_as_pdf</i>View
                                                                         Assessment Report</a></li>
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                                                                @if($assessment['changeTypeID'] == \App\Conf\Config::$CHANGES["PRICE-CHANGE"]["id"])
+                                                                    <li>
+                                                                        <a   href="#"
+                                                                             id="assessment-manager-view-price-change"
+
+                                                                             data-id="{{$assessment['id']}}"><i
+                                                                                class="material-icons">compare_arrows</i>view Price
+                                                                            Change</a>
+                                                                    </li>
+                                                                @endif
+                                                            @endif
+{{--                                                            @if($assessment['changeTypeID'] == \App\Conf\Config::$CHANGES["PRICE-CHANGE"]["id"])--}}
+{{--                                                                <li>--}}
+{{--                                                                    <a   href="#"--}}
+{{--                                                                         id="assessment-manager-view-price-change"--}}
+
+{{--                                                                         data-id="{{$assessment['id']}}"><i--}}
+{{--                                                                            class="material-icons">compare_arrows</i>view Price--}}
+{{--                                                                        Change</a>--}}
+{{--                                                                </li>--}}
+{{--                                                            @endif--}}
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                             <li><a href="#!"><i
                                                                         class="material-icons">compare_arrows</i>View

@@ -265,6 +265,9 @@ class HeadAssessorController extends Controller
     public function assessmentReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
+        $approved=PriceChange::where('assessmentID',$assessmentID)->first();
+        $aproved=isset($approved)?$approved:'false';
+
         $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
@@ -273,7 +276,7 @@ class HeadAssessorController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        return view("head-assessor.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+        return view("head-assessor.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved'=>$aproved]);
     }
     public function reviewAssessment(Request $request)
     {

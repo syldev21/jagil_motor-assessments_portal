@@ -301,7 +301,7 @@
                                                 </tr>
                                             @endforeach
 
-                                            @if($assessment['assessmentTypeID'] != 2)
+                                            @if($assessment['assessmentTypeID'] != \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
 
                                                 @if($assessment['dateCreated'] > \App\Conf\Config::VAT_REDUCTION_DATE)
                                                     <tr>
@@ -373,7 +373,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col s12">
-                                        @if($assessment['assessmentTypeID'] == 1)
+                                        @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE'])
 
                                             <div class="">
 

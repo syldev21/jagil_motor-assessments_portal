@@ -102,9 +102,18 @@
                                                         </td>
                                                         <?php $date = $assessment['approvedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                                                        <?php
+                                                        $Pchange=\App\PriceChange::where(['assessmentID'=>$assessment['id']])->first();
+                                                        ?>
                                                         <td>
                                                             <button
-                                                                class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
+                                                                class="btn green lighten-2">
+                                                                @if(isset($change->approvedBy) && !isset($change->finalApproved))
+                                                                    {{\App\Conf\Config::$STATUSES['PRICE-CHANGE']['HA-APPROVE']['text']}}
+                                                                @else
+                                                                    {{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}
+                                                                @endif
+                                                            </button>
                                                         </td>
                                                         <?php $date = $assessment['finalApprovedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'])
@@ -140,7 +149,8 @@
                                                                             class="material-icons">picture_as_pdf</i>View
                                                                         Assessment Report</a></li>
                                                             @endif
-                                                                @if($assessment['changeTypeID'] == \App\Conf\Config::$CHANGES["PRICE-CHANGE"]["id"])
+
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'] && $assessment['changeTypeID'] == \App\Conf\Config::$CHANGES["PRICE-CHANGE"]["id"])
                                                                     <li>
                                                                         <a   href="#"
                                                                              id="head-assessor-view-price-change"
@@ -149,7 +159,7 @@
                                                                                 class="material-icons">compare_arrows</i>view Price
                                                                             Change</a>
                                                                     </li>
-                                                                @endif
+                                                            @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                                     <li><a href="#!"><i
                                                                                 class="material-icons">compare_arrows</i>View

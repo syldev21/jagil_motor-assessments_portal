@@ -94,6 +94,20 @@ class Config
                 "id" => 6,
                 "text" => "Changes Due"
             )
+        ),
+        "PRICE-CHANGE" => array(
+            "HA-APPROVE" => array(
+                "id" => 1,
+                "text" => "price change approval"
+            ),
+            "AM-APPROVE" => array(
+                "id" => 3,
+                "text" => "price change approval"
+            ),
+            "APPROVED" => array(
+                "id" => 4,
+                "text" => "price change approval"
+            )
         )
     );
     const HEAD_ASSESSOR = 'Head Assessor';

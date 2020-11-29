@@ -69,18 +69,6 @@ class AssessorController extends Controller
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
-    public function headAssessorFecthsupplementaries(Request $request)
-    {
-        $id = Auth::id();
-        $assessmentStatusID = $request->assessmentStatusID;
-        try {
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            return view('head-assessor.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
-        } catch (\Exception $e) {
-            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
-                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
-        }
-    }
     public function fillAssessmentReport(Request $request, $assessmentID)
     {
 //        $draftAssessment = Assessment::where(['id' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']])->with('claim')->first();
@@ -94,8 +82,11 @@ class AssessorController extends Controller
             $draftAssessment = array();
         }
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $remarks = Remarks::select("id","name")->get();
+//        $remarks = Remarks::select("id","name")->get();
 //        $parts = Part::select("id","name")->get();
+        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Remarks::select("id","name")->get();
+        });
         $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
             return Part::select("id","name")->get();
         });
@@ -143,8 +134,14 @@ class AssessorController extends Controller
         $supplementaryAssessment = Assessment::where(['id' => $assessmentID])->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $remarks = Remarks::all();
-        $parts = Part::all();
+//        $remarks = Remarks::all();
+//        $parts = Part::all();
+        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Remarks::select("id","name")->get();
+        });
+        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Part::select("id","name")->get();
+        });
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($supplementaryAssessment->id) ? $supplementaryAssessment->id : 0,'segment'=> Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($supplementaryAssessment->id) ? $supplementaryAssessment->id : 0,"segment"=> Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
         $jobDraftDetail = [];
@@ -461,7 +458,7 @@ class AssessorController extends Controller
                     "note" => $note,
                     "salvage" => $salvage,
                     "pav" => $pav,
-                    "totalCost" => $total,
+                    "totalCost" => $sumTotal,
                     "totalLoss" => $totalLoss,
                     "assessmentTypeID" => $assessmentType,
                     "assessmentStatusID" => $assessmentStatusID,
@@ -870,7 +867,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * 1.14;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * 0.9) + $others;
+                    $total = ($sum * Config::MARK_UP) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * 1.14;
                 }
@@ -1183,6 +1180,9 @@ class AssessorController extends Controller
     public function assessmentReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
+        $approved=PriceChange::where('assessmentID',$assessmentID)->first();
+        $aproved=isset($approved)?$approved:'false';
+
         $assessment = Assessment::where(["id" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with("claim")->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with('part')->get();
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->get();
@@ -1191,7 +1191,7 @@ class AssessorController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID,"segment"=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        return view("assessor.view-assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+        return view("assessor.view-assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved'=>$aproved]);
     }
     public function supplementaryReport(Request $request)
     {
@@ -1204,6 +1204,8 @@ class AssessorController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID,"segment"=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
+        echo json_encode($assessment);
+        exit();
         return view("assessor.view-supplementary-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
     }
     public function submitReInspection(Request $request)
@@ -1373,8 +1375,7 @@ class AssessorController extends Controller
                                 "size" => $size,
                                 "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
                                 "url" => $path,
-                                "segment" => Config::$ASSESSMENT_SEGMENTS["RE_INSPECTION"]["ID"],
-                                ""
+                                "segment" => Config::$ASSESSMENT_SEGMENTS["RE_INSPECTION"]["ID"]
                             ]);
                         }
                     }
@@ -1456,8 +1457,14 @@ class AssessorController extends Controller
         $draftAssessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $remarks = Remarks::all();
-        $parts = Part::all();
+//        $remarks = Remarks::all();
+//        $parts = Part::all();
+        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Remarks::select("id","name")->get();
+        });
+        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Part::select("id","name")->get();
+        });
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
         $jobDraftDetail = [];
@@ -1502,8 +1509,14 @@ class AssessorController extends Controller
         $draftAssessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $remarks = Remarks::all();
-        $parts = Part::all();
+//        $remarks = Remarks::all();
+//        $parts = Part::all();
+        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Remarks::select("id","name")->get();
+        });
+        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Part::select("id","name")->get();
+        });
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
         $jobDraftDetail = [];
@@ -2450,14 +2463,27 @@ class AssessorController extends Controller
                     'priceChange' => $difference,
                     'totalChange' => $price_change
                 ]);
+            $pChange=PriceChange::where('assessmentID',$assessmentID)->first();
+            if($pChange->id>0)
+            {
+                $pChange->approvedBy=null;
+                $pChange->approvedAt=null;
+                $pChange->finalApproved=null;
+                $pChange->finalApprover=null;
+                $pChange->finalApprovedAt=null;
+                $pChange->changed=null;
+                $pChange->save();
 
-            $priceChange = PriceChange::firstOrNew(array('assessmentID' => $assessmentID));
-            $priceChange->assessedBy = Auth::user()->id;
-            $priceChange->previousTotal = $assessment->totalCost;
-            $priceChange->currentTotal = $price_change;
-            $priceChange->priceDifference = $difference;
+            }else {
 
-            $priceChange->save();
+                $priceChange = PriceChange::firstOrNew(array('assessmentID' => $assessmentID));
+                $priceChange->assessedBy = Auth::user()->id;
+                $priceChange->previousTotal = $assessment->totalCost;
+                $priceChange->currentTotal = $price_change;
+                $priceChange->priceDifference = $difference;
+
+                $priceChange->save();
+            }
 
             for ($x = 0; $x < $totalImages; $x++) {
 
@@ -2501,8 +2527,14 @@ class AssessorController extends Controller
         $draftAssessment = Assessment::where(['id' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id']])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $remarks = Remarks::all();
-        $parts = Part::all();
+//        $remarks = Remarks::all();
+//        $parts = Part::all();
+        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Remarks::select("id","name")->get();
+        });
+        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
+            return Part::select("id","name")->get();
+        });
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();;
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
         $jobDraftDetail = [];

@@ -16,6 +16,7 @@ use App\Helper\SMSHelper;
 use App\JobDetail;
 use App\Notifications\ClaimApproved;
 use App\Notifications\NewChangeRequest;
+use App\PriceChange;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,65 @@ class AssessmentManagerController extends Controller
         }
 
     }
+    public function priceChangeReport(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
+        return view("assessment-manager.price-change-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+    }
+    public function reviewPriceChange(Request $request)
+    {
+        try {
+            $curlDate = $this->functions->curlDate();
+            $assessmentID = $request->assessmentID;
+
+            $update = PriceChange::where('assessmentID', $assessmentID)->first();
+
+            $update->finalApproved = 1;
+            $update->finalApprover= Auth::user()->id;
+            $update->finalApprovedAt = $curlDate;
+
+
+
+
+
+//            Assessment::where('id', $assessmentID)->update([
+//                'approvedBy' => Auth::user()->id,
+//                'approvedAt' => $curlDate,
+//                'changeTypeID'=>Config::$STATUSES['PRICE-CHANGE']['APPROVED']['id'],
+//            ]);
+            if($update->save())
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                    "STATUS_MESSAGE" => "Congratulation!, You have approved price change request"
+                );
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to approve price change " . $e->getMessage());
+        }
+
+        return json_encode($response);
+    }
     public function supplementaries(Request $request)
     {
         $id = Auth::id();
@@ -56,10 +116,24 @@ class AssessmentManagerController extends Controller
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
-
+    public  function requestPriceChange(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $priceChange=PriceChange::where(['assessmentID'=>$assessmentID])->first();
+        $priceChange->approvedBy=null;
+        $priceChange->approvedAt=null;
+        $priceChange->finalApproved=1;
+        $priceChange->finalApprover=null;
+        $priceChange->finalApprovedAt=null;
+        $priceChange->changed=false;
+        $priceChange->save();
+    }
     public function assessmentReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
+        $approved=PriceChange::where('assessmentID',$assessmentID)->first();
+        $aproved=isset($approved)?$approved:'false';
+
         $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
@@ -68,7 +142,8 @@ class AssessmentManagerController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        return view("assessment-manager.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+//        return view("assessment-manager.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+        return view("assessment-manager.view-assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved'=>$aproved]);
     }
     public function supplementaryReport(Request $request)
     {
