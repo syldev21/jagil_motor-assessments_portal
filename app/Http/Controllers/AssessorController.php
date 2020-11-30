@@ -1182,8 +1182,8 @@ class AssessorController extends Controller
         $assessmentID = $request->assessmentID;
         $approved=PriceChange::where('assessmentID',$assessmentID)->first();
         $aproved=isset($approved)?$approved:'false';
-
-        $assessment = Assessment::where(["id" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with("claim")->first();
+        $assessment = Assessment::where(["id" => $assessmentID])
+            ->with("claim")->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with('part')->get();
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->get();
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;

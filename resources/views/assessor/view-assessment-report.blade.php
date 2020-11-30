@@ -285,7 +285,7 @@
                                             <td></td>
                                             <td></td>
                                             <td>{{ number_format(\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')) }}</td>
-                                            <td>-</td>
+                                            <td></td>
                                         </tr>
 
                                         @foreach($jobDetails as $jobDetail)
