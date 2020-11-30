@@ -375,13 +375,11 @@ class AdjusterController extends Controller
                                 ]);
                             }
                         }
-//                        $utility = new Utility();
-//                        $access_token = $utility->getToken();
-//                        $data = ["claimNo"=>$claimNo];
-//                        $response = $utility->getData($data, '/api/v1/b2b/general/claim/uploaded', 'POST');
-//                        $claim_data = json_decode($response->getBody()->getContents());
-//                        echo json_encode($claim_data);
-//                        exit();
+                        $utility = new Utility();
+                        $access_token = $utility->getToken();
+                        $data = ["claimNo"=>$claimNo];
+                        $response = $utility->getData($data, '/api/v1/b2b/general/claim/uploaded', 'POST');
+                        $claim_data = json_decode($response->getBody()->getContents());
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
                             "STATUS_MESSAGE" => "Congratulations!, You have successfully created a claim on the portal"
@@ -415,6 +413,11 @@ class AdjusterController extends Controller
                         "createdBy" => Auth::id(),
                         "dateCreated" => $curDate
                     ]);
+                    $utility = new Utility();
+                    $access_token = $utility->getToken();
+                    $data = ["claimNo"=>$claimNo];
+                    $response = $utility->getData($data, '/api/v1/b2b/general/claim/uploaded', 'POST');
+                    $claim_data = json_decode($response->getBody()->getContents());
                     $response = array(
                         "STATUS_CODE" => Config::SUCCESS_CODE,
                         "STATUS_MESSAGE" => "Congratulation!, You have successfully created a claim on the portal"

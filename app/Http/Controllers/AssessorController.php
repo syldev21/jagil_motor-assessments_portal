@@ -791,7 +791,7 @@ class AssessorController extends Controller
                 "note" => $note,
                 "salvage" => $salvage,
                 "pav" => $pav,
-                "totalCost" => $total,
+                "totalCost" => $sumTotal,
                 "totalLoss" => $totalLoss,
                 "assessmentTypeID" => $assessmentType,
                 "assessmentStatusID" => $assessmentStatusID,
@@ -1204,8 +1204,6 @@ class AssessorController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID,"segment"=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        echo json_encode($assessment);
-        exit();
         return view("assessor.view-supplementary-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
     }
     public function submitReInspection(Request $request)
