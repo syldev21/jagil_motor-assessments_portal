@@ -146,38 +146,36 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(count($assessments) > 0)
+                                @if(isset($assessment->assessor))
                                     <div class="row">
                                         <div class="col s12 col m12">
                                             <h4 class="card-title float-left">Asssessor Details</h4>
                                         </div>
                                         <div class="divider"></div>
-                                        @foreach($assessments as $assessment)
                                             <div class="row">
                                                 <div class="input-field col m6 s12">
                                                     <input id="name" type="text" name="name"
-                                                           value="{{$assessment->user->firstName}}" disabled>
+                                                           value="{{$assessment->assessor->firstName}}" disabled>
                                                     <label for="name" class="active">First Name</label>
                                                 </div>
                                                 <div class="input-field col m6 s12">
                                                     <input id="lastName" type="text" name="lastName"
-                                                           value="{{$assessment->user->lastName}}" disabled>
+                                                           value="{{$assessment->assessor->lastName}}" disabled>
                                                     <label for="lastName" class="active">Last Name</label>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="input-field col m6 s12">
                                                     <input id="MSISDN" type="text" name="MSISDN"
-                                                           value="{{$assessment->user->MSISDN}}" disabled>
+                                                           value="{{$assessment->assessor->MSISDN}}" disabled>
                                                     <label for="MSISDN" class="active">Phone Number</label>
                                                 </div>
                                                 <div class="input-field col m6 s12">
                                                     <input id="email" type="text" name="email"
-                                                           value="{{$assessment->user->email}}" disabled>
+                                                           value="{{$assessment->assessor->email}}" disabled>
                                                     <label for="email" class="active">Email</label>
                                                 </div>
                                             </div>
-                                        @endforeach
                                     </div>
                                 @endif
                                 <div class="row">

@@ -266,8 +266,9 @@ class AdjusterController extends Controller
 
         $carDetails = CarModel::where(["modelCode" => isset($claim->carModelCode) ? $claim->carModelCode : 0])->first();
 
-        $assessments =Assessment::where(['claimID' => $claim->id])->with('user')->get();
-        return view('adjuster.claim-details', ['claim' => $claim,"assessments" =>$assessments,"carDetails"=>$carDetails]);
+        $assessment =Assessment::where(['claimID' => $claim->id])->with('assessor')->first();
+
+        return view('adjuster.claim-details', ['claim' => $claim,"assessment" =>$assessment,"carDetails"=>$carDetails]);
     }
 
     public function addClaim(Request $request)
@@ -508,7 +509,7 @@ class AdjusterController extends Controller
     public function assessmentDetails(Request $request,$assessmentID)
     {
         try {
-            $assessment = Assessment::where('id','=',$assessmentID)->with('claim')->with('user')->first();
+            $assessment = Assessment::where('id','=',$assessmentID)->with('claim')->with('assessor')->first();
             $customer = CustomerMaster::where(['customerCode' =>$assessment->claim->customerCode])->first();
             return view('adjuster.assessment-details',['assessment' => $assessment,'customer' => $customer]);
         }catch (\Exception $e)
