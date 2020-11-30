@@ -2462,7 +2462,7 @@ class AssessorController extends Controller
                     'totalChange' => $price_change
                 ]);
             $pChange=PriceChange::where('assessmentID',$assessmentID)->first();
-            if($pChange->id>0)
+            if(isset($pChange->id))
             {
                 $pChange->approvedBy=null;
                 $pChange->approvedAt=null;
