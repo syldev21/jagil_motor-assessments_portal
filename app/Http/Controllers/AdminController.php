@@ -81,12 +81,12 @@ class AdminController extends Controller
     public function registerUser(Request $request)
     {
         try{
-            if(isset($request->firstName) && isset($request->middleName) && isset($request->lastName)
+            if(isset($request->firstName) && isset($request->lastName)
             && isset($request->email) && isset($request->userType) && isset($request->MSISDN))
             {
                 User::create([
                     "firstName"=>$request->firstName,
-                    "middleName" => $request->middleName,
+                    "middleName" => isset($request->middleName) ? $request->middleName : '',
                     "lastName" => $request->lastName,
                     "email" => $request->email,
                     "name" => $request->firstName." ".$request->middleName." ".$request->lastName,
