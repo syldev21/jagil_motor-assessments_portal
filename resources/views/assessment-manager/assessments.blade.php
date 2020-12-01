@@ -174,17 +174,7 @@
                                                                     </li>
                                                                 @endif
                                                             @endif
-{{--                                                            @if($assessment['changeTypeID'] == \App\Conf\Config::$CHANGES["PRICE-CHANGE"]["id"])--}}
-{{--                                                                <li>--}}
-{{--                                                                    <a   href="#"--}}
-{{--                                                                         id="assessment-manager-view-price-change"--}}
-
-{{--                                                                         data-id="{{$assessment['id']}}"><i--}}
-{{--                                                                            class="material-icons">compare_arrows</i>view Price--}}
-{{--                                                                        Change</a>--}}
-{{--                                                                </li>--}}
-{{--                                                            @endif--}}
-                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                                                            @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'] && $assessment['segment'] == \App\Conf\Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID'])
                                                             <li><a href="#!"><i
                                                                         class="material-icons">compare_arrows</i>View
                                                                     Re-inspection</a></li>

@@ -444,7 +444,18 @@ class HeadAssessorController extends Controller
         }
         return json_encode($response);
     }
-
+    public  function requestPriceChange(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $priceChange=PriceChange::where(['assessmentID'=>$assessmentID])->first();
+        $priceChange->approvedBy=null;
+        $priceChange->approvedAt=null;
+        $priceChange->finalApproved=1;
+        $priceChange->finalApprover=null;
+        $priceChange->finalApprovedAt=null;
+        $priceChange->changed=false;
+        $priceChange->save();
+    }
     public function requestAssessmentChange(Request $request) {
         try {
             $assessment = Assessment::where('id', $request->assessmentID)->first();
