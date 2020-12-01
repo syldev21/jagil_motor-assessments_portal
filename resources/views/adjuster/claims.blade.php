@@ -52,6 +52,9 @@
                                             <th>Intimation Date</th>
                                             <th>Registration Number</th>
                                             <th>Adjuster</th>
+                                            @if($claimStatusID != \App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id'])
+                                                <th class="center-align">Assessor</th>
+                                            @endif
                                             <th>Status</th>
                                             <th>Sum Insured</th>
                                             <th>Created</th>
@@ -69,6 +72,14 @@
                                                     <td>{{$claim['intimationDate']}}</td>
                                                     <td>{{$claim['vehicleRegNo']}}</td>
                                                     <td>{{isset($claim['adjuster']->name) ? $claim['adjuster']->name : ''}}</td>
+                                                    @if($claimStatusID != \App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id'])
+                                                    <?php
+                                                    $assessment=\App\Assessment::where('claimID',$claim['id'])->first();
+                                                    $assessor = \App\User::where(['id'=>isset($assessment->assessedBy) ? $assessment->assessedBy : ''])->first();
+                                                    ?>
+                                                    <td>{{isset($assessor->name) ? $assessor->name : ''}}</td>
+                                                    @endif
+
                                                     @if($claim['claimStatusID']  == \App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id'])
                                                         <td>
                                                             <button
@@ -126,9 +137,9 @@
                                                                             class="material-icons">file_download</i> Claim Form</a></li>
                                                             @endif
                                                             @if($claim->changed == 1)
-                                                            <li><a href="#" data-id="{{$claim['id']}}" id="claimExceptionDetail"><i
-                                                                        class="material-icons">picture_as_pdf</i>
-                                                                    Exception Report</a></li>
+                                                                <li><a href="#" data-id="{{$claim['id']}}" id="claimExceptionDetail"><i
+                                                                            class="material-icons">picture_as_pdf</i>
+                                                                        Exception Report</a></li>
                                                             @endif
                                                         </ul>
 

@@ -59,4 +59,9 @@ ul.stepper.horizontal .step .step-content .step-actions{
     bottom:auto !important;
     left: auto !important;
 }
+td,th{
+    text-align: center !important;
+}
+
+
 
