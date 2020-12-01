@@ -12,9 +12,9 @@
 
 <p>
     The Workshop Manager, <br>
-    {{ \App\Garage::where(['id'=>$claim->location])->first()->name }}
+    {{ \App\Garage::where(['id'=>$claim->garageID])->first()->name }}
     <br>
-    <u>{{ \App\Garage::where(['id'=>$claim->location])->first()->location }}</u>
+    <u>{{ \App\Garage::where(['id'=>$claim->garageID])->first()->location }}</u>
 </p>
 
 <p>Dear Sir,</p>

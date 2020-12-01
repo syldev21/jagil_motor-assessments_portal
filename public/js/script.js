@@ -175,7 +175,7 @@ $(document).ready(function () {
         var email = $("#email");
         var fullName = $("#fullName");
         var MSISDN = $("#MSISDN");
-        var location = $("#location");
+        var garageID = $("#garageID");
         var originalSumInsured = $("#originalSumInsured");
         var originalExcess = $("#originalExcess");
         var carMakeCode = $("#carMakeCode");
@@ -183,7 +183,7 @@ $(document).ready(function () {
         var yom = $("#yom");
         var engineNumber = $("#engineNumber");
         var chassisNumber = $("#chassisNumber");
-        if(location.val() != '')
+        if(garageID.val() != '')
         {
             $.ajaxSetup({
 
@@ -214,7 +214,7 @@ $(document).ready(function () {
                     email : email.val(),
                     fullName : fullName.val(),
                     MSISDN : MSISDN.val(),
-                    location : location.val(),
+                    garageID : garageID.val(),
                     originalExcess : originalExcess.val(),
                     originalSumInsured : originalSumInsured.val(),
                     carMakeCode : carMakeCode.val(),
@@ -247,7 +247,7 @@ $(document).ready(function () {
         {
             Swal.fire({
                 icon: 'error',
-                title: 'You have not the specified location',
+                title: 'You have not the specified Garage',
                 showConfirmButton: false,
                 timer: 3000
             })
@@ -302,7 +302,7 @@ $(document).ready(function () {
         e.preventDefault();
         var sumInsured = $("#sumInsured");
         var excess = $("#excess");
-        var location = $("#location");
+        var garageID = $("#garageID");
         var claimID = $("#claimID");
         var oldExcess = $("#oldExcess");
         var oldSumInsured = $("#oldSumInsured");
@@ -366,7 +366,7 @@ $(document).ready(function () {
             }
         image_upload.append('sumInsured', sumInsured.val());
         image_upload.append('excess', excess.val());
-        image_upload.append('location', location.val());
+        image_upload.append('garageID', garageID.val());
         image_upload.append('claimID', claimID.val());
         image_upload.append('oldExcess', oldExcess.val());
         image_upload.append('oldSumInsured', oldSumInsured.val());

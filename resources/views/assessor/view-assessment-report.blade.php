@@ -172,7 +172,7 @@
                                         <tr>
                                             <td>Place of Assessment</td>
 
-                                            <td>{{ \App\Garage::where(['id'=>$assessment['claim']['location']])->first()->location }}</td>
+                                            <td>{{ \App\Garage::where(['id'=>$assessment['claim']['garageID']])->first()->location }}</td>
 
                                         </tr>
 
@@ -381,7 +381,7 @@
 
                                             <ul class="list-bullet">
 
-                                                <li>We : {{ \App\Garage::where(['id'=>$assessment['claim']['location']])->first()->name }} agree to abide by the above estimate/assessment report.</li>
+                                                <li>We : {{ \App\Garage::where(['id'=>$assessment['claim']['garageID']])->first()->name }} agree to abide by the above estimate/assessment report.</li>
 
                                                 <li>No further charges will be raised unless agreed in writing by the assessor.</li>
 

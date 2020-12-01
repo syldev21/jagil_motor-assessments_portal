@@ -99,9 +99,9 @@
                                             <label for="sumInsured" class="active">Sum Insured</label>
                                         </div>
                                         <div class="input-field col m4 s12">
-                                            <input id="location" type="text" name="location"
-                                                   value="{{\App\Location::where(["id"=>$claim->location])->first()->name }}" disabled>
-                                            <label for="location" class="active">Location</label>
+                                            <input id="garageID" type="text" name="garageID"
+                                                   value="{{\App\Garage::where(["id"=>$claim->garageID])->first()->name }}" disabled>
+                                            <label for="location" class="active">Garage</label>
                                         </div>
                                     </div>
                                     <div class="row">

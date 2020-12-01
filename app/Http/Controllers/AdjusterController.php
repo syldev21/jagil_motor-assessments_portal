@@ -10,7 +10,6 @@ use App\ClaimTracker;
 use App\Document;
 use App\Helper\SMSHelper;
 use App\JobDetail;
-use App\Location;
 use App\Notifications\NewClaimNotification;
 use App\ReInspection;
 use App\StatusTracker;
@@ -287,7 +286,7 @@ class AdjusterController extends Controller
             $loseDate = date('Y-m-d H:i:s', strtotime($request->loseDate));
             $curDate = $this->functions->curlDate();
             $fullName = $request->fullName;
-            $location = $request->location;
+            $garageID = $request->garageID;
             $originalExcess = $request->originalExcess;
             $originalSumInsured = $request->originalSumInsured;
             $carMakeCode = $request->carMakeCode;
@@ -341,7 +340,7 @@ class AdjusterController extends Controller
                             "claimStatusID" => Config::$STATUSES['CLAIM']['UPLOADED']['id'],
                             "intimationDate" => $intimationDate,
                             "loseDate" => $loseDate,
-                            "location" => $location,
+                            "garageID" => $garageID,
                             "createdBy" => Auth::id(),
                             "dateCreated" => $curDate
                         ]);
@@ -362,7 +361,7 @@ class AdjusterController extends Controller
                                 'policyNo' => $policyNo,
                                 'excess' =>    $originalExcess,
                                 'sumInsured' => $originalSumInsured,
-                                'location' => $location,
+                                'garageID' => $garageID,
                                 'createdBy' => $createdBy,
                                 'dateCreated' => $curDate
                             ]);
@@ -409,7 +408,7 @@ class AdjusterController extends Controller
                         "claimStatusID" => Config::$STATUSES['CLAIM']['UPLOADED']['id'],
                         "intimationDate" => $intimationDate,
                         "loseDate" => $loseDate,
-                        "location" => $location,
+                        "garageID" => $garageID,
                         "createdBy" => Auth::id(),
                         "dateCreated" => $curDate
                     ]);
@@ -537,7 +536,7 @@ class AdjusterController extends Controller
             if ($claim->id > 0) {
                 $oldexcess = $claim->excess;
                 $oldsumInsured = $claim->sumInsured;
-                $oldLocation = $claim->location;
+                $oldGarage = $claim->garageID;
                 $claimNo = $claim->claimNo;
                 $policyNo = $claim->policyNo;
                 $createdBy = Auth::id();
@@ -548,7 +547,7 @@ class AdjusterController extends Controller
                         'policyNo' => $policyNo,
                         'excess' => $oldexcess,
                         'sumInsured' => $oldsumInsured,
-                        'location' => $oldLocation,
+                        'garageID' => $oldGarage,
                         'createdBy' => $createdBy,
                         'dateCreated' => $this->functions->curlDate()
                     ]);
@@ -556,7 +555,7 @@ class AdjusterController extends Controller
                         $claimResult = Claim::where(['id' => $claimID])->update([
                             "sumInsured" => isset($request->sumInsured) ? $request->sumInsured : $oldsumInsured,
                             "excess" => isset($request->excess) ? $request->excess : $oldexcess,
-                            "location" => isset($request->location) ? $request->location : $oldLocation,
+                            "garageID" => isset($request->garageID) ? $request->garageID : $oldGarage,
                             "changed" => Config::ACTIVE
                         ]);
                     }

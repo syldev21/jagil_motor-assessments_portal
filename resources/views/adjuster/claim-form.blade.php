@@ -102,7 +102,7 @@
                                             <label for="sumInsured" class="active">Sum Insured</label>
                                         </div>
                                         <div class="input-field col m4 s12">
-                                            <select id="location"required name="location">
+                                            <select id="garageID"required name="garageID">
                                                 <option value="">Select Garage</option>
                                                 @if(count($garages)>0)
                                                     @foreach($garages as $garage)

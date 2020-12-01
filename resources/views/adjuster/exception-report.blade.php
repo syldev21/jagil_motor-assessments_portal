@@ -24,7 +24,7 @@
                                            <th>Vehicle Reg No</th>
                                            <th>Sum Insured</th>
                                            <th>Excess</th>
-                                           <th>Location</th>
+                                           <th>Garage</th>
                                        </tr>
                                        </thead>
                                        <tbody>
@@ -35,7 +35,7 @@
                                            <td>{{$claim->vehicleRegNo}}</td>
                                            <td>{{$claim->sumInsured}}</td>
                                            <td>{{$claim->excess}}</td>
-                                           <td>{{$claim->location}}</td>
+                                           <td>{{$claim->garageID}}</td>
                                        </tr>
                                        <tr>
                                            <td colspan="6"></td>
@@ -48,7 +48,7 @@
                                                <td>{{$claim->vehicleRegNo}}</td>
                                                <td>{{$claimtracker->sumInsured}}</td>
                                                <td>{{$claimtracker->excess}}</td>
-                                               <td>{{$claimtracker->location}}</td>
+                                               <td>{{$claimtracker->garageID}}</td>
                                            </tr>
                                        @endforeach
                                        </tbody>

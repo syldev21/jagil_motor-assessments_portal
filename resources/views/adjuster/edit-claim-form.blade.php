@@ -107,9 +107,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
-                                            <input id="location" type="text" name="location"
-                                                   VALUE="{{\App\Location::where(["id"=>$claim->location])->first()->name }}" disabled>
-                                            <label for="location" class="active">Location</label>
+                                            <input id="garageID" type="text" name="garageID"
+                                                   VALUE="{{\App\Garage::where(["id"=>$claim->garageID])->first()->name }}" disabled>
+                                            <label for="garageID" class="active">Garage</label>
                                             <input type="hidden" value="{{$claim->id}}" name="claimID" id="claimID">
                                         </div>
                                     </div>
@@ -133,7 +133,13 @@
                                         <div class="input-field col m4 s12">
                                             <a href="#"
                                                class="float-right btn cyan waves-effect waves-effect waves-light"
-                                               id="updateClaim"> <i class="material-icons right">send</i>Update</a>
+                                               id="updateClaim">
+                                                <i class="material-icons right">send</i>
+                                                Update
+{{--                                                <img  src="{{url('images/icon/waiting-icon-gif-4.jpg') }}" width="50px" height="50px">--}}
+                                            </a>
+{{--                                            <img class="responsive-img" src="{{url('images/icon/waiting-icon-gif-4.jpg') }}">--}}
+
                                         </div>
                                     </div>
                                 </div>

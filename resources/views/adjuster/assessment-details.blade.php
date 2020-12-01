@@ -69,9 +69,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
-                                            <input id="location" type="text" name="location"
-                                                   value="{{$assessment->claim->location}}" disabled>
-                                            <label for="location" class="active">Location</label>
+                                            <input id="garageID" type="text" name="garageID"
+                                                   value="{{$assessment->claim->garageID}}" disabled>
+                                            <label for="garageID" class="active">Garage</label>
                                         </div>
                                         <div class="input-field col m4 s12">
                                         </div>
