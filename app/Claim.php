@@ -21,6 +21,10 @@ class Claim extends Model
     {
         return $this->belongsTo(CustomerMaster::class,'customerCode','customerCode');
     }
+    public function adjuster()
+    {
+        return $this->belongsTo(User::class,'createdBy','id');
+    }
     public function claimtracker() {
         return $this->hasMany(ClaimTracker::class, 'claimID', 'id');
     }
