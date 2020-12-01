@@ -103,10 +103,10 @@
                                         </div>
                                         <div class="input-field col m4 s12">
                                             <select id="location"required name="location">
-                                                <option value="">Select Location</option>
-                                                @if(count($locations)>0)
-                                                    @foreach($locations as $location)
-                                                        <option value="{{$location->id}}">{{$location->name}}</option>
+                                                <option value="">Select Garage</option>
+                                                @if(count($garages)>0)
+                                                    @foreach($garages as $garage)
+                                                        <option value="{{$garage->id}}">{{$garage->name}}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
