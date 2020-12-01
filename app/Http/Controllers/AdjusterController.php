@@ -668,7 +668,7 @@ class AdjusterController extends Controller
     {
         $claimStatusID = $request->claimStatusID;
         $assessors = User::role('Assessor')->get();
-        $claims = Claim::where("dateCreated", '>', Carbon::now()->subDays(Config::DATES_LIMIT))->where('claimStatusID','=',$claimStatusID)->get();
+        $claims = Claim::where('claimStatusID','=',$claimStatusID)->with('adjuster')->get();
         return view('adjuster.claims', ['claims' => $claims, 'assessors' => $assessors,'claimStatusID'=>$claimStatusID]);
     }
 

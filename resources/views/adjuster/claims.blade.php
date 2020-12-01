@@ -51,6 +51,7 @@
                                             <th>Claim Number</th>
                                             <th>Intimation Date</th>
                                             <th>Registration Number</th>
+                                            <th>Adjuster</th>
                                             <th>Status</th>
                                             <th>Sum Insured</th>
                                             <th>Created</th>
@@ -67,6 +68,7 @@
                                                     </td>
                                                     <td>{{$claim['intimationDate']}}</td>
                                                     <td>{{$claim['vehicleRegNo']}}</td>
+                                                    <td>{{isset($claim['adjuster']->name) ? $claim['adjuster']->name : ''}}</td>
                                                     @if($claim['claimStatusID']  == \App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id'])
                                                         <td>
                                                             <button
