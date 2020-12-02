@@ -62,6 +62,21 @@ ul.stepper.horizontal .step .step-content .step-actions{
 td,th{
     text-align: center !important;
 }
+.spinner-blue-only{
+    border-color: white !important;
+}
+.showLoadingButton{
+    display: block !important;
+}
+.showActionButton{
+    display: block !important;
+}
+.hideLoadingButton{
+    display: none !important;
+}
+.hideActionButton{
+    display: none !important;
+}
 
 
 

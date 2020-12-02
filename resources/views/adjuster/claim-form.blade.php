@@ -125,9 +125,25 @@
                                                value="{{$claim['CUST_MOBILE_NO']}}">
                                         <div class="input-field col m4 s12">
                                             <a href="#"
-                                               class="float-right btn  waves-effect waves-effect waves-light"
+                                               class="float-right btn  waves-effect waves-effect waves-light showActionButton actionButton"
                                                id="addClaim"> <i class="material-icons right">send</i>
                                                 Submit
+                                            </a>
+                                            <a href="#"
+                                               class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
+                                               >
+                                                <div class="preloader-wrapper small active float-left">
+                                                    <div class="spinner-layer spinner-blue-only">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div><div class="gap-patch">
+                                                            <div class="circle"></div>
+                                                        </div><div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="float-right"> Loading</div>
                                             </a>
                                         </div>
                                     </div>

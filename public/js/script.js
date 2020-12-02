@@ -185,6 +185,11 @@ $(document).ready(function () {
         var chassisNumber = $("#chassisNumber");
         if(garageID.val() != '')
         {
+            $('.loadingButton').addClass("showLoadingButton");
+            $('.actionButton').addClass("hideActionButton");
+            $('.loadingButton').removeClass("hideLoadingButton");
+            $('.actionButton').removeClass("showActionButton");
+
             $.ajaxSetup({
 
                 headers: {
@@ -240,6 +245,10 @@ $(document).ready(function () {
                             timer: 3000
                         })
                     }
+                    $('.loadingButton').removeClass("showLoadingButton");
+                    $('.actionButton').removeClass("hideActionButton");
+                    $('.loadingButton').addClass("hideLoadingButton");
+                    $('.actionButton').addClass("showActionButton");
                 }
 
             });
@@ -379,6 +388,11 @@ $(document).ready(function () {
             }
 
         });
+        $('.loadingButton').addClass("showLoadingButton");
+        $('.actionButton').addClass("hideActionButton");
+        $('.loadingButton').removeClass("hideLoadingButton");
+        $('.actionButton').removeClass("showActionButton");
+
         $.ajax({
 
             type: 'POST',
@@ -404,6 +418,10 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                $('.loadingButton').removeClass("showLoadingButton");
+                $('.actionButton').removeClass("hideActionButton");
+                $('.loadingButton').addClass("hideLoadingButton");
+                $('.actionButton').addClass("showActionButton");
             }
 
         });
