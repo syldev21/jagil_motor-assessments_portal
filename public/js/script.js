@@ -2658,6 +2658,11 @@ $(document).ready(function () {
             image_upload.append('drafted', drafted.val());
             image_upload.append('jobsData', JSON.stringify(jobsData));
             image_upload.append('partsData', JSON.stringify(partsData));
+
+            $('.loadingButton').addClass("showLoadingButton");
+            $('.actionButton').addClass("hideActionButton");
+            $('.loadingButton').removeClass("hideLoadingButton");
+            $('.actionButton').removeClass("showActionButton");
             $.ajaxSetup({
 
                 headers: {
@@ -2691,6 +2696,10 @@ $(document).ready(function () {
                             timer: 3000
                         })
                     }
+                    $('.loadingButton').removeClass("showLoadingButton");
+                    $('.actionButton').removeClass("hideActionButton");
+                    $('.loadingButton').addClass("hideLoadingButton");
+                    $('.actionButton').addClass("showActionButton");
                 }
 
             });
@@ -2748,6 +2757,11 @@ $(document).ready(function () {
                 image_upload.append('drafted', drafted.val());
                 image_upload.append('jobsData', JSON.stringify(jobsData));
                 image_upload.append('partsData', JSON.stringify(partsData));
+
+                $('.loadingButton').addClass("showLoadingButton");
+                $('.actionButton').addClass("hideActionButton");
+                $('.loadingButton').removeClass("hideLoadingButton");
+                $('.actionButton').removeClass("showActionButton");
                 $.ajaxSetup({
 
                     headers: {
@@ -2781,6 +2795,12 @@ $(document).ready(function () {
                                 timer: 3000
                             })
                         }
+
+                        $('.loadingButton').removeClass("showLoadingButton");
+                        $('.actionButton').removeClass("hideActionButton");
+                        $('.loadingButton').addClass("hideLoadingButton");
+                        $('.actionButton').addClass("showActionButton");
+
                     }
 
                 });

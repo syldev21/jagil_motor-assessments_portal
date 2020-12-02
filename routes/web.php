@@ -102,7 +102,7 @@ $router->group(['prefix' => 'head-assessor'], function($router)
     $router->post('/assessment-report','HeadAssessorController@assessmentReport');
     $router->post('/review-assessment','HeadAssessorController@reviewAssessment');
     $router->post('/review-supplementary','HeadAssessorController@reviewSupplementary');
-    $router->post('/request-assessment-change','HeadAssessorController@requestAssessmentChange');
+    $router->post('/request-price-change','HeadAssessorController@requestPriceChange');
     $router->post('/request-supplementary-change','HeadAssessorController@requestSupplementaryChange');
     $router->post('/price-change-report','HeadAssessorController@priceChangeReport');
     $router->post('/review-price-change','HeadAssessorController@reviewPriceChange');
