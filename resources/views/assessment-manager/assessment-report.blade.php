@@ -109,14 +109,14 @@
                                             <tr>
                                                 <td>Make</td>
 
-                                                <td>{{$assessment['claim']['carMakeCode']}}</td>
+                                                <td>{{$carDetail->makeName}}</td>
 
                                             </tr>
 
                                             <tr>
                                                 <td>Model</td>
 
-                                                <td>{{$assessment['claim']['carModelCode']}}</td>
+                                                <td>{{$carDetail->modelName}}</td>
 
                                             </tr>
 
@@ -124,48 +124,6 @@
 
 
                                         </table>
-
-                                        <tbody>
-
-                                        <tr>
-                                            <td>Registered No.</td>
-
-                                            <td></td>
-
-                                        </tr>
-
-                                        <tr>
-                                            <td>Year of manufacture</td>
-
-                                            <td></td>
-
-                                        </tr>
-
-                                        <tr>
-                                            <td>Chassis No.</td>
-
-                                            <td></td>
-
-                                        </tr>
-
-                                        <tr>
-                                            <td>Make</td>
-
-                                            <td></td>
-
-                                        </tr>
-
-                                        <tr>
-                                            <td>Model</td>
-
-                                            <td></td>
-
-                                        </tr>
-
-                                        </tbody>
-
-
-                                    </table>
                                     <br/>
                                     <table class="table table-condensed table-bordered">
 

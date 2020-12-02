@@ -109,14 +109,14 @@
                                         <tr>
                                             <td>Make</td>
 
-                                            <td>{{$assessment['claim']['carMakeCode']}}</td>
+                                            <td>{{$carDetail->makeName}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Model</td>
 
-                                            <td>{{$assessment['claim']['carModelCode']}}</td>
+                                            <td>{{$carDetail->modelName}}</td>
 
                                         </tr>
 

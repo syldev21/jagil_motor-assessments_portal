@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assessment;
 use App\AssessmentItem;
+use App\CarModel;
 use App\ChangeRequest;
 use App\Claim;
 use App\CustomerMaster;
@@ -276,7 +277,8 @@ class HeadAssessorController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        return view("head-assessor.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved'=>$aproved]);
+        $carDetail = CarModel::where(['makeCode'=> isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '','modelCode'=> isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
+        return view("head-assessor.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved'=>$aproved,'carDetail'=>$carDetail]);
     }
     public function reviewAssessment(Request $request)
     {
