@@ -211,7 +211,7 @@
                                 <div class="col s12">
                                     <ul class="list-unstyled">
                                         <li class="col s4">Sum Insured: {{$assessment['claim']['sumInsured']}}</li>
-                                        <li class="col s4">PAV :</li>
+                                        <li class="col s4">PAV : {{$assessment['pav']}}</li>
                                         <li class="col s4">Excess: {{$assessment['claim']['excess']}}</li>
                                     </ul>
                                 </div>
