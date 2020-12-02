@@ -517,6 +517,17 @@
     var t =0;
     $(document).ready(function() {
 
+        var radioValue = $("input[name='assessmentType']:checked").val();
+        if(radioValue == '3')
+        {
+            $(".totalLose").removeClass('hideTotalLose');
+            $("#authorityToGarage").addClass('hideTotals');
+        }else
+        {
+            $(".totalLose").addClass('hideTotalLose');
+            $("#authorityToGarage").removeClass('hideTotals');
+        }
+
         $("#vehiclePart_"+t).select2({dropdownAutoWidth : true, width: '160px'});
         var partsCounter = $("#counter").val()+1;
         for(var i=1;i<partsCounter;i++)
