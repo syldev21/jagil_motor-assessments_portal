@@ -625,8 +625,15 @@ class AdjusterController extends Controller
                 $access_token = $utility->getToken();
                 $defaultToDate = Carbon::now()->toDateTimeString();
                 $defaultFromDate = Carbon::now()->subDays(Config::DATES_LIMIT)->toDateTimeString();
-                $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
-                $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
+                if(isset($vehicleRegNo))
+                {
+                    $toDate = '';
+                    $fromDate = '';
+                }else
+                {
+                    $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
+                    $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
+                }
                 $vehicleRegNo = $request->vehicleRegNo;
                 $data = ["fromDate"=>$fromDate,"toDate" => $toDate,"vehicleRegNo"=>$vehicleRegNo];
                 $response = $utility->getData($data, '/api/v1/b2b/general/claim/fetch', 'POST');
