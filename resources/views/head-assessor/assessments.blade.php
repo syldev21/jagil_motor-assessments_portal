@@ -146,6 +146,14 @@
                                                         <!-- Dropdown Structure -->
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
+                                                            <?php
+                                                            $claim='claim';
+                                                            $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->where('name','like','%' .$claim. '%')->first();
+                                                            ?>
+                                                                @if(isset($claimForm->name))
+                                                                    <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
+                                                                                class="material-icons">file_download</i>Claim Form</a></li>
+                                                                @endif
                                                             @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                 <li><a href="#" data-id="{{$assessment->id}}" id="head-assessor-assessment-report"><i
                                                                             class="material-icons">picture_as_pdf</i>View
