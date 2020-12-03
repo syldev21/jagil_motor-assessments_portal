@@ -56,7 +56,7 @@ class ForgotPasswordController extends Controller
                     Hello,   <br>
                     Please click the link below to reset your password <br>
 
-                    http://127.0.0.1:8001/password/reset/" . $data['link'] . " <br><br>
+                    ".Config::BASE_URL."/password/reset/" . $data['link'] . " <br><br>
 
                     Jubilee Insurance
                 ",

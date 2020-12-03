@@ -118,7 +118,7 @@ class Config
         "ASSESSMENT" =>2
     );
 
-    const DATES_LIMIT =5;
+    const DATES_LIMIT =365;
     static $ROLES = array(
         "ASSESSOR" => "Assessor",
         "ADJUSTER" => "Adjuster",
@@ -282,4 +282,6 @@ class Config
     );
 
     const CACHE_EXPIRY_PERIOD = 33600;
+
+    const BASE_URL = 'http://ec2-3-15-1-162.us-east-2.compute.amazonaws.com';
 }
