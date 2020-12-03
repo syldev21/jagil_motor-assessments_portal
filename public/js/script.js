@@ -2,6 +2,7 @@ const SUCCESS_CODE = 2000;
 const GENERIC_ERROR_CODE = 4000;
 const NO_RECORDS_FOUND = 3000;
 $(document).ready(function () {
+    $('.materialboxed').materialbox();
     $("#login-btn").on('click', function (e) {
         e.preventDefault();
         var email = $("#email");
@@ -1150,6 +1151,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 // $("#main").html(data);
+
                 var w = window.open('about:blank');
                 w.document.open();
                 w.document.write(data);

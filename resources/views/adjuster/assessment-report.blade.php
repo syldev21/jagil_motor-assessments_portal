@@ -470,5 +470,11 @@
 @include('_partials.settings')
 @include('_partials.footer')
 
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.materialboxed').materialbox();
+    });
+</script>
+
 
 
