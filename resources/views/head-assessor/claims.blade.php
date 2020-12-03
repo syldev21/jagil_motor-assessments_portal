@@ -49,8 +49,8 @@
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
                                             <th>Status</th>
+                                            <th>Garage</th>
                                             <th>Assessor</th>
-                                            {{--                                                <th>Garage</th>--}}
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
@@ -85,6 +85,10 @@
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
                                                            id="claimID{{$loop->iteration}}" value="{{$claim['id']}}"
                                                            class="claimID">
+                                                    <?php
+                                                    $garage = \App\Garage::where(['id'=>isset($claim['garageID']) ? $claim['garageID'] : ''])->first();
+                                                    ?>
+                                                    <td>{{$garage->name}}</td>
                                                     <td>
                                                         <div class="input-field">
                                                             <select class="browser-default"
@@ -114,18 +118,6 @@
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    {{--                                                    <td>--}}
-                                                    {{--                                                        <div class="input-field col s12">--}}
-                                                    {{--                                                            <select id="garage{{$loop->iteration}}" name="garage{{$loop->iteration}}" class="garage">--}}
-                                                    {{--                                                                <option value="">Select Garage</option>--}}
-                                                    {{--                                                                @if(count($garages) >0)--}}
-                                                    {{--                                                                    @foreach($garages as $garage)--}}
-                                                    {{--                                                                        <option value="{{$garage->garageID}}">{{$garage->name}}</option>--}}
-                                                    {{--                                                                    @endforeach--}}
-                                                    {{--                                                                @endif--}}
-                                                    {{--                                                            </select>--}}
-                                                    {{--                                                        </div>--}}
-                                                    {{--                                                    </td>--}}
 
                                                     <td>
                                                         <!-- Dropdown Trigger -->

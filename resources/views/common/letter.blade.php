@@ -104,7 +104,7 @@
 
                                                     <p>Additional labor to garage is KShs.
 
-                                                        <strong>{{ number_format($addLabor * 1.16) }}.</strong>
+                                                        <strong>{{ number_format($addLabor * (\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE/\App\Conf\Config::INITIAL_PERCENTAGE)) }}.</strong>
 
                                                         (<strong>NB</strong>: This has already been reflected in the total
                                                         amount)
@@ -115,7 +115,7 @@
 
                                                 <p>
 
-                                                    The garage to invoice Kshs. {{ number_format($amount) }} Inclusive 16% VAT.
+                                                    The garage to invoice Kshs. {{ number_format($amount) }} Inclusive {{\App\Conf\Config::CURRENT_VAT_PERCENTAGE}} VAT.
 
                                                 </p>
 
