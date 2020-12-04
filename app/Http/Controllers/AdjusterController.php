@@ -524,7 +524,8 @@ class AdjusterController extends Controller
     {
         $claim = Claim::where(["id"=>$claimID])->with('customer')->with('documents')->first();
         $carDetails = CarModel::where(["modelCode" => isset($claim->carModelCode) ? $claim->carModelCode : 0])->first();
-        return view("adjuster.edit-claim-form",['claim' => $claim,'carDetails' =>$carDetails]);
+        $garages = Garage::all();
+        return view("adjuster.edit-claim-form",['claim' => $claim,'carDetails' =>$carDetails,'garages'=>$garages]);
     }
 
     public function updateClaim(Request $request)
@@ -625,6 +626,7 @@ class AdjusterController extends Controller
                 $access_token = $utility->getToken();
                 $defaultToDate = Carbon::now()->toDateTimeString();
                 $defaultFromDate = Carbon::now()->subDays(Config::DATES_LIMIT)->toDateTimeString();
+                $vehicleRegNo = $request->vehicleRegNo;
                 if(isset($vehicleRegNo))
                 {
                     $toDate = '';
@@ -634,7 +636,6 @@ class AdjusterController extends Controller
                     $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
                     $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
                 }
-                $vehicleRegNo = $request->vehicleRegNo;
                 $data = ["fromDate"=>$fromDate,"toDate" => $toDate,"vehicleRegNo"=>$vehicleRegNo];
                 $response = $utility->getData($data, '/api/v1/b2b/general/claim/fetch', 'POST');
                 $claim_data = json_decode($response->getBody()->getContents());
@@ -668,7 +669,8 @@ class AdjusterController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        return view("adjuster.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+        $carDetail = CarModel::where(['makeCode'=> isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '','modelCode'=> isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
+        return view("adjuster.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'carDetail'=>$carDetail]);
     }
 
     public function claims(Request $request)
