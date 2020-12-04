@@ -186,7 +186,7 @@ $(document).ready(function () {
         var chassisNumber = $("#chassisNumber");
         if(garageID.val() != '')
         {
-            if(excess.val() > originalExcess.val()) {
+            if(excess.val() >= originalExcess.val()) {
                 $('.loadingButton').addClass("showLoadingButton");
                 $('.actionButton').addClass("hideActionButton");
                 $('.loadingButton').removeClass("hideLoadingButton");
