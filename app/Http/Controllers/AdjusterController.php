@@ -256,7 +256,8 @@ class AdjusterController extends Controller
     {
         $claim = json_decode($request->getContent(), true);
         $garages = Garage::all();
-        $carDetails = CarModel::where(["modelCode" => $claim['VEH_MODEL']])->first();
+
+        $carDetails = CarModel::where(['makeCode'=> isset($claim['VEH_MAKE']) ? $claim['VEH_MAKE'] : '','modelCode'=> isset($claim['VEH_MODEL']) ? $claim['VEH_MODEL'] : ''])->first();
         return view('adjuster.claim-form', ['claim' => $claim,'garages'=>$garages,'carDetails'=>$carDetails]);
     }
     public function claimDetails(Request $request,$claimID)
