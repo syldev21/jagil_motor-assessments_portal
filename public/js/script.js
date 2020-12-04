@@ -186,73 +186,83 @@ $(document).ready(function () {
         var chassisNumber = $("#chassisNumber");
         if(garageID.val() != '')
         {
-            $('.loadingButton').addClass("showLoadingButton");
-            $('.actionButton').addClass("hideActionButton");
-            $('.loadingButton').removeClass("hideLoadingButton");
-            $('.actionButton').removeClass("showActionButton");
+            if(excess.val() > originalExcess.val()) {
+                $('.loadingButton').addClass("showLoadingButton");
+                $('.actionButton').addClass("hideActionButton");
+                $('.loadingButton').removeClass("hideLoadingButton");
+                $('.actionButton').removeClass("showActionButton");
 
-            $.ajaxSetup({
+                $.ajaxSetup({
 
-                headers: {
+                    headers: {
 
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 
-                }
-
-            });
-            $.ajax({
-
-                type: 'POST',
-
-                url: '/adjuster/addClaim',
-
-                data: {
-                    claimNo : claimNo.val(),
-                    customerCode : customerCode.val(),
-                    claimType : claimType.val(),
-                    sumInsured : sumInsured.val(),
-                    excess : excess.val(),
-                    vehicleRegNo : vehicleRegNo.val(),
-                    policyNo : policyNo.val(),
-                    branch : branch.val(),
-                    loseDate : loseDate.val(),
-                    intimationDate : intimationDate.val(),
-                    email : email.val(),
-                    fullName : fullName.val(),
-                    MSISDN : MSISDN.val(),
-                    garageID : garageID.val(),
-                    originalExcess : originalExcess.val(),
-                    originalSumInsured : originalSumInsured.val(),
-                    carMakeCode : carMakeCode.val(),
-                    carModelCode : carModelCode.val(),
-                    yom : yom.val(),
-                    engineNumber : engineNumber.val(),
-                    chassisNumber : chassisNumber.val()
-                },
-                success: function (data) {
-                    var result = $.parseJSON(data);
-                    if (result.STATUS_CODE == SUCCESS_CODE) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: result.STATUS_MESSAGE,
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: result.STATUS_MESSAGE,
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
                     }
-                    $('.loadingButton').removeClass("showLoadingButton");
-                    $('.actionButton').removeClass("hideActionButton");
-                    $('.loadingButton').addClass("hideLoadingButton");
-                    $('.actionButton').addClass("showActionButton");
-                }
 
-            });
+                });
+                $.ajax({
+
+                    type: 'POST',
+
+                    url: '/adjuster/addClaim',
+
+                    data: {
+                        claimNo: claimNo.val(),
+                        customerCode: customerCode.val(),
+                        claimType: claimType.val(),
+                        sumInsured: sumInsured.val(),
+                        excess: excess.val(),
+                        vehicleRegNo: vehicleRegNo.val(),
+                        policyNo: policyNo.val(),
+                        branch: branch.val(),
+                        loseDate: loseDate.val(),
+                        intimationDate: intimationDate.val(),
+                        email: email.val(),
+                        fullName: fullName.val(),
+                        MSISDN: MSISDN.val(),
+                        garageID: garageID.val(),
+                        originalExcess: originalExcess.val(),
+                        originalSumInsured: originalSumInsured.val(),
+                        carMakeCode: carMakeCode.val(),
+                        carModelCode: carModelCode.val(),
+                        yom: yom.val(),
+                        engineNumber: engineNumber.val(),
+                        chassisNumber: chassisNumber.val()
+                    },
+                    success: function (data) {
+                        var result = $.parseJSON(data);
+                        if (result.STATUS_CODE == SUCCESS_CODE) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        }
+                        $('.loadingButton').removeClass("showLoadingButton");
+                        $('.actionButton').removeClass("hideActionButton");
+                        $('.loadingButton').addClass("hideLoadingButton");
+                        $('.actionButton').addClass("showActionButton");
+                    }
+
+                });
+            }else
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Excess must be greater than '+originalExcess.val(),
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }
         }else
         {
             Swal.fire({
@@ -319,114 +329,122 @@ $(document).ready(function () {
         var image_upload = new FormData();
 
         var imagesArray = $("#imagesArray").val();
-        if(typeof imagesArray === 'undefined')
-        {
+        if(excess.val() >= oldExcess.val()) {
+            if (typeof imagesArray === 'undefined') {
 
-        }else {
-            var imageParse = JSON.parse(imagesArray);
-            var counter = 0;
+            } else {
+                var imageParse = JSON.parse(imagesArray);
+                var counter = 0;
 
-            var imgArray = [];
+                var imgArray = [];
 
-            $(".uploaded-image img").each(function () {
-                var imgsrc = this.src;
-                var n = imgsrc.split("/");
-                var result = n[n.length - 1];
-                imgArray.push(result);
-            });
-            imageParse = imageParse.filter(function (obj) {
-                return imgArray.includes(obj.name);
-            });
+                $(".uploaded-image img").each(function () {
+                    var imgsrc = this.src;
+                    var n = imgsrc.split("/");
+                    var result = n[n.length - 1];
+                    imgArray.push(result);
+                });
+                imageParse = imageParse.filter(function (obj) {
+                    return imgArray.includes(obj.name);
+                });
 
-            console.log(imageParse);
+                console.log(imageParse);
 
-            var files = $('input[type=file]')[0].files;
-            var totalImages = files.length; //Total Images
-            let images = $('input[type=file]')[0];
-            var img = [];
-            for (let i = 0; i < totalImages; i++) {
-                var increment = imageParse.length + i;
-                image_upload.append('images' + increment, images.files[i]);
-            }
-            $.each(imageParse, function (key, value) {
-                async function createFile() {
-                    let response = await fetch('/documents/' + value.name);
-                    let data = await response.blob();
-                    let metadata = {
-                        type: 'image/jpeg'
-                    };
-                    let file = new File([data], value.name, metadata);
-                    img.push(file);
+                var files = $('input[type=file]')[0].files;
+                var totalImages = files.length; //Total Images
+                let images = $('input[type=file]')[0];
+                var img = [];
+                for (let i = 0; i < totalImages; i++) {
+                    var increment = imageParse.length + i;
+                    image_upload.append('images' + increment, images.files[i]);
                 }
+                $.each(imageParse, function (key, value) {
+                    async function createFile() {
+                        let response = await fetch('/documents/' + value.name);
+                        let data = await response.blob();
+                        let metadata = {
+                            type: 'image/jpeg'
+                        };
+                        let file = new File([data], value.name, metadata);
+                        img.push(file);
+                    }
 
-                createFile();
-                counter++;
-            });
-        }
-        setTimeout(function () {
-            if(typeof imagesArray === 'undefined')
-            {
-                image_upload.append('totalImages', '');
-            }else {
-                for (let i = 0; i < img.length; i++) {
-                    image_upload.append('images' + i, img[i]);
-
-                }
-                image_upload.append('totalImages', imageParse.length+totalImages);
+                    createFile();
+                    counter++;
+                });
             }
-        image_upload.append('sumInsured', sumInsured.val());
-        image_upload.append('excess', excess.val());
-        image_upload.append('garageID', garageID.val());
-        image_upload.append('claimID', claimID.val());
-        image_upload.append('oldExcess', oldExcess.val());
-        image_upload.append('oldSumInsured', oldSumInsured.val());
-        $.ajaxSetup({
-
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-            }
-
-        });
-        $('.loadingButton').addClass("showLoadingButton");
-        $('.actionButton').addClass("hideActionButton");
-        $('.loadingButton').removeClass("hideLoadingButton");
-        $('.actionButton').removeClass("showActionButton");
-
-        $.ajax({
-
-            type: 'POST',
-
-            url: '/adjuster/updateClaim',
-            processData: false,
-            contentType: false,
-            data: image_upload,
-            success: function (data) {
-                var result = $.parseJSON(data);
-                if (result.STATUS_CODE == SUCCESS_CODE) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+            setTimeout(function () {
+                if (typeof imagesArray === 'undefined') {
+                    image_upload.append('totalImages', '');
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
-                }
-                $('.loadingButton').removeClass("showLoadingButton");
-                $('.actionButton').removeClass("hideActionButton");
-                $('.loadingButton').addClass("hideLoadingButton");
-                $('.actionButton').addClass("showActionButton");
-            }
+                    for (let i = 0; i < img.length; i++) {
+                        image_upload.append('images' + i, img[i]);
 
-        });
-        },1000);
+                    }
+                    image_upload.append('totalImages', imageParse.length + totalImages);
+                }
+                image_upload.append('sumInsured', sumInsured.val());
+                image_upload.append('excess', excess.val());
+                image_upload.append('garageID', garageID.val());
+                image_upload.append('claimID', claimID.val());
+                image_upload.append('oldExcess', oldExcess.val());
+                image_upload.append('oldSumInsured', oldSumInsured.val());
+                $.ajaxSetup({
+
+                    headers: {
+
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                    }
+
+                });
+                $('.loadingButton').addClass("showLoadingButton");
+                $('.actionButton').addClass("hideActionButton");
+                $('.loadingButton').removeClass("hideLoadingButton");
+                $('.actionButton').removeClass("showActionButton");
+
+                $.ajax({
+
+                    type: 'POST',
+
+                    url: '/adjuster/updateClaim',
+                    processData: false,
+                    contentType: false,
+                    data: image_upload,
+                    success: function (data) {
+                        var result = $.parseJSON(data);
+                        if (result.STATUS_CODE == SUCCESS_CODE) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        }
+                        $('.loadingButton').removeClass("showLoadingButton");
+                        $('.actionButton').removeClass("hideActionButton");
+                        $('.loadingButton').addClass("hideLoadingButton");
+                        $('.actionButton').addClass("showActionButton");
+                    }
+
+                });
+            }, 1000);
+        }else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'Excess must be greater than '+oldExcess.val(),
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
     });
     $('body').on('focus',".dropdown-trigger", function(){
         $(this).dropdown({

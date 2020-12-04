@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
-                                            <input id="excess" type="text" name="excess" value="{{$claim->excess}}" disabled>
+                                            <input id="excess" type="text" name="excess" value="{{$claim->excess}}">
                                             <input type="hidden" name="oldExcess" id="oldExcess" value="{{$claim->excess}}">
                                             <label for="excess" class="active">Excess</label>
                                         </div>
@@ -107,10 +107,18 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m4 s12">
-                                            <input id="garageID" type="text" name="garageID"
-                                                   VALUE="{{\App\Garage::where(["id"=>$claim->garageID])->first()->name }}" disabled>
-                                            <label for="garageID" class="active">Garage</label>
+                                            <div style="margin-top: 20px;"></div>
+
+                                            <select id="garageID" required name="garageID" class="browser-default">
+                                                <option value="">Select Garage</option>
+                                                @if(count($garages)>0)
+                                                    @foreach($garages as $garage)
+                                                        <option value="{{$garage->id}}" @if($claim->garageID == $garage->id) selected @endif>{{$garage->name}}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
                                             <input type="hidden" value="{{$claim->id}}" name="claimID" id="claimID">
+
                                         </div>
                                     </div>
                                     @if(count($claim->documents)>0)
@@ -164,3 +172,9 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#garageID').select2({dropdownAutoWidth : true, width: '100%'});
+    });
+</script>

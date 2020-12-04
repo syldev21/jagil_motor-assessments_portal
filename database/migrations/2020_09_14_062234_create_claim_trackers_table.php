@@ -21,6 +21,7 @@ class CreateClaimTrackersTable extends Migration
             $table->string('location')->nullable();
             $table->double('sumInsured')->nullable();
             $table->double('excess')->nullable();
+            $table->bigInteger('garageID')->nullable();
             $table->integer('updatedBy')->nullable();
             $table->integer('createdBy')->nullable();
             $table->dateTime('dateModified')->nullable();

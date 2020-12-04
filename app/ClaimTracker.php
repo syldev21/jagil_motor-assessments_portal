@@ -10,7 +10,7 @@ class ClaimTracker extends Model
     protected $connection = "mysql";
     protected $table = "claim_trackers";
     protected $primaryKey = "id";
-    protected $fillable = ['claimID','claimNo','policyNo','createdBy','excess','sumInsured','location','updatedBy','dateModified','dateCreated'];
+    protected $fillable = ['claimID','claimNo','policyNo','createdBy','excess','garageID','sumInsured','location','updatedBy','dateModified','dateCreated'];
     public $timestamps= false;
 
     public function claim() {
