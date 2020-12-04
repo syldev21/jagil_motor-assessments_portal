@@ -48,6 +48,7 @@
                                             <th>No</th>
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
+                                            <th>Adjuster</th>
                                             @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                 <th>Approver</th>
                                                 <th>Final Approver</th>
@@ -69,6 +70,10 @@
                                                     </td>
                                                     <?php $date = ''?>
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
+                                                    <?php
+                                                    $adjuster = \App\User::where(['id'=> $assessment['claim']['createdBy']])->first();
+                                                    ?>
+                                                    <td>{{isset($adjuster->name) ? $adjuster->name : ''}}</td>
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                         <td>{{isset($assessment->approver) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver) ? $assessment->approver->lastName : ''}}</td>
                                                         <td>{{isset($assessment->final_approver->firstName) ? $assessment->final_approver->firstName : ''}} {{isset($assessment->final_approver->lastName) ? $assessment->final_approver->lastName : ''}}</td>
