@@ -115,7 +115,7 @@
                                                                 <button
                                                                     class="btn green lighten-2">
                                                                     @if($provisionalApproval == '')
-                                                                        {{\App\Conf\Config::$CHANGES['PRICE-CHANGE']['HA-APPROVE']['text']}}
+                                                                        {{\App\Conf\Config::$STATUSES['PRICE-CHANGE']['HA-APPROVE']['text']}}
                                                                     @else
                                                                         {{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}
                                                                     @endif
