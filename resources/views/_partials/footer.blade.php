@@ -3,7 +3,7 @@
     class="page-footer footer gradient-shadow  footer-static   footer-dark gradient-45deg-red-pink ">
     <div class="footer-copyright">
         <div class="container">
-      <span>&copy; 2019 <a href="http://themeforest.net/user/pixinvent/portfolio?ref=pixinvent"
+      <span>&copy; <?php echo date('Y');  ?> <a href="http://themeforest.net/user/pixinvent/portfolio?ref=pixinvent"
                            target="_blank">Jubilee Kenya</a> All rights reserved.
       </span>
             <span class="right hide-on-small-only">
