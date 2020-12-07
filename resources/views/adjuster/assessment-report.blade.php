@@ -289,7 +289,17 @@
                                             <td>{{ number_format(\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')) }}</td>
                                             <td>-</td>
                                         </tr>
-
+                                        @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td style="font-weight: bold;">Less Markup</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{ number_format(round(\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total') * \App\Conf\Config::MARK_UP)) }}</td>
+                                            </tr>
+                                        @endif
                                         @foreach($jobDetails as $jobDetail)
                                         <tr>
                                             <td></td>
