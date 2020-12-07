@@ -196,7 +196,7 @@ class HeadAssessorController extends Controller
     public function fetchClaims(Request $request)
     {
         try {
-            $claims = Claim::with("assessment")->orderBy('dateCreated', 'DESC')->get();
+            $claims = Claim::with("assessment")->where("dateCreated", '>', Carbon::now()->subDays(3))->orderBy('dateCreated', 'DESC')->get();
             $assessors = User::role('Assessor')->get();
             return view('head-assessor.claims', ['claims' => $claims, 'assessors' => $assessors]);
         } catch (\Exception $e) {
@@ -216,7 +216,6 @@ class HeadAssessorController extends Controller
 
             $claims = Claim::with("assessment")
                 ->where("claimStatusID", "=", $claimStatusID)
-                ->where("dateCreated", '>', Carbon::now()->subDays(3))
                 ->orderBy('dateCreated', 'DESC')->with('assessment')->get();
             $assessors = User::role('Assessor')->get();
             return view('head-assessor.claims', ['claims' => $claims, 'assessors' => $assessors, "claimStatusID" => $claimStatusID]);
