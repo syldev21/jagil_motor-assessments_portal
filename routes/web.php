@@ -106,6 +106,7 @@ $router->group(['prefix' => 'head-assessor'], function($router)
     $router->post('/request-supplementary-change','HeadAssessorController@requestSupplementaryChange');
     $router->post('/price-change-report','HeadAssessorController@priceChangeReport');
     $router->post('/review-price-change','HeadAssessorController@reviewPriceChange');
+    $router->post('/request-assessment-change','HeadAssessorController@requestAssessmentChange');
 });
 
 // Assessment Manager
