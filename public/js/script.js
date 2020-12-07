@@ -3453,7 +3453,7 @@ $(document).ready(function () {
                 assessmentID : assessmentID,
                 changes : changes
             },
-            url: '/head-assessor/request-price-change',
+            url: '/head-assessor/request-assessment-change',
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {

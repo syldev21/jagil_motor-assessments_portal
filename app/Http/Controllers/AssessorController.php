@@ -569,6 +569,12 @@ class AssessorController extends Controller
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
                             );
                         } else if ($isDraft == 0) {
+                            $claim = Claim::where(['id'=>$claimID])->first();
+                            $customer = CustomerMaster::where(['customerCode'=>$claim->customerCode])->first();
+                            if($customer)
+                            {
+                                SMSHelper::sendSMS('Hello ' . $customer->fullName . ', An Assessment for vehicle : ' . $claim->vehicleRegNo . ' has been Completed. You will be notified once approval has been done', $customer->MSISDN);
+                            }
                             $response = array(
                                 "STATUS_CODE" => Config::SUCCESS_CODE,
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
