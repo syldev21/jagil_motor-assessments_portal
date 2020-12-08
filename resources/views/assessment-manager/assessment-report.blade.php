@@ -482,18 +482,23 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col s4">
-                    <a id="triggerChangeRequests" data-target="changeRequest" class="btn orange darken-2">Request Changes</a>
-                </div>
-                <div class="col s4">
-                    <!-- Modal Trigger -->
-                    <button id="triggerApprove" data-target="approve" class="btn blue lighten-2 btn">Approve/Halt/Cancel</button>
-                </div>
-                <div class="col s4">
-                    <a id="triggerDiscount" data-target="discount" class="btn teal darken-2">Apply Discount</a>
-                </div>
-            </div>
+                @if(isset($assessment['approvedBy']))
+                    <div class="row">
+                        <div class="col s4">
+                            <a id="triggerChangeRequests" data-target="changeRequest" class="btn orange darken-2">Request
+                                Changes</a>
+                        </div>
+                        <div class="col s4">
+                            <!-- Modal Trigger -->
+                            <button id="triggerApprove" data-target="approve" class="btn blue lighten-2 btn">
+                                Approve/Halt/Cancel
+                            </button>
+                        </div>
+                        <div class="col s4">
+                            <a id="triggerDiscount" data-target="discount" class="btn teal darken-2">Apply Discount</a>
+                        </div>
+                    </div>
+                @endif
             <div class="row">
                 <div class="col s2"></div>
                 <div class="col s8">
