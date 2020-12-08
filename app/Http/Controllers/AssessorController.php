@@ -198,9 +198,13 @@ class AssessorController extends Controller
             //Loop for getting files with index like image0, image1
             if ($request->hasFile('claimForm')) {
                 $claim='claim';
-                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$claim. '%')->get();
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$claim. '%')
+                    ->whereNotNull('claimID')
+                    ->get();
                 if (count($pdfs) > 0) {
-                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$claim. '%')->delete();
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$claim. '%')
+                        ->whereNotNull('claimID')
+                        ->delete();
                     if ($affectedPdfRows > 0) {
                         foreach ($pdfs as $pdf) {
                             $image_path = "documents/" . $pdf->name;  // Value is not URL but directory file path
@@ -304,13 +308,21 @@ class AssessorController extends Controller
             $drafted = $request->drafted;
             $invoice='invoice';
             if ($drafted == 1) {
-                $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])->delete();
+                $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])
+                    ->whereNotNull('assessmentID')
+                    ->delete();
                 if ($affectedRows > 0) {
-                    $affectedJobDetailRows = JobDetail::where(["assessmentID" => $assessmentID])->delete();
+                    $affectedJobDetailRows = JobDetail::where(["assessmentID" => $assessmentID])
+                        ->whereNotNull('assessmentID')
+                        ->delete();
                     if ($affectedJobDetailRows > 0) {
-                        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+                        $documents = Document::where(["assessmentID" => $assessmentID])
+                            ->whereNotNull('assessmentID')
+                            ->get();
                         if (count($documents) > 0) {
-                            $affectedDocumentRows = Document::where(["assessmentID" => $assessmentID])->delete();
+                            $affectedDocumentRows = Document::where(["assessmentID" => $assessmentID])
+                                ->whereNotNull('assessmentID')
+                                ->delete();
                             if ($affectedDocumentRows > 0) {
                                 foreach ($documents as $document) {
                                     $image_path = "documents/" . $document->name;  // Value is not URL but directory file path
@@ -326,9 +338,13 @@ class AssessorController extends Controller
             }
 
             if ($request->hasFile('claimForm')) {
-                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')->get();
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')
+                    ->whereNotNull('claimID')
+                    ->get();
                 if (count($pdfs) > 0) {
-                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')->delete();
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')
+                        ->whereNotNull('claimID')
+                        ->delete();
                     if ($affectedPdfRows > 0) {
                         foreach ($pdfs as $pdf) {
                             $image_path = "documents/" . $pdf->name;  // Value is not URL but directory file path
@@ -1216,6 +1232,7 @@ class AssessorController extends Controller
     public function submitReInspection(Request $request)
     {
         try {
+
             $assessmentID = $request->assessmentID;
             $totalImages = $request->totalImages;
             $repaired = json_decode($request->repaired,true);
@@ -1320,7 +1337,7 @@ class AssessorController extends Controller
                 }
                 $inspection = ReInspection::where(['assessmentID'=> $assessmentID])->first();
                 if (isset($inspection->id)) {
-                    $inspectionID = $inspection->inspectionID;
+                    $inspectionID = $inspection->id;
                     ReInspection::where('assessmentID',$assessmentID)
                         ->update([
                             'labor' => $labor,
@@ -1333,9 +1350,13 @@ class AssessorController extends Controller
                         ]);
                     if($totalImages >0)
                     {
-                        $documents = Document::where(['inspectionID' => $inspection->inspectionID])->get();
+                        $documents = Document::where(['inspectionID' => $inspection->id])
+                            ->whereNotNull('inspectionID')
+                            ->get();
                         if (count($documents) > 0) {
-                            $affectedPdfRows = Document::where(['inspectionID' => $inspection->inspectionID])->delete();
+                            $affectedPdfRows = Document::where(['inspectionID' => $inspection->id])
+                                ->whereNotNull('inspectionID')
+                                ->delete();
                             if ($affectedPdfRows > 0) {
                                 foreach ($documents as $document) {
                                     $image_path = "documents/" . $document->name;  // Value is not URL but directory file path
@@ -1576,13 +1597,21 @@ class AssessorController extends Controller
             // echo(json_encode($partsData));
             // exit();
             if ($drafted == 1) {
-                $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])->delete();
+                $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])
+                    ->whereNotNull('assessmentID')
+                    ->delete();
                 if ($affectedRows > 0) {
-                    $affectedJobDetailRows = JobDetail::where(["assessmentID" => $assessmentID])->delete();
+                    $affectedJobDetailRows = JobDetail::where(["assessmentID" => $assessmentID])
+                        ->whereNotNull('assessmentID')
+                        ->delete();
                     if ($affectedJobDetailRows > 0) {
-                        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+                        $documents = Document::where(["assessmentID" => $assessmentID])
+                            ->whereNotNull('assessmentID')
+                            ->get();
                         if (count($documents) > 0) {
-                            $affectedDocumentRows = Document::where(["assessmentID" => $assessmentID])->delete();
+                            $affectedDocumentRows = Document::where(["assessmentID" => $assessmentID])
+                                ->whereNotNull('assessmentID')
+                                ->delete();
                             if ($affectedDocumentRows > 0) {
                                 foreach ($documents as $document) {
                                     $image_path = "documents/" . $document->name;  // Value is not URL but directory file path
@@ -2007,13 +2036,21 @@ class AssessorController extends Controller
             // echo(json_encode($partsData));
             // exit();
             if ($drafted == 1) {
-                $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])->delete();
+                $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])
+                    ->whereNotNull('assessmentID')
+                    ->delete();
                 if ($affectedRows > 0) {
-                    $affectedJobDetailRows = JobDetail::where(["assessmentID" => $assessmentID])->delete();
+                    $affectedJobDetailRows = JobDetail::where(["assessmentID" => $assessmentID])
+                        ->whereNotNull('assessmentID')
+                        ->delete();
                     if ($affectedJobDetailRows > 0) {
-                        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+                        $documents = Document::where(["assessmentID" => $assessmentID])
+                            ->whereNotNull('assessmentID')
+                            ->get();
                         if (count($documents) > 0) {
-                            $affectedDocumentRows = Document::where(["assessmentID" => $assessmentID])->delete();
+                            $affectedDocumentRows = Document::where(["assessmentID" => $assessmentID])
+                                ->whereNotNull('assessmentID')
+                                ->delete();
                             if ($affectedDocumentRows > 0) {
                                 foreach ($documents as $document) {
                                     $image_path = "documents/" . $document->name;  // Value is not URL but directory file path

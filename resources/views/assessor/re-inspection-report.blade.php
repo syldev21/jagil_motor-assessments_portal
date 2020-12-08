@@ -23,6 +23,7 @@
 
                                             </div>
                                             <div class="input-field col m4 s12">
+                                                <input type="hidden" value="{{isset($inspections->id) ? $inspections->id : ''}}" id="inspectionID">
                                                 <input placeholder="" id="lessLabour" type="text" name="lessLabour"
                                                        value="{{isset($inspections->labor) ? $inspections->labor : ''}}"/>
                                                 <label for="lessLabour" @if(isset($inspections->labor)) class="active" @endif>Less Labour</label>

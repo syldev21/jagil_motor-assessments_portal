@@ -3057,6 +3057,7 @@ $(document).ready(function () {
         var assessmentID = $("#assessmentID");
         var additionalLabour = $("#additionalLabour").val();
         var lessLabour = $("#lessLabour").val();
+        var inspectionID = $("#inspectionID").val();
         var notes = CKEDITOR.instances['notes'].getData();
         var repaired = [];
         var replaced = [];
@@ -3075,15 +3076,69 @@ $(document).ready(function () {
             reused.push($(this).val());
         });
         var image_upload = new FormData();
-        // Attach file
-        // formData.append('image', $('input[type=file]')[0].files[0]);
-        var files = $('input[type=file]')[0].files;
-        var totalImages = files.length; //Total Images
-        let images = $('input[type=file]')[0];
-        for (let i = 0; i < totalImages; i++) {
-            image_upload.append('images' + i, images.files[i]);
+        if(inspectionID == 0) {
+            // Attach file
+            // formData.append('image', $('input[type=file]')[0].files[0]);
+            var files = $('input[type=file]')[0].files;
+            var totalImages = files.length; //Total Images
+            let images = $('input[type=file]')[0];
+            for (let i = 0; i < totalImages; i++) {
+                image_upload.append('images' + i, images.files[i]);
+            }
+                image_upload.append('totalImages', totalImages);
+        }else
+        {
+            var imagesArray = $("#imagesArray").val();
+            var imageParse = JSON.parse(imagesArray);
+            var counter = 0;
+
+            var imgArray = [];
+
+            $(".uploaded-image img").each(function () {
+                var imgsrc = this.src;
+                var n = imgsrc.split("/");
+                var result = n[n.length - 1];
+                imgArray.push(result);
+            });
+            imageParse = imageParse.filter(function (obj) {
+                return imgArray.includes(obj.name);
+            });
+
+            console.log(imageParse);
+
+            var files = $('input[type=file]')[0].files;
+            var totalImages = files.length; //Total Images
+            let images = $('input[type=file]')[0];
+            var img = [];
+            for (let i = 0; i < totalImages; i++) {
+                var increment = imageParse.length + i;
+                image_upload.append('images' + increment, images.files[i]);
+            }
+            $.each(imageParse, function (key, value) {
+                async function createFile() {
+                    let response = await fetch('/documents/' + value.name);
+                    let data = await response.blob();
+                    let metadata = {
+                        type: 'image/jpeg'
+                    };
+                    let file = new File([data], value.name, metadata);
+                    img.push(file);
+                }
+
+                createFile();
+                counter++;
+            });
         }
-        image_upload.append('totalImages', totalImages);
+        setTimeout(function () {
+            if (inspectionID == 0) {
+                image_upload.append('totalImages', '');
+            } else {
+                for (let i = 0; i < img.length; i++) {
+                    image_upload.append('images' + i, img[i]);
+
+                }
+                image_upload.append('totalImages', imageParse.length + totalImages);
+            }
         image_upload.append('assessmentID', assessmentID.val());
         image_upload.append('repaired',JSON.stringify(repaired));
         image_upload.append('replaced',JSON.stringify(replaced));
@@ -3128,6 +3183,7 @@ $(document).ready(function () {
             }
 
         });
+        }, 1000);
     });
     $('select').formSelect();
     $("body").on('click','#uploadDocuments',function (e) {
