@@ -129,6 +129,8 @@ $router->group(['prefix' => 'assistant-head-assessor'], function($router)
 {
     $router->post('/assessments','AssistantHeadAssessorController@assessments');
     $router->post('/assessment-report','AssistantHeadAssessorController@assessmentReport');
+    $router->post('/request-assessment-change','AssistantHeadAssessorController@requestAssessmentChange');
+    $router->post('/review-assessment','AssistantHeadAssessorController@reviewAssessment');
 });
 
 // Admin Routes
