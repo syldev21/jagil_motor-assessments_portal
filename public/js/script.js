@@ -187,10 +187,7 @@ $(document).ready(function () {
         if(garageID.val() != '')
         {
             if(excess.val() >= originalExcess.val()) {
-                $('.loadingButton').addClass("showLoadingButton");
-                $('.actionButton').addClass("hideActionButton");
-                $('.loadingButton').removeClass("hideLoadingButton");
-                $('.actionButton').removeClass("showActionButton");
+                addLoadingButton();
 
                 $.ajaxSetup({
 
@@ -247,10 +244,7 @@ $(document).ready(function () {
                                 timer: 3000
                             })
                         }
-                        $('.loadingButton').removeClass("showLoadingButton");
-                        $('.actionButton').removeClass("hideActionButton");
-                        $('.loadingButton').addClass("hideLoadingButton");
-                        $('.actionButton').addClass("showActionButton");
+                        removeLoadingButton();
                     }
 
                 });
@@ -398,10 +392,7 @@ $(document).ready(function () {
                     }
 
                 });
-                $('.loadingButton').addClass("showLoadingButton");
-                $('.actionButton').addClass("hideActionButton");
-                $('.loadingButton').removeClass("hideLoadingButton");
-                $('.actionButton').removeClass("showActionButton");
+                addLoadingButton();
 
                 $.ajax({
 
@@ -428,10 +419,7 @@ $(document).ready(function () {
                                 timer: 3000
                             })
                         }
-                        $('.loadingButton').removeClass("showLoadingButton");
-                        $('.actionButton').removeClass("hideActionButton");
-                        $('.loadingButton').addClass("hideLoadingButton");
-                        $('.actionButton').addClass("showActionButton");
+                        removeLoadingButton();
                     }
 
                 });
@@ -1538,6 +1526,9 @@ $(document).ready(function () {
             image_upload.append('drafted', drafted.val());
             image_upload.append('jobsData', JSON.stringify(jobsData));
             image_upload.append('partsData', JSON.stringify(partsData));
+
+            addLoadingButton();
+
             $.ajaxSetup({
 
                 headers: {
@@ -1571,6 +1562,7 @@ $(document).ready(function () {
                             timer: 3000
                         })
                     }
+                    removeLoadingButton();
                 }
 
             });
@@ -1628,6 +1620,8 @@ $(document).ready(function () {
                 image_upload.append('drafted', drafted.val());
                 image_upload.append('jobsData', JSON.stringify(jobsData));
                 image_upload.append('partsData', JSON.stringify(partsData));
+
+                addLoadingButton();
                 $.ajaxSetup({
 
                     headers: {
@@ -1661,6 +1655,7 @@ $(document).ready(function () {
                                 timer: 3000
                             })
                         }
+                        removeLoadingButton();
                     }
 
                 });
@@ -2711,10 +2706,7 @@ $(document).ready(function () {
             image_upload.append('jobsData', JSON.stringify(jobsData));
             image_upload.append('partsData', JSON.stringify(partsData));
 
-            $('.loadingButton').addClass("showLoadingButton");
-            $('.actionButton').addClass("hideActionButton");
-            $('.loadingButton').removeClass("hideLoadingButton");
-            $('.actionButton').removeClass("showActionButton");
+            addLoadingButton();
             $.ajaxSetup({
 
                 headers: {
@@ -2748,10 +2740,7 @@ $(document).ready(function () {
                             timer: 3000
                         })
                     }
-                    $('.loadingButton').removeClass("showLoadingButton");
-                    $('.actionButton').removeClass("hideActionButton");
-                    $('.loadingButton').addClass("hideLoadingButton");
-                    $('.actionButton').addClass("showActionButton");
+                    removeLoadingButton();
                 }
 
             });
@@ -2811,10 +2800,7 @@ $(document).ready(function () {
                 image_upload.append('jobsData', JSON.stringify(jobsData));
                 image_upload.append('partsData', JSON.stringify(partsData));
 
-                $('.loadingButton').addClass("showLoadingButton");
-                $('.actionButton').addClass("hideActionButton");
-                $('.loadingButton').removeClass("hideLoadingButton");
-                $('.actionButton').removeClass("showActionButton");
+                addLoadingButton();
                 $.ajaxSetup({
 
                     headers: {
@@ -2848,12 +2834,7 @@ $(document).ready(function () {
                                 timer: 3000
                             })
                         }
-
-                        $('.loadingButton').removeClass("showLoadingButton");
-                        $('.actionButton').removeClass("hideActionButton");
-                        $('.loadingButton').addClass("hideLoadingButton");
-                        $('.actionButton').addClass("showActionButton");
-
+                        removeLoadingButton();
                     }
 
                 });
@@ -3851,6 +3832,20 @@ $(document).ready(function () {
 
         });
     });
+    function addLoadingButton()
+    {
+        $('.loadingButton').addClass("showLoadingButton");
+        $('.actionButton').addClass("hideActionButton");
+        $('.loadingButton').removeClass("hideLoadingButton");
+        $('.actionButton').removeClass("showActionButton");
+    }
+    function removeLoadingButton()
+    {
+        $('.loadingButton').removeClass("showLoadingButton");
+        $('.actionButton').removeClass("hideActionButton");
+        $('.loadingButton').addClass("hideLoadingButton");
+        $('.actionButton').addClass("showActionButton");
+    }
 });
 
 function isNotEmpty(caller) {
