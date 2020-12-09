@@ -1951,6 +1951,36 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#assistant-head-assessor-assessment-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/assistant-head-assessor/assessment-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
     $("body").on('click','#assessmentDetails',function (e){
         e.preventDefault();
         var id = $(this).data("id");
@@ -3442,6 +3472,52 @@ $(document).ready(function () {
 
 
     });
+    $("body").on('click','#review-assistant-head-assessor-assessment',function (e){
+        e.preventDefault();
+        var assessmentID = $("#assessmentID").val();
+        var assessmentReviewType = $("input[name='assessmentReviewType']:checked").val();
+        var report = CKEDITOR.instances['report'].getData();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentID : assessmentID,
+                assessmentReviewType : assessmentReviewType,
+                report : report
+            },
+            url: '/assistant-head-assessor/review-assessment',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+
+        });
+
+
+    });
     $("body").on('click','#head-assessor-review-price-change',function (e){
         e.preventDefault();
         var assessmentID = $("#assessmentID").val();
@@ -3510,6 +3586,50 @@ $(document).ready(function () {
                 changes : changes
             },
             url: '/head-assessor/request-assessment-change',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+
+        });
+
+
+    });
+    $("#changeRequest").on('click','#assistant-head-assessor-request-change',function (e){
+        e.preventDefault();
+        var assessmentID = $("#assessmentID").val();
+        var changes = CKEDITOR.instances['changes'].getData();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentID : assessmentID,
+                changes : changes
+            },
+            url: '/assistant-head-assessor/request-assessment-change',
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {
