@@ -119,7 +119,7 @@
                                                             <button
                                                                 class="btn red lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['text']}}</button>
                                                         </td>
-                                                        <?php $date = $assessment['dateModified']; ?>
+                                                        <?php $date = $assessment['changeRequestAt']; ?>
                                                     @endif
                                                     <td>
                                                         {{\Carbon\Carbon::parse($date)->diffForHumans()}}
