@@ -40,6 +40,11 @@ class RedirectIfAuthenticated
                 return redirect('/home');
 
             }
+            if (Auth::user()->hasRole('Manager')) {
+
+                return redirect('/home');
+
+            }
             if (Auth::user()->hasRole('Assessment Manager')) {
 
                 return redirect('/home');
