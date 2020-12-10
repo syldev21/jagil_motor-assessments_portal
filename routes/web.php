@@ -123,6 +123,7 @@ $router->group(['prefix' => 'assessment-manager'], function($router)
     $router->post('/request-supplementary-change','AssessmentManagerController@requestSupplementaryChange');
     $router->post('/price-change-report','AssessmentManagerController@priceChangeReport');
     $router->post('/assessment-manager-review-price-change','AssessmentManagerController@reviewPriceChange');
+    $router->post('/request-assessment-change','AssessmentManagerController@requestAssessmentChange');
 });
 // Assistant head Assessor
 $router->group(['prefix' => 'assistant-head-assessor'], function($router)
