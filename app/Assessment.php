@@ -12,7 +12,7 @@ class Assessment extends Model
     protected $primaryKey = "id";
     protected $fillable = ['claimID','assessmentID','assessedBy','assessedAt','garageID','assessmentTypeID','pav','salvage',
         'totalLoss','totalCost','totalChange','priceChange','cause','note',
-        'assessmentStatusID','changeTypeID','segment','approvedBy','approvedAt','finalApprovalBy','finalApprovedAt','changesDue','reviewNote','createdBy','updatedBy',
+        'assessmentStatusID','changeTypeID','segment','approvedBy','approvedAt','finalApprovalBy','finalApprovedAt','changesDue','changeRequestAt','reviewNote','createdBy','updatedBy',
         'dateModified','dateCreated'];
     public $timestamps= false;
 

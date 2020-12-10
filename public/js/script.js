@@ -3634,6 +3634,50 @@ $(document).ready(function () {
 
 
     });
+    $("#changeRequest").on('click','#assessment-manager-request-change',function (e){
+        e.preventDefault();
+        var assessmentID = $("#assessmentID").val();
+        var changes = CKEDITOR.instances['changes'].getData();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentID : assessmentID,
+                changes : changes
+            },
+            url: '/assessment-manager/request-assessment-change',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+
+        });
+
+
+    });
     $("body").on('click','#assessment-manager-review-price-change',function (e){
         e.preventDefault();
         var assessmentID = $("#assessmentID").val();
