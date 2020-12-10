@@ -599,7 +599,7 @@
             </div>
         </li>
         @endhasrole
-        @hasanyrole('Admin|Head Assessor|Assistant Head|Assessment Manager|Adjuster|Assessor')
+        @hasanyrole('Admin|Head Assessor|Assistant Head|Manager|Assessment Manager|Adjuster|Assessor')
         <li class="">
             <a href="#" class="re-inspections sidenav-link">
                 <i class="material-icons">assignment_turned_in</i>
