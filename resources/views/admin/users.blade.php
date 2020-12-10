@@ -35,6 +35,9 @@
                                             @endhasrole
                                             <th>Head Assessor</th>
                                             <th>Assistant Head</th>
+                                            @hasrole('Admin')
+                                            <th>Manager</th>
+                                            @endhasrole
                                             <th>Assessment Manager</th>
                                             <th>Operation</th>
                                             {{--                                                <th>Operation</th>--}}
@@ -87,6 +90,14 @@
                                                         <span></span>
                                                     </label>
                                                 </td>
+                                                @hasrole('Admin')
+                                                <td>
+                                                    <label>
+                                                        <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['MANAGER'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['MANAGER']}}"/>
+                                                        <span></span>
+                                                    </label>
+                                                </td>
+                                                @endhasrole
                                                 <td>
                                                     <label>
                                                         <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['ASSESSMENT-MANAGER'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['ASSESSMENT-MANAGER']}}"/>

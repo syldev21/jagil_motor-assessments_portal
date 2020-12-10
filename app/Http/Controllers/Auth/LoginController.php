@@ -68,6 +68,10 @@ class LoginController extends Controller
         {
             return redirect('/home');
         }
+        else if($user->hasRole(Config::$ROLES['MANAGER']))
+        {
+            return redirect('/home');
+        }
         else if($user->hasRole(Config::$ROLES['ASSESSMENT-MANAGER']))
         {
             return redirect('/home');

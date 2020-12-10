@@ -519,6 +519,40 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','.manager-claims',function (e){
+        e.preventDefault();
+        var claimStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'claimStatusID' : claimStatusID
+            },
+
+            url: '/manager/claims',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
     $("body").on('click','.head-assessor-claims',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
@@ -1036,6 +1070,39 @@ $(document).ready(function () {
 
         });
     });
+    $(".manager-fetch-supplementaries").on('click',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
+            url: '/manager/supplementaries',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
     $(".assessment-manager-fetch-supplementaries").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
@@ -1088,6 +1155,39 @@ $(document).ready(function () {
                 'assessmentStatusID' : assessmentStatusID
             },
             url: '/head-assessor/assessments',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
+    $(".manager-assessments").on('click',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
+            url: '/manager/assessments',
 
             success: function (data) {
                 $("#main").html(data);
@@ -1301,6 +1401,36 @@ $(document).ready(function () {
             type: 'POST',
 
             url: '/head-assessor/supplementary-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
+    $("body").on('click','#view-manager-supplementary-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/manager/supplementary-report',
             data : {
                 assessmentID : assessmentID
             },
@@ -1933,6 +2063,36 @@ $(document).ready(function () {
             type: 'POST',
 
             url: '/head-assessor/assessment-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
+    $("body").on('click','#manager-assessment-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/manager/assessment-report',
             data : {
                 assessmentID : assessmentID
             },

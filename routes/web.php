@@ -109,6 +109,17 @@ $router->group(['prefix' => 'head-assessor'], function($router)
     $router->post('/request-assessment-change','HeadAssessorController@requestAssessmentChange');
 });
 
+// Manager Routes
+$router->group(['prefix' => 'manager'], function($router)
+{
+    //Motor  Head Assessor Module
+    $router->post('/claims','ManagerController@claims');
+    $router->post('/assessments','ManagerController@assessments');
+    $router->post('/supplementaries','ManagerController@supplementaries');
+    $router->post('/supplementary-report','ManagerController@supplementaryReport');
+    $router->post('/assessment-report','ManagerController@assessmentReport');
+});
+
 // Assessment Manager
 $router->group(['prefix' => 'assessment-manager'], function($router)
 {
