@@ -492,7 +492,15 @@
                                                 <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
                                                 <input type="hidden" name="claimID" value="{{$claim->id}}" id="claimID">
                                                 <input type="submit" class="waves-effect waves-dark btn next-step showActionButton actionButton"
-                                                       value="SUBMIT" id="submitAssessment"/>
+                                                       value="SUBMIT"
+                                                       @if($drafted==\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
+                                                       data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']}}"
+
+                                                       @elseif($drafted==\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
+                                                       data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']}}"
+
+                                                       @endif
+                                                       id="submitAssessment"/>
                                                 <a href="#"
                                                    class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
                                                 >

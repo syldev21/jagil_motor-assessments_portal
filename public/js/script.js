@@ -2828,6 +2828,7 @@ $(document).ready(function () {
         var totalLoss = $("#total_loss");
         var note = CKEDITOR.instances['notes'].getData();
         var cause = CKEDITOR.instances['cause'].getData();
+        var assessmentStatusID = $(this).data("id");
         var jobsData = {
             total : total.val(),
             labour : labour.val(),
@@ -2891,7 +2892,20 @@ $(document).ready(function () {
                             title: result.STATUS_MESSAGE,
                             showConfirmButton: false,
                             timer: 3000
-                        })
+                        });
+                        $.ajax({
+
+                            type: 'POST',
+                            data : {
+                                'assessmentStatusID' : assessmentStatusID
+                            },
+                            url: '/assessor/assessments',
+
+                            success: function (data) {
+                                $("#main").html(data);
+                            }
+
+                        });
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -2985,7 +2999,20 @@ $(document).ready(function () {
                                 title: result.STATUS_MESSAGE,
                                 showConfirmButton: false,
                                 timer: 3000
-                            })
+                            });
+                            $.ajax({
+
+                                type: 'POST',
+                                data : {
+                                    'assessmentStatusID' : assessmentStatusID
+                                },
+                                url: '/assessor/assessments',
+
+                                success: function (data) {
+                                    $("#main").html(data);
+                                }
+
+                            });
                         } else {
                             Swal.fire({
                                 icon: 'error',

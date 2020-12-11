@@ -82,6 +82,7 @@ class AssessorController extends Controller
             $draftAssessment = array();
         }
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
+        $modelAndMake = CarModel::select('makeCode','modelCode','makeName','modelName')->get();
 //        $remarks = Remarks::select("id","name")->get();
 //        $parts = Part::select("id","name")->get();
         $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
@@ -127,7 +128,7 @@ class AssessorController extends Controller
                 $jobDraftDetail["Dam Kit"] = $jobDetail->cost;
             }
         }
-        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails,'claim'=>$claim]);
+        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails,'claim'=>$claim,'drafted'=>$drafted]);
     }
     public function fillSupplementaryReport(Request $request, $assessmentID)
     {
@@ -586,11 +587,11 @@ class AssessorController extends Controller
                             );
                         } else if ($isDraft == 0) {
                             $claim = Claim::where(['id'=>$claimID])->first();
-                            $customer = CustomerMaster::where(['customerCode'=>$claim->customerCode])->first();
-                            if($customer)
-                            {
-                                SMSHelper::sendSMS('Hello ' . $customer->fullName . ', An Assessment for vehicle : ' . $claim->vehicleRegNo . ' has been Completed. You will be notified once approval has been done', $customer->MSISDN);
-                            }
+//                            $customer = CustomerMaster::where(['customerCode'=>$claim->customerCode])->first();
+//                            if($customer)
+//                            {
+//                                SMSHelper::sendSMS('Hello ' . $customer->fullName . ', An Assessment for vehicle : ' . $claim->vehicleRegNo . ' has been Completed. You will be notified once approval has been done', $customer->MSISDN);
+//                            }
                             $response = array(
                                 "STATUS_CODE" => Config::SUCCESS_CODE,
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
