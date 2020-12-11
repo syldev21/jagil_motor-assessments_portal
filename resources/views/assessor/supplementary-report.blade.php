@@ -449,8 +449,25 @@
                                             <div class="step-actions">
                                                 <input type="hidden" name="counter" id="counter" value="{{isset($count) ? $count-1 : 0}}">
                                                 <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessment->id}}">
-                                                <input type="submit" class="waves-effect waves-dark btn next-step"
-                                                       value="SUBMIT" id="submitSupplementary"/>
+                                                <input type="submit" class="waves-effect waves-dark btn next-step showActionButton actionButton"
+                                                       value="SUBMIT"
+                                                       id="submitSupplementary" data-id="{{App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"/>
+                                                <a href="#"
+                                                   class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
+                                                >
+                                                    <div class="preloader-wrapper small active float-left">
+                                                        <div class="spinner-layer spinner-blue-only">
+                                                            <div class="circle-clipper left">
+                                                                <div class="circle"></div>
+                                                            </div><div class="gap-patch">
+                                                                <div class="circle"></div>
+                                                            </div><div class="circle-clipper right">
+                                                                <div class="circle"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="float-right"> Loading</div>
+                                                </a>
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                                 </button>
                                             </div>

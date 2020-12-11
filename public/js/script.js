@@ -3030,6 +3030,7 @@ $(document).ready(function () {
     });
     $("body").on('click','#submitSupplementary',function (e){
         e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
         // var counter = $("#counter").val();
         var counter = $('td input:checkbox').length;
 
@@ -3117,6 +3118,7 @@ $(document).ready(function () {
             image_upload.append('drafted', drafted.val());
             image_upload.append('jobsData', JSON.stringify(jobsData));
             image_upload.append('partsData', JSON.stringify(partsData));
+            addLoadingButton();
             $.ajaxSetup({
 
                 headers: {
@@ -3141,7 +3143,20 @@ $(document).ready(function () {
                             title: result.STATUS_MESSAGE,
                             showConfirmButton: false,
                             timer: 3000
-                        })
+                        });
+                        $.ajax({
+
+                            type: 'POST',
+                            data : {
+                                'assessmentStatusID' : assessmentStatusID
+                            },
+                            url: '/assessor/supplementaries',
+
+                            success: function (data) {
+                                $("#main").html(data);
+                            }
+
+                        });
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -3150,7 +3165,9 @@ $(document).ready(function () {
                             timer: 3000
                         })
                     }
+                    removeLoadingButton();
                 }
+
 
             });
         }else
@@ -3207,6 +3224,7 @@ $(document).ready(function () {
                 image_upload.append('drafted', drafted.val());
                 image_upload.append('jobsData', JSON.stringify(jobsData));
                 image_upload.append('partsData', JSON.stringify(partsData));
+                addLoadingButton();
                 $.ajaxSetup({
 
                     headers: {
@@ -3231,7 +3249,20 @@ $(document).ready(function () {
                                 title: result.STATUS_MESSAGE,
                                 showConfirmButton: false,
                                 timer: 3000
-                            })
+                            });
+                            $.ajax({
+
+                                type: 'POST',
+                                data : {
+                                    'assessmentStatusID' : assessmentStatusID
+                                },
+                                url: '/assessor/supplementaries',
+
+                                success: function (data) {
+                                    $("#main").html(data);
+                                }
+
+                            });
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -3240,6 +3271,7 @@ $(document).ready(function () {
                                 timer: 3000
                             })
                         }
+                        removeLoadingButton();
                     }
 
                 });
