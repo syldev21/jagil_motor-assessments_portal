@@ -3519,7 +3519,7 @@ $(document).ready(function () {
                         title: result.STATUS_MESSAGE,
                         showConfirmButton: false,
                         timer: 3000
-                    })
+                    });
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -3528,6 +3528,7 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                $("#approve").modal('close');
             }
 
         });
@@ -3666,6 +3667,7 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                $("#approve").modal('close');
             }
 
         });
@@ -3712,6 +3714,7 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                $("#approve").modal('close');
             }
 
         });
@@ -3803,6 +3806,7 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                $("#changeRequest").modal('close');
             }
 
         });
@@ -3847,6 +3851,7 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                $("#changeRequest").modal('close');
             }
 
         });
@@ -3891,6 +3896,7 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                $("#changeRequest").modal('close');
             }
 
         });
