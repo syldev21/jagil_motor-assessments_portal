@@ -46,50 +46,50 @@ class AssessorController extends Controller
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $segmentIds = array(Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'],Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']);
-            $asmts=Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'], "assessedBy" => Auth::id(),'segment'=>5])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $segmentIds = array(Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'], Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']);
+            $asmts = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'], "assessedBy" => Auth::id(), 'segment' => 5])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
                 ->whereIn('segment', $segmentIds)
                 ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'asmts'=>$asmts]);
+            return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID, 'asmts' => $asmts]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
+
     public function supplementaries(Request $request)
     {
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            return view('assessor.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'assessmentStatusID'=>$assessmentStatusID,'id'=>$id]);
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            return view('assessor.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID, 'assessmentStatusID' => $assessmentStatusID, 'id' => $id]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
+
     public function fillAssessmentReport(Request $request, $assessmentID)
     {
 //        $draftAssessment = Assessment::where(['id' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']])->with('claim')->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $drafted = isset($assessment->assessmentStatusID) ? $assessment->assessmentStatusID : 0;
-        if($drafted == Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
-        {
+        if ($drafted == Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id']) {
             $draftAssessment = $assessment;
-        }else
-        {
+        } else {
             $draftAssessment = array();
         }
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $modelAndMake = CarModel::select('makeCode','modelCode','makeName','modelName')->get();
+        $modelAndMake = CarModel::select('makeCode', 'modelCode', 'makeName', 'modelName')->get();
 //        $remarks = Remarks::select("id","name")->get();
 //        $parts = Part::select("id","name")->get();
-        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Remarks::select("id","name")->get();
+        $remarks = Cache::remember('remarks', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Remarks::select("id", "name")->get();
         });
-        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Part::select("id","name")->get();
+        $parts = Cache::remember('parts', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Part::select("id", "name")->get();
         });
         $claim = Claim::where(['id' => $request->claimID])->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
@@ -128,8 +128,9 @@ class AssessorController extends Controller
                 $jobDraftDetail["Dam Kit"] = $jobDetail->cost;
             }
         }
-        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails,'claim'=>$claim,'drafted'=>$drafted]);
+        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails, 'claim' => $claim, 'drafted' => $drafted]);
     }
+
     public function fillSupplementaryReport(Request $request, $assessmentID)
     {
         $supplementaryAssessment = Assessment::where(['id' => $assessmentID])->first();
@@ -137,14 +138,14 @@ class AssessorController extends Controller
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
 //        $remarks = Remarks::all();
 //        $parts = Part::all();
-        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Remarks::select("id","name")->get();
+        $remarks = Cache::remember('remarks', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Remarks::select("id", "name")->get();
         });
-        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Part::select("id","name")->get();
+        $parts = Cache::remember('parts', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Part::select("id", "name")->get();
         });
-        $assessmentItems = AssessmentItem::where(["assessmentID" => isset($supplementaryAssessment->id) ? $supplementaryAssessment->id : 0,'segment'=> Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("part")->get();
-        $jobDetails = JobDetail::where(["assessmentID" => isset($supplementaryAssessment->id) ? $supplementaryAssessment->id : 0,"segment"=> Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => isset($supplementaryAssessment->id) ? $supplementaryAssessment->id : 0, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("part")->get();
+        $jobDetails = JobDetail::where(["assessmentID" => isset($supplementaryAssessment->id) ? $supplementaryAssessment->id : 0, "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
         $jobDraftDetail = [];
         foreach ($jobDetails as $jobDetail) {
 
@@ -186,9 +187,9 @@ class AssessorController extends Controller
     public function fillReInspectionReport(Request $request, $assessmentID)
     {
         $assessments = Assessment::where(['id' => $assessmentID])->with('claim')->with('reInspection')->first();
-        $inspections = ReInspection::where(['assessmentID'=>isset($assessments) ? $assessments->id : 0])->first();
+        $inspections = ReInspection::where(['assessmentID' => isset($assessments) ? $assessments->id : 0])->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with("part")->get();
-        return view('assessor.re-inspection-report', ['assessments' => $assessments, 'assessmentItems' => $assessmentItems,'inspections'=>$inspections]);
+        return view('assessor.re-inspection-report', ['assessments' => $assessments, 'assessmentItems' => $assessmentItems, 'inspections' => $inspections]);
     }
 
     public function uploadDocuments(Request $request)
@@ -198,12 +199,12 @@ class AssessorController extends Controller
             $claimID = $request->claimID;
             //Loop for getting files with index like image0, image1
             if ($request->hasFile('claimForm')) {
-                $claim='claim';
-                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$claim. '%')
+                $claim = 'claim';
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $claim . '%')
                     ->whereNotNull('claimID')
                     ->get();
                 if (count($pdfs) > 0) {
-                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$claim. '%')
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $claim . '%')
                         ->whereNotNull('claimID')
                         ->delete();
                     if ($affectedPdfRows > 0) {
@@ -220,7 +221,7 @@ class AssessorController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $path = $file->getRealPath();
                 $size = $file->getSize();
-                $picture = date('His') . '-' . 'claim'.'-'. $filename;
+                $picture = date('His') . '-' . 'claim' . '-' . $filename;
                 //Save files in below folder path, that will make in public folder
                 $file->move(public_path('documents/'), $picture);
                 $documents = Document::create([
@@ -232,8 +233,7 @@ class AssessorController extends Controller
                     "url" => $path,
                     "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
                 ]);
-                if($totalImages == 0)
-                {
+                if ($totalImages == 0) {
                     $response = array(
                         "STATUS_CODE" => Config::SUCCESS_CODE,
                         "STATUS_MESSAGE" => "Congratulations! Your documents has been uploaded successfully"
@@ -298,7 +298,7 @@ class AssessorController extends Controller
     public function submitAssessment(Request $request)
     {
         try {
-            $claimID=$request->claimID;
+            $claimID = $request->claimID;
             $totalImages = $request->totalImages;
             $assessmentID = $request->assessmentID;
             $partsData = json_decode($request->partsData, true);
@@ -307,7 +307,7 @@ class AssessorController extends Controller
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
-            $invoice='invoice';
+            $invoice = 'invoice';
             if ($drafted == 1) {
                 $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])
                     ->whereNotNull('assessmentID')
@@ -339,11 +339,11 @@ class AssessorController extends Controller
             }
 
             if ($request->hasFile('claimForm')) {
-                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $invoice . '%')
                     ->whereNotNull('claimID')
                     ->get();
                 if (count($pdfs) > 0) {
-                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $invoice . '%')
                         ->whereNotNull('claimID')
                         ->delete();
                     if ($affectedPdfRows > 0) {
@@ -360,7 +360,7 @@ class AssessorController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $path = $file->getRealPath();
                 $size = $file->getSize();
-                $picture = date('His') . '-'. 'invoice'.'-'. $filename;
+                $picture = date('His') . '-' . 'invoice' . '-' . $filename;
                 //Save files in below folder path, that will make in public folder
                 $file->move(public_path('documents/'), $picture);
                 $documents = Document::create([
@@ -414,11 +414,10 @@ class AssessorController extends Controller
             $cause = !empty($jobsData['cause']) ? $jobsData['cause'] : null;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
             $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
-            if($chassisNumber != '')
-            {
-                $assessment= Assessment::where(['id' =>$assessmentID])->first();
-                Claim::where(['id'=>$assessment->claimID])->update([
-                    "chassisNumber"=>$chassisNumber
+            if ($chassisNumber != '') {
+                $assessment = Assessment::where(['id' => $assessmentID])->first();
+                Claim::where(['id' => $assessment->claimID])->update([
+                    "chassisNumber" => $chassisNumber
                 ]);
             }
             foreach ($partsData as $partDetail) {
@@ -468,8 +467,9 @@ class AssessorController extends Controller
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * 1.14;
                 }
-                $assessorName = Auth::user()->firstName.' '.Auth::user()->lastName;
+                $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
+                $pav = str_replace("," , "" , $pav);
                 Assessment::where(['id' => $assessmentID])->update([
                     "cause" => $cause,
                     "note" => $note,
@@ -586,7 +586,7 @@ class AssessorController extends Controller
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
                             );
                         } else if ($isDraft == 0) {
-                            $claim = Claim::where(['id'=>$claimID])->first();
+                            $claim = Claim::where(['id' => $claimID])->first();
 //                            $customer = CustomerMaster::where(['customerCode'=>$claim->customerCode])->first();
 //                            if($customer)
 //                            {
@@ -632,12 +632,11 @@ class AssessorController extends Controller
                                 ",
                                             ];
                                             $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                             SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
-                                              Notification::send($headAssessor, new NewAssessmentNotification($assessment));
+                                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                            Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                         }
                                     }
-                                }else
-                                {
+                                } else {
                                     $assistantHeadAssessors = User::role(Config::$ROLES['ASSISTANT-HEAD'])->get(); // Returns only users with the role 'Head Assessor'
                                     if (count($assistantHeadAssessors) > 0) {
                                         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
@@ -659,7 +658,7 @@ class AssessorController extends Controller
                                     " . $assessorName . " has completed their assessment report. <br>
                                     Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
                                     <u><i><strong>Details are as below:</strong></i></u>
-                                    <strong>Status: </strong> " .Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                                    <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
                                     <strong>Amount: </strong> " . $total . "  <br>
                                     <strong>Salvage: </strong>" . $salvage . " <br>
                                     <strong>PAV: </strong>" . $pav . "
@@ -671,9 +670,9 @@ class AssessorController extends Controller
                                     Jubilee Insurance.
                                 ",
                                             ];
-                                              $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                              SMSHelper::sendSMS('Hello ' . $assistantHeadAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $assistantHeadAssessor->MSISDN);
-                                              Notification::send($assistantHeadAssessor, new NewAssessmentNotification($assessment));
+                                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                            SMSHelper::sendSMS('Hello ' . $assistantHeadAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $assistantHeadAssessor->MSISDN);
+                                            Notification::send($assistantHeadAssessor, new NewAssessmentNotification($assessment));
                                         }
                                     }
                                 }
@@ -691,18 +690,18 @@ class AssessorController extends Controller
                                         $email_add = $data['email'];
 
                                         $email = [
-                                            'subject' => 'Survey Report - '.$data['reg'],
+                                            'subject' => 'Survey Report - ' . $data['reg'],
                                             'from_user_email' => 'noreply@jubileeinsurance.com',
-                                            'message' =>"
+                                            'message' => "
                             Hi, <br>
-                            This is in reference to claim number <strong>".$data['claim']." </strong><br>
-                            ".$assessorName." has completed their assessment report. <br>
-                            Login to the <a href=".url('/').">portal</a> to view it. <br>
+                            This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
+                            " . $assessorName . " has completed their assessment report. <br>
+                            Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
                             <u><i><strong>Details are as below:</strong></i></u>
-                            <strong>Status: </strong> ".Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType]."  <br>
-                            <strong>Amount: </strong> ".$total." <br>
-                            <strong>Salvage: </strong>".$salvage." <br>
-                            <strong>PAV: </strong>".$pav."
+                            <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                            <strong>Amount: </strong> " . $total . " <br>
+                            <strong>Salvage: </strong>" . $salvage . " <br>
+                            <strong>PAV: </strong>" . $pav . "
                             <br><br>
 
                             Regards, <br><br>
@@ -731,18 +730,18 @@ class AssessorController extends Controller
                                         $email_add = $data['email'];
 
                                         $email = [
-                                            'subject' => 'Survey Report - '.$data['reg'],
+                                            'subject' => 'Survey Report - ' . $data['reg'],
                                             'from_user_email' => 'noreply@jubileeinsurance.com',
-                                            'message' =>"
+                                            'message' => "
                             Hi, <br>
-                            This is in reference to claim number <strong>".$data['claim']." </strong><br>
-                            ".$assessorName." has completed their assessment report. <br>
-                            Login to the <a href=".url('/').">portal</a> to view it. <br>
+                            This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
+                            " . $assessorName . " has completed their assessment report. <br>
+                            Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
                             <u><i><strong>Details are as below:</strong></i></u>
-                            <strong>Status: </strong> ".Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType]."  <br>
-                            <strong>Amount: </strong> ".$total." <br>
-                            <strong>Salvage: </strong>".$salvage." <br>
-                            <strong>PAV: </strong>".$pav."
+                            <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                            <strong>Amount: </strong> " . $total . " <br>
+                            <strong>Salvage: </strong>" . $salvage . " <br>
+                            <strong>PAV: </strong>" . $pav . "
                             <br><br>
 
                             Regards, <br><br>
@@ -751,9 +750,9 @@ class AssessorController extends Controller
                             Jubilee Insurance.
                         ",
                                         ];
-                                          $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                          SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
-                                          Notification::send($headAssessor, new NewAssessmentNotification($assessment));
+                                        $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                        Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                     }
                                 }
                             }
@@ -778,6 +777,7 @@ class AssessorController extends Controller
         }
         return json_encode($response);
     }
+
     public function submitSupplementary(Request $request)
     {
         try {
@@ -788,8 +788,8 @@ class AssessorController extends Controller
             $isDraft = $request->isDraft;
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
-            $assess = Assessment::where(["id"=>$assessmentID])->first();
-            $claim = Claim::where(['id'=>isset($assess->claimID) ? $assess->claimID : 0])->first();
+            $assess = Assessment::where(["id" => $assessmentID])->first();
+            $claim = Claim::where(['id' => isset($assess->claimID) ? $assess->claimID : 0])->first();
 
             $assessmentItems = array();
             $total = !empty($jobsData['total']) ? $jobsData['total'] : 0;
@@ -807,8 +807,9 @@ class AssessorController extends Controller
             $totalLoss = !empty($jobsData['totalLoss']) ? $jobsData['totalLoss'] : 0;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
             $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
+            $pav = str_replace("," , "" , $pav);
             $supplementaryID = Assessment::insertGetId([
-                "claimID"=> $claim->id,
+                "claimID" => $claim->id,
                 "assessmentID" => $assessmentID,
                 "assessedBy" => Auth::user()->id,
                 "note" => $note,
@@ -824,203 +825,203 @@ class AssessorController extends Controller
             ]);
             $drafted = $request->drafted;
             //Loop for getting files with index like image0, image1
-            if($supplementaryID > 0){
-            for ($x = 0; $x < $totalImages; $x++) {
+            if ($supplementaryID > 0) {
+                for ($x = 0; $x < $totalImages; $x++) {
 
-                if ($request->hasFile('images' . $x)) {
-                    $file = $request->file('images' . $x);
-                    $filename = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $path = $file->getRealPath();
-                    $size = $file->getSize();
-                    $picture = date('His') . '-' . $filename;
-                    //Save files in below folder path, that will make in public folder
-                    $file->move(public_path('documents/'), $picture);
-                    Document::create([
+                    if ($request->hasFile('images' . $x)) {
+                        $file = $request->file('images' . $x);
+                        $filename = $file->getClientOriginalName();
+                        $extension = $file->getClientOriginalExtension();
+                        $path = $file->getRealPath();
+                        $size = $file->getSize();
+                        $picture = date('His') . '-' . $filename;
+                        //Save files in below folder path, that will make in public folder
+                        $file->move(public_path('documents/'), $picture);
+                        Document::create([
+                            "assessmentID" => $supplementaryID,
+                            "name" => $picture,
+                            "mime" => $extension,
+                            "size" => $size,
+                            "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
+                            "url" => $path,
+                            "segment" => Config::$ASSESSMENT_SEGMENTS["SUPPLEMENTARY"]["ID"]
+                        ]);
+                    }
+                }
+                foreach ($partsData as $partDetail) {
+                    $part = $partDetail['vehiclePart'];
+                    $quantity = $partDetail['quantity'];
+                    $total = $partDetail['total'];
+                    $cost = $partDetail['cost'];
+                    $contribution = $partDetail['contribution'];
+                    $discount = $partDetail['discount'];
+                    $remarks = $partDetail['remarks'];
+                    $category = $partDetail['category'];
+                    $assessmentItem = array(
                         "assessmentID" => $supplementaryID,
-                        "name" => $picture,
-                        "mime" => $extension,
-                        "size" => $size,
-                        "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
-                        "url" => $path,
-                        "segment" => Config::$ASSESSMENT_SEGMENTS["SUPPLEMENTARY"]["ID"]
-                    ]);
+                        "partID" => $part,
+                        "quantity" => $quantity,
+                        "contribution" => $contribution,
+                        "discount" => $discount,
+                        "cost" => $cost,
+                        "total" => $total,
+                        "remarks" => $remarks,
+                        "assessmentItemType" => $assessmentType,
+                        "category" => $category,
+                        "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                        "createdBy" => Config::ACTIVE,
+                        "dateCreated" => $curDate
+                    );
+                    $assessmentItems[] = $assessmentItem;
                 }
-            }
-            foreach ($partsData as $partDetail) {
-                $part = $partDetail['vehiclePart'];
-                $quantity = $partDetail['quantity'];
-                $total = $partDetail['total'];
-                $cost = $partDetail['cost'];
-                $contribution = $partDetail['contribution'];
-                $discount = $partDetail['discount'];
-                $remarks = $partDetail['remarks'];
-                $category = $partDetail['category'];
-                $assessmentItem = array(
-                    "assessmentID" => $supplementaryID,
-                    "partID" => $part,
-                    "quantity" => $quantity,
-                    "contribution" => $contribution,
-                    "discount" => $discount,
-                    "cost" => $cost,
-                    "total" => $total,
-                    "remarks" => $remarks,
-                    "assessmentItemType" => $assessmentType,
-                    "category" => $category,
-                    "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                    "createdBy" => Config::ACTIVE,
-                    "dateCreated" => $curDate
-                );
-                $assessmentItems[] = $assessmentItem;
-            }
 
-            $collection = collect($assessmentItems);
+                $collection = collect($assessmentItems);
 
-            $unique = $collection->unique('partID');
+                $unique = $collection->unique('partID');
 
-            $save = AssessmentItem::insert($unique->values()->all());
-            if ($save) {
-                //Sum of parts
-                $sum = AssessmentItem::where(['assessmentID'=> $assessmentID,"segment"=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->sum('total');
+                $save = AssessmentItem::insert($unique->values()->all());
+                if ($save) {
+                    //Sum of parts
+                    $sum = AssessmentItem::where(['assessmentID' => $assessmentID, "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->sum('total');
 
-                //Sum of other charges
-                $others = (is_numeric($labour)) + (is_numeric($paint)) + (is_numeric($miscellaneous)) + (is_numeric($primer))
-                    + (is_numeric($jigging)) + (is_numeric($reconstruction)) + (is_numeric($gas)) + (is_numeric($welding));
+                    //Sum of other charges
+                    $others = (is_numeric($labour)) + (is_numeric($paint)) + (is_numeric($miscellaneous)) + (is_numeric($primer))
+                        + (is_numeric($jigging)) + (is_numeric($reconstruction)) + (is_numeric($gas)) + (is_numeric($welding));
 
-                if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                    $total = ($sum + $others) * 1.14;
-                } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * Config::MARK_UP) + $others;
-                } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
-                    $total = ($sum + $others) * 1.14;
-                }
-                $assessorName = Auth::user()->firstName.' '.Auth::user()->lastName;
-                $detail = JobDetail::where(['assessmentID'=> $supplementaryID,"segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->exists();
-                $jobs = array();
+                    if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                        $total = ($sum + $others) * 1.14;
+                    } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
+                        $total = ($sum * Config::MARK_UP) + $others;
+                    } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
+                        $total = ($sum + $others) * 1.14;
+                    }
+                    $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
+                    $detail = JobDetail::where(['assessmentID' => $supplementaryID, "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->exists();
+                    $jobs = array();
 
-                if ($detail) {
+                    if ($detail) {
 
-                } else {
-                    if ($labour > 0) {
-                        $job = array(
-                            "assessmentID" => $supplementaryID,
-                            "name" => Config::$JOB_TYPES["LABOUR"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["LABOUR"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                            "cost" => $labour
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($paint > 0) {
-                        $job = array(
-                            "assessmentID" => $supplementaryID,
-                            "name" => Config::$JOB_TYPES["PAINTING"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["PAINTING"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                            "cost" => $paint
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($miscellaneous > 0) {
-                        $job = array(
-                            "assessmentID" => $supplementaryID,
-                            "name" => Config::$JOB_TYPES["MISCELLANEOUS"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["MISCELLANEOUS"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                            "cost" => $miscellaneous
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($primer > 0) {
-                        $job = array(
-                            "assessmentID" => $supplementaryID,
-                            "name" => Config::$JOB_TYPES["PRIMER"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["PRIMER"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                            "cost" => $primer
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($jigging > 0) {
-                        $job = array(
-                            "assessmentID" => $supplementaryID,
-                            "name" => Config::$JOB_TYPES["JIGGING"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["JIGGING"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                            "cost" => $jigging
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($reconstruction > 0) {
-                        $job = array(
-                            "assessmentID" => $supplementaryID,
-                            "name" => Config::$JOB_TYPES["RECONSTRUCTION"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["RECONSTRUCTION"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                            "cost" => $reconstruction
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($gas > 0) {
-                        $job = array(
-                            "assessmentID" => $supplementaryID,
-                            "name" => Config::$JOB_TYPES["AC_GAS"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["AC_GAS"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                            "cost" => $gas
-                        );
-                        $jobs[] = $job;
-                    }
-                    if ($welding > 0) {
-                        $job = array(
-                            "assessmentID" => $supplementaryID,
-                            "name" => Config::$JOB_TYPES["WELDING_GAS"]["TITLE"],
-                            "jobType" => Config::$JOB_TYPES["WELDING_GAS"]["ID"],
-                            "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
-                            "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                            "cost" => $welding
-                        );
-                        $jobs[] = $job;
-                    }
-                    $collection = collect($jobs);
-
-                    $save = JobDetail::insert($collection->values()->all());
-                    if ($save) {
-                        if ($isDraft == 1) {
-                            $response = array(
-                                "STATUS_CODE" => Config::SUCCESS_CODE,
-                                "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
+                    } else {
+                        if ($labour > 0) {
+                            $job = array(
+                                "assessmentID" => $supplementaryID,
+                                "name" => Config::$JOB_TYPES["LABOUR"]["TITLE"],
+                                "jobType" => Config::$JOB_TYPES["LABOUR"]["ID"],
+                                "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                                "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                                "cost" => $labour
                             );
-                        } else if ($isDraft == 0) {
-                            $response = array(
-                                "STATUS_CODE" => Config::SUCCESS_CODE,
-                                "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
+                            $jobs[] = $job;
+                        }
+                        if ($paint > 0) {
+                            $job = array(
+                                "assessmentID" => $supplementaryID,
+                                "name" => Config::$JOB_TYPES["PAINTING"]["TITLE"],
+                                "jobType" => Config::$JOB_TYPES["PAINTING"]["ID"],
+                                "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                                "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                                "cost" => $paint
                             );
-                            if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                                if ($total > Config::HEAD_ASSESSOR_THRESHOLD) {
-                                    $headAssessors = User::role(Config::$ROLES['HEAD-ASSESSOR'])->get(); // Returns only users with the role 'Head Assessor'
-                                    if (count($headAssessors) > 0) {
-                                        foreach ($headAssessors as $headAssessor) {
-                                            $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
-                                            $data = [
-                                                'claim' => $assessment->claim->claimNo,
-                                                'reg' => $assessment->claim->vehicleRegNo,
-                                                'headAssessor' => $headAssessor->firstName,
-                                                'email' => $headAssessor->email
-                                            ];
-                                            $email_add = $data['email'];
+                            $jobs[] = $job;
+                        }
+                        if ($miscellaneous > 0) {
+                            $job = array(
+                                "assessmentID" => $supplementaryID,
+                                "name" => Config::$JOB_TYPES["MISCELLANEOUS"]["TITLE"],
+                                "jobType" => Config::$JOB_TYPES["MISCELLANEOUS"]["ID"],
+                                "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                                "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                                "cost" => $miscellaneous
+                            );
+                            $jobs[] = $job;
+                        }
+                        if ($primer > 0) {
+                            $job = array(
+                                "assessmentID" => $supplementaryID,
+                                "name" => Config::$JOB_TYPES["PRIMER"]["TITLE"],
+                                "jobType" => Config::$JOB_TYPES["PRIMER"]["ID"],
+                                "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                                "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                                "cost" => $primer
+                            );
+                            $jobs[] = $job;
+                        }
+                        if ($jigging > 0) {
+                            $job = array(
+                                "assessmentID" => $supplementaryID,
+                                "name" => Config::$JOB_TYPES["JIGGING"]["TITLE"],
+                                "jobType" => Config::$JOB_TYPES["JIGGING"]["ID"],
+                                "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                                "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                                "cost" => $jigging
+                            );
+                            $jobs[] = $job;
+                        }
+                        if ($reconstruction > 0) {
+                            $job = array(
+                                "assessmentID" => $supplementaryID,
+                                "name" => Config::$JOB_TYPES["RECONSTRUCTION"]["TITLE"],
+                                "jobType" => Config::$JOB_TYPES["RECONSTRUCTION"]["ID"],
+                                "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                                "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                                "cost" => $reconstruction
+                            );
+                            $jobs[] = $job;
+                        }
+                        if ($gas > 0) {
+                            $job = array(
+                                "assessmentID" => $supplementaryID,
+                                "name" => Config::$JOB_TYPES["AC_GAS"]["TITLE"],
+                                "jobType" => Config::$JOB_TYPES["AC_GAS"]["ID"],
+                                "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                                "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                                "cost" => $gas
+                            );
+                            $jobs[] = $job;
+                        }
+                        if ($welding > 0) {
+                            $job = array(
+                                "assessmentID" => $supplementaryID,
+                                "name" => Config::$JOB_TYPES["WELDING_GAS"]["TITLE"],
+                                "jobType" => Config::$JOB_TYPES["WELDING_GAS"]["ID"],
+                                "jobCategory" => Config::$JOB_CATEGORIES['REPAIR']['ID'],
+                                "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
+                                "cost" => $welding
+                            );
+                            $jobs[] = $job;
+                        }
+                        $collection = collect($jobs);
 
-                                            $email = [
-                                                'subject' => 'Assessment Report - ' . $data['reg'],
-                                                'from_user_email' => 'noreply@jubileeinsurance.com',
-                                                'message' => "
+                        $save = JobDetail::insert($collection->values()->all());
+                        if ($save) {
+                            if ($isDraft == 1) {
+                                $response = array(
+                                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                                    "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
+                                );
+                            } else if ($isDraft == 0) {
+                                $response = array(
+                                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                                    "STATUS_MESSAGE" => "Congratulation!, You have successfully created an assessment"
+                                );
+                                if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                                    if ($total > Config::HEAD_ASSESSOR_THRESHOLD) {
+                                        $headAssessors = User::role(Config::$ROLES['HEAD-ASSESSOR'])->get(); // Returns only users with the role 'Head Assessor'
+                                        if (count($headAssessors) > 0) {
+                                            foreach ($headAssessors as $headAssessor) {
+                                                $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
+                                                $data = [
+                                                    'claim' => $assessment->claim->claimNo,
+                                                    'reg' => $assessment->claim->vehicleRegNo,
+                                                    'headAssessor' => $headAssessor->firstName,
+                                                    'email' => $headAssessor->email
+                                                ];
+                                                $email_add = $data['email'];
+
+                                                $email = [
+                                                    'subject' => 'Assessment Report - ' . $data['reg'],
+                                                    'from_user_email' => 'noreply@jubileeinsurance.com',
+                                                    'message' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                                     " . $assessorName . " has completed their assessment report. <br>
@@ -1037,38 +1038,37 @@ class AssessorController extends Controller
                                     I.T Department <br>
                                     Jubilee Insurance.
                                 ",
-                                            ];
-                                            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
-                                                "Head assessor details ".json_encode($data));
-                                              $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                              SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
-                                              Notification::send($headAssessor, new NewAssessmentNotification($assessment));
+                                                ];
+                                                $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                                                    "Head assessor details " . json_encode($data));
+                                                $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                                SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                                Notification::send($headAssessor, new NewAssessmentNotification($assessment));
+                                            }
                                         }
-                                    }
-                                }else
-                                {
-                                    $assistantHeadAssessors = User::role(Config::$ROLES['ASSISTANT-HEAD'])->get(); // Returns only users with the role 'Head Assessor'
-                                    if (count($assistantHeadAssessors) > 0) {
-                                        $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
-                                        foreach ($assistantHeadAssessors as $assistantHeadAssessor) {
-                                            $data = [
-                                                'claim' => $assessment->claim->claimNo,
-                                                'reg' => $assessment->claim->vehicleRegNo,
-                                                'assistantHeadAssessor' => $assistantHeadAssessor->firstName,
-                                                'email' => $assistantHeadAssessor->email
-                                            ];
-                                            $email_add = $data['email'];
+                                    } else {
+                                        $assistantHeadAssessors = User::role(Config::$ROLES['ASSISTANT-HEAD'])->get(); // Returns only users with the role 'Head Assessor'
+                                        if (count($assistantHeadAssessors) > 0) {
+                                            $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
+                                            foreach ($assistantHeadAssessors as $assistantHeadAssessor) {
+                                                $data = [
+                                                    'claim' => $assessment->claim->claimNo,
+                                                    'reg' => $assessment->claim->vehicleRegNo,
+                                                    'assistantHeadAssessor' => $assistantHeadAssessor->firstName,
+                                                    'email' => $assistantHeadAssessor->email
+                                                ];
+                                                $email_add = $data['email'];
 
-                                            $email = [
-                                                'subject' => 'Assessment Report - ' . $data['reg'],
-                                                'from_user_email' => 'noreply@jubileeinsurance.com',
-                                                'message' => "
+                                                $email = [
+                                                    'subject' => 'Assessment Report - ' . $data['reg'],
+                                                    'from_user_email' => 'noreply@jubileeinsurance.com',
+                                                    'message' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                                     " . $assessorName . " has completed their assessment report. <br>
                                     Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
                                     <u><i><strong>Details are as below:</strong></i></u>
-                                    <strong>Status: </strong> " .Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                                    <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
                                     <strong>Amount: </strong> " . $total . "  <br>
                                     <strong>Salvage: </strong>" . $salvage . " <br>
                                     <strong>PAV: </strong>" . $pav . "
@@ -1079,117 +1079,116 @@ class AssessorController extends Controller
                                     I.T Department <br>
                                     Jubilee Insurance.
                                 ",
+                                                ];
+                                                $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                                SMSHelper::sendSMS('Hello ' . $assistantHeadAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $assistantHeadAssessor->MSISDN);
+                                                Notification::send($assistantHeadAssessor, new NewAssessmentNotification($assessment));
+                                            }
+                                        }
+                                    }
+                                } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
+                                    $headAssessors = User::role(Config::$ROLES['HEAD-ASSESSOR'])->get(); // Returns only users with the role 'Head Assessor'
+                                    if (count($headAssessors) > 0) {
+                                        foreach ($headAssessors as $headAssessor) {
+                                            $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
+                                            $data = [
+                                                'claim' => $assessment->claim->claimNo,
+                                                'reg' => $assessment->claim->vehicleRegNo,
+                                                'headAssessor' => $headAssessor->firstName,
+                                                'email' => $headAssessor->email
                                             ];
-                                              $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                              SMSHelper::sendSMS('Hello ' . $assistantHeadAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $assistantHeadAssessor->MSISDN);
-                                              Notification::send($assistantHeadAssessor, new NewAssessmentNotification($assessment));
+                                            $email_add = $data['email'];
+
+                                            $email = [
+                                                'subject' => 'Assessment Report - ' . $data['reg'],
+                                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                                'message' => "
+                            Hi, <br>
+                            This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
+                            " . $assessorName . " has completed their assessment report. <br>
+                            Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
+                            <u><i><strong>Details are as below:</strong></i></u>
+                            <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                            <strong>Amount: </strong> " . $total . " <br>
+                            <strong>Salvage: </strong>" . $salvage . " <br>
+                            <strong>PAV: </strong>" . $pav . "
+                            <br><br>
+
+                            Regards, <br><br>
+                            System Administrator, <br>
+                            I.T Department <br>
+                            Jubilee Insurance.
+                        ",
+                                            ];
+                                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                            Notification::send($headAssessor, new NewAssessmentNotification($assessment));
+                                        }
+                                    }
+
+                                } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
+                                    $headAssessors = User::role(Config::$ROLES['HEAD-ASSESSOR'])->get(); // Returns only users with the role 'Head Assessor'
+                                    if (count($headAssessors) > 0) {
+                                        foreach ($headAssessors as $headAssessor) {
+                                            $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
+                                            $data = [
+                                                'claim' => $assessment->claim->claimNo,
+                                                'reg' => $assessment->claim->vehicleRegNo,
+                                                'headAssessor' => $headAssessor->firstName,
+                                                'email' => $headAssessor->email
+                                            ];
+                                            $email_add = $data['email'];
+
+                                            $email = [
+                                                'subject' => 'Assessment Report - ' . $data['reg'],
+                                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                                'message' => "
+                            Hi, <br>
+                            This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
+                            " . $assessorName . " has completed their assessment report. <br>
+                            Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
+                            <u><i><strong>Details are as below:</strong></i></u>
+                            <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                            <strong>Amount: </strong> " . $total . " <br>
+                            <strong>Salvage: </strong>" . $salvage . " <br>
+                            <strong>PAV: </strong>" . $pav . "
+                            <br><br>
+
+                            Regards, <br><br>
+                            System Administrator, <br>
+                            I.T Department <br>
+                            Jubilee Insurance.
+                        ",
+                                            ];
+                                            $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
+                                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+                                            Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                         }
                                     }
                                 }
-                            } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                                $headAssessors = User::role(Config::$ROLES['HEAD-ASSESSOR'])->get(); // Returns only users with the role 'Head Assessor'
-                                if (count($headAssessors) > 0) {
-                                    foreach ($headAssessors as $headAssessor) {
-                                        $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
-                                        $data = [
-                                            'claim' => $assessment->claim->claimNo,
-                                            'reg' => $assessment->claim->vehicleRegNo,
-                                            'headAssessor' => $headAssessor->firstName,
-                                            'email' => $headAssessor->email
-                                        ];
-                                        $email_add = $data['email'];
-
-                                        $email = [
-                                            'subject' => 'Assessment Report - '.$data['reg'],
-                                            'from_user_email' => 'noreply@jubileeinsurance.com',
-                                            'message' =>"
-                            Hi, <br>
-                            This is in reference to claim number <strong>".$data['claim']." </strong><br>
-                            ".$assessorName." has completed their assessment report. <br>
-                            Login to the <a href=".url('/').">portal</a> to view it. <br>
-                            <u><i><strong>Details are as below:</strong></i></u>
-                            <strong>Status: </strong> ".Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType]."  <br>
-                            <strong>Amount: </strong> ".$total." <br>
-                            <strong>Salvage: </strong>".$salvage." <br>
-                            <strong>PAV: </strong>".$pav."
-                            <br><br>
-
-                            Regards, <br><br>
-                            System Administrator, <br>
-                            I.T Department <br>
-                            Jubilee Insurance.
-                        ",
-                                        ];
-                                        $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
-                                        Notification::send($headAssessor, new NewAssessmentNotification($assessment));
-                                    }
-                                }
-
-                            } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
-                                $headAssessors = User::role(Config::$ROLES['HEAD-ASSESSOR'])->get(); // Returns only users with the role 'Head Assessor'
-                                if (count($headAssessors) > 0) {
-                                    foreach ($headAssessors as $headAssessor) {
-                                        $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
-                                        $data = [
-                                            'claim' => $assessment->claim->claimNo,
-                                            'reg' => $assessment->claim->vehicleRegNo,
-                                            'headAssessor' => $headAssessor->firstName,
-                                            'email' => $headAssessor->email
-                                        ];
-                                        $email_add = $data['email'];
-
-                                        $email = [
-                                            'subject' => 'Assessment Report - '.$data['reg'],
-                                            'from_user_email' => 'noreply@jubileeinsurance.com',
-                                            'message' =>"
-                            Hi, <br>
-                            This is in reference to claim number <strong>".$data['claim']." </strong><br>
-                            ".$assessorName." has completed their assessment report. <br>
-                            Login to the <a href=".url('/').">portal</a> to view it. <br>
-                            <u><i><strong>Details are as below:</strong></i></u>
-                            <strong>Status: </strong> ".Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType]."  <br>
-                            <strong>Amount: </strong> ".$total." <br>
-                            <strong>Salvage: </strong>".$salvage." <br>
-                            <strong>PAV: </strong>".$pav."
-                            <br><br>
-
-                            Regards, <br><br>
-                            System Administrator, <br>
-                            I.T Department <br>
-                            Jubilee Insurance.
-                        ",
-                                        ];
-                                        $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
-                                        Notification::send($headAssessor, new NewAssessmentNotification($assessment));
-                                    }
-                                }
+                            } else {
+                                $response = array(
+                                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                                );
+                                $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                                    "An assessment was not created. An error occurred");
                             }
-                        } else {
-                            $response = array(
-                                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
-                                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
-                            );
-                            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
-                                "An assessment was not created. An error occurred");
                         }
                     }
-            }
-        }else
-            {
-                $response = array(
-                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
-                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
-                );
-            }}else
-            {
+                } else {
+                    $response = array(
+                        "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                        "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                    );
+                }
+            } else {
                 $response = array(
                     "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
                     "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
                 );
             }
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $response = array(
                 "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
                 "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
@@ -1203,46 +1202,48 @@ class AssessorController extends Controller
     public function assessmentReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
-        $approved=PriceChange::where('assessmentID',$assessmentID)->first();
-        $aproved=isset($approved)?$approved:'false';
+        $approved = PriceChange::where('assessmentID', $assessmentID)->first();
+        $aproved = isset($approved) ? $approved : 'false';
         $assessment = Assessment::where(["id" => $assessmentID])
             ->with("claim")->first();
-        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with('part')->get();
-        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->get();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->get();
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
-        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
-        $documents = Document::where(["assessmentID" => $assessmentID,"segment"=>Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->get();
-        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
-        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        $carDetail = CarModel::where(['makeCode'=> isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '','modelCode'=> isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-        return view("assessor.view-assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved'=>$aproved,'carDetail'=>$carDetail]);
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID, "segment" => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID']])->get();
+        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
+        return view("assessor.view-assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail]);
     }
+
     public function supplementaryReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
-        $assessment = Assessment::where(["id" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("claim")->first();
-        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('part')->get();
-        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
+        $assessment = Assessment::where(["id" => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
-        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
-        $documents = Document::where(["assessmentID" => $assessmentID,"segment"=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
-        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
-        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        return view("assessor.view-supplementary-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID, "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
+        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        return view("assessor.view-supplementary-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor]);
     }
+
     public function submitReInspection(Request $request)
     {
         try {
 
             $assessmentID = $request->assessmentID;
             $totalImages = $request->totalImages;
-            $repaired = json_decode($request->repaired,true);
-            $replaced = json_decode($request->replaced,true);
-            $cil = json_decode($request->cil,true);
-            $reused = json_decode($request->reused,true);
+            $repaired = json_decode($request->repaired, true);
+            $replaced = json_decode($request->replaced, true);
+            $cil = json_decode($request->cil, true);
+            $reused = json_decode($request->reused, true);
             $notes = isset($request->notes) ? $request->notes : '';
-            $assessment = Assessment::where(['id'=> $request->assessmentID])->first();
-            $claim = Claim::where(["id"=> $assessment->claimID])->first();
+            $assessment = Assessment::where(['id' => $request->assessmentID])->first();
+            $claim = Claim::where(["id" => $assessment->claimID])->first();
 
             $labor = 0;
             $addLabor = 0;
@@ -1263,11 +1264,11 @@ class AssessorController extends Controller
             //Assessment Total
             $sumAssessmentParts = AssessmentItem::where('assessmentID', $request->assessmentID)->sum('total');
 
-            $sumAssessmentDetails = JobDetail::where(["assessmentID"=>$request->assessmentID])->sum('cost');
+            $sumAssessmentDetails = JobDetail::where(["assessmentID" => $request->assessmentID])->sum('cost');
             $status = $assessment->assessmentTypeID;
 
             if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                $assessmentTotal = (($sumAssessmentParts + ($sumAssessmentDetails) * Config::CURRENT_TOTAL_PERCENTAGE)/Config::INITIAL_PERCENTAGE);
+                $assessmentTotal = (($sumAssessmentParts + ($sumAssessmentDetails) * Config::CURRENT_TOTAL_PERCENTAGE) / Config::INITIAL_PERCENTAGE);
             } else {
                 $assessmentTotal = (($sumAssessmentParts * Config::MARK_UP) + $sumAssessmentDetails);
             }
@@ -1320,9 +1321,9 @@ class AssessorController extends Controller
 
                 if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
 //                    $priceChange = $priceChange * 1.14;
-                    $unReInspectedAmount = (Config::CURRENT_TOTAL_PERCENTAGE/Config::INITIAL_PERCENTAGE) * $unReInspectedAmount;
-                    $labor = $labor * (Config::CURRENT_TOTAL_PERCENTAGE/Config::INITIAL_PERCENTAGE);
-                    $addLabor = $addLabor * (Config::CURRENT_TOTAL_PERCENTAGE/Config::INITIAL_PERCENTAGE);
+                    $unReInspectedAmount = (Config::CURRENT_TOTAL_PERCENTAGE / Config::INITIAL_PERCENTAGE) * $unReInspectedAmount;
+                    $labor = $labor * (Config::CURRENT_TOTAL_PERCENTAGE / Config::INITIAL_PERCENTAGE);
+                    $addLabor = $addLabor * (Config::CURRENT_TOTAL_PERCENTAGE / Config::INITIAL_PERCENTAGE);
                     $finalTotal = ($assessmentTotal + $addLabor) - ($unReInspectedAmount + $labor);
                     // dd($assessmentTotal , $addLabor , $priceChange , $supplementaryTotal, $unReInspectedAmount , $labor);
                 } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
@@ -1336,10 +1337,10 @@ class AssessorController extends Controller
                 } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
                     $subAmount = (Config::MARK_UP * $award) + $labor;
                 }
-                $inspection = ReInspection::where(['assessmentID'=> $assessmentID])->first();
+                $inspection = ReInspection::where(['assessmentID' => $assessmentID])->first();
                 if (isset($inspection->id)) {
                     $inspectionID = $inspection->id;
-                    ReInspection::where('assessmentID',$assessmentID)
+                    ReInspection::where('assessmentID', $assessmentID)
                         ->update([
                             'labor' => $labor,
                             'addLabor' => $addLabor,
@@ -1349,8 +1350,7 @@ class AssessorController extends Controller
                             'modifiedBy' => Auth::user()->id,
                             'dateModified' => date('Y-m-d H:i:s')
                         ]);
-                    if($totalImages >0)
-                    {
+                    if ($totalImages > 0) {
                         $documents = Document::where(['inspectionID' => $inspection->id])
                             ->whereNotNull('inspectionID')
                             ->get();
@@ -1368,8 +1368,7 @@ class AssessorController extends Controller
                             }
                         }
                     }
-                }else
-                {
+                } else {
                     $inspectionID = ReInspection::insertGetId([
                         'assessmentID' => $assessmentID,
                         'labor' => $labor,
@@ -1381,8 +1380,7 @@ class AssessorController extends Controller
                         'dateCreated' => date('Y-m-d H:i:s'),
                     ]);
                 }
-                if($totalImages > 0)
-                {
+                if ($totalImages > 0) {
                     //Loop for getting files with index like image0, image1
                     for ($x = 0; $x < $totalImages; $x++) {
                         if ($request->hasFile('images' . $x)) {
@@ -1440,11 +1438,11 @@ class AssessorController extends Controller
 //                    'headEmail' => $headAssessor->email,
 //                    'cc' => $cc
 //                ];
-                Claim::where(["id"=> $assessment->claimID])->update([
+                Claim::where(["id" => $assessment->claimID])->update([
                     "claimStatusID" => Config::$STATUSES['CLAIM']['RE-INSPECTED']['id']
                 ]);
-                Assessment::where(['id'=> $request->assessmentID])->update([
-                    "segment" =>Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']
+                Assessment::where(['id' => $request->assessmentID])->update([
+                    "segment" => Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']
                 ]);
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
@@ -1452,8 +1450,7 @@ class AssessorController extends Controller
                 );
             }
 
-        }catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $response = array(
                 "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
                 "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
@@ -1464,6 +1461,7 @@ class AssessorController extends Controller
 
         return json_encode($response);
     }
+
     public function reInspectionReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
@@ -1471,12 +1469,12 @@ class AssessorController extends Controller
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
-        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
-        $reinspection = ReInspection::where(['assessmentID'=>$assessmentID])->first();
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $reinspection = ReInspection::where(['assessmentID' => $assessmentID])->first();
         $documents = Document::where(["inspectionID" => $reinspection->id])->get();
-        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
-        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        return view("assessor.view-re-inspection-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        return view("assessor.view-re-inspection-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor]);
     }
 
     public function editAssessmentReport(Request $request, $assessmentID)
@@ -1486,11 +1484,11 @@ class AssessorController extends Controller
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
 //        $remarks = Remarks::all();
 //        $parts = Part::all();
-        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Remarks::select("id","name")->get();
+        $remarks = Cache::remember('remarks', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Remarks::select("id", "name")->get();
         });
-        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Part::select("id","name")->get();
+        $parts = Cache::remember('parts', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Part::select("id", "name")->get();
         });
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
@@ -1531,6 +1529,7 @@ class AssessorController extends Controller
 
         return view('assessor.edit-assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails]);
     }
+
     public function editSupplementaryReport(Request $request, $assessmentID)
     {
         $draftAssessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
@@ -1538,14 +1537,14 @@ class AssessorController extends Controller
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
 //        $remarks = Remarks::all();
 //        $parts = Part::all();
-        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Remarks::select("id","name")->get();
+        $remarks = Cache::remember('remarks', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Remarks::select("id", "name")->get();
         });
-        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Part::select("id","name")->get();
+        $parts = Cache::remember('parts', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Part::select("id", "name")->get();
         });
-        $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("part")->get();
-        $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("part")->get();
+        $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
         $jobDraftDetail = [];
         foreach ($jobDetails as $jobDetail) {
 
@@ -1726,6 +1725,7 @@ class AssessorController extends Controller
                 }
                 $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
+                $pav = str_replace("," , "" , $pav);
                 Assessment::where(['id' => $assessmentID])->update([
                     "cause" => $cause,
                     "note" => $note,
@@ -2023,6 +2023,7 @@ class AssessorController extends Controller
         }
         return json_encode($response);
     }
+
     public function submitEditedSupplementary(Request $request)
     {
         try {
@@ -2166,6 +2167,7 @@ class AssessorController extends Controller
                 }
                 $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
+                $pav = str_replace("," , "" , $pav);
                 Assessment::where(['id' => $assessmentID])->update([
                     "cause" => $cause,
                     "note" => $note,
@@ -2474,16 +2476,16 @@ class AssessorController extends Controller
 
                 $partID = $partDetail['partID'];
                 $current = $partDetail['current'];
-                $difference= $partDetail['difference'];
-                AssessmentItem::where(["id"=>$partID])->update([
-                        "current"=>$current,
-                        "difference"=>$difference,
+                $difference = $partDetail['difference'];
+                AssessmentItem::where(["id" => $partID])->update([
+                        "current" => $current,
+                        "difference" => $difference,
                     ]
                 );
             }
 
-            Assessment::where("id",$assessmentID)->update([
-                "changeTypeID"=>Config::$CHANGES["PRICE-CHANGE"]["id"],
+            Assessment::where("id", $assessmentID)->update([
+                "changeTypeID" => Config::$CHANGES["PRICE-CHANGE"]["id"],
             ]);
 
             $difference = AssessmentItem::where('assessmentID', $assessmentID)
@@ -2494,8 +2496,8 @@ class AssessorController extends Controller
 
 
             if ($assessment->assessmentTypeID == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                $difference = ((Config::CURRENT_TOTAL_PERCENTAGE)/Config::INITIAL_PERCENTAGE * $difference);
-                $price_change = $assessment->totalCost +  $difference;
+                $difference = ((Config::CURRENT_TOTAL_PERCENTAGE) / Config::INITIAL_PERCENTAGE * $difference);
+                $price_change = $assessment->totalCost + $difference;
             } else {
                 $difference = (Config::MARK_UP * $difference);
                 $price_change = $assessment->totalCost + $difference;
@@ -2506,18 +2508,17 @@ class AssessorController extends Controller
                     'priceChange' => $difference,
                     'totalChange' => $price_change
                 ]);
-            $pChange=PriceChange::where('assessmentID',$assessmentID)->first();
-            if(isset($pChange->id))
-            {
-                $pChange->approvedBy=null;
-                $pChange->approvedAt=null;
-                $pChange->finalApproved=null;
-                $pChange->finalApprover=null;
-                $pChange->finalApprovedAt=null;
-                $pChange->changed=null;
+            $pChange = PriceChange::where('assessmentID', $assessmentID)->first();
+            if (isset($pChange->id)) {
+                $pChange->approvedBy = null;
+                $pChange->approvedAt = null;
+                $pChange->finalApproved = null;
+                $pChange->finalApprover = null;
+                $pChange->finalApprovedAt = null;
+                $pChange->changed = null;
                 $pChange->save();
 
-            }else {
+            } else {
 
                 $priceChange = PriceChange::firstOrNew(array('assessmentID' => $assessmentID));
                 $priceChange->assessedBy = Auth::user()->id;
@@ -2572,11 +2573,11 @@ class AssessorController extends Controller
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
 //        $remarks = Remarks::all();
 //        $parts = Part::all();
-        $remarks = Cache::remember('remarks',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Remarks::select("id","name")->get();
+        $remarks = Cache::remember('remarks', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Remarks::select("id", "name")->get();
         });
-        $parts = Cache::remember('parts',Config::CACHE_EXPIRY_PERIOD,function (){
-            return Part::select("id","name")->get();
+        $parts = Cache::remember('parts', Config::CACHE_EXPIRY_PERIOD, function () {
+            return Part::select("id", "name")->get();
         });
         $assessmentItems = AssessmentItem::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->with("part")->get();;
         $jobDetails = JobDetail::where(["assessmentID" => isset($draftAssessment->id) ? $draftAssessment->id : 0])->get();
@@ -2591,10 +2592,10 @@ class AssessorController extends Controller
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
-        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
-        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
-        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        return view("assessor.price-change-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor]);
+        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        return view("assessor.price-change-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor]);
     }
 }
