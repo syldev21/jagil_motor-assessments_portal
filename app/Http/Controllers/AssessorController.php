@@ -425,6 +425,8 @@ class AssessorController extends Controller
                 $quantity = $partDetail['quantity'];
                 $total = $partDetail['total'];
                 $cost = $partDetail['cost'];
+                $total = str_replace("," , "" , $total);
+                $cost = str_replace("," , "" , $cost);
                 $contribution = $partDetail['contribution'];
                 $discount = $partDetail['discount'];
                 $remarks = $partDetail['remarks'];
@@ -853,6 +855,8 @@ class AssessorController extends Controller
                     $quantity = $partDetail['quantity'];
                     $total = $partDetail['total'];
                     $cost = $partDetail['cost'];
+                    $total = str_replace("," , "" , $total);
+                    $cost = str_replace("," , "" , $cost);
                     $contribution = $partDetail['contribution'];
                     $discount = $partDetail['discount'];
                     $remarks = $partDetail['remarks'];
@@ -1676,6 +1680,8 @@ class AssessorController extends Controller
                 $quantity = $partDetail['quantity'];
                 $total = $partDetail['total'];
                 $cost = $partDetail['cost'];
+                $total = str_replace("," , "" , $total);
+                $cost = str_replace("," , "" , $cost);
                 $contribution = $partDetail['contribution'];
                 $discount = $partDetail['discount'];
                 $remarks = $partDetail['remarks'];
@@ -2118,6 +2124,8 @@ class AssessorController extends Controller
                 $quantity = $partDetail['quantity'];
                 $total = $partDetail['total'];
                 $cost = $partDetail['cost'];
+                $total = str_replace("," , "" , $total);
+                $cost = str_replace("," , "" , $cost);
                 $contribution = $partDetail['contribution'];
                 $discount = $partDetail['discount'];
                 $remarks = $partDetail['remarks'];
