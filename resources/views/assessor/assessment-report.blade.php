@@ -69,39 +69,39 @@
                                                 </script>
                                             </div>
                                         </div>
-                                            <div class="step-actions">
-                                                <button id="validateStepOne" class="waves-effect waves-dark btn next-step"
-                                                        data-validator="validateStepOne">CONTINUE
-                                                </button>
-                                                <button class="waves-effect waves-dark btn-flat previous-step">
-                                                    BACK
-                                                </button>
-                                            </div>
+                                        <div class="step-actions">
+                                            <button id="validateStepOne" class="waves-effect waves-dark btn next-step"
+                                                    data-validator="validateStepOne">CONTINUE
+                                            </button>
+                                            <button class="waves-effect waves-dark btn-flat previous-step">
+                                                BACK
+                                            </button>
+                                        </div>
                                     </div>
                                 </li>
                                 <li class="step">
                                     <div class="step-title waves-effect waves-dark">Replace Assembly</div>
                                     <div class="step-content">
-                                                <table class="centered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Remove</th>
-                                                        <th>Vehicle Part</th>
-                                                        <th>Quantity</th>
-                                                        <th>Part Price</th>
-                                                        <th>Contribution</th>
-                                                        <th>Discount</th>
-                                                        <th>Total</th>
-                                                        <th>Remarks</th>
-                                                        <th>Category</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @if(count($assessmentItems)>0)
-                                                    <?php
-                                                    $count = 0;
-                                                    ?>
-                                                    @foreach($assessmentItems as $assessmentItem)
+                                        <table class="centered">
+                                            <thead>
+                                            <tr>
+                                                <th>Remove</th>
+                                                <th>Vehicle Part</th>
+                                                <th>Quantity</th>
+                                                <th>Part Price</th>
+                                                <th>Contribution</th>
+                                                <th>Discount</th>
+                                                <th>Total</th>
+                                                <th>Remarks</th>
+                                                <th>Category</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @if(count($assessmentItems)>0)
+                                                <?php
+                                                $count = 0;
+                                                ?>
+                                                @foreach($assessmentItems as $assessmentItem)
                                                     <tr class="dynamicVehiclePart">
                                                         <td>
                                                             <label>
@@ -151,63 +151,63 @@
                                                             </select>
                                                         </td>
                                                     </tr>
-                                                        <?php
-                                                            $count ++;
-                                                        ?>
-                                                    @endforeach
-                                                    @else
-                                                        <tr class="dynamicVehiclePart">
-                                                            <td>
-                                                                <label>
-                                                                    <input type="checkbox"/>
-                                                                    <span></span>
-                                                                </label>
-                                                            </td>
-                                                            <td>
-                                                                <select id="vehiclePart_0" name="vehiclePart[]" class="browser-default">
-                                                                    @foreach($parts as $part)
-                                                                        <option value="{{$part->id}}">{{$part->name}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <input id="quantity_0" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
-                                                                       value="" maxlength="3"/>
-                                                            </td>
-                                                            <td>
-                                                                <input id="partPrice_0" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
-                                                                       value=""/>
-                                                            </td>
-                                                            <td>
-                                                                <input id="contribution_0" placeholder="" type="text"
-                                                                       name="contribution[]" oninput="getTotal(0)" value="" maxlength="2"/>
-                                                            </td>
-                                                            <td>
-                                                                <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
-                                                                       value="" maxlength="2"/>
-                                                            </td>
-                                                            <td>
-                                                                <input id="total_0" placeholder="" type="text" name="total[]" value="" class="total"
-                                                                       disabled/>
-                                                            </td>
-                                                            <td>
-                                                                <select id="remarks_0" name="remarks[]" class="browser-default">
-                                                                    @foreach($remarks as $remark)
-                                                                        <option value="{{$remark->id}}">{{$remark->name}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <select id="category_0" name="category[]" class="browser-default">
-                                                                    @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)
-                                                                        <option value="{{$category['ID']}}">{{$category['TITLE']}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-                                                    </tbody>
-                                                </table>
+                                                    <?php
+                                                    $count ++;
+                                                    ?>
+                                                @endforeach
+                                            @else
+                                                <tr class="dynamicVehiclePart">
+                                                    <td>
+                                                        <label>
+                                                            <input type="checkbox"/>
+                                                            <span></span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <select id="vehiclePart_0" name="vehiclePart[]" class="browser-default">
+                                                            @foreach($parts as $part)
+                                                                <option value="{{$part->id}}">{{$part->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input id="quantity_0" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
+                                                               value="" maxlength="3"/>
+                                                    </td>
+                                                    <td>
+                                                        <input id="partPrice_0" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
+                                                               value=""/>
+                                                    </td>
+                                                    <td>
+                                                        <input id="contribution_0" placeholder="" type="text"
+                                                               name="contribution[]" oninput="getTotal(0)" value="" maxlength="2"/>
+                                                    </td>
+                                                    <td>
+                                                        <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
+                                                               value="" maxlength="2"/>
+                                                    </td>
+                                                    <td>
+                                                        <input id="total_0" placeholder="" type="text" name="total[]" value="" class="total"
+                                                               disabled/>
+                                                    </td>
+                                                    <td>
+                                                        <select id="remarks_0" name="remarks[]" class="browser-default">
+                                                            @foreach($remarks as $remark)
+                                                                <option value="{{$remark->id}}">{{$remark->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select id="category_0" name="category[]" class="browser-default">
+                                                            @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)
+                                                                <option value="{{$category['ID']}}">{{$category['TITLE']}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            </tbody>
+                                        </table>
                                         <div id="addP"></div>
                                         <div class="row">
                                             <div class="col s12" id="dynamicPartsSelector">
@@ -308,10 +308,10 @@
                                                             <input name="assessmentType" type="radio" onclick="findTotal()"
                                                                    class="with-gap assessmentType" value="1"
                                                                    @if(isset($draftAssessment->assessmentTypeID))
-                                                                        @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["AUTHORITY_TO_GARAGE"]) checked @endif
+                                                                   @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["AUTHORITY_TO_GARAGE"]) checked @endif
                                                                    @else
-                                                                       checked
-                                                                   @endif
+                                                                   checked
+                                                                @endif
                                                             />
                                                             <span>Authority To Garage</span>
                                                         </label>
@@ -321,8 +321,8 @@
                                                             <input name="assessmentType" type="radio" onclick="findTotal()"
                                                                    class="with-gap assessmentType" value="2"
                                                                    @if(isset($draftAssessment->assessmentTypeID))
-                                                                        @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["CASH_IN_LIEU"]) checked @endif
-                                                                   @endif
+                                                                   @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["CASH_IN_LIEU"]) checked @endif
+                                                                @endif
                                                             />
                                                             <span>Cash In Lieu</span>
                                                         </label>
@@ -332,9 +332,9 @@
                                                             <input name="assessmentType" type="radio" onclick="findTotal()"
                                                                    class="with-gap assessmentType" value="3"
                                                                    @if(isset($draftAssessment->assessmentTypeID))
-                                                                        @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"]) checked @endif
-                                                                   @endif
-                                                             />
+                                                                   @if($draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"]) checked @endif
+                                                                @endif
+                                                            />
                                                             <span>Total loss</span>
                                                         </label>
                                                     </div>
@@ -352,7 +352,7 @@
                                                         </div>
                                                         <?php
                                                         if(isset($draftAssessment->assessmentTypeID) && $draftAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"])
-                                                           $toggoleTotalLoss= " ";
+                                                            $toggoleTotalLoss= " ";
                                                         else
                                                             $toggoleTotalLoss= "hideTotalLose";
                                                         ?>
@@ -424,7 +424,7 @@
                                                                             <input placeholder="" id="sumTotals"
                                                                                    type="text" name="sumTotals"
                                                                                    value="{{isset($draftAssessment->totalCost) ? $draftAssessment->totalCost : null}}" class="border-fields"/>
-                                                                           </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -458,17 +458,17 @@
                                         <div class="row">
 
                                             @if(auth()->user()->userTypeID==\App\Conf\Config::$USER_TYPES['EXTERNAL']['ID'])
-                                            <div class="input-field col m6 s12">
-                                                <div class="file-field input-field">
-                                                    <div class="btn">
-                                                        <span>Invoice </span>
-                                                        <input type="file" id="claimFormpdf" name="claimFormpdf">
-                                                    </div>
-                                                    <div class="file-path-wrapper">
-                                                        <input class="file-path validate" type="text" placeholder="Upload invoice">
+                                                <div class="input-field col m6 s12">
+                                                    <div class="file-field input-field">
+                                                        <div class="btn">
+                                                            <span>Invoice </span>
+                                                            <input type="file" id="invoice" name="invoice" value="invoice">
+                                                        </div>
+                                                        <div class="file-path-wrapper">
+                                                            <input class="file-path validate" type="text" placeholder="Upload invoice">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             @endif
                                             <div class="input-field col m6 s12">
                                             </div>
@@ -533,10 +533,10 @@
     </div>
 </div>
 @if(isset($draftAssessment->id))
-<?php
+    <?php
     $images = \App\Document::where(["assessmentID"=>$draftAssessment->id])->get();
-?>
-<input type="hidden" value="{{$images}}" name="imagesArray" id="imagesArray">
+    ?>
+    <input type="hidden" value="{{$images}}" name="imagesArray" id="imagesArray">
 @endif
 <script type="text/javascript">
     var t =0;
