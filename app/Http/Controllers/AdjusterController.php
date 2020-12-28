@@ -623,30 +623,21 @@ class AdjusterController extends Controller
     public function filterPremia11ClaimsByDate(Request $request)
     {
         try {
-                $utility = new Utility();
-                $access_token = $utility->getToken();
-                $defaultToDate = Carbon::now()->toDateTimeString();
-                $defaultFromDate = Carbon::now()->subDays(Config::DATES_LIMIT)->toDateTimeString();
-                $vehicleRegNo = $request->vehicleRegNo;
-//                if(isset($vehicleRegNo))
-//                {
-//                    $toDate = '';
-//                    $fromDate = '';
-//                }else
-//                {
-//                    $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
-//                    $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
-//                }
-                $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
-                $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
-                $data = ["fromDate"=>$fromDate,"toDate" => $toDate,"vehicleRegNo"=>$vehicleRegNo];
-                $response = $utility->getData($data, '/api/v1/b2b/general/claim/fetch', 'POST');
-                $claim_data = json_decode($response->getBody()->getContents());
-                if ($claim_data->status == 'success' && sizeof($claim_data->data->DB_VALUE1) != 0) {
-                    $claims =json_decode(json_encode($claim_data->data->DB_VALUE1),true);
-                }else{
-                    $claims = [];
-                }
+            $utility = new Utility();
+            $access_token = $utility->getToken();
+            $defaultToDate = Carbon::now()->toDateTimeString();
+            $defaultFromDate = Carbon::now()->subDays(isset($vehicleRegNo) ? 366 : Config::DATES_LIMIT)->toDateTimeString();
+            $vehicleRegNo = $request->vehicleRegNo;
+            $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
+            $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
+            $data = ["fromDate"=>$fromDate,"toDate" => $toDate,"vehicleRegNo"=>$vehicleRegNo];
+            $response = $utility->getData($data, '/api/v1/b2b/general/claim/fetch', 'POST');
+            $claim_data = json_decode($response->getBody()->getContents());
+            if ($claim_data->status == 'success' && sizeof($claim_data->data->DB_VALUE1) != 0) {
+                $claims =json_decode(json_encode($claim_data->data->DB_VALUE1),true);
+            }else{
+                $claims = [];
+            }
         }catch (\Exception $e)
         {
             $claims = [];
