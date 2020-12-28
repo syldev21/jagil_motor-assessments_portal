@@ -1562,8 +1562,8 @@ $(document).ready(function () {
     });
     $("body").on('click','#submit-edited-assessment',function (e){
         e.preventDefault();
-        // var counter = $("#counter").val();
         var counter = $('td input:checkbox').length;
+        var partIDs=$("input[id*='checkbox_']");
         var vehicleParts=$("select[id*='vehiclePart_']");
         var quantitys=$("input[id*='quantity_']");
         var partPrices=$("input[id*='partPrice_']");
@@ -1572,22 +1572,16 @@ $(document).ready(function () {
         var totals=$("input[id*='total_']");
         var remarkss=$("select[id*='remarks_']");
         var categorys=$("select[id*='category_']");
+        var claimID = $("#claimID").val();
+
         var i;
-        // Array
         var partsData = [];
+        addLoadingButton();
         for(i =0 ; i<counter; i++)
         {
-
-
-
             var vehiclePart = $('#'+(vehicleParts[i].id)).val();
-
             var quantity = $('#'+(quantitys[i].id)).val();
-            console.log('quantity.val()');
-            console.log(quantity);
-            console.log('quantity.val()');
             var total = $('#'+(totals[i].id)).val();
-
 
             var cost =$('#'+(partPrices[i].id)).val();
 
@@ -1595,15 +1589,14 @@ $(document).ready(function () {
             var discount =$('#'+(discounts[i].id)).val();
             var remarks = $('#'+(remarkss[i].id)).val();
             var category = $('#'+(categorys[i].id)).val();
-
             var partData = {vehiclePart : vehiclePart,quantity : quantity.length > 0 ? quantity : 0,total:total.length > 0 ? total : 0,cost:cost.length > 0 ? cost : 0,contribution:contribution.length > 0 ? contribution : 0,discount:discount.length > 0 ? discount : 0,remarks:remarks,category: category};
             partsData.push(partData);
         }
-        // alert(JSON.stringify(partsData));
         var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
         var drafted = $("#drafted");
         var assessmentType = $('input[name="assessmentType"]:checked');
         var assessmentID = $("#assessmentID");
+
         var total = $('#total');
         var labour = $('#labour');
         var paint = $('#painting');
@@ -1640,8 +1633,6 @@ $(document).ready(function () {
         };
 
         var image_upload = new FormData();
-        // Attach file
-        // formData.append('image', $('input[type=file]')[0].files[0]);
         if(drafted.val() != 1) {
             var files = $('input[type=file]')[0].files;
             let totalImages = files.length; //Total Images
@@ -1649,15 +1640,19 @@ $(document).ready(function () {
             for (let i = 0; i < totalImages; i++) {
                 image_upload.append('images' + i, images.files[i]);
             }
+            if($('#invoice').val()!=undefined){
+                var invoice = $('#invoice').prop('files')[0];
+
+                image_upload.append('invoice', invoice);
+            }
             image_upload.append('totalImages', totalImages);
             image_upload.append('assessmentID', assessmentID.val());
             image_upload.append('assessmentType', assessmentType.val());
             image_upload.append('isDraft', isDraft);
+            image_upload.append('claimID', claimID);
             image_upload.append('drafted', drafted.val());
             image_upload.append('jobsData', JSON.stringify(jobsData));
             image_upload.append('partsData', JSON.stringify(partsData));
-
-            addLoadingButton();
 
             $.ajaxSetup({
 
@@ -1698,60 +1693,29 @@ $(document).ready(function () {
             });
         }else
         {
-            var imagesArray = $("#imagesArray").val();
-            var imageParse = JSON.parse(imagesArray);
-            var counter = 0;
-
-            var imgArray = [];
-
-            $(".uploaded-image img").each(function() {
-                var imgsrc = this.src;
-                var n = imgsrc.split("/");
-                var result = n[n.length - 1];
-                imgArray.push(result);
-            });
-            console.log(imgArray);
-            imageParse = imageParse.filter(function( obj ) {
-                return imgArray.includes(obj.name);
-            });
-
-            console.log(imageParse);
 
             var files = $('input[type=file]')[0].files;
             let totalImages = files.length; //Total Images
             let images = $('input[type=file]')[0];
-            var img = [];
-            for (let i = 0; i < totalImages; i++) {
-                var increment = imageParse.length+i;
-                image_upload.append('images' + increment, images.files[i]);
+            if(totalImages>0) {
+                for (let i = 0; i < totalImages; i++) {
+                    image_upload.append('images' + i, images.files[i]);
+                }
             }
-            $.each(imageParse, function (key, value) {
-                async function createFile() {
-                    let response = await fetch('/documents/' + value.name);
-                    let data = await response.blob();
-                    let metadata = {
-                        type: 'image/jpeg'
-                    };
-                    let file = new File([data],value.name, metadata);
-                    img.push(file);
-                }
-                createFile();
-                counter++;
-            });
             setTimeout(function () {
-                for (let i = 0; i < img.length; i++) {
-                    image_upload.append('images' + i, img[i]);
+                if($('#invoice').val()!=undefined){
+                    var invoice = $('#invoice').prop('files')[0];
 
+                    image_upload.append('invoice', invoice);
                 }
-                image_upload.append('totalImages', imageParse.length+totalImages);
+                image_upload.append('totalImages', totalImages);
+                image_upload.append('claimID', claimID);
                 image_upload.append('assessmentID', assessmentID.val());
                 image_upload.append('assessmentType', assessmentType.val());
                 image_upload.append('isDraft', isDraft);
                 image_upload.append('drafted', drafted.val());
                 image_upload.append('jobsData', JSON.stringify(jobsData));
                 image_upload.append('partsData', JSON.stringify(partsData));
-
-                addLoadingButton();
                 $.ajaxSetup({
 
                     headers: {
