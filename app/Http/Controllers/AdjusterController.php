@@ -626,8 +626,12 @@ class AdjusterController extends Controller
             $utility = new Utility();
             $access_token = $utility->getToken();
             $defaultToDate = Carbon::now()->toDateTimeString();
-            $defaultFromDate = Carbon::now()->subDays(isset($vehicleRegNo) ? 366 : Config::DATES_LIMIT)->toDateTimeString();
+            $defaultFromDate = Carbon::now()->subDays(Config::DATES_LIMIT)->toDateTimeString();
             $vehicleRegNo = $request->vehicleRegNo;
+            if (isset($vehicleRegNo))
+            {
+                $defaultFromDate = Carbon::now()->subDays(500)->toDateTimeString();
+            }
             $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
             $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
             $data = ["fromDate"=>$fromDate,"toDate" => $toDate,"vehicleRegNo"=>$vehicleRegNo];
