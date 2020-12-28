@@ -630,7 +630,7 @@ class AdjusterController extends Controller
             $vehicleRegNo = $request->vehicleRegNo;
             if (isset($vehicleRegNo))
             {
-                $defaultFromDate = Carbon::now()->subDays(500)->toDateTimeString();
+                $defaultFromDate = Carbon::now()->subDays(366)->toDateTimeString();
             }
             $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
             $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
