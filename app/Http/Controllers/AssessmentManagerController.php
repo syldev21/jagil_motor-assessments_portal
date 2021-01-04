@@ -329,7 +329,7 @@ class AssessmentManagerController extends Controller
                             ];
 
                             InfobipEmailHelper::sendEmail($message, $userDetail['email']);
-                            SMSHelper::sendSMS('Hello '. $userDetail['name'] .', Assessment for claimNo '.$claimNo.' has been approved',$userDetail['MSISDN']);
+//                            SMSHelper::sendSMS('Hello '. $userDetail['name'] .', Assessment for claimNo '.$claimNo.' has been approved',$userDetail['MSISDN']);
                             $user = User::where(["id" => $userDetail['id']])->first();
                             Notification::send($user, new ClaimApproved($claim));
                         }

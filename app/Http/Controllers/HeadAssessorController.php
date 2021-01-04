@@ -339,8 +339,8 @@ class HeadAssessorController extends Controller
                     ",
                         ];
 
-                        InfobipEmailHelper::sendEmail($message, $email);
-                        SMSHelper::sendSMS('Hello ' . $firstName . ', Assessment for claimNo ' . $claimNo . ' has been provisionally approved', $MSISDN);
+//                        InfobipEmailHelper::sendEmail($message, $email);
+//                        SMSHelper::sendSMS('Hello ' . $firstName . ', Assessment for claimNo ' . $claimNo . ' has been provisionally approved', $MSISDN);
                         Notification::send($assessor, new ClaimApproved($claim));
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,

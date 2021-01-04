@@ -612,7 +612,7 @@ class AssessorController extends Controller
                                 ",
                                             ];
                                             $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+//                                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
                                             Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                         }
                                     }
