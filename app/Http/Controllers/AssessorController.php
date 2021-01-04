@@ -335,11 +335,10 @@ class AssessorController extends Controller
             $cause = !empty($jobsData['cause']) ? $jobsData['cause'] : null;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
             $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
-            if($chassisNumber != '')
-            {
-                $assessment= Assessment::where(['id' =>$assessmentID])->first();
-                Claim::where(['id'=>$assessment->claimID])->update([
-                    "chassisNumber"=>$chassisNumber
+            if ($chassisNumber != '') {
+                $assessment = Assessment::where(['id' => $assessmentID])->first();
+                Claim::where(['id' => $assessment->claimID])->update([
+                    "chassisNumber" => $chassisNumber
                 ]);
             }
             foreach ($partsData as $partDetail) {
@@ -391,7 +390,7 @@ class AssessorController extends Controller
                 }
                 $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
-                $pav = str_replace("," , "" , $pav);
+                $pav = str_replace(",", "", $pav);
                 Assessment::where(['id' => $assessmentID])->update([
                     "cause" => $cause,
                     "note" => $note,
@@ -502,11 +501,11 @@ class AssessorController extends Controller
 
                     $save = JobDetail::insert($collection->values()->all());
                     if ($request->hasFile('invoice')) {
-                        $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')
+                        $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $invoice . '%')
                             ->whereNotNull('claimID')
                             ->get();
                         if (count($pdfs) > 0) {
-                            $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')
+                            $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $invoice . '%')
                                 ->whereNotNull('claimID')
                                 ->delete();
                             if ($affectedPdfRows > 0) {
@@ -523,7 +522,7 @@ class AssessorController extends Controller
                         $extension = $file->getClientOriginalExtension();
                         $path = $file->getRealPath();
                         $size = $file->getSize();
-                        $picture = date('His') . '-'. 'invoice'.'-'. $filename;
+                        $picture = date('His') . '-' . 'invoice' . '-' . $filename;
                         //Save files in below folder path, that will make in public folder
                         $file->move(public_path('documents/'), $picture);
                         $documents = Document::create([
@@ -567,7 +566,7 @@ class AssessorController extends Controller
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
                             );
                         } else if ($isDraft == 0) {
-                            $claim = Claim::where(['id'=>$claimID])->first();
+                            $claim = Claim::where(['id' => $claimID])->first();
 //                            $customer = CustomerMaster::where(['customerCode'=>$claim->customerCode])->first();
 //                            if($customer)
 //                            {
@@ -788,7 +787,7 @@ class AssessorController extends Controller
             $totalLoss = !empty($jobsData['totalLoss']) ? $jobsData['totalLoss'] : 0;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
             $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
-            $pav = str_replace("," , "" , $pav);
+            $pav = str_replace(",", "", $pav);
             $supplementaryID = Assessment::insertGetId([
                 "claimID" => $claim->id,
                 "assessmentID" => $assessmentID,
@@ -834,8 +833,8 @@ class AssessorController extends Controller
                     $quantity = $partDetail['quantity'];
                     $total = $partDetail['total'];
                     $cost = $partDetail['cost'];
-                    $total = str_replace("," , "" , $total);
-                    $cost = str_replace("," , "" , $cost);
+                    $total = str_replace(",", "", $total);
+                    $cost = str_replace(",", "", $cost);
                     $contribution = $partDetail['contribution'];
                     $discount = $partDetail['discount'];
                     $remarks = $partDetail['remarks'];
@@ -1457,7 +1456,7 @@ class AssessorController extends Controller
         $documents = Document::where(["inspectionID" => $reinspection->id])->get();
         $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
         $assessor = User::where(['id' => $assessment->assessedBy])->first();
-        return view("assessor.view-re-inspection-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor]);
+        return view("assessor.view-re-inspection-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor,'reinspection'=>$reinspection]);
     }
 
     public function editAssessmentReport(Request $request, $assessmentID)
@@ -1569,7 +1568,7 @@ class AssessorController extends Controller
     public function submitEditedAssessment(Request $request)
     {
         try {
-            $claimID=$request->claimID;
+            $claimID = $request->claimID;
             $totalImages = $request->totalImages;
             $assessmentID = $request->assessmentID;
             $partsData = json_decode($request->partsData, true);
@@ -1578,7 +1577,7 @@ class AssessorController extends Controller
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
-            $invoice='invoice';
+            $invoice = 'invoice';
             if ($drafted == 1) {
                 AssessmentItem::where(["assessmentID" => $assessmentID])
                     ->whereNotNull("assessmentID")
@@ -1607,11 +1606,10 @@ class AssessorController extends Controller
             $cause = !empty($jobsData['cause']) ? $jobsData['cause'] : null;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
             $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
-            if($chassisNumber != '')
-            {
-                $assessment= Assessment::where(['id' =>$assessmentID])->first();
-                Claim::where(['id'=>$assessment->claimID])->update([
-                    "chassisNumber"=>$chassisNumber
+            if ($chassisNumber != '') {
+                $assessment = Assessment::where(['id' => $assessmentID])->first();
+                Claim::where(['id' => $assessment->claimID])->update([
+                    "chassisNumber" => $chassisNumber
                 ]);
             }
             foreach ($partsData as $partDetail) {
@@ -1619,8 +1617,8 @@ class AssessorController extends Controller
                 $quantity = $partDetail['quantity'];
                 $total = $partDetail['total'];
                 $cost = $partDetail['cost'];
-                $total = str_replace("," , "" , $total);
-                $cost = str_replace("," , "" , $cost);
+                $total = str_replace(",", "", $total);
+                $cost = str_replace(",", "", $cost);
                 $contribution = $partDetail['contribution'];
                 $discount = $partDetail['discount'];
                 $remarks = $partDetail['remarks'];
@@ -1663,9 +1661,9 @@ class AssessorController extends Controller
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * 1.14;
                 }
-                $assessorName = Auth::user()->firstName.' '.Auth::user()->lastName;
+                $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
-                $pav = str_replace("," , "" , $pav);
+                $pav = str_replace(",", "", $pav);
                 Assessment::where(['id' => $assessmentID])->update([
                     "cause" => $cause,
                     "note" => $note,
@@ -1790,13 +1788,13 @@ class AssessorController extends Controller
 //                                SMSHelper::sendSMS('Hello ' . $customer->fullName . ', An Assessment for vehicle : ' . $claim->vehicleRegNo . ' has been Completed. You will be notified once approval has been done', $customer->MSISDN);
 //                            }
 
-                            $claim = Claim::where(['id'=>$claimID])->first();
+                            $claim = Claim::where(['id' => $claimID])->first();
                             if ($request->hasFile('invoice')) {
-                                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')
+                                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $invoice . '%')
                                     ->whereNotNull('claimID')
                                     ->get();
                                 if (count($pdfs) > 0) {
-                                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name','like','%' .$invoice. '%')
+                                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $invoice . '%')
                                         ->whereNotNull('claimID')
                                         ->delete();
                                     if ($affectedPdfRows > 0) {
@@ -1813,7 +1811,7 @@ class AssessorController extends Controller
                                 $extension = $file->getClientOriginalExtension();
                                 $path = $file->getRealPath();
                                 $size = $file->getSize();
-                                $picture = date('His') . '-'. 'invoice'.'-'. $filename;
+                                $picture = date('His') . '-' . 'invoice' . '-' . $filename;
                                 //Save files in below folder path, that will make in public folder
                                 $file->move(public_path('documents/'), $picture);
                                 $documents = Document::create([
@@ -1895,8 +1893,7 @@ class AssessorController extends Controller
                                             Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                         }
                                     }
-                                }else
-                                {
+                                } else {
                                     $assistantHeadAssessors = User::role(Config::$ROLES['ASSISTANT-HEAD'])->get(); // Returns only users with the role 'Head Assessor'
                                     if (count($assistantHeadAssessors) > 0) {
                                         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
@@ -1918,7 +1915,7 @@ class AssessorController extends Controller
                                     " . $assessorName . " has completed their assessment report. <br>
                                     Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
                                     <u><i><strong>Details are as below:</strong></i></u>
-                                    <strong>Status: </strong> " .Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                                    <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
                                     <strong>Amount: </strong> " . $total . "  <br>
                                     <strong>Salvage: </strong>" . $salvage . " <br>
                                     <strong>PAV: </strong>" . $pav . "
@@ -1950,18 +1947,18 @@ class AssessorController extends Controller
                                         $email_add = $data['email'];
 
                                         $email = [
-                                            'subject' => 'Survey Report - '.$data['reg'],
+                                            'subject' => 'Survey Report - ' . $data['reg'],
                                             'from_user_email' => 'noreply@jubileeinsurance.com',
-                                            'message' =>"
+                                            'message' => "
                             Hi, <br>
-                            This is in reference to claim number <strong>".$data['claim']." </strong><br>
-                            ".$assessorName." has completed their assessment report. <br>
-                            Login to the <a href=".url('/').">portal</a> to view it. <br>
+                            This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
+                            " . $assessorName . " has completed their assessment report. <br>
+                            Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
                             <u><i><strong>Details are as below:</strong></i></u>
-                            <strong>Status: </strong> ".Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType]."  <br>
-                            <strong>Amount: </strong> ".$total." <br>
-                            <strong>Salvage: </strong>".$salvage." <br>
-                            <strong>PAV: </strong>".$pav."
+                            <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                            <strong>Amount: </strong> " . $total . " <br>
+                            <strong>Salvage: </strong>" . $salvage . " <br>
+                            <strong>PAV: </strong>" . $pav . "
                             <br><br>
 
                             Regards, <br><br>
@@ -1990,18 +1987,18 @@ class AssessorController extends Controller
                                         $email_add = $data['email'];
 
                                         $email = [
-                                            'subject' => 'Survey Report - '.$data['reg'],
+                                            'subject' => 'Survey Report - ' . $data['reg'],
                                             'from_user_email' => 'noreply@jubileeinsurance.com',
-                                            'message' =>"
+                                            'message' => "
                             Hi, <br>
-                            This is in reference to claim number <strong>".$data['claim']." </strong><br>
-                            ".$assessorName." has completed their assessment report. <br>
-                            Login to the <a href=".url('/').">portal</a> to view it. <br>
+                            This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
+                            " . $assessorName . " has completed their assessment report. <br>
+                            Login to the <a href=" . url('/') . ">portal</a> to view it. <br>
                             <u><i><strong>Details are as below:</strong></i></u>
-                            <strong>Status: </strong> ".Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType]."  <br>
-                            <strong>Amount: </strong> ".$total." <br>
-                            <strong>Salvage: </strong>".$salvage." <br>
-                            <strong>PAV: </strong>".$pav."
+                            <strong>Status: </strong> " . Config::DISPLAY_ASSESSMENT_TYPES[$assessmentType] . "  <br>
+                            <strong>Amount: </strong> " . $total . " <br>
+                            <strong>Salvage: </strong>" . $salvage . " <br>
+                            <strong>PAV: </strong>" . $pav . "
                             <br><br>
 
                             Regards, <br><br>
@@ -2132,8 +2129,8 @@ class AssessorController extends Controller
                 $quantity = $partDetail['quantity'];
                 $total = $partDetail['total'];
                 $cost = $partDetail['cost'];
-                $total = str_replace("," , "" , $total);
-                $cost = str_replace("," , "" , $cost);
+                $total = str_replace(",", "", $total);
+                $cost = str_replace(",", "", $cost);
                 $contribution = $partDetail['contribution'];
                 $discount = $partDetail['discount'];
                 $remarks = $partDetail['remarks'];
@@ -2183,7 +2180,7 @@ class AssessorController extends Controller
                 }
                 $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
-                $pav = str_replace("," , "" , $pav);
+                $pav = str_replace(",", "", $pav);
                 Assessment::where(['id' => $assessmentID])->update([
                     "cause" => $cause,
                     "note" => $note,
@@ -2616,14 +2613,13 @@ class AssessorController extends Controller
     }
 
 
-
     public function deleteImage(Request $request)
     {
         try {
             $assessmentID = $request->assessmentID;
             $imageName = $request->imageName;
 
-            $documents = Document::where(["assessmentID" => $assessmentID,"name"=>$imageName])
+            $documents = Document::where(["assessmentID" => $assessmentID, "name" => $imageName])
                 ->whereNotNull("assessmentID")
                 ->get();
             if (count($documents) > 0) {
@@ -2635,18 +2631,17 @@ class AssessorController extends Controller
                 }
             }
 
-            $docs=Document::where(["assessmentID" => $assessmentID,"name"=>$imageName])
+            $docs = Document::where(["assessmentID" => $assessmentID, "name" => $imageName])
                 ->whereNotNull("assessmentID")
                 ->delete();
-            if($docs>0)
-            {
+            if ($docs > 0) {
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
                     "STATUS_MESSAGE" => "Congratulation!, You have successfully deleted the image"
                 );
             }
 
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $response = array(
                 "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
                 "STATUS_MESSAGE" => "Problem deleting the image! Contact admin."

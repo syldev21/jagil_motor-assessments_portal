@@ -361,7 +361,7 @@
                                                 <td class="text-bold">Grand Total</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{{ number_format($assessment['totalCost']) }}</td>
+                                                <td>{{ number_format($reinspection['total']) }}</td>
                                                 <td></td>
                                             </tr>
 
