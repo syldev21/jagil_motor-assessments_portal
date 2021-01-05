@@ -29,9 +29,9 @@
 <p>Yours faithfully,</p>
 
 <p>
-    <strong>{{ isset(Auth::user()->firstName) ? Auth::user()->firstName : '' }} {{ isset(Auth::user()->middleName) ? Auth::user()->middleName : '' }} {{ isset(Auth::user()->lastName) ? Auth::user()->lastName : '' }}<BR>
-            <u>{{ $role }}</u><BR>
-                <u>TEL 0709901537</u></BR>
+    <strong>{{ isset(Auth::user()->firstName) ? Auth::user()->firstName : '' }} {{ isset(Auth::user()->middleName) ? Auth::user()->middleName : '' }} {{ isset(Auth::user()->lastName) ? Auth::user()->lastName : '' }}<br/>
+            <u>{{ $role }}</u><br/>
+        <u>TEL 0709901537</u><br/>
     </strong>
 </p>
 

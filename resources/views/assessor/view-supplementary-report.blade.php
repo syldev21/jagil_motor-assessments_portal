@@ -163,7 +163,7 @@
 
                                                 <td>
 
-                                                    {{ date('l jS F Y h:i:s A', strtotime($assessment['claim']['dateCreated'])) }}
+                                                    {{ date('l jS F Y h:i:s A', strtotime($assessment['claim']->intimationDate)) }}
 
                                                 </td>
 
@@ -303,7 +303,7 @@
 
                                             @if($assessment['assessmentTypeID'] != \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
 
-                                                @if($assessment['dateCreated'] > \App\Conf\Config::VAT_REDUCTION_DATE)
+                                                @if($assessment['claim']->intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $assessment['claim']->intimationDate <= \App\Conf\Config::VAT_END_DATE)
                                                     <tr>
                                                         <td></td>
                                                         <td></td>
