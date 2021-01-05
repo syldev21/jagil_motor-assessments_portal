@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
+use Intervention\Image\Facades\Image;
 
 class AssessorController extends Controller
 {
@@ -354,6 +355,8 @@ class AssessorController extends Controller
                 $quantity = $partDetail['quantity'];
                 $total = $partDetail['total'];
                 $cost = $partDetail['cost'];
+                $total = str_replace(",", "", $total);
+                $cost = str_replace(",", "", $cost);
                 $contribution = $partDetail['contribution'];
                 $discount = $partDetail['discount'];
                 $remarks = $partDetail['remarks'];
@@ -2681,5 +2684,27 @@ class AssessorController extends Controller
                 "An exception occurred when trying to create an assessments. Error message " . $e->getMessage());
         }
         return json_encode($response);
+    }
+
+    public function resizeImages(Request $request)
+    {
+        $documents = Document::where(['isResized' => 0])->get();
+        if(count($documents) >0)
+        {
+            foreach ($documents as $document)
+            {
+                $img = Image::make(public_path('images/').$document->name);
+                $size = $img->filesize();
+                if ($size > 300) {
+                    $img->resize(850, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                    $img->save(public_path('thumbnail/'). $document->name);
+                }
+
+                Document::where('id', $document-id)->update(['isResized' => 1]);
+            }
+        }
     }
 }
