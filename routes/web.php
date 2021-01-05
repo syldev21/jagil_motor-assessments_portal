@@ -58,6 +58,8 @@ $router->group(['prefix' => 'adjuster'], function($router)
 
     //Reports
     $router->post('/assessmentReport','AdjusterController@assessmentReport');
+    $router->post('/supplementaries','AdjusterController@supplementaries');
+    $router->post('/supplementary-report','AdjusterController@supplementaryReport');
 });
 
 // Assessor Routes
