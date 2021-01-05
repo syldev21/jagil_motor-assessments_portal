@@ -696,7 +696,7 @@
 
             + parseFloat( "0" + jigging ) + parseFloat( "0" + reconstruction ) + parseFloat( "0" + gas ) + parseFloat( "0" + welding );
 
-        if("{{$assessment->claim->intimationDate}}" > "{{\App\Conf\Config::VAT_REDUCTION_DATE}}")
+        if("{{$assessment->claim->intimationDate}}" >= "{{\App\Conf\Config::VAT_REDUCTION_DATE}}" && "{{$assessment->claim->intimationDate}}" <= "{{\App\Conf\Config::VAT_END_DATE}}")
         {
             var tax = "{{\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE}}"/"{{App\Conf\Config::INITIAL_PERCENTAGE}}";
         }else
