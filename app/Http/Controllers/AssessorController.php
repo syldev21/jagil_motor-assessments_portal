@@ -308,6 +308,14 @@ class AssessorController extends Controller
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
             $invoice = 'invoice';
+            $claim = Claim::where(['id' => $claimID])->first();
+            if($claim->intimationDate >= Config::VAT_REDUCTION_DATE && $claim->intimationDate <= Config::VAT_END_DATE)
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::CURRENT_VAT)/Config::INITIAL_PERCENTAGE;
+            }else
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::VAT)/Config::INITIAL_PERCENTAGE;
+            }
             if ($drafted == 1) {
                 AssessmentItem::where(["assessmentID" => $assessmentID])
                     ->whereNotNull('assessmentID')
@@ -382,11 +390,11 @@ class AssessorController extends Controller
                     + (is_numeric($jigging)) + (is_numeric($reconstruction)) + (is_numeric($gas)) + (is_numeric($welding));
 
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                    $total = ($sum + $others) * 1.14;
+                    $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
                     $total = ($sum * 0.9) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
-                    $total = ($sum + $others) * 1.14;
+                    $total = ($sum + $others) * $vat;
                 }
                 $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
@@ -566,7 +574,6 @@ class AssessorController extends Controller
                                 "STATUS_MESSAGE" => "Congratulation!, You have successfully Saved an assessment as Draft"
                             );
                         } else if ($isDraft == 0) {
-                            $claim = Claim::where(['id' => $claimID])->first();
 //                            $customer = CustomerMaster::where(['customerCode'=>$claim->customerCode])->first();
 //                            if($customer)
 //                            {
@@ -771,6 +778,13 @@ class AssessorController extends Controller
             $assess = Assessment::where(["id" => $assessmentID])->first();
             $claim = Claim::where(['id' => isset($assess->claimID) ? $assess->claimID : 0])->first();
 
+            if($claim->intimationDate >= Config::VAT_REDUCTION_DATE && $claim->intimationDate <= Config::VAT_END_DATE)
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::CURRENT_VAT)/Config::INITIAL_PERCENTAGE;
+            }else
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::VAT)/Config::INITIAL_PERCENTAGE;
+            }
             $assessmentItems = array();
             $total = !empty($jobsData['total']) ? $jobsData['total'] : 0;
             $labour = !empty($jobsData['labour']) ? $jobsData['labour'] : 0;
@@ -871,11 +885,11 @@ class AssessorController extends Controller
                         + (is_numeric($jigging)) + (is_numeric($reconstruction)) + (is_numeric($gas)) + (is_numeric($welding));
 
                     if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                        $total = ($sum + $others) * 1.14;
+                        $total = ($sum + $others) * $vat;
                     } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
                         $total = ($sum * Config::MARK_UP) + $others;
                     } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
-                        $total = ($sum + $others) * 1.14;
+                        $total = ($sum + $others) * $vat;
                     }
                     $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                     $detail = JobDetail::where(['assessmentID' => $supplementaryID, "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->exists();
@@ -1578,6 +1592,14 @@ class AssessorController extends Controller
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
             $invoice = 'invoice';
+            $claim = Claim::where(['id' => $claimID])->first();
+            if($claim->intimationDate >= Config::VAT_REDUCTION_DATE && $claim->intimationDate <= Config::VAT_END_DATE)
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::CURRENT_VAT)/Config::INITIAL_PERCENTAGE;
+            }else
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::VAT)/Config::INITIAL_PERCENTAGE;
+            }
             if ($drafted == 1) {
                 AssessmentItem::where(["assessmentID" => $assessmentID])
                     ->whereNotNull("assessmentID")
@@ -1655,11 +1677,11 @@ class AssessorController extends Controller
                     + (is_numeric($jigging)) + (is_numeric($reconstruction)) + (is_numeric($gas)) + (is_numeric($welding));
 
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                    $total = ($sum + $others) * 1.14;
+                    $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
                     $total = ($sum * 0.9) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
-                    $total = ($sum + $others) * 1.14;
+                    $total = ($sum + $others) * $vat;
                 }
                 $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];
@@ -2038,6 +2060,7 @@ class AssessorController extends Controller
     public function submitEditedSupplementary(Request $request)
     {
         try {
+            $claimID = $request->claimID;
             $totalImages = $request->totalImages;
             $assessmentID = $request->assessmentID;
             $partsData = json_decode($request->partsData, true);
@@ -2048,6 +2071,14 @@ class AssessorController extends Controller
             $drafted = $request->drafted;
             // echo(json_encode($partsData));
             // exit();
+            $claim = Claim::where(['id' => $claimID])->first();
+            if($claim->intimationDate >= Config::VAT_REDUCTION_DATE && $claim->intimationDate <= Config::VAT_END_DATE)
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::CURRENT_VAT)/Config::INITIAL_PERCENTAGE;
+            }else
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::VAT)/Config::INITIAL_PERCENTAGE;
+            }
             if ($drafted == 1) {
                 $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])
                     ->whereNotNull('assessmentID')
@@ -2172,11 +2203,11 @@ class AssessorController extends Controller
                     + (is_numeric($jigging)) + (is_numeric($reconstruction)) + (is_numeric($gas)) + (is_numeric($welding));
 
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                    $total = ($sum + $others) * 1.14;
+                    $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
                     $total = ($sum * 0.9) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
-                    $total = ($sum + $others) * 1.14;
+                    $total = ($sum + $others) * $vat;
                 }
                 $assessorName = Auth::user()->firstName . ' ' . Auth::user()->lastName;
                 $assessmentStatusID = $isDraft == 1 ? Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'] : Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'];

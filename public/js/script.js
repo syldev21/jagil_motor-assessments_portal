@@ -1768,6 +1768,7 @@ $(document).ready(function () {
         var totals=$("input[id*='total_']");
         var remarkss=$("select[id*='remarks_']");
         var categorys=$("select[id*='category_']");
+        var claimID = $("#claimID");
         var i;
         // Array
         var partsData = [];
@@ -1845,6 +1846,7 @@ $(document).ready(function () {
             }
             image_upload.append('totalImages', totalImages);
             image_upload.append('assessmentID', assessmentID.val());
+            image_upload.append('claimID', claimID.val());
             image_upload.append('assessmentType', assessmentType.val());
             image_upload.append('isDraft', isDraft);
             image_upload.append('drafted', drafted.val());
@@ -1935,6 +1937,7 @@ $(document).ready(function () {
                 }
                 image_upload.append('totalImages', imageParse.length+totalImages);
                 image_upload.append('assessmentID', assessmentID.val());
+                image_upload.append('claimID', claimID.val());
                 image_upload.append('assessmentType', assessmentType.val());
                 image_upload.append('isDraft', isDraft);
                 image_upload.append('drafted', drafted.val());

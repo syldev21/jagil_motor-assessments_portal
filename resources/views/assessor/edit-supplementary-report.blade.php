@@ -507,6 +507,7 @@
                                                        value="{{isset($count) ? $count-1 : 0}}">
                                                 <input type="hidden" name="assessmentID" id="assessmentID"
                                                        value="{{$assessment->id}}">
+                                                <input type="hidden" name="claimID" value="{{$assessment->claim->id}}" id="claimID">
                                                 <input type="submit" class="waves-effect waves-dark btn next-step"
                                                        value="SUBMIT" id="submit-edited-supplementary" />
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK
