@@ -116,6 +116,51 @@
                 </ul>
             </div>
         </li>
+        <li class="bold ">
+            <a class="collapsible-header sidenav-link"
+               href="javascript:void(0) "
+            >
+                <i class="material-icons">note</i>
+                <span class="menu-title" data-i18n="settings">Supplementaries</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+
+                    <li class="">
+                        <a href="#"
+                           class="adjuster-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
+                        >
+                            <i class="material-icons">compare_arrows</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="adjuster-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}"
+                        >
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="adjuster-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
+                        >
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="adjuster-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}"
+                        >
+                            <i class="material-icons">announcement</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["ASSESSOR"])
         <li class="bold ">

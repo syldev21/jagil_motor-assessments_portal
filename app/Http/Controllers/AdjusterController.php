@@ -772,4 +772,30 @@ class AdjusterController extends Controller
 
         return view('common.letter', $data);
     }
+
+    public function supplementaries(Request $request)
+    {
+        $assessmentStatusID = $request->assessmentStatusID;
+        try {
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID,'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            return view('adjuster.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID, 'assessmentStatusID' => $assessmentStatusID]);
+        } catch (\Exception $e) {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
+        }
+    }
+
+    public function supplementaryReport(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $assessment = Assessment::where(["id" => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID, "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
+        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        return view("adjuster.supplementary-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor]);
+    }
 }

@@ -1070,6 +1070,39 @@ $(document).ready(function () {
 
         });
     });
+    $(".adjuster-fetch-supplementaries").on('click',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
+            url: '/adjuster/supplementaries',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
     $(".manager-fetch-supplementaries").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
@@ -1401,6 +1434,36 @@ $(document).ready(function () {
             type: 'POST',
 
             url: '/head-assessor/supplementary-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
+    $("body").on('click','#view-adjuster-supplementary-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/adjuster/supplementary-report',
             data : {
                 assessmentID : assessmentID
             },
