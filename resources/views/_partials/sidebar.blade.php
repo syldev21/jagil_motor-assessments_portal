@@ -565,6 +565,44 @@
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["ASSESSMENT-MANAGER"])
         <li class="bold ">
+            <a class="collapsible-header sidenav-link"
+               href="javascript:void(0) "
+            >
+                <i class="material-icons">view_list</i>
+                <span class="menu-title" data-i18n="Chart">Claims</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+                    <li class="">
+                        <a href="#" class="sidenav-link assessment-manager-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id']}}">
+                            <i class="material-icons">reorder</i>
+                            <span data-i18n="ChartJS">Uploaded</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link assessment-manager-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['ASSIGNED']['id']}}">
+                            <i class="material-icons">assignment_ind</i>
+                            <span data-i18n="Chartist">Assigned</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link assessment-manager-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['RE-INSPECTED']['id']}}">
+                            <i class="material-icons">assignment_turned_in</i>
+                            <span data-i18n="Chartist">Re-inspected</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link assessment-manager-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['RELEASED']['id']}}">
+                            <i class="material-icons">next_week</i>
+                            <span data-i18n="Chartist">Released</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        @endhasrole
+        @hasrole(\App\Conf\Config::$ROLES["ASSESSMENT-MANAGER"])
+        <li class="bold ">
             <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
                 <span class="menu-title" data-i18n="Chart">Assessments</span>

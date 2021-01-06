@@ -127,6 +127,7 @@ $router->group(['prefix' => 'manager'], function($router)
 $router->group(['prefix' => 'assessment-manager'], function($router)
 {
     //Motor  assessment Manager Module
+    $router->post('/claims','AssessmentManagerController@claims');
     $router->post('/assessments','AssessmentManagerController@assessments');
     $router->post('/assessment-report','AssessmentManagerController@assessmentReport');
     $router->post('/review-assessment','AssessmentManagerController@reviewAssessment');

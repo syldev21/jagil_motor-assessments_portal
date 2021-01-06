@@ -553,6 +553,40 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','.assessment-manager-claims',function (e){
+        e.preventDefault();
+        var claimStatusID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'claimStatusID' : claimStatusID
+            },
+
+            url: '/assessment-manager/claims',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
     $("body").on('click','.head-assessor-claims',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");

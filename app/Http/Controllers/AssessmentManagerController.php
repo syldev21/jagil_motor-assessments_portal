@@ -509,4 +509,23 @@ class AssessmentManagerController extends Controller
         return json_encode($response);
     }
 
+    public function claims(Request $request)
+    {
+        try {
+            $claimStatusID = $request->claimStatusID;
+
+            $claims = Claim::with("assessment")
+                ->where("claimStatusID", "=", $claimStatusID)
+                ->orderBy('dateCreated', 'DESC')->with('assessment')->get();
+            $assessors = User::role('Assessor')->get();
+            return view('assessment-manager.claims', ['claims' => $claims, 'assessors' => $assessors, "claimStatusID" => $claimStatusID]);
+        } catch (\Exception $e) {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to fetch claims " . $e->getMessage());
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+        }
+    }
 }
