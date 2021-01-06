@@ -29,6 +29,7 @@ class CommonController extends Controller
             $asmts=Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
             ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             $assessments = Assessment::where("assessedBy","!=",$id)
+                ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
 //            whereIn('assessmentStatusID', $assessmentStatusIDs)
 //            where('segment','=',Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID'])
             ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
