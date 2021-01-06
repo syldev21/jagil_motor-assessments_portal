@@ -3273,6 +3273,7 @@ $(document).ready(function () {
         var replaced = [];
         var cil = [];
         var reused = [];
+        addLoadingButton();
         $.each($("input[name='repaired[]']:checked"), function(){
             repaired.push($(this).val());
         });
@@ -3352,6 +3353,7 @@ $(document).ready(function () {
                             timer: 3000
                         })
                     }
+                    removeLoadingButton();
                 }
 
             });
