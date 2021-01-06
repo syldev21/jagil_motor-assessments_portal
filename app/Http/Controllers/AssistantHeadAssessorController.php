@@ -41,7 +41,8 @@ class AssistantHeadAssessorController extends Controller
             $assessmentStatusID = $request->assessmentStatusID;
             $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                 ->where('totalCost','<=',Config::HEAD_ASSESSOR_THRESHOLD)
-                ->whereIn('segment', $segmentIds)
+                ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+//                ->whereIn('segment', $segmentIds)
                 ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->get();
 
             return view('assistant-head-assessor.assessments',["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
