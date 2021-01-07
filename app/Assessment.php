@@ -43,4 +43,8 @@ class Assessment extends Model
     {
       return $this->belongsTo(ReInspection::class,'assessmentID','id');
     }
+    public function supplementaries()
+    {
+        return $this->hasMany(Assessment::class,'assessmentID','id');
+    }
 }

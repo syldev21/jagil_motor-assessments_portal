@@ -47,12 +47,13 @@ class AssessorController extends Controller
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $segmentIds = array(Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'], Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']);
-            $asmts = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'], "assessedBy" => Auth::id(), 'segment' => 5])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+//            $segmentIds = array(Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'], Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']);
+//            $asmts = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'], "assessedBy" => Auth::id(), 'segment' => 5])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
-                ->whereIn('segment', $segmentIds)
-                ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID, 'asmts' => $asmts]);
+                  ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+//                ->whereIn('segment', $segmentIds)
+                ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->orderBy('dateCreated', 'DESC')->get();
+            return view('assessor.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());

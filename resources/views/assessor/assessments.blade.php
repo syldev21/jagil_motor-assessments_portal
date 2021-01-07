@@ -235,17 +235,15 @@
                                                                 <li><a href="#!" id="fillSupplementaryReport" data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Add
                                                                         Supplementary Report</a></li>
-                                                                    @foreach($asmts as $asmt )
+                                                                    @if(isset($assessment['supplementaries']))
+                                                                        @foreach($assessment['supplementaries'] as $supplementary )
 
-                                                                        @if($asmt->assessmentID==$assessment->id)
-
-                                                                            <li><a href="#!" id="assessment-manager-assessment-report" data-id="{{$asmt['id']}} "><i
-                                                                                        class="material-icons">insert_drive_file</i>
-                                                                                    Supplementary</a>
-                                                                            </li>
-                                                                            @endif
-
-                                                                    @endforeach
+                                                                                <li><a href="#!" id="view-assessor-supplementary-report" data-id="{{$supplementary->id}} "><i
+                                                                                            class="material-icons">insert_drive_file</i>
+                                                                                        Supplementary {{$loop->iteration}}</a>
+                                                                                </li>
+                                                                        @endforeach
+                                                                    @endif
                                                                 @endif
                                                             @endif
                                                         </ul>
