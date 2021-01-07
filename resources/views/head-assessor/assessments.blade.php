@@ -208,6 +208,15 @@
                                                                                 class="material-icons">picture_as_pdf</i>
                                                                             Release Letter</a></li>
                                                                 @endif
+                                                                @if(isset($assessment['supplementaries']))
+                                                                    @foreach($assessment['supplementaries'] as $supplementary )
+
+                                                                        <li><a href="#!" id="view-head-assessor-supplementary-report" data-id="{{$supplementary->id}} "><i
+                                                                                    class="material-icons">insert_drive_file</i>
+                                                                                Supplementary {{$loop->iteration}}</a>
+                                                                        </li>
+                                                                    @endforeach
+                                                                @endif
                                                         </ul>
                                                     </td>
                                                 </tr>

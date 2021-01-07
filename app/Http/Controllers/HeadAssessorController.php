@@ -237,7 +237,7 @@ class HeadAssessorController extends Controller
             $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
 //                ->whereIn('segment', $segmentIds)
                 ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->get();
+                ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             return view('head-assessor.assessments', ["assessments" => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
