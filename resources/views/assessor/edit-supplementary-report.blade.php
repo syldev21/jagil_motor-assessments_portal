@@ -113,22 +113,22 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input id="quantity_{{$count}}" oninput="getTotal(0)"
+                                                            <input id="quantity_{{$count}}" oninput="getTotal(0);findTotal()"
                                                                    placeholder="" type="text" name="quantity[]"
                                                                    value="{{$assessmentItem->quantity}}" />
                                                         </td>
                                                         <td>
-                                                            <input id="partPrice_{{$count}}" oninput="getTotal(0)"
+                                                            <input id="partPrice_{{$count}}" oninput="getTotal(0);findTotal()"
                                                                    placeholder="" type="text" name="partPrice[]"
                                                                    value="{{$assessmentItem->cost}}" />
                                                         </td>
                                                         <td>
                                                             <input id="contribution_{{$count}}" placeholder="" type="text"
-                                                                   name="contribution[]" oninput="getTotal(0)"
+                                                                   name="contribution[]" oninput="getTotal(0);findTotal()"
                                                                    value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}" />
                                                         </td>
                                                         <td>
-                                                            <input id="discount_{{$count}}" oninput="getTotal(0)"
+                                                            <input id="discount_{{$count}}" oninput="getTotal(0);findTotal()"
                                                                    placeholder="" type="text" name="discount[]"
                                                                    value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}" />
                                                         </td>
@@ -179,16 +179,16 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input id="quantity_0" oninput="getTotal(0)" placeholder=""
+                                                        <input id="quantity_0" oninput="getTotal(0);findTotal()" placeholder=""
                                                                type="text" name="quantity[]" value="" maxlength="3" />
                                                     </td>
                                                     <td>
-                                                        <input id="partPrice_0" oninput="getTotal(0)" placeholder=""
+                                                        <input id="partPrice_0" oninput="getTotal(0);findTotal()" placeholder=""
                                                                type="text" name="partPrice[]" value="" />
                                                     </td>
                                                     <td>
                                                         <input id="contribution_0" placeholder="" type="text"
-                                                               name="contribution[]" oninput="getTotal(0)" value=""
+                                                               name="contribution[]" oninput="getTotal(0);findTotal()" value=""
                                                                maxlength="2" />
                                                     </td>
                                                     <td>
@@ -224,7 +224,7 @@
                                             <div class="col s12" id="dynamicPartsSelector">
                                                 <a href="#" class="btn blue lighten-2" id="addPart">Add Part <i
                                                         class="medium material-icons">add</i></a>
-                                                <a href="#" class="btn red darken-4" onclick="deletePart()">Remove <i
+                                                <a href="#" class="btn red darken-4" onclick="deletePart();findTotal()">Remove <i
                                                         class="medium material-icons">remove</i></a>
                                             </div>
                                         </div>
@@ -508,8 +508,24 @@
                                                 <input type="hidden" name="assessmentID" id="assessmentID"
                                                        value="{{$assessment->id}}">
                                                 <input type="hidden" name="claimID" value="{{$assessment->claim->id}}" id="claimID">
-                                                <input type="submit" class="waves-effect waves-dark btn next-step"
+                                                <input type="submit" class="waves-effect waves-dark btn next-step showActionButton actionButton"
                                                        value="SUBMIT" id="submit-edited-supplementary" />
+                                                <a href="#"
+                                                   class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
+                                                >
+                                                    <div class="preloader-wrapper small active float-left">
+                                                        <div class="spinner-layer spinner-blue-only">
+                                                            <div class="circle-clipper left">
+                                                                <div class="circle"></div>
+                                                            </div><div class="gap-patch">
+                                                                <div class="circle"></div>
+                                                            </div><div class="circle-clipper right">
+                                                                <div class="circle"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="float-right"> Loading</div>
+                                                </a>
                                                 <button class="waves-effect waves-dark btn-flat previous-step">BACK
                                                 </button>
                                             </div>
@@ -574,19 +590,19 @@
             '                                                            </select>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
-            '                                                            <input id="quantity_'+t+'" oninput="getTotal('+t+')" placeholder="quantity" type="text" name="quantity[]"\n' +
+            '                                                            <input id="quantity_'+t+'" oninput="getTotal('+t+');findTotal()" placeholder="quantity" type="text" name="quantity[]"\n' +
             '                                                                   value="" maxlength="3"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
-            '                                                            <input id="partPrice_'+t+'" oninput="getTotal('+t+')" placeholder="part price" type="text" name="partPrice[]"\n' +
+            '                                                            <input id="partPrice_'+t+'" oninput="getTotal('+t+');findTotal()" placeholder="part price" type="text" name="partPrice[]"\n' +
             '                                                                   value=""/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="contribution_'+t+'" placeholder="contribution" type="text"\n' +
-            '                                                                   name="contribution[]" oninput="getTotal('+t+')" value="" maxlength="2"/>\n' +
+            '                                                                   name="contribution[]" oninput="getTotal('+t+');findTotal()" value="" maxlength="2"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
-            '                                                            <input id="discount_'+t+'" oninput="getTotal('+t+')" placeholder="discount" type="text" name="discount[]"\n' +
+            '                                                            <input id="discount_'+t+'" oninput="getTotal('+t+');findTotal()" placeholder="discount" type="text" name="discount[]"\n' +
             '                                                                   value="" maxlength="2"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +

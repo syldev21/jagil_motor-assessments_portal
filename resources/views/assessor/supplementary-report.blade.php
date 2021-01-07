@@ -104,19 +104,19 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input id="quantity_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
+                                                            <input id="quantity_{{$count}}" oninput="getTotal(0);findTotal()" placeholder="" type="text" name="quantity[]"
                                                                    value="{{$assessmentItem->quantity}}"/>
                                                         </td>
                                                         <td>
-                                                            <input id="partPrice_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
+                                                            <input id="partPrice_{{$count}}" oninput="getTotal(0);findTotal()" placeholder="" type="text" name="partPrice[]"
                                                                    value="{{$assessmentItem->cost}}"/>
                                                         </td>
                                                         <td>
                                                             <input id="contribution_{{$count}}" placeholder="" type="text"
-                                                                   name="contribution[]" oninput="getTotal(0)" value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}"/>
+                                                                   name="contribution[]" oninput="getTotal(0);findTotal()" value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}"/>
                                                         </td>
                                                         <td>
-                                                            <input id="discount_{{$count}}" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
+                                                            <input id="discount_{{$count}}" oninput="getTotal(0);findTotal()" placeholder="" type="text" name="discount[]"
                                                                    value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}"/>
                                                         </td>
                                                         <td>
@@ -158,19 +158,19 @@
                                                                 </select>
                                                             </td>
                                                             <td>
-                                                                <input id="quantity_0" oninput="getTotal(0)" placeholder="" type="text" name="quantity[]"
+                                                                <input id="quantity_0" oninput="getTotal(0);findTotal()" placeholder="" type="text" name="quantity[]"
                                                                        value="" maxlength="3"/>
                                                             </td>
                                                             <td>
-                                                                <input id="partPrice_0" oninput="getTotal(0)" placeholder="" type="text" name="partPrice[]"
+                                                                <input id="partPrice_0" oninput="getTotal(0);findTotal()" placeholder="" type="text" name="partPrice[]"
                                                                        value=""/>
                                                             </td>
                                                             <td>
                                                                 <input id="contribution_0" placeholder="" type="text"
-                                                                       name="contribution[]" oninput="getTotal(0)" value="" maxlength="2"/>
+                                                                       name="contribution[]" oninput="getTotal(0);findTotal()" value="" maxlength="2"/>
                                                             </td>
                                                             <td>
-                                                                <input id="discount_0" oninput="getTotal(0)" placeholder="" type="text" name="discount[]"
+                                                                <input id="discount_0" oninput="getTotal(0);findTotal()" placeholder="" type="text" name="discount[]"
                                                                        value="" maxlength="2"/>
                                                             </td>
                                                             <td>
@@ -200,7 +200,7 @@
                                             <div class="col s12" id="dynamicPartsSelector">
                                                 <a href="#" class="btn blue lighten-2" id="addPart">Add Part <i
                                                         class="medium material-icons">add</i></a>
-                                                <a href="#" class="btn red darken-4" onclick="deletePart()">Remove <i
+                                                <a href="#" class="btn red darken-4" onclick="deletePart();findTotal()">Remove <i
                                                         class="medium material-icons">remove</i></a>
                                             </div>
                                         </div>
@@ -333,7 +333,7 @@
                                                             <h6 class="float-left">Total:</h6>
                                                             <div class="input-field float-right">
                                                                 <input type="text"
-                                                                       value="{{isset($supplementaryAssessment->totalCost)  ? $supplementaryAssessment->totalCost : null}}" name="sumTotal" id="sumTotal"
+                                                                       value="" name="sumTotal" id="sumTotal"
                                                                        class="border-fields"/>
                                                             </div>
                                                         </div>
@@ -364,7 +364,7 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder="" id="pav"
                                                                                        type="text" name="pav"
-                                                                                       value="{{isset($supplementaryAssessment->pav) ? $supplementaryAssessment->pav : null }}"
+                                                                                       value=""
                                                                                        class="border-fields" oninput="findTotalLoss()"/>
                                                                             </div>
                                                                         </td>
@@ -375,7 +375,7 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder="" id="salvage"
                                                                                        type="text" name="salvage"
-                                                                                       value="{{isset($supplementaryAssessment->salvage) ? $supplementaryAssessment->salvage : null}}"
+                                                                                       value=""
                                                                                        class="border-fields" oninput="findTotalLoss()"/>
                                                                             </div>
                                                                         </td>
@@ -386,7 +386,7 @@
                                                                             <div class="input-field">
                                                                                 <input placeholder="" id="total_loss"
                                                                                        type="text" name="total_loss"
-                                                                                       value="{{isset($supplementaryAssessment->totalLoss) ? $supplementaryAssessment->totalLoss : null}}"
+                                                                                       value=""
                                                                                        class="border-fields total_loss"/>
                                                                             </div>
                                                                         </td>
@@ -410,7 +410,7 @@
                                                                         <div class="input-field">
                                                                             <input placeholder="" id="sumTotals"
                                                                                    type="text" name="sumTotals"
-                                                                                   value="{{isset($supplementaryAssessment->totalCost) ? $supplementaryAssessment->totalCost : null}}" class="border-fields"/>
+                                                                                   value="" class="border-fields"/>
                                                                            </div>
                                                                     </div>
                                                                 </div>
@@ -532,19 +532,19 @@
             '                                                            </select>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
-            '                                                            <input id="quantity_'+t+'" oninput="getTotal('+t+')" placeholder="quantity" type="text" name="quantity[]"\n' +
+            '                                                            <input id="quantity_'+t+'" oninput="getTotal('+t+');findTotal()" placeholder="quantity" type="text" name="quantity[]"\n' +
             '                                                                   value="" maxlength="3"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
-            '                                                            <input id="partPrice_'+t+'" oninput="getTotal('+t+')" placeholder="part price" type="text" name="partPrice[]"\n' +
+            '                                                            <input id="partPrice_'+t+'" oninput="getTotal('+t+');findTotal()" placeholder="part price" type="text" name="partPrice[]"\n' +
             '                                                                   value=""/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
             '                                                            <input id="contribution_'+t+'" placeholder="contribution" type="text"\n' +
-            '                                                                   name="contribution[]" oninput="getTotal('+t+')" value="" maxlength="2"/>\n' +
+            '                                                                   name="contribution[]" oninput="getTotal('+t+');findTotal()" value="" maxlength="2"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
-            '                                                            <input id="discount_'+t+'" oninput="getTotal('+t+')" placeholder="discount" type="text" name="discount[]"\n' +
+            '                                                            <input id="discount_'+t+'" oninput="getTotal('+t+');findTotal()" placeholder="discount" type="text" name="discount[]"\n' +
             '                                                                   value="" maxlength="2"/>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +

@@ -1866,6 +1866,7 @@ $(document).ready(function () {
         var remarkss=$("select[id*='remarks_']");
         var categorys=$("select[id*='category_']");
         var claimID = $("#claimID");
+        addLoadingButton();
         var i;
         // Array
         var partsData = [];
@@ -1982,6 +1983,7 @@ $(document).ready(function () {
                             timer: 3000
                         })
                     }
+                    removeLoadingButton();
                 }
 
             });
@@ -2073,6 +2075,7 @@ $(document).ready(function () {
                                 timer: 3000
                             })
                         }
+                        removeLoadingButton();
                     }
 
                 });

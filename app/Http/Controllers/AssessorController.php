@@ -2220,7 +2220,7 @@ class AssessorController extends Controller
                     "note" => $note,
                     "salvage" => $salvage,
                     "pav" => $pav,
-                    "totalCost" => $total,
+                    "totalCost" => $sumTotal,
                     "totalLoss" => $totalLoss,
                     "assessmentTypeID" => $assessmentType,
                     "assessmentStatusID" => $assessmentStatusID,
