@@ -49,11 +49,11 @@ class ManagerController extends Controller
     public function assessments(Request $request)
     {
         try {
-            $segmentIds = array(Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'], Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']);
+//            $segmentIds = array(Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'], Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']);
             $assessmentStatusID = $request->assessmentStatusID;
             $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
-                ->whereIn('segment', $segmentIds)
-                ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->get();
+                ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             return view('manager.assessments', ["assessments" => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .

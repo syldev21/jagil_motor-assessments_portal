@@ -144,7 +144,7 @@
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                     <li>
-                                                                        <a href="#" id="view-head-assessor-supplementary-report"
+                                                                        <a href="#" id="view-assistant-head-assessor-supplementary-report"
                                                                            data-id="{{$assessment['id']}}"><i
                                                                                 class="material-icons">insert_drive_file</i>View
                                                                             Supplementary Report </a>

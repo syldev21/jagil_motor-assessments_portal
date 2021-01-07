@@ -143,10 +143,18 @@ $router->group(['prefix' => 'assessment-manager'], function($router)
 // Assistant head Assessor
 $router->group(['prefix' => 'assistant-head-assessor'], function($router)
 {
+    $router->post('/claims','AssistantHeadAssessorController@claims');
     $router->post('/assessments','AssistantHeadAssessorController@assessments');
     $router->post('/assessment-report','AssistantHeadAssessorController@assessmentReport');
     $router->post('/request-assessment-change','AssistantHeadAssessorController@requestAssessmentChange');
     $router->post('/review-assessment','AssistantHeadAssessorController@reviewAssessment');
+    $router->post('/supplementaries','AssistantHeadAssessorController@supplementaries');
+    $router->post('/supplementary-report','AssistantHeadAssessorController@supplementaryReport');
+    $router->post('/review-supplementary','AssistantHeadAssessorController@reviewSupplementary');
+    $router->post('/request-price-change','AssistantHeadAssessorController@requestPriceChange');
+    $router->post('/request-supplementary-change','AssistantHeadAssessorController@requestSupplementaryChange');
+    $router->post('/price-change-report','AssistantHeadAssessorController@priceChangeReport');
+    $router->post('/review-price-change','AssistantHeadAssessorController@reviewPriceChange');
 });
 
 // Admin Routes

@@ -503,7 +503,7 @@ class AdjusterController extends Controller
         try {
             $assessments = Assessment::where('assessmentStatusID','=',$assessmentStatusID)
                 ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->get();
+                ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             return view('adjuster.assessments',['assessments' => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
         }catch (\Exception $e)
         {

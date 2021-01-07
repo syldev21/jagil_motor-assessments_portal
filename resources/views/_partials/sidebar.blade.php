@@ -529,6 +529,42 @@
 
         @hasrole(\App\Conf\Config::$ROLES["ASSISTANT-HEAD"])
         <li class="bold ">
+            <a class="collapsible-header sidenav-link"
+               href="javascript:void(0) "
+            >
+                <i class="material-icons">view_list</i>
+                <span class="menu-title" data-i18n="Chart">Claims</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+                    <li class="">
+                        <a href="#" class="sidenav-link assistant-head-assessor-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id']}}">
+                            <i class="material-icons">reorder</i>
+                            <span data-i18n="ChartJS">Uploaded</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link assistant-head-assessor-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['ASSIGNED']['id']}}">
+                            <i class="material-icons">assignment_ind</i>
+                            <span data-i18n="Chartist">Assigned</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link assistant-head-assessor-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['RE-INSPECTED']['id']}}">
+                            <i class="material-icons">assignment_turned_in</i>
+                            <span data-i18n="Chartist">Re-inspected</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link assistant-head-assessor-claims" data-id="{{\App\Conf\Config::$STATUSES['CLAIM']['RELEASED']['id']}}">
+                            <i class="material-icons">next_week</i>
+                            <span data-i18n="Chartist">Released</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="bold ">
             <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                 <i class="material-icons">assessment</i>
                 <span class="menu-title" data-i18n="Chart">Assessments</span>
@@ -557,6 +593,51 @@
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="bold ">
+            <a class="collapsible-header sidenav-link"
+               href="javascript:void(0) "
+            >
+                <i class="material-icons">note</i>
+                <span class="menu-title" data-i18n="settings">Supplementaries</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+
+                    <li class="">
+                        <a href="#"
+                           class="assistant-head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}"
+                        >
+                            <i class="material-icons">compare_arrows</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="assistant-head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}"
+                        >
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="assistant-head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
+                        >
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="assistant-head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}"
+                        >
+                            <i class="material-icons">announcement</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
                 </ul>
