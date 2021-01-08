@@ -157,11 +157,13 @@
                                                                     </li>
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                                                                    @hasanyrole('Head Assessor|Assistant Head|Assessor')
                                                                 <li>
                                                                     <a href="#" id="fillReInspectionReport"
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Re-Inspection
                                                                         Report</a></li>
+                                                                    @endhasanyrole
                                                                     @if(isset($assessment->reInspection))
                                                                 <li>
                                                                     <a href="#"
