@@ -162,6 +162,7 @@
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Re-Inspection
                                                                         Report</a></li>
+                                                                    @if(isset($assessment->reInspection))
                                                                 <li>
                                                                     <a href="#"
                                                                        id="assessor-view-re-inspection-report"
@@ -172,6 +173,7 @@
                                                                     <li><a href="{{url('/adjuster/re-inspection-letter/'.$assessment['id'])}}" target="_blank"><i
                                                                                 class="material-icons">picture_as_pdf</i>View
                                                                             Re-inspection Letter</a></li>
+                                                                    @endif
                                                             @endif
                                                         </ul>
 
