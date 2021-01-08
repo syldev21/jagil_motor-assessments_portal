@@ -41,7 +41,7 @@ class Assessment extends Model
     }
     public function reInspection()
     {
-      return $this->belongsTo(ReInspection::class,'assessmentID','id');
+      return $this->hasOne(ReInspection::class,'assessmentID','id');
     }
     public function supplementaries()
     {
