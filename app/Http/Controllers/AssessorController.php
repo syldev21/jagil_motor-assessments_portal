@@ -189,8 +189,10 @@ class AssessorController extends Controller
     public function fillReInspectionReport(Request $request, $assessmentID)
     {
         $assessments = Assessment::where(['id' => $assessmentID])->with('claim')->with('reInspection')->first();
+        $assessmentIds = Assessment::where(['assessmentID'=> $assessmentID,'assessmentStatusID' =>Config::$STATUSES['ASSESSMENT']['APPROVED']])->pluck('id')->toArray();
+        array_push($assessmentIds,$assessments->id);
         $inspections = ReInspection::where(['assessmentID' => isset($assessments) ? $assessments->id : 0])->first();
-        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with("part")->get();
+        $assessmentItems = AssessmentItem::whereIn("assessmentID", $assessmentIds)->with("part")->get();
         return view('assessor.re-inspection-report', ['assessments' => $assessments, 'assessmentItems' => $assessmentItems, 'inspections' => $inspections]);
     }
 
