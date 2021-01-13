@@ -51,6 +51,7 @@
                                             <th>No</th>
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
+                                            <th>Location</th>
                                             <th>Adjuster</th>
                                             @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                 <th>Approved By</th>
@@ -72,6 +73,10 @@
                                                     <td>{{$loop->iteration}}</td>
                                                     <td><a href="#" data-id="{{$assessment['claim']['id']}}" id="claimDetails">{{$assessment['claim']['claimNo']}}</a></td>
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
+                                                    <?php
+                                                    $garage = \App\Garage::where(['id'=>isset($assessment['claim']['garageID']) ? $assessment['claim']['garageID'] : ''])->first();
+                                                    ?>
+                                                    <td>{{$garage->name}}</td>
                                                     <?php
                                                     $adjuster = \App\User::where(['id'=> $assessment['claim']['createdBy']])->first();
                                                     ?>
