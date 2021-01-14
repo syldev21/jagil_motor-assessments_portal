@@ -2708,7 +2708,7 @@ class AssessorController extends Controller
 
     public function resizeImages(Request $request)
     {
-        $documents = Document::where(['isResized' => 0,"documentType"=>Config::$DOCUMENT_TYPES['IMAGE']]['ID'])->get();
+        $documents = Document::where(['isResized' => 0,"documentType"=>Config::$DOCUMENT_TYPES['IMAGE']['ID']])->get();
         if(count($documents) >0)
         {
             foreach ($documents as $document)
