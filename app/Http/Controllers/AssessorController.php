@@ -2706,25 +2706,25 @@ class AssessorController extends Controller
         return json_encode($response);
     }
 
-//    public function resizeImages(Request $request)
-//    {
-//        $documents = Document::where(['isResized' => 0])->get();
-//        if(count($documents) >0)
-//        {
-//            foreach ($documents as $document)
-//            {
-//                $img = Image::make(public_path('images/').$document->name);
-//                $size = $img->filesize();
-//                if ($size > 300) {
-//                    $img->resize(850, null, function ($constraint) {
-//                        $constraint->aspectRatio();
-//                        $constraint->upsize();
-//                    });
-//                    $img->save(public_path('thumbnail/'). $document->name);
-//                }
-//
-//                Document::where('id', $document-id)->update(['isResized' => 1]);
-//            }
-//        }
-//    }
+    public function resizeImages(Request $request)
+    {
+        $documents = Document::where(['isResized' => 0])->get();
+        if(count($documents) >0)
+        {
+            foreach ($documents as $document)
+            {
+                $img = Image::make(public_path('documents/').$document->name);
+                $size = $img->filesize();
+                if ($size > 300) {
+                    $img->resize(850, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                    $img->save(public_path('thumbnail/'). $document->name);
+                }
+
+                Document::where('id', $document-id)->update(['isResized' => 1]);
+            }
+        }
+    }
 }

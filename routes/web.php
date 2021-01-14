@@ -88,6 +88,7 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->get('/view-price-change/{id}', 'AssessorController@priceChange'); //Price Change
     $router->post('/price-change-report','AssessorController@priceChangeReport');
     $router->post('/deleteImage','AssessorController@deleteImage');
+    $router->post('/resizeImages','AssessorController@resizeImages');
 
 });
 
