@@ -286,21 +286,54 @@
                                                 <td class="text-bold">Total parts cost</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{{ number_format(\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')) }}</td>
+                                                <?php
+                                                $totalParts = \App\AssessmentItem::whereIn('assessmentID', $assessmentIds)
+                                                    ->where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
+                                                    ->sum('total');
+                                                ?>
+                                                <td>{{ number_format($totalParts) }}</td>
                                                 <td>-</td>
                                             </tr>
 
+                                            <?php
+                                            $jobValue=0;
+                                            ?>
                                             @foreach($jobDetails as $jobDetail)
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>{{$jobDetail['name']}}</td>
+                                                    <td>{{$jobDetail['name']}}
+                                                        @if($jobDetail['name'] == App\Conf\Config::$JOB_TYPES['LABOUR']['TITLE'])
+                                                            @if($reinspection['addLabor'] != '')
+                                                                + Add Labour
+                                                            @elseif($reinspection['labor'] != '')
+                                                                - Less Labour
+                                                            @endif
+                                                        @endif
+                                                    </td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>{{ number_format($jobDetail['cost']) }}</td>
+
+                                                        <td>
+                                                            @if($jobDetail['name'] == App\Conf\Config::$JOB_TYPES['LABOUR']['TITLE'])
+                                                            @if($reinspection['addLabor'] != '')
+                                                                {{ number_format($jobDetail['cost'] + $reinspection['addLabor']) }}
+                                                                @elseif($reinspection['labor'] != '')
+                                                                    {{ number_format($jobDetail['cost'] - $reinspection['labor']) }}
+                                                                @else
+                                                                    {{ number_format($jobDetail['cost']) }}
+                                                            @endif
+                                                            @else
+                                                                {{ number_format($jobDetail['cost']) }}
+                                                            @endif
+                                                        </td>
                                                     <td></td>
                                                 </tr>
+                                                <?php
+                                                $jobValue += $jobDetail['cost'];
+
+                                                ?>
                                             @endforeach
 
                                             @if($assessment['assessmentTypeID'] != 2)
@@ -313,7 +346,7 @@
                                                         <td class="text-bold">Sum Total</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>{{ number_format(($assessment['totalCost']) - round(($assessment['totalCost']*\App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
+                                                        <td>{{ number_format(($reinspection['total']) - round(($reinspection['total']*\App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
                                                         <td></td>
                                                     </tr>
 
@@ -326,7 +359,7 @@
                                                         </td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>{{ number_format(round(($assessment['totalCost']*App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
+                                                        <td>{{ number_format(round(($reinspection['total']*App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
                                                         <td></td>
                                                     </tr>
                                                 @else
@@ -337,7 +370,7 @@
                                                         <td class="text-bold">Sum Total</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>{{ number_format(($assessment['totalCost']) - round(($assessment['totalCost']*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
+                                                        <td>{{ number_format(($reinspection['total']) - round(($reinspection['total']*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
                                                         <td></td>
                                                     </tr>
 
@@ -348,7 +381,7 @@
                                                         <td class="">{{\App\Conf\Config::VAT_PERCENTAGE}} VAT</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>{{ number_format(round(($assessment['totalCost']*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
+                                                        <td>{{ number_format(round(($reinspection['total']*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
                                                         <td></td>
                                                     </tr>
                                                 @endif

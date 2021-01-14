@@ -166,6 +166,7 @@
                                         <div class="step-actions">
                                             <input type="hidden" name="counter" id="counter" value="{{$count}}">
                                             <input type="hidden" name="assessmentID" id="assessmentID" value="{{$assessments->id}}">
+                                            <input type="hidden" name="assessmentIds" id="assessmentIds" value="{{json_encode($assessmentIds)}}">
                                             <input type="hidden" name="reInspected" id="reInspected" value="{{$assessments->id}}">
                                             <input type="submit" class="waves-effect waves-dark btn next-step showActionButton actionButton"
                                                    value="SUBMIT" id="submitReinspection"/>

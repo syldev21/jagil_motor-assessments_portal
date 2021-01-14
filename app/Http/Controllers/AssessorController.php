@@ -193,7 +193,7 @@ class AssessorController extends Controller
         array_push($assessmentIds,$assessments->id);
         $inspections = ReInspection::where(['assessmentID' => isset($assessments) ? $assessments->id : 0])->first();
         $assessmentItems = AssessmentItem::whereIn("assessmentID", $assessmentIds)->with("part")->get();
-        return view('assessor.re-inspection-report', ['assessments' => $assessments, 'assessmentItems' => $assessmentItems, 'inspections' => $inspections]);
+        return view('assessor.re-inspection-report', ['assessments' => $assessments, 'assessmentItems' => $assessmentItems, 'inspections' => $inspections,'assessmentIds'=>$assessmentIds]);
     }
 
     public function uploadDocuments(Request $request)
@@ -1239,6 +1239,7 @@ class AssessorController extends Controller
 
             $assessmentID = $request->assessmentID;
             $totalImages = $request->totalImages;
+            $assessmentIds = json_decode($request->assessmentIds,true);
             $repaired = json_decode($request->repaired, true);
             $replaced = json_decode($request->replaced, true);
             $cil = json_decode($request->cil, true);
@@ -1246,6 +1247,13 @@ class AssessorController extends Controller
             $notes = isset($request->notes) ? $request->notes : '';
             $assessment = Assessment::where(['id' => $request->assessmentID])->first();
             $claim = Claim::where(["id" => $assessment->claimID])->first();
+            if($claim->intimationDate >= Config::VAT_REDUCTION_DATE && $claim->intimationDate <= Config::VAT_END_DATE)
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::CURRENT_VAT)/Config::INITIAL_PERCENTAGE;
+            }else
+            {
+                $vat = (Config::INITIAL_PERCENTAGE+Config::VAT)/Config::INITIAL_PERCENTAGE;
+            }
 
             $labor = 0;
             $addLabor = 0;
@@ -1264,19 +1272,26 @@ class AssessorController extends Controller
             }
 
             //Assessment Total
-            $sumAssessmentParts = AssessmentItem::where('assessmentID', $request->assessmentID)->sum('total');
+            $sumAssessmentParts = AssessmentItem::whereIn('assessmentID', $assessmentIds)
+                ->whereIn('id', $replaced)
+                ->sum('total');
 
-            $sumAssessmentDetails = JobDetail::where(["assessmentID" => $request->assessmentID])->sum('cost');
+            $sumAssessmentDetails = JobDetail::whereIn("assessmentID", $assessmentIds)->sum('cost');
             $status = $assessment->assessmentTypeID;
 
+//            $unReInspectedAmount = AssessmentItem::whereIn('assessmentID', $assessmentIds)
+//                ->whereNotIn('id', $replaced)
+//                ->sum('total');
+
             if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                $assessmentTotal = (($sumAssessmentParts + ($sumAssessmentDetails) * Config::CURRENT_TOTAL_PERCENTAGE) / Config::INITIAL_PERCENTAGE);
+                $assessmentTotal = (($sumAssessmentParts + $sumAssessmentDetails+$addLabor)-$labor) * $vat;
             } else {
-                $assessmentTotal = (($sumAssessmentParts * Config::MARK_UP) + $sumAssessmentDetails);
+                $assessmentTotal = ($sumAssessmentParts * Config::MARK_UP) + ($sumAssessmentDetails+$addLabor)-$labor;
             }
+            $finalTotal = $assessmentTotal;
             if (isset($repaired) || isset($replaced) || isset($cil) || isset($reused)) {
                 if (isset($repaired)) {
-                    AssessmentItem::where('assessmentID', $assessmentID)
+                    AssessmentItem::whereIn('assessmentID', $assessmentIds)
                         ->whereIn('id', $repaired)
                         ->update([
                             'reInspectionType' => Config::$JOB_CATEGORIES['REPAIR']['ID'],
@@ -1284,7 +1299,7 @@ class AssessorController extends Controller
                         ]);
                 }
                 if (isset($replaced)) {
-                    AssessmentItem::where('assessmentID', $assessmentID)
+                    AssessmentItem::whereIn('assessmentID', $assessmentIds)
                         ->whereIn('id', $replaced)
                         ->update([
                             'reInspectionType' => Config::$JOB_CATEGORIES['REPLACE']['ID'],
@@ -1292,7 +1307,7 @@ class AssessorController extends Controller
                         ]);
                 }
                 if (isset($cil)) {
-                    AssessmentItem::where('assessmentID', $assessmentID)
+                    AssessmentItem::whereIn('assessmentID', $assessmentIds)
                         ->whereIn('id', $cil)
                         ->update([
                             'reInspectionType' => Config::$JOB_CATEGORIES['CIL']['ID'],
@@ -1300,7 +1315,7 @@ class AssessorController extends Controller
                         ]);
                 }
                 if (isset($reused)) {
-                    AssessmentItem::where('assessmentID', $assessmentID)
+                    AssessmentItem::whereIn('assessmentID', $assessmentIds)
                         ->whereIn('id', $reused)
                         ->update([
                             'reInspectionType' => Config::$JOB_CATEGORIES['REUSE']['ID'],
@@ -1308,32 +1323,29 @@ class AssessorController extends Controller
                         ]);
                 }
 
-                $unReInspectedAmount = AssessmentItem::where('assessmentID', $assessmentID)
-                    ->where('reInspection', 0)
-                    ->sum('total');
-
-                $award = AssessmentItem::where('assessmentID', $assessmentID)
+                $award = AssessmentItem::whereIn('assessmentID', $assessmentIds)
                     ->where('reInspection', 0)
                     ->where('reInspectionType', Config::$JOB_CATEGORIES['CIL']['ID'])
                     ->sum('total');
 
-                $unReInspectedParts = AssessmentItem::where('assessmentID', $assessmentID)
+                $unReInspectedParts = AssessmentItem::whereIn('assessmentID', $assessmentIds)
                     ->where('reInspection', 0)
                     ->get();
 
-                if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-//                    $priceChange = $priceChange * 1.14;
-                    $unReInspectedAmount = (Config::CURRENT_TOTAL_PERCENTAGE / Config::INITIAL_PERCENTAGE) * $unReInspectedAmount;
-                    $labor = $labor * (Config::CURRENT_TOTAL_PERCENTAGE / Config::INITIAL_PERCENTAGE);
-                    $addLabor = $addLabor * (Config::CURRENT_TOTAL_PERCENTAGE / Config::INITIAL_PERCENTAGE);
-                    $finalTotal = ($assessmentTotal + $addLabor) - ($unReInspectedAmount + $labor);
-                    // dd($assessmentTotal , $addLabor , $priceChange , $supplementaryTotal, $unReInspectedAmount , $labor);
-                } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $priceChange = $priceChange * Config::MARK_UP;
-                    $unReInspectedAmount = Config::MARK_UP * $unReInspectedAmount;
-                    $finalTotal = ($assessmentTotal + $addLabor) - ($unReInspectedAmount + $labor);
-                }
-
+//                if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+////                    $priceChange = $priceChange * 1.14;
+//                    $unReInspectedAmount = $unReInspectedAmount;
+////                    $labor = $labor * $vat;
+////                    $addLabor = $addLabor * $vat;
+//                    $finalTotal = ($assessmentTotal + $addLabor) - ($unReInspectedAmount + $labor);
+//                    // dd($assessmentTotal , $addLabor , $priceChange , $supplementaryTotal, $unReInspectedAmount , $labor);
+//                } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
+//                    $priceChange = $priceChange * Config::MARK_UP;
+//                    $unReInspectedAmount = Config::MARK_UP * $unReInspectedAmount;
+//                    $finalTotal = ($assessmentTotal + $addLabor) - ($unReInspectedAmount + $labor);
+//                }
+//                echo "finalTotal ".$finalTotal." assessmentTotal ".$assessmentTotal." addLabor ".$addLabor." labor ".$labor." unReInspectedAmount".$unReInspectedAmount;
+//                exit();
                 if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $subAmount = (Config::MARK_UP * $award) + $labor;
                 } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
@@ -1468,15 +1480,20 @@ class AssessorController extends Controller
     {
         $assessmentID = $request->assessmentID;
         $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
-        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
-        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
+        $assessmentIds = Assessment::where(['assessmentID'=> $assessmentID,'assessmentStatusID' =>Config::$STATUSES['ASSESSMENT']['APPROVED']])->pluck('id')->toArray();
+        array_push($assessmentIds,$assessmentID);
+        $assessmentItems = AssessmentItem::whereIn("assessmentID", $assessmentIds)->with('part')->get();
+        $jobDetails = JobDetail::whereIn("assessmentID", $assessmentIds)
+            ->select([DB::raw("SUM(cost) as cost"), 'name'])
+            ->groupBy('name')
+            ->get();
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
         $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
         $reinspection = ReInspection::where(['assessmentID' => $assessmentID])->first();
         $documents = Document::where(["inspectionID" => $reinspection->id])->get();
         $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
         $assessor = User::where(['id' => $assessment->assessedBy])->first();
-        return view("assessor.view-re-inspection-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor,'reinspection'=>$reinspection]);
+        return view("assessor.view-re-inspection-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor,'reinspection'=>$reinspection,'assessmentIds'=>$assessmentIds]);
     }
 
     public function editAssessmentReport(Request $request, $assessmentID)
