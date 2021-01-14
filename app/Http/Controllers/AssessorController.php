@@ -2723,7 +2723,7 @@ class AssessorController extends Controller
                     $img->save(public_path('thumbnail/'). $document->name);
                 }
 
-                Document::where('id', $document-id)->update(['isResized' => 1]);
+                Document::where('id', $document->id)->update(['isResized' => 1]);
             }
         }
     }
