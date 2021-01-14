@@ -586,7 +586,8 @@
             '                                                            </label>\n' +
             '                                                        </td>\n' +
             '                                                        <td>\n' +
-            '                                                            <select id="vehiclePart_'+t+'" name="vehiclePart[]" class="browser-default">\n' +
+            '                                                            <select id="vehiclePart_'+t+'" name="vehiclePart[]" class="browser-default" required>\n' +
+            '                                                                <option value="" disabled selected>Not Selected</option>\n'+
             '                                                                @foreach($parts as $part)\n' +
             '                                                                    <option value="{{$part->id}}">{{$part->name}}</option>\n' +
             '                                                                @endforeach\n' +
@@ -728,7 +729,7 @@
 
         } else if(assessmentType == 2) {
 
-            result = (parseFloat( "0" + cil ) + parseFloat( "0" + total )* 0.9);
+            result = parseFloat( "0" + cil ) + (parseFloat( "0" + total )* 0.9);
 
         } else if(assessmentType == 3) {
 
