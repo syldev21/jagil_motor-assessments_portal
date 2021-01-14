@@ -413,6 +413,10 @@
                                         <p>{!! $assessment['note'] !!}</p>
 
                                         <p>Assessed By: {{$assessor->firstName}} {{$assessor->lastName}}</p>
+                                        <?php
+                                        $reInspector = \App\User::where(['id'=> isset($reinspection['modifiedBy']) ? $reinspection['modifiedBy'] : $reinspection['createdBy']])->first();
+                                        ?>
+                                        <p>Inspected By: {{$reInspector->name}}</p>
                                     </div>
                                 </div>
                                 @foreach($documents->chunk(4) as $chunk)
