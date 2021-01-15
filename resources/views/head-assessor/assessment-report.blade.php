@@ -509,7 +509,7 @@
                                         ?>
                                         <div class="col s3">
                                             <a href="{{url($path.'/'.$document['name']) }}" data-lightbox="gallery">
-                                                <img class="responsive-img" src="{{url('documents/'.$document['name']) }}">
+                                                <img class="responsive-img" src="{{url($path.'/'.$document['name']) }}">
                                             </a>
                                         </div>
                                     @endforeach
