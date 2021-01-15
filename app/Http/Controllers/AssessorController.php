@@ -2712,7 +2712,7 @@ class AssessorController extends Controller
         $ids = is_array($ids) ? $ids : array();
         $documents = Document::where(['isResized' => 0,"documentType"=>Config::$DOCUMENT_TYPES['IMAGE']['ID']])
             ->whereNotIn('id',$ids)
-            ->where('dateCreated', '>=', Carbon::now(Config::DEFAULT_TIMEZONE)->subMinutes(5))
+            ->where('dateCreated', '>=', Carbon::now(Config::DEFAULT_TIMEZONE)->subDays(1))
             ->get();
         if(count($documents) >0)
         {
