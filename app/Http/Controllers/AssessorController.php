@@ -2706,24 +2706,32 @@ class AssessorController extends Controller
         return json_encode($response);
     }
 
-    public function resizeImages(Request $request)
+    public function resizeImages(Request $request,$ids=null)
     {
-        $documents = Document::where(['isResized' => 0,"documentType"=>Config::$DOCUMENT_TYPES['IMAGE']['ID']])->get();
+        $documents = Document::where(['isResized' => 0,"documentType"=>Config::$DOCUMENT_TYPES['IMAGE']['ID']])
+            ->whereNotIn('id',$ids)
+            ->get();
         if(count($documents) >0)
         {
             foreach ($documents as $document)
             {
-                $img = Image::make(public_path('documents/').$document->name);
-                $size = $img->filesize();
-                if ($size > 300) {
-                    $img->resize(850, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    });
-                    $img->save(public_path('thumbnail/'). $document->name);
-                }
+                try {
+                    $img = Image::make(public_path('documents/').$document->name);
+                    $size = $img->filesize();
+                    if ($size > 300) {
+                        $img->resize(850, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                        $img->save(public_path('thumbnail/'). $document->name);
+                    }
 
-                Document::where('id', $document->id)->update(['isResized' => 1]);
+                    Document::where('id', $document->id)->update(['isResized' => 1]);
+                }catch (\Exception $e)
+                {
+                    array_push($ids,$document->id);
+                    $this->resizeImages($request,$ids);
+                }
             }
         }
     }
