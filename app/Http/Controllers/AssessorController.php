@@ -2706,10 +2706,13 @@ class AssessorController extends Controller
         return json_encode($response);
     }
 
-    public function resizeImages(Request $request,$ids=null)
+    public function resizeImages($ids=null)
     {
+
+        $ids = is_array($ids) ? $ids : array();
         $documents = Document::where(['isResized' => 0,"documentType"=>Config::$DOCUMENT_TYPES['IMAGE']['ID']])
             ->whereNotIn('id',$ids)
+            ->where('dateCreated', '>=', Carbon::now(Config::DEFAULT_TIMEZONE)->subMinutes(5))
             ->get();
         if(count($documents) >0)
         {
@@ -2730,7 +2733,7 @@ class AssessorController extends Controller
                 }catch (\Exception $e)
                 {
                     array_push($ids,$document->id);
-                    $this->resizeImages($request,$ids);
+                    $this->resizeImages($ids);
                 }
             }
         }
