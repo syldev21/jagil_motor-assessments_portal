@@ -498,10 +498,17 @@
                                 </div>
                             </div>
                             @foreach($documents->chunk(4) as $chunk)
+                                    <?php
+                                    if ($document['isResized'] == 1) {
+                                        $path = 'thumbnail';
+                                    } else {
+                                        $path = 'documents';
+                                    }
+                                    ?>
                                 <div class="row">
                                     @foreach($chunk as $document)
                                         <div class="col s3">
-                                            <a href="{{url('documents/'.$document['name']) }}" data-lightbox="gallery">
+                                            <a href="{{url($path.'/'.$document['name']) }}" data-lightbox="gallery">
                                                 <img class="responsive-img" src="{{url('documents/'.$document['name']) }}">
                                             </a>
                                         </div>
