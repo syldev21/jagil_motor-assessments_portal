@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('image:resize')->everyFiveMinutes()->withoutOverlapping();
+        $schedule->command('image:resize')->everyMinute()->withoutOverlapping();
     }
 
     /**
