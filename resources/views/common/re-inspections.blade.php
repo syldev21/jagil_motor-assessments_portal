@@ -51,7 +51,8 @@
                                             <th>No</th>
                                             <th>Claim Number</th>
                                             <th>Model</th>
-                                            <th>Registration Number</th>
+                                            <th>Chassis</th>
+                                            <th>RegNo</th>
                                             <th>Adjuster</th>
                                             <th>Approved By</th>
                                             <th>Final Approver</th>
@@ -73,6 +74,7 @@
                                                     $adjuster = \App\User::where(['id'=> $assessment['claim']['createdBy']])->first();
                                                     ?>
                                                     <td>{{$carDetail->modelName}}</td>
+                                                    <td>{{$assessment['claim']['chassisNumber']}}</td>
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
                                                     <td>{{isset($adjuster) ? $adjuster->firstName.' '.$adjuster->lastName : ''}}</td>
                                                     <td>{{isset($assessment->approver->firstName) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver->lastName) ? $assessment->approver->lastName : ''}}</td>
