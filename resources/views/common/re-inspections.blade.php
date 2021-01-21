@@ -54,11 +54,11 @@
                                             <th>Chassis</th>
                                             <th>RegNo</th>
                                             <th>Adjuster</th>
-                                            <th>Approved By</th>
-                                            <th>Final Approver</th>
-                                            <th>Assessed By</th>
+                                            <th>Approver</th>
+{{--                                            <th>Final Approver</th>--}}
+                                            <th>Assessor</th>
                                             <th>Status</th>
-                                            <th>{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}}</th>
+                                            <th>Time</th>
                                             <th>Type</th>
                                             <th>Operation</th>
                                         </tr>
@@ -77,8 +77,13 @@
                                                     <td>{{$assessment['claim']['chassisNumber']}}</td>
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
                                                     <td>{{isset($adjuster) ? $adjuster->firstName.' '.$adjuster->lastName : ''}}</td>
-                                                    <td>{{isset($assessment->approver->firstName) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver->lastName) ? $assessment->approver->lastName : ''}}</td>
-                                                    <td>{{isset($assessment->final_approver->firstName) ? $assessment->final_approver->firstName : ''}} {{isset($assessment->final_approver->lastName) ? $assessment->final_approver->lastName : ''}}</td>
+                                                    <td>
+                                                        @if($assessment->final_approver)
+                                                            {{isset($assessment->final_approver->firstName) ? $assessment->final_approver->firstName : ''}} {{isset($assessment->final_approver->lastName) ? $assessment->final_approver->lastName : ''}}
+                                                        @else
+                                                            {{isset($assessment->approver->firstName) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver->lastName) ? $assessment->approver->lastName : ''}}
+                                                        @endif
+                                                    </td>
                                                     <td>{{isset($assessment->assessor) ? $assessment->assessor->firstName.' '.$assessment->assessor->lastName : ''}}</td>
                                                     @if($assessment['assessmentStatusID']  == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                         <td>
@@ -111,8 +116,19 @@
                                                                 class="btn red lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['text']}}</button>
                                                         </td>
                                                     @endif
+                                                    <?php
+                                                    if (isset($assessment['finalApprovedAt'])) {
+                                                        $date = $assessment['finalApprovedAt'];
+                                                    } elseif ($assessment['approvedAt']) {
+                                                        $date = $assessment['approvedAt'];
+                                                    } elseif ($assessment['assessedAt']) {
+                                                        $date = $assessment['assessedAt'];
+                                                    } else {
+                                                        $date = $assessment['dateCreated'];
+                                                    }
+                                                    ?>
                                                     <td>
-                                                        {{\Carbon\Carbon::parse($assessment['dateCreated'])->diffForHumans()}}
+                                                        {{\Carbon\Carbon::parse($date)->diffForHumans()}}
                                                     </td>
                                                     <td>
                                                         {{ isset($assessment['assessmentTypeID'])  ?  \App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']] : ''}}
