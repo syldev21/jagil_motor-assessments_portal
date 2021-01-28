@@ -77,6 +77,12 @@ ul.stepper.horizontal .step .step-content .step-actions{
 .hideActionButton{
     display: none !important;
 }
+h5{
+    font-size: 1rem !important;
+}
+h6{
+    font-size: 0.8rem !important;
+}
 
 
 
