@@ -85,7 +85,7 @@ class AssessorController extends Controller
             $draftAssessment = array();
         }
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-        $modelAndMake = CarModel::select('makeCode', 'modelCode', 'makeName', 'modelName')->get();
+        $modelsAndMakes = CarModel::select('id','makeCode', 'modelCode', 'makeName', 'modelName')->get();
 //        $remarks = Remarks::select("id","name")->get();
 //        $parts = Part::select("id","name")->get();
         $remarks = Cache::remember('remarks', Config::CACHE_EXPIRY_PERIOD, function () {
@@ -131,7 +131,7 @@ class AssessorController extends Controller
                 $jobDraftDetail["Dam Kit"] = $jobDetail->cost;
             }
         }
-        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails, 'claim' => $claim, 'drafted' => $drafted]);
+        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails, 'claim' => $claim, 'drafted' => $drafted,'modelsAndMakes'=>$modelsAndMakes]);
     }
 
     public function fillSupplementaryReport(Request $request, $assessmentID)
@@ -139,8 +139,8 @@ class AssessorController extends Controller
         $supplementaryAssessment = Assessment::where(['id' => $assessmentID])->first();
         $assessment = Assessment::where(['id' => $assessmentID])->with('claim')->first();
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
-//        $remarks = Remarks::all();
-//        $parts = Part::all();
+        //$remarks = Remarks::all();
+       //$parts = Part::all();
         $remarks = Cache::remember('remarks', Config::CACHE_EXPIRY_PERIOD, function () {
             return Remarks::select("id", "name")->get();
         });
@@ -348,10 +348,16 @@ class AssessorController extends Controller
             $cause = !empty($jobsData['cause']) ? $jobsData['cause'] : null;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
             $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
-            if ($chassisNumber != '') {
+            $carMake = !empty($jobsData['carMake']) ? $jobsData['carMake'] : '';
+            $carModel = !empty($jobsData['carModel']) ? $jobsData['carModel'] : '';
+            $YOM = !empty($jobsData['YOM']) ? $jobsData['YOM'] : '';
+            if ($chassisNumber != '' && $carMake !='' && $carModel !='') {
                 $assessment = Assessment::where(['id' => $assessmentID])->first();
                 Claim::where(['id' => $assessment->claimID])->update([
-                    "chassisNumber" => $chassisNumber
+                    "chassisNumber" => $chassisNumber,
+                    "carMakeCode" => $carMake,
+                    "carModelCode" => $carModel,
+                    "yom" => $YOM
                 ]);
             }
             foreach ($partsData as $partDetail) {
@@ -1504,6 +1510,8 @@ class AssessorController extends Controller
         $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
 //        $remarks = Remarks::all();
 //        $parts = Part::all();
+        $modelsAndMakes = CarModel::select('id','makeCode', 'modelCode', 'makeName', 'modelName')->get();
+
         $remarks = Cache::remember('remarks', Config::CACHE_EXPIRY_PERIOD, function () {
             return Remarks::select("id", "name")->get();
         });
@@ -1547,7 +1555,7 @@ class AssessorController extends Controller
             }
         }
 
-        return view('assessor.edit-assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails]);
+        return view('assessor.edit-assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails,"modelsAndMakes"=>$modelsAndMakes]);
     }
 
     public function editSupplementaryReport(Request $request, $assessmentID)
@@ -1652,10 +1660,16 @@ class AssessorController extends Controller
             $cause = !empty($jobsData['cause']) ? $jobsData['cause'] : null;
             $note = !empty($jobsData['note']) ? $jobsData['note'] : null;
             $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
-            if ($chassisNumber != '') {
+            $carMake = !empty($jobsData['carMake']) ? $jobsData['carMake'] : '';
+            $carModel = !empty($jobsData['carModel']) ? $jobsData['carModel'] : '';
+            $YOM = !empty($jobsData['YOM']) ? $jobsData['YOM'] : '';
+            if ($chassisNumber != '' && $carMake !='' && $carModel != '') {
                 $assessment = Assessment::where(['id' => $assessmentID])->first();
                 Claim::where(['id' => $assessment->claimID])->update([
-                    "chassisNumber" => $chassisNumber
+                    "chassisNumber" => $chassisNumber,
+                    "carMakeCode" => $carMake,
+                    "carModelCode" => $carModel,
+                    "YOM" => $YOM
                 ]);
             }
             foreach ($partsData as $partDetail) {

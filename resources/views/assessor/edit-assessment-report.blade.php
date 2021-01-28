@@ -27,18 +27,35 @@
                                                 <label for="chassisNumber" class="active">Chassis Number</label>
                                             </div>
                                             <div class="input-field col m2 s12">
-                                                <input placeholder="" id="carMake" type="text" name="carMake"
-                                                       value="{{$carDetails->makeName}}" disabled />
+{{--                                                <input placeholder="" id="carMake" type="text" name="carMake"--}}
+{{--                                                       value="{{$carDetails->makeName}}" disabled />--}}
                                                 <label for="carMake" class="active">Car Make</label>
+                                                <br>
+                                                <select id="carMake" name="carMake" class="browser-default">
+                                                    @foreach($modelsAndMakes->unique("makeCode") as $modelAndMake)
+                                                        <option value="{{$modelAndMake->makeCode}}" @if($modelAndMake->
+                                                        makeCode==$carDetails->makeCode) selected
+                                                            @endif>{{$modelAndMake->makeName}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="input-field col m2 s12">
-                                                <input placeholder="" id="carModel" type="text" name="carModel"
-                                                       value="{{$carDetails->modelName}}" disabled />
+{{--                                                <input placeholder="" id="carModel" type="text" name="carModel"--}}
+{{--                                                       value="{{$carDetails->modelName}}" disabled />--}}
                                                 <label for="carModel" class="active">Car Model</label>
+                                                <br>
+                                                <select id="carModel" name="carModel" class="browser-default">
+                                                    @foreach($modelsAndMakes as $modelAndMake)
+                                                        <option value="{{$modelAndMake->modelCode}}" @if($modelAndMake->modelCode ==
+                                                        $carDetails->modelCode) selected @endif>{{$modelAndMake->modelName}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="input-field col m2 s12">
                                                 <input placeholder="" id="YOM" type="text" name="YOM"
-                                                       value="{{$assessment->claim->yom}}" disabled />
+                                                       value="{{$assessment->claim->yom}}"/>
                                                 <label for="YOM" class="active">YOM</label>
                                             </div>
                                             <div class="input-field col m3 s12">
@@ -574,6 +591,8 @@
         }
 
         $("#vehiclePart_"+t).select2({dropdownAutoWidth : true, width: '160px'});
+        $("#carMake").select2({dropdownAutoWidth : true, width: '100px'});
+        $("#carModel").select2({dropdownAutoWidth : true, width: '100px'});
         var partsCounter = $("#counter").val()+1;
         for(var i=1;i<partsCounter;i++)
         {

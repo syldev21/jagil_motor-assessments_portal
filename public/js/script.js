@@ -1803,6 +1803,9 @@ $(document).ready(function () {
         var sumTotal = $("#sumTotal");
         var pav = $("#PAV");
         var chassisNumber = $("#chassisNumber");
+        var carMake = $("#carMake");
+        var carModel = $("#carModel");
+        var YOM = $("#YOM");
         var salvage = $("#salvage");
         var totalLoss = $("#total_loss");
         var note = CKEDITOR.instances['notes'].getData();
@@ -1820,6 +1823,9 @@ $(document).ready(function () {
             sumTotal : sumTotal.val(),
             pav : pav.val(),
             chassisNumber : chassisNumber.val(),
+            carMake : carMake.val(),
+            carModel : carModel.val(),
+            YOM : YOM.val(),
             salvage : salvage.val(),
             totalLoss : totalLoss.val(),
             cause : cause,
@@ -2997,6 +3003,9 @@ $(document).ready(function () {
         var sumTotal = $("#sumTotal");
         var pav = $("#PAV");
         var chassisNumber = $("#chassisNumber");
+        var carMake = $("#carMake");
+        var carModel = $("#carModel");
+        var YOM = $("#YOM");
         var salvage = $("#salvage");
         var totalLoss = $("#total_loss");
         var note = CKEDITOR.instances['notes'].getData();
@@ -3015,6 +3024,9 @@ $(document).ready(function () {
             sumTotal : sumTotal.val(),
             pav : pav.val(),
             chassisNumber : chassisNumber.val(),
+            carMake : carMake.val(),
+            carModel : carModel.val(),
+            YOM : YOM.val(),
             salvage : salvage.val(),
             totalLoss : totalLoss.val(),
             cause : cause,
