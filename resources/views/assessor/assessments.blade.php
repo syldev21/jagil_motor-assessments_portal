@@ -199,7 +199,7 @@
                                                                        data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">insert_drive_file</i>Re-Inspection
                                                                         Report</a></li>
-                                                                    @if($assessment['segment'] == \App\Conf\Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID'])
+                                                                    @if(isset($assessment->reInspection))
                                                                         <li>
                                                                             <a href="#"
                                                                                id="assessor-view-re-inspection-report"
@@ -207,6 +207,9 @@
                                                                                     class="material-icons">insert_drive_file</i>View
                                                                                 Re-Inspection
                                                                                 Report</a></li>
+                                                                        <li><a href="{{url('/adjuster/re-inspection-letter/'.$assessment['id'])}}" target="_blank"><i
+                                                                                    class="material-icons">picture_as_pdf</i>View
+                                                                                Re-inspection Letter</a></li>
                                                                     @endif
                                                                     <?php
                                                                     $Pchange=\App\PriceChange::where(['assessmentID'=>$assessment['id']])->first();
