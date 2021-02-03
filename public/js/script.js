@@ -3190,6 +3190,7 @@ $(document).ready(function () {
     });
     $("body").on('click','#submitSupplementary',function (e){
         e.preventDefault();
+        addLoadingButton();
         var assessmentStatusID = $(this).data("id");
         // var counter = $("#counter").val();
         var counter = $('td input:checkbox').length;
@@ -3278,7 +3279,6 @@ $(document).ready(function () {
             image_upload.append('drafted', drafted.val());
             image_upload.append('jobsData', JSON.stringify(jobsData));
             image_upload.append('partsData', JSON.stringify(partsData));
-            addLoadingButton();
             $.ajaxSetup({
 
                 headers: {
@@ -3384,7 +3384,6 @@ $(document).ready(function () {
                 image_upload.append('drafted', drafted.val());
                 image_upload.append('jobsData', JSON.stringify(jobsData));
                 image_upload.append('partsData', JSON.stringify(partsData));
-                addLoadingButton();
                 $.ajaxSetup({
 
                     headers: {

@@ -297,7 +297,7 @@
                                                                    @if(isset($supplementaryAssessment->assessmentTypeID))
                                                                         @if($supplementaryAssessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["AUTHORITY_TO_GARAGE"]) checked @endif
                                                                    @else
-                                                                       checked
+                                                                       disabled
                                                                    @endif
                                                             />
                                                             <span>Authority To Garage</span>
@@ -484,7 +484,7 @@
 </div>
 @if(isset($supplementaryAssessment->id))
 <?php
-    $images = \App\Document::where(["assessmentID"=>$supplementaryAssessment->id])->get();
+    $images = json_encode(array());
 ?>
 <input type="hidden" value="{{$images}}" name="imagesArray" id="imagesArray">
 @endif
