@@ -101,33 +101,36 @@
                                                         </td>
                                                         <?php $date = $assessment['approvedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-{{--                                                        @if($assessment['changeTypeID'] == \App\Conf\Config::$STATUSES['PRICE-CHANGE']['HA-APPROVE']['id'])--}}
-                                                         <?php
+                                                        <?php
                                                         $Pchange=\App\PriceChange::where(['assessmentID'=>$assessment['id']])->first();
-                                                        $change=isset($Pchange)?$Pchange:null;
+                                                        $change=isset($Pchange)?$Pchange:'false';
                                                         ?>
-                                                        @if($change==null)
-                                                            <td>
-                                                                <button
-                                                                    class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
-                                                            </td>
-                                                        @else
 
-                                                        @if(($change->approvedBy) || ($change->finalApproved==1))
-                                                            <td>
-                                                                <button
-                                                                    class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
-                                                            </td>
-                                                        @else
-                                                            <td>
-                                                                <button
-                                                                    class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['PRICE-CHANGE']['HA-APPROVE']['text']}}</button>
-                                                            </td>
+                                                            @if($change=='false')
+                                                                <td>
+                                                                    <button
+                                                                        class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
+                                                                </td>
+{{--                                                                <td>--}}
+{{--                                                                    <button--}}
+{{--                                                                        class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['PRICE-CHANGE']['AM-APPROVE']['text']}}</button>--}}
+{{--                                                                </td>--}}
+                                                            @else
+                                                                @if(($change->finalApproved==1))
+                                                                    <td>
+                                                                        <button
+                                                                            class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['text']}}</button>
+                                                                    </td>
+                                                                @else
+                                                                    <td>
+                                                                        <button
+                                                                            class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['PRICE-CHANGE']['AM-APPROVE']['text']}}</button>
+                                                                    </td>
 
-                                                        @endif
-                                                        @endif
+                                                                @endif
+                                                            @endif
 
-                                                        <?php $date = $assessment['finalApprovedAt']?>
+                                                        <?php $date = $assessment['finalApprovedAt'] ?>
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'])
                                                         <td>
                                                             <button
