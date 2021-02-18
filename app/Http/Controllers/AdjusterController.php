@@ -11,6 +11,7 @@ use App\Document;
 use App\Helper\SMSHelper;
 use App\JobDetail;
 use App\Notifications\NewClaimNotification;
+use App\PriceChange;
 use App\ReInspection;
 use App\StatusTracker;
 use App\Conf\Config;
@@ -661,6 +662,8 @@ class AdjusterController extends Controller
     public function assessmentReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
+        $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
+        $aproved = isset($priceChange) ? $priceChange : 'false';
         $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
@@ -670,7 +673,7 @@ class AdjusterController extends Controller
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
         $carDetail = CarModel::where(['makeCode'=> isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '','modelCode'=> isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-        return view("adjuster.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'carDetail'=>$carDetail]);
+        return view("adjuster.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved' => $aproved,'carDetail'=>$carDetail,'priceChange'=>$priceChange]);
     }
 
     public function claims(Request $request)

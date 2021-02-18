@@ -300,7 +300,9 @@
                                                 <td>{{ number_format(round(\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total') * \App\Conf\Config::MARK_UP)) }}</td>
                                             </tr>
                                         @endif
-
+                                        <?php
+                                        $jobValue=0;
+                                        ?>
                                         @foreach($jobDetails as $jobDetail)
                                             <tr>
                                                 <td></td>
@@ -312,6 +314,10 @@
                                                 <td>{{ number_format($jobDetail['cost']) }}</td>
                                                 <td></td>
                                             </tr>
+                                            <?php
+                                            $jobValue += $jobDetail['cost'];
+
+                                            ?>
                                         @endforeach
 
                                         @if($assessment['assessmentTypeID'] != 2)
@@ -372,7 +378,17 @@
                                             <td class="text-bold">Grand Total</td>
                                             <td></td>
                                             <td></td>
-                                            <td>{{ number_format($assessment['totalCost']) }}</td>
+                                            @if($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+                                                <td>{{ number_format(round((\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')*0.9)+$jobValue)) }}
+                                            @else
+                                                <td>
+                                                    @if(isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt))
+                                                        {{ number_format($assessment['totalChange']) }}
+                                                    @else
+                                                        {{ number_format($assessment['totalCost']) }}
+                                                    @endif
+                                                </td>
+                                            @endif
                                             <td></td>
                                         </tr>
 

@@ -56,8 +56,8 @@ class AssistantHeadAssessorController extends Controller
     public function assessmentReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
-        $approved = PriceChange::where('assessmentID', $assessmentID)->first();
-        $aproved = isset($approved) ? $approved : 'false';
+        $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
+        $aproved = isset($priceChange) ? $priceChange : 'false';
 
         $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
@@ -68,7 +68,7 @@ class AssistantHeadAssessorController extends Controller
         $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
         $assessor = User::where(['id' => $assessment->assessedBy])->first();
         $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-        return view("assistant-head-assessor.assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail]);
+        return view("assistant-head-assessor.assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail,'priceChange'=>$priceChange]);
     }
 
     public function requestAssessmentChange(Request $request)
