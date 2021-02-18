@@ -398,7 +398,7 @@
                                                 <td>{{ number_format(round((\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')*0.9)+$jobValue)) }}
                                             @else
                                             <td>
-                                                @if(isset($assessment['totalChange']))
+                                                @if(isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt))
                                                 {{ number_format($assessment['totalChange']) }}
                                                 @else
                                                     {{ number_format($assessment['totalCost']) }}
