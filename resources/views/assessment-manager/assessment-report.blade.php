@@ -277,7 +277,10 @@
                                             </tr>
 
                                         @endforeach
-
+                                        <?php
+                                        $sumOfTotalItems = \App\Helper\GeneralFunctions::getSumOfTotalItems($assessment['id']);
+                                        $markup = $assessment['dateCreated'] > \App\Conf\Config::MARK_UP_CUT_OFF_DATE ? \App\Conf\Config::NEW_MARKUP : \App\Conf\Config::MARK_UP;
+                                        ?>
                                         <tr>
                                             <td></td>
                                             <td></td>
@@ -285,11 +288,11 @@
                                             <td class="text-bold">Total parts cost</td>
                                             <td></td>
                                             <td></td>
-                                            <td>{{ number_format(\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')) }}</td>
+                                            <td>{{ number_format($sumOfTotalItems) }}</td>
                                             <td></td>
                                         </tr>
 
-                                        @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+                                        @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'] && $assessment['dateCreated'] < \App\Conf\Config::MARK_UP_CUT_OFF_DATE)
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -297,7 +300,7 @@
                                                 <td style="font-weight: bold;">Less Markup</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{{ number_format(round(\App\Helper\GeneralFunctions::getSumOfTotalItems($assessment['id']) * \App\Conf\Config::MARK_UP)) }}</td>
+                                                <td>{{ number_format(round($sumOfTotalItems * $markup)) }}</td>
                                             </tr>
                                         @endif
                                         <?php
@@ -379,7 +382,7 @@
                                             <td></td>
                                             <td></td>
                                             @if($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
-                                                <td>{{ number_format(round((\App\Helper\GeneralFunctions::getSumOfTotalItems($assessment['id']) * \App\Conf\Config::MARK_UP)+$jobValue)) }}
+                                                <td>{{ number_format(round(($sumOfTotalItems * $markup)+$jobValue)) }}
                                             @else
                                                 <td>
                                                     @if(isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt))
