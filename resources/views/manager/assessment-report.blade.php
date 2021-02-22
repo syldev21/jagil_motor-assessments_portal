@@ -395,7 +395,7 @@
                                             <td></td>
                                             <td></td>
                                             @if($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
-                                                <td>{{ number_format(round((\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')*0.9)+$jobValue)) }}
+                                                <td>{{ number_format(round((\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')*\App\Conf\Config::MARK_UP)+$jobValue)) }}
                                             @else
                                             <td>
                                                 @if(isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt))
