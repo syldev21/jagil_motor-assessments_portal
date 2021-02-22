@@ -737,7 +737,7 @@
 
         if("{{$assessment->claim->intimationDate}}" >= "{{\App\Conf\Config::VAT_REDUCTION_DATE}}" && "{{$assessment->claim->intimationDate}}" <= "{{\App\Conf\Config::VAT_END_DATE}}")
         {
-            var tax = "{{\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE}}"/"{{App\Conf\Config::INITIAL_PERCENTAGE}}";
+            var tax = "{{\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE}}"/"{{\App\Conf\Config::INITIAL_PERCENTAGE}}";
         }else
         {
             var tax = "{{\App\Conf\Config::TOTAL_PERCENTAGE}}"/"{{\App\Conf\Config::INITIAL_PERCENTAGE}}";
@@ -748,7 +748,7 @@
 
         } else if(assessmentType == 2) {
 
-            result = parseFloat( "0" + cil ) + (parseFloat( "0" + total )* 0.9);
+            result = parseFloat( "0" + cil ) + (parseFloat( "0" + total )* {{\App\Conf\Config::MARK_UP}});
 
         } else if(assessmentType == 3) {
 
