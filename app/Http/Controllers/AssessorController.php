@@ -403,7 +403,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * 0.9) + $others;
+                    $total = ($sum * Config::MARK_UP) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * $vat;
                 }
@@ -1564,7 +1564,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * 0.9) + $others;
+                    $total = ($sum * Config::MARK_UP) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * $vat;
                 }
@@ -2088,7 +2088,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * 0.9) + $others;
+                    $total = ($sum * Config::MARK_UP) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * $vat;
                 }
