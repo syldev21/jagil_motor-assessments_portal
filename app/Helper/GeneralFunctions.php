@@ -4,6 +4,7 @@
 namespace App\Helper;
 
 
+use App\AssessmentItem;
 use App\Claim;
 use App\Conf\Config;
 use App\Garage;
@@ -15,58 +16,56 @@ use Illuminate\Support\Facades\DB;
 class GeneralFunctions
 {
     private $log;
+
     function __construct()
     {
         $this->log = new CustomLogger();
     }
+
     public function curlDate()
     {
         date_default_timezone_set(Config::TIME_ZONE);
         return date('Y-m-d H:i:s');
     }
-    public function search($userID, $fromDate = NULL,$toDate = NULL,$vehicleRegNo= NULL)
+
+    public function search($userID, $fromDate = NULL, $toDate = NULL, $vehicleRegNo = NULL)
     {
-        if(isset($vehicleRegNo) && isset($userID))
-        {
+        if (isset($vehicleRegNo) && isset($userID)) {
             $assessors = DB::table('users')->where('userID', $userID)->get();
-            $claims = Claim::where("vehicleRegNo",$vehicleRegNo)->get();
-            if(count($claims) >0)
-            {
+            $claims = Claim::where("vehicleRegNo", $vehicleRegNo)->get();
+            if (count($claims) > 0) {
                 $data = array(
                     "assessors" => $assessors,
-                    "claims" =>$claims
+                    "claims" => $claims
                 );
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
                     "STATUS_MESSAGE" => "Claims data fetched successfully",
                     "DATA" => $data
                 );
-            }else
-            {
+            } else {
                 $response = array(
                     "STATUS_CODE" => Config::NO_RECORDS_FOUND,
-                    "STATUS_MESSAGE" => "No vehicle found with Reg No.".$vehicleRegNo,
+                    "STATUS_MESSAGE" => "No vehicle found with Reg No." . $vehicleRegNo,
                     "DATA" => []
                 );
             }
-        }elseif (isset($fromDate) && isset($toDate) && isset($userID))
-        {
+        } elseif (isset($fromDate) && isset($toDate) && isset($userID)) {
             try {
                 $assessors = DB::table('users')->where('userID', $userID)->get();
                 $garages = Garage::all();
-                $claims = Claim::where("dateCreated", '>=', $fromDate)->where("dateCreated","<=",$toDate)->get();
+                $claims = Claim::where("dateCreated", '>=', $fromDate)->where("dateCreated", "<=", $toDate)->get();
                 $data = array(
                     "assessors" => $assessors,
                     "garages" => $garages,
-                    "claims" =>$claims
+                    "claims" => $claims
                 );
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
                     "STATUS_MESSAGE" => "Claims data fetched successfully",
                     "DATA" => $data
                 );
-            }catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 $response = array(
                     "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
                     "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
@@ -77,7 +76,8 @@ class GeneralFunctions
         }
         return json_encode($response);
     }
-    public function humanTiming ($time)
+
+    public function humanTiming($time)
     {
 
         $time = time() - $time; // to get the time since that moment
@@ -97,5 +97,11 @@ class GeneralFunctions
             $numberOfUnits = floor($time / $unit);
             return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
         }
+    }
+
+    public static function getSumOfTotalItems($assessmentID)
+    {
+        $sumTotal =AssessmentItem::where('assessmentID', $assessmentID)->sum('total');
+        return $sumTotal;
     }
 }
