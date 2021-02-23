@@ -769,7 +769,7 @@
 
         } else if(assessmentType == 2) {
 
-            result = (parseFloat( "0" + cil ) + parseFloat( "0" + total )) * 0.9;
+            result = (parseFloat( "0" + cil ) + parseFloat( "0" + total )) * {{\App\Conf\Config::NEW_MARKUP}};
 
         } else if(assessmentType == 3) {
 

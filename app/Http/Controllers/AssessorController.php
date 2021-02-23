@@ -403,7 +403,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * Config::MARK_UP) + $others;
+                    $total = ($sum * Config::NEW_MARKUP) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * $vat;
                 }
@@ -896,7 +896,7 @@ class AssessorController extends Controller
                     if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                         $total = ($sum + $others) * $vat;
                     } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                        $total = ($sum * Config::MARK_UP) + $others;
+                        $total = ($sum * Config::NEW_MARKUP) + $others;
                     } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                         $total = ($sum + $others) * $vat;
                     }
@@ -1142,7 +1142,7 @@ class AssessorController extends Controller
             if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                 $assessmentTotal = (($sumAssessmentParts + $sumAssessmentDetails + $addLabor) - $labor) * $vat;
             } else {
-                $assessmentTotal = ($sumAssessmentParts * Config::MARK_UP) + ($sumAssessmentDetails + $addLabor) - $labor;
+                $assessmentTotal = ($sumAssessmentParts * Config::NEW_MARKUP) + ($sumAssessmentDetails + $addLabor) - $labor;
             }
             $finalTotal = $assessmentTotal;
             if (isset($repaired) || isset($replaced) || isset($cil) || isset($reused)) {
@@ -1203,9 +1203,9 @@ class AssessorController extends Controller
 //                echo "finalTotal ".$finalTotal." assessmentTotal ".$assessmentTotal." addLabor ".$addLabor." labor ".$labor." unReInspectedAmount".$unReInspectedAmount;
 //                exit();
                 if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                    $subAmount = (Config::MARK_UP * $award) + $labor;
+                    $subAmount = (Config::NEW_MARKUP * $award) + $labor;
                 } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $subAmount = (Config::MARK_UP * $award) + $labor;
+                    $subAmount = (Config::NEW_MARKUP * $award) + $labor;
                 }
                 $inspection = ReInspection::where(['assessmentID' => $assessmentID])->first();
                 if (isset($inspection->id)) {
@@ -1564,7 +1564,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * Config::MARK_UP) + $others;
+                    $total = ($sum * Config::NEW_MARKUP) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * $vat;
                 }
@@ -2088,7 +2088,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * Config::MARK_UP) + $others;
+                    $total = ($sum * Config::NEW_MARKUP) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * $vat;
                 }
@@ -2249,7 +2249,7 @@ class AssessorController extends Controller
                 $difference = ((Config::CURRENT_TOTAL_PERCENTAGE) / Config::INITIAL_PERCENTAGE * $difference);
                 $price_change = $assessment->totalCost + $difference;
             } else {
-                $difference = (Config::MARK_UP * $difference);
+                $difference = (Config::NEW_MARKUP * $difference);
                 $price_change = $assessment->totalCost + $difference;
             }
 
