@@ -53,8 +53,7 @@ class CommonController extends Controller
                     ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
                 $assessments = Assessment::where("assessedBy","!=",$id)
                     ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                    ->where('dateCreated',">=",$fromDate)
-                    ->where('dateCreated',"<=",$toDate)
+                    ->whereBetween('dateCreated', [$fromDate, $toDate])
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }
             return view('common.re-inspections', ['assessments' => $assessments, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],'asmts'=>$asmts]);
