@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Assessment;
+use App\Claim;
 use App\Conf\Config;
 use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,13 +28,35 @@ class CommonController extends Controller
         $assessmentStatusIDs = array(Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'],Config::$STATUSES['ASSESSMENT']['APPROVED']['id']);
 
         try {
-            $asmts=Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
-            ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
-            $assessments = Assessment::where("assessedBy","!=",$id)
-                ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-//            whereIn('assessmentStatusID', $assessmentStatusIDs)
-//            where('segment','=',Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID'])
-            ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
+            if(!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber))
+            {
+                $asmts=Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
+                    ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+                $assessments = Assessment::where("assessedBy","!=",$id)
+                    ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('dateCreated',">=",Carbon::now()->subDays(Config::DATE_RANGE))
+                    ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
+            }elseif (isset($request->regNumber))
+            {
+                $claim = Claim::where(['vehicleRegNo' => $request->regNumber])->first();
+                $asmts=Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
+                    ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+                $assessments = Assessment::where("assessedBy","!=",$id)
+                    ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('claimID',"=",$claim->id)
+                    ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
+            }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
+            {
+                $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+                $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+                $asmts=Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
+                    ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+                $assessments = Assessment::where("assessedBy","!=",$id)
+                    ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('dateCreated',">=",$fromDate)
+                    ->where('dateCreated',"<=",$toDate)
+                    ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
+            }
             return view('common.re-inspections', ['assessments' => $assessments, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],'asmts'=>$asmts]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
