@@ -135,7 +135,11 @@
 
                                                         <!-- Dropdown Structure -->
                                                         <?php
-                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->first();
+                                                        $claim='claim';
+                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->where('name','like','%' .$claim. '%')->first();
+
+                                                        $invoice='invoice';
+                                                        $invoiceDoc =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->where('name','like','%' .$invoice. '%')->first();
                                                         ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
@@ -148,6 +152,10 @@
                                                             <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
                                                                         class="material-icons">file_download</i> Claim Form </a></li>
                                                             @endif
+                                                                @if(isset($invoiceDoc->name))
+                                                                    <li><a href="{{asset('documents/'.$invoiceDoc->name)}}" download><i
+                                                                                class="material-icons">file_download</i>Invoice</a></li>
+                                                                @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                                     <li><a href="#!"><i
                                                                                 class="material-icons">compare_arrows</i>View
