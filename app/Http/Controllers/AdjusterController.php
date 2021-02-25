@@ -498,16 +498,38 @@ class AdjusterController extends Controller
         }
         return $response;
     }
+
     public function assessments(Request $request)
     {
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where('assessmentStatusID','=',$assessmentStatusID)
-                ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
-            return view('adjuster.assessments',['assessments' => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
-        }catch (\Exception $e)
-        {
+            if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
+                $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('dateCreated',">=",Carbon::now()->subDays(Config::DATE_RANGE))
+                    ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            }elseif (isset($request->regNumber))
+            {
+                $claim = Claim::where(['vehicleRegNo' => $request->regNumber])->first();
+                $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('claimID',"=",$claim->id)
+                    ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+
+            }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
+            {
+                $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+                $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+                $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            }else
+            {
+                $assessments = array();
+            }
+            return view('adjuster.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
+        } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
