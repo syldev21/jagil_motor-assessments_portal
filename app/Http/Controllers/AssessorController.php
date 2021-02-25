@@ -54,7 +54,8 @@ class AssessorController extends Controller
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }elseif (isset($request->regNumber))
             {
-                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+                $regNo = preg_replace("/\s+/", "", $request->regNumber);
+                $claimids = Claim::where('vehicleRegNo','like', '%'.$regNo.'%')->pluck('id')->toArray();
                 $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)

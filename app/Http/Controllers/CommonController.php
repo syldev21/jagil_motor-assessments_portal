@@ -38,7 +38,8 @@ class CommonController extends Controller
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }elseif (isset($request->regNumber))
             {
-                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+                $regNo = preg_replace("/\s+/", "", $request->regNumber);
+                $claimids = Claim::where('vehicleRegNo','like', '%'.$regNo.'%')->pluck('id')->toArray();
                 $asmts=Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
                     ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
                 $assessments = Assessment::where("assessedBy","!=",$id)

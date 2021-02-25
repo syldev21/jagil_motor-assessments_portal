@@ -510,7 +510,8 @@ class AdjusterController extends Controller
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             }elseif (isset($request->regNumber))
             {
-                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+                $regNo = preg_replace("/\s+/", "", $request->regNumber);
+                $claimids = Claim::where('vehicleRegNo','like', '%'.$regNo.'%')->pluck('id')->toArray();
                 $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
