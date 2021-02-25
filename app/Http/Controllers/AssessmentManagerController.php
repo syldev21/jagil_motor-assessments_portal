@@ -40,10 +40,19 @@ class AssessmentManagerController extends Controller
         $assessmentStatusID = $request->assessmentStatusID;
         try {
             if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
-                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
-                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                    ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
-                    ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
+                echo $assessmentStatusID;
+                if($assessmentStatusID == Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                {
+                    $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                        ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                        ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
+                }else
+                {
+                    $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                        ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
+                }
             } elseif (isset($request->regNumber)) {
                 $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
                 $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
