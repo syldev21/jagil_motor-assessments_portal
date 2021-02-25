@@ -1367,6 +1367,47 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
+    $("#main").on('click','#filter-manager-assessments',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $("#assessmentStatusID").val();
+        var fromDate = $("#from_date").val();
+        var toDate = $("#to_date").val();
+        var regNumber = $("#vehicle_reg_no").val();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentStatusID : assessmentStatusID,
+                fromDate : fromDate,
+                toDate : toDate,
+                regNumber : regNumber
+            },
+            url: '/manager/assessments',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
                 $('#data-table-simple').DataTable({
                     dom: 'Bfrtip',
                     buttons: [
