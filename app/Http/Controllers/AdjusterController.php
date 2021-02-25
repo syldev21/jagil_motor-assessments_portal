@@ -740,6 +740,8 @@ class AdjusterController extends Controller
 
     public function reInspectionLetter(Request  $request, $id) {
         $assessment = Assessment::findOrFail($id);
+        $assessmentIds = Assessment::where(['assessmentID' => $id, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']])->pluck('id')->toArray();
+        array_push($assessmentIds, $assessment->id);
 
         $claimExists = Claim::where('id', $assessment->claimID)->exists();
 
@@ -747,7 +749,7 @@ class AdjusterController extends Controller
             $claim = Claim::where('id', $assessment->claimID)->first();
             $reinspection = ReInspection::where('assessmentID', $id)->first();
 
-            $award = AssessmentItem::where('assessmentID', $id)
+            $award = AssessmentItem::whereIn("assessmentID", $assessmentIds)
                 ->where('reInspectionType', Config::$JOB_CATEGORIES['CIL']['ID'])
                 ->sum('total');
 
@@ -761,7 +763,7 @@ class AdjusterController extends Controller
                 $subAmount = (Config::MARK_UP * $award) + $labor;
             }
 
-            $unReInspectedParts = AssessmentItem::where('assessmentID', $id)
+            $unReInspectedParts = AssessmentItem::whereIn("assessmentID", $assessmentIds)
                 ->where('reInspectionType','!=',Config::$JOB_CATEGORIES['REPLACE']['ID'])
                 ->where('reInspection',Config::ACTIVE)
                 ->get();
