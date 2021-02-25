@@ -59,10 +59,10 @@ class ManagerController extends Controller
                     ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             }elseif (isset($request->regNumber))
             {
-                $claim = Claim::where(['vehicleRegNo' => $request->regNumber])->first();
+                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
                 $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                    ->where('claimID',"=",$claim->id)
+                    ->whereIn('claimID', $claimids)
                     ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
             {

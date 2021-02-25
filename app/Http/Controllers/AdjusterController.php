@@ -510,10 +510,10 @@ class AdjusterController extends Controller
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             }elseif (isset($request->regNumber))
             {
-                $claim = Claim::where(['vehicleRegNo' => $request->regNumber])->first();
+                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
                 $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                    ->where('claimID',"=",$claim->id)
+                    ->whereIn('claimID', $claimids)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
 
             }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
