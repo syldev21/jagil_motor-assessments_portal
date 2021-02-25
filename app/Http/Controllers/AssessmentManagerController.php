@@ -19,6 +19,7 @@ use App\Notifications\ClaimApproved;
 use App\Notifications\NewChangeRequest;
 use App\PriceChange;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -38,10 +39,28 @@ class AssessmentManagerController extends Controller
     {
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where(["assessmentStatusID"=>$assessmentStatusID])
-                ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
-            return view('assessment-manager.assessments', ["assessments" => $assessments,'assessmentStatusID'=>$assessmentStatusID]);
+            if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
+                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                    ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
+            } elseif (isset($request->regNumber)) {
+                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->whereIn('claimID', $claimids)
+                    ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
+            } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
+                $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+                $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
+            } else {
+                $assessments = array();
+            }
+            return view('assessment-manager.assessments', ["assessments" => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
