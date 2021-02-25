@@ -232,12 +232,28 @@ class HeadAssessorController extends Controller
     public function assessments(Request $request)
     {
         try {
-//            $segmentIds = array(Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'], Config::$ASSESSMENT_SEGMENTS['RE_INSPECTION']['ID']);
             $assessmentStatusID = $request->assessmentStatusID;
-            $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
-//                ->whereIn('segment', $segmentIds)
-                ->where('segment',"!=",Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
+                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                    ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            } elseif (isset($request->regNumber)) {
+                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->whereIn('claimID', $claimids)
+                    ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
+                $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+                $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            } else {
+                $assessments = array();
+            }
             return view('head-assessor.assessments', ["assessments" => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
