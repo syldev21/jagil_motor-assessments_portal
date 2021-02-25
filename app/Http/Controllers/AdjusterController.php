@@ -766,6 +766,7 @@ class AdjusterController extends Controller
             $unReInspectedParts = AssessmentItem::whereIn("assessmentID", $assessmentIds)
                 ->where('reInspectionType','!=',Config::$JOB_CATEGORIES['REPLACE']['ID'])
                 ->where('reInspection',Config::ACTIVE)
+                ->where('total','!=',0)
                 ->get();
             $assessor = User::where('id', $reinspection->createdBy)->first();
             $insured = CustomerMaster::where(['customerCode'=> $claim->customerCode])->first();
