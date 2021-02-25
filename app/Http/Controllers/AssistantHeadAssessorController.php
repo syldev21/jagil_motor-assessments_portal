@@ -55,8 +55,8 @@ class AssistantHeadAssessorController extends Controller
                 }
             }elseif (isset($request->regNumber))
             {
-                $regNo = preg_replace("/\s+/", "", $request->regNumber);
-                $claimids = Claim::where('vehicleRegNo','like', '%'.$regNo.'%')->pluck('id')->toArray();
+//                $regNo = preg_replace("/\s+/", "", $request->regNumber);
+                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
                 $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                     ->where('totalCost', '<=', Config::HEAD_ASSESSOR_THRESHOLD)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
