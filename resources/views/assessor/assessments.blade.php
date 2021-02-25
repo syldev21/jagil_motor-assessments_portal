@@ -30,11 +30,12 @@
                                     <div class="input-field col m3 s6">
                                         <i class="material-icons prefix">vpn_key</i>
                                         <input id="vehicle_reg_no" type="text" class="validate">
+                                        <input id="assessmentStatusID" type="hidden" value="{{$assessmentStatusID}}">
                                         <label for="vehicle_reg_no">Reg No</label>
                                     </div>
                                     <div class="input-field col m3 s12">
                                         <div class="input-field col s12">
-                                            <button class="btn cyan waves-effect waves-light" type="submit"
+                                            <button class="btn cyan waves-effect waves-light" type="submit" id="filter-assessor-assessments"
                                                     name="action">
                                                 <i class="material-icons left">search</i> Filter
                                             </button>
