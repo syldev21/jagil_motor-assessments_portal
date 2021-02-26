@@ -220,14 +220,17 @@ class AssessorController extends Controller
         try {
             $totalImages = $request->totalImages;
             $claimID = $request->claimID;
+            $claimData = Claim::where(['id'=>$claimID])->first();
+            $claimNo =  str_replace("/","_",$claimData->claimNo);
+
             //Loop for getting files with index like image0, image1
             if ($request->hasFile('claimForm')) {
                 $claim = 'claim';
-                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $claim . '%')
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', '=', $claimNo.'.pdf')
                     ->whereNotNull('claimID')
                     ->get();
                 if (count($pdfs) > 0) {
-                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $claim . '%')
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', '=', $claimNo.'.pdf')
                         ->whereNotNull('claimID')
                         ->delete();
                     if ($affectedPdfRows > 0) {
@@ -244,7 +247,7 @@ class AssessorController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $path = $file->getRealPath();
                 $size = $file->getSize();
-                $picture = date('His') . '-' . 'claim' . '-' . $filename;
+                $picture = $claimNo.".pdf";
                 //Save files in below folder path, that will make in public folder
                 $file->move(public_path('documents/'), $picture);
                 $documents = Document::create([
@@ -252,6 +255,7 @@ class AssessorController extends Controller
                     "name" => $picture,
                     "mime" => $extension,
                     "size" => $size,
+                    "pdfType" => Config::PDF_TYPES['CLAIM_FORM']['ID'],
                     "documentType" => $documentType = Config::$DOCUMENT_TYPES["PDF"]["ID"],
                     "url" => $path,
                     "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
@@ -538,11 +542,12 @@ class AssessorController extends Controller
 
                     $save = JobDetail::insert($collection->values()->all());
                     if ($request->hasFile('invoice')) {
-                        $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $invoice . '%')
+                        $claimNo =  str_replace("/","_",$claim->claimNo);
+                        $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', '=', 'invoice_'.$claimNo.'.pdf')
                             ->whereNotNull('claimID')
                             ->get();
                         if (count($pdfs) > 0) {
-                            $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', 'like', '%' . $invoice . '%')
+                            $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', '=', 'invoice_'.$claimNo.'.pdf')
                                 ->whereNotNull('claimID')
                                 ->delete();
                             if ($affectedPdfRows > 0) {
@@ -559,7 +564,7 @@ class AssessorController extends Controller
                         $extension = $file->getClientOriginalExtension();
                         $path = $file->getRealPath();
                         $size = $file->getSize();
-                        $picture = date('His') . '-' . 'invoice' . '-' . $filename;
+                        $picture = 'invoice_'.$claimNo.'.pdf';
                         //Save files in below folder path, that will make in public folder
                         $file->move(public_path('documents/'), $picture);
                         $documents = Document::create([
@@ -567,6 +572,7 @@ class AssessorController extends Controller
                             "name" => $picture,
                             "mime" => $extension,
                             "size" => $size,
+                            "pdfType" => Config::PDF_TYPES['INVOICE']['ID'],
                             "documentType" => $documentType = Config::$DOCUMENT_TYPES["PDF"]["ID"],
                             "url" => $path,
                             "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]

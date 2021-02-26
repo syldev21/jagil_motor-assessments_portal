@@ -182,4 +182,5 @@ $router->group(['prefix' => 'common'], function($router)
 
 // migrate
 Route::get('/users', 'MigrateController@users');
+Route::post('/updatePdfType', 'MigrateController@updatePdfType');
 
