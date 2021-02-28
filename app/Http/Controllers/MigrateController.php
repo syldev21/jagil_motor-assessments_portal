@@ -36,12 +36,16 @@ class MigrateController
         {
             if (str_contains($document->name, 'claim')) {
 //                $claim = Claim::where(['id' => $document->claimID])->first();
-                Document::where(['claimID' => $document->claimID])->update([
+                Document::where(['claimID' => $document->claimID])
+                    ->where('name','like','%claim%')
+                    ->update([
                     "pdfType" => Config::PDF_TYPES['CLAIM_FORM']['ID']
                 ]);
             }elseif (str_contains($document->name, 'invoice'))
             {
-                Document::where(['claimID' => $document->claimID])->update([
+                Document::where(['claimID' => $document->claimID])
+                    ->where('name','like','%invoice%')
+                    ->update([
                     "pdfType" => Config::PDF_TYPES['INVOICE']['ID']
                 ]);
             }
