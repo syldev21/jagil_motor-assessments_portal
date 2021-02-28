@@ -226,11 +226,11 @@ class AssessorController extends Controller
             //Loop for getting files with index like image0, image1
             if ($request->hasFile('claimForm')) {
                 $claim = 'claim';
-                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', '=', $claimNo.'.pdf')
+                $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"],'pdfType'=>Config::PDF_TYPES['CLAIM_FORM']['ID']])
                     ->whereNotNull('claimID')
                     ->get();
                 if (count($pdfs) > 0) {
-                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', '=', $claimNo.'.pdf')
+                    $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"],'pdfType'=>Config::PDF_TYPES['CLAIM_FORM']['ID']])
                         ->whereNotNull('claimID')
                         ->delete();
                     if ($affectedPdfRows > 0) {
@@ -543,11 +543,11 @@ class AssessorController extends Controller
                     $save = JobDetail::insert($collection->values()->all());
                     if ($request->hasFile('invoice')) {
                         $claimNo =  str_replace("/","_",$claim->claimNo);
-                        $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', '=', 'invoice_'.$claimNo.'.pdf')
+                        $pdfs = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"],'pdfType'=>Config::PDF_TYPES['INVOICE']['ID']])
                             ->whereNotNull('claimID')
                             ->get();
                         if (count($pdfs) > 0) {
-                            $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"]])->where('name', '=', 'invoice_'.$claimNo.'.pdf')
+                            $affectedPdfRows = Document::where(['claimID' => $claimID, 'documentType' => Config::$DOCUMENT_TYPES["PDF"]["ID"],'pdfType'=>Config::PDF_TYPES['INVOICE']['ID']])
                                 ->whereNotNull('claimID')
                                 ->delete();
                             if ($affectedPdfRows > 0) {

@@ -173,11 +173,17 @@
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             <?php
                                                             $claim='claim';
-                                                            $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->where('name','like','%' .$claim. '%')->first();
+                                                            $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>App\Conf\Config::PDF_TYPES['CLAIM_FORM']['ID']])->first();
+
+                                                            $invoiceDoc =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType' => App\Conf\Config::PDF_TYPES['INVOICE']['ID']])->first();
                                                             ?>
                                                                 @if(isset($claimForm->name))
                                                                     <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
                                                                                 class="material-icons">file_download</i>Claim Form</a></li>
+                                                                @endif
+                                                                @if(isset($invoiceDoc->name))
+                                                                    <li><a href="{{asset('documents/'.$invoiceDoc->name)}}" download><i
+                                                                                class="material-icons">file_download</i>Invoice</a></li>
                                                                 @endif
                                                             @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                 <li><a href="#" data-id="{{$assessment->id}}" id="manager-assessment-report"><i

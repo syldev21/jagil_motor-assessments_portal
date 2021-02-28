@@ -120,7 +120,7 @@
 
                                                         <!-- Dropdown Structure -->
                                                         <?php
-                                                        $claimForm =\App\Document::where(['claimID'=>$claim['id'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->first();
+                                                        $claimForm =\App\Document::where(['claimID'=>$claim['id'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>App\Conf\Config::PDF_TYPES['CLAIM_FORM']['ID']])->first();
                                                         ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>

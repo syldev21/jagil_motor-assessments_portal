@@ -129,6 +129,10 @@
 
                                                         <!-- Dropdown Structure -->
 
+                                                        <?php
+                                                        $claimForm =\App\Document::where(['claimID'=>$claim['id'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>App\Conf\Config::PDF_TYPES['CLAIM_FORM']['ID']])->first();
+                                                        ?>
+
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             @if($claim['claimStatusID'] == \App\Conf\Config::$STATUSES['CLAIM']['ASSIGNED']['id'])
                                                                 <li><a href="#"
@@ -141,6 +145,11 @@
                                                                             class="material-icons">assignment_ind</i>Assign
                                                                         Assessor</a></li>
                                                             @endif
+                                                                @if(isset($claimForm->name))
+                                                                    <li>
+                                                                        <a href="{{asset('documents/'.$claimForm->name)}}" download><i
+                                                                                class="material-icons">file_download</i> Claim Form</a></li>
+                                                                @endif
                                                         </ul>
 
                                                     </td>

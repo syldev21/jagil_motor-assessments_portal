@@ -35,10 +35,14 @@ class MigrateController
         foreach ($documents as $document)
         {
             if (str_contains($document->name, 'claim')) {
-                $claim = Claim::where(['id' => $document->claimID])->first();
+//                $claim = Claim::where(['id' => $document->claimID])->first();
                 Document::where(['claimID' => $document->claimID])->update([
-                    "name" => str_replace("/","_",$claim->claimNo),
                     "pdfType" => Config::PDF_TYPES['CLAIM_FORM']['ID']
+                ]);
+            }elseif (str_contains($document->name, 'invoice'))
+            {
+                Document::where(['claimID' => $document->claimID])->update([
+                    "pdfType" => Config::PDF_TYPES['INVOICE']['ID']
                 ]);
             }
         }
