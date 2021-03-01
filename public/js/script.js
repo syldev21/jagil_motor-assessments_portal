@@ -2034,6 +2034,8 @@ $(document).ready(function () {
             partsData.push(partData);
         }
         var isDraft = $("#isDraft").is(':checked') ? 1 : 0;
+        var isScrap = $("#isScrap").prop("checked") == true ? 1 : 0;
+        var scrapValue= $("#isScrap").prop("checked") == true ? $("#scrapValue").val():0;
         var drafted = $("#drafted");
         var assessmentType = $('input[name="assessmentType"]:checked');
         var assessmentID = $("#assessmentID");
@@ -2067,6 +2069,8 @@ $(document).ready(function () {
             reconstruction : reconstruction.val(),
             gas : gas.val(),
             welding : welding.val(),
+            scrapValue : scrapValue,
+            isScrap : isScrap,
             sumTotal : sumTotal.val(),
             pav : pav.val(),
             chassisNumber : chassisNumber.val(),
@@ -3218,6 +3222,9 @@ $(document).ready(function () {
         var remarkss=$("select[id*='remarks_']");
         var categorys=$("select[id*='category_']");
         var claimID = $("#claimID").val();
+        var isScrap = $("#isScrap").is(':checked') ? 1 : 0;
+        var scrapValue= $("#isScrap").prop("checked") == true ? $("#scrapValue").val() : 0;
+
         addLoadingButton();
         var i;
         var partsData = [];
@@ -3268,6 +3275,8 @@ $(document).ready(function () {
             reconstruction : reconstruction.val(),
             gas : gas.val(),
             welding : welding.val(),
+            scrapValue : scrapValue,
+            isScrap : isScrap,
             sumTotal : sumTotal.val(),
             pav : pav.val(),
             chassisNumber : chassisNumber.val(),

@@ -334,6 +334,8 @@ class AssessorController extends Controller
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
+            $scrapValue = !empty($jobsData['scrapValue']) ? $jobsData['scrapValue'] : 0;
+            $scrap = !empty($jobsData['isScrap']) ? $jobsData['isScrap'] : 0;
             $invoice = 'invoice';
             $claim = Claim::where(['id' => $claimID])->first();
             if ($claim->intimationDate >= Config::VAT_REDUCTION_DATE && $claim->intimationDate <= Config::VAT_END_DATE) {
@@ -441,6 +443,8 @@ class AssessorController extends Controller
                     "totalLoss" => $totalLoss,
                     "assessmentTypeID" => $assessmentType,
                     "assessmentStatusID" => $assessmentStatusID,
+                    "scrapValue" => $scrapValue,
+                    "scrap" => $scrap,
                     "assessedAt" => $curDate,
                     "dateModified" => $curDate
                 ]);
@@ -1496,6 +1500,8 @@ class AssessorController extends Controller
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
             $drafted = $request->drafted;
+            $scrapValue = !empty($jobsData['scrapValue']) ? $jobsData['scrapValue'] : 0;
+            $scrap = !empty($jobsData['isScrap']) ? $jobsData['isScrap'] : 0;
             $invoice = 'invoice';
             $claim = Claim::where(['id' => $claimID])->first();
             if ($claim->intimationDate >= Config::VAT_REDUCTION_DATE && $claim->intimationDate <= Config::VAT_END_DATE) {
@@ -1604,6 +1610,8 @@ class AssessorController extends Controller
                     "totalLoss" => $totalLoss,
                     "assessmentTypeID" => $assessmentType,
                     "assessmentStatusID" => $assessmentStatusID,
+                    "scrapValue" => $scrapValue,
+                    "scrap" => $scrap,
                     "assessedAt" => $curDate,
                     "dateModified" => $curDate
                 ]);

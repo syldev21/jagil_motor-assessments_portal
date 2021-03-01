@@ -348,6 +348,24 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <tr id="scrap">
+                                                        <th>
+                                                            <label for="isScrap">
+
+                                                                <input type="checkbox" id="isScrap" value="1" />
+                                                                <span>Scrap:</span>
+                                                            </label>
+                                                        </th>
+
+                                                        <td>
+                                                            <div class="input-field">
+                                                                <input type="text" name="scrapValue" id="scrapValue"
+                                                                       value="{{isset($assessment->scrapValue) && $assessment->scrapValue>0? $assessment->scrapValue : 3000}}"
+                                                                       class="border-fields" />
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
                                                 </table>
                                             </div>
                                             <div class="col m7">
@@ -579,6 +597,21 @@
     var t =0;
     $(document).ready(function() {
 
+        var assessmentType = document.querySelector('input[name="assessmentType"]:checked').value;
+        if(assessmentType == 1) {
+            $("#isScrap").attr("checked",false);
+            $("#scrap").hide();
+
+        } else if(assessmentType == 2) {
+            $("#isScrap").attr("checked","checked");
+            $("#scrap").show();
+
+        } else if(assessmentType == 3) {
+            $("#isScrap").attr("checked",false);
+            $("#scrap").hide();
+
+        }
+
         var radioValue = $("input[name='assessmentType']:checked").val();
         if(radioValue == {{\App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS']}})
         {
@@ -766,14 +799,20 @@
         if(assessmentType == 1) {
 
             result = result * tax;
+            $("#isScrap").attr("checked",false);
+            $("#scrap").hide();
 
         } else if(assessmentType == 2) {
 
             result = (parseFloat( "0" + cil ) + parseFloat( "0" + total )) * {{\App\Conf\Config::NEW_MARKUP}};
+            $("#isScrap").attr("checked","checked");
+            $("#scrap").show();
 
         } else if(assessmentType == 3) {
 
             result = result * tax;
+            $("#isScrap").attr("checked",false);
+            $("#scrap").hide();
 
         }
         document.getElementById('sumTotals').value = Math.round(result);
