@@ -72,6 +72,7 @@ class InfobipEmailHelper
             'replyTo' => $email['from_user_email'],
             'subject' => $email['subject'],
             'html' => $email['message'],
+            'attachment' => $email['attachment'],
             // 'html' => view('emails.life.isfmail',['content'=>$email->message]),
             // 'intermediateReport'=> 'true',
             // 'notifyUrl' => env('NOTIFY_URL'),
