@@ -451,22 +451,10 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="">Scrap</td>
-                        <td></td>
-                        <td></td>
-                        <td>{{ $assessment['scrapValue'] }}
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                         <td class="">Grand Total</td>
                         <td></td>
                         <td></td>
-                        <td> {{ number_format(round((\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')*0.9)+$jobValue - $assessment['scrapValue']))}}
+                        <td> {{ number_format(round((\App\AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')*0.9)+$jobValue))}}
                         </td>
                         <td></td>
                         <td></td>

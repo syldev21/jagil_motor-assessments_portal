@@ -833,100 +833,10 @@ class AdjusterController extends Controller
         return view("adjuster.supplementary-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor]);
     }
 
-//    public function SendRepairAuthority(Request $request)
-//    {
-//        $assessmentID = $request->assessmentID;
-//        $email = $request->email;
-//
-//        $role = Config::$ROLES['ADJUSTER'];
-//        $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
-//        $aproved = isset($priceChange) ? $priceChange : 'false';
-//
-//        $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
-//        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
-//        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
-//        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
-//        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
-//        $documents = Document::where(["assessmentID" => $assessmentID])->get();
-//        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
-//        $assessor = User::where(['id' => $assessment->assessedBy])->first();
-//        $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-//        $pdf = App::make('snappy.pdf.wrapper');
-//        $pdf->loadView('adjuster.send-repair-authority', compact('assessment', "assessmentItems", "jobDetails", "insured", 'documents', 'adjuster', 'assessor', 'aproved', 'carDetail','priceChange'));
-//
-//        $pdfFilePath = public_path('images/assessment-report.pdf');
-//
-//        if (File::exists($pdfFilePath)) {
-//            File::delete($pdfFilePath);
-//        }
-//        $result =$pdf->save($pdfFilePath);
-//        echo json_encode($result);
-//        exit();
-//        //     return $pdf->stream();
-//        //     // return view("assessment-manager.assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail, 'priceChange' => $priceChange]);
-//
-////        $userDetails = array(
-////            array(
-////                "id" => $claim->garage->id,
-////                "name" => $claim->garage->name,
-////                "email" => $claim->garage->email
-////            )
-////
-////        );
-//
-//        $flag = false;
-//
-//            $message = [
-//                'subject' => "PROCEED TO REPAIR",
-//                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-//                'attachment' => $pdfFilePath,
-//                'message' => "
-//                        Dear Sirs, <br>
-//
-//                        Kindly proceed with repairs as per attached and adhere to REPAIR TIMELINES <br>
-//
-//                        Note: No supplmentaries will be allowed or price changes after repair commencement. <br> <br>
-//                        Kindly adhere to above terms.
-//
-//
-//
-//                        Regards, <br><br>
-//
-//                        " . $role . ", <br>
-//
-//                        Claims Department, <br>
-//
-//                        Jubilee Insurance Company
-//                    ",
-//            ];
-//
-//            InfobipEmailHelper::sendEmail($message, $email);
-//            // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email', $userDetail['MSISDN']);
-////            $user = User::where(["id" => $userDetail['id']])->first();
-////            Notification::send($user, new ClaimApproved($claim));
-//
-//            $flag = true;
-//        if ($flag)
-//            $response = array(
-//                "STATUS_CODE" => Config::SUCCESS_CODE,
-//                "STATUS_MESSAGE" => "An email was sent successfuly"
-//            );
-//        else {
-//            $response = array(
-//                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
-//                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
-//            );
-//        }
-//
-//        return json_encode($response);
-//
-//
-//
-//    }
     public function SendRepairAuthority(Request $request)
     {
         $assessmentID = $request->assessmentID;
-        $claim = Claim::where(['id' =>$assessmentID])->with('customer')->with('garage')->first();
+        $email = $request->email;
 
         $role = Config::$ROLES['ADJUSTER'];
         $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
@@ -957,20 +867,18 @@ class AdjusterController extends Controller
 //            array(
 //                "id" => $claim->garage->id,
 //                "name" => $claim->garage->name,
-//                "email" => 'ondiekistephen5@gmail.com',
-//
+//                "email" => $claim->garage->email
 //            )
 //
 //        );
 
         $flag = false;
-//        foreach ($userDetails as $userDetail) {
 
-        $message = [
-            'subject' => "PROCEED TO REPAIR",
-            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-            'attachment' => $pdfFilePath,
-            'message' => "
+            $message = [
+                'subject' => "PROCEED TO REPAIR",
+                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
+                'attachment' => $pdfFilePath,
+                'message' => "
                         Dear Sirs, <br>
 
                         Kindly proceed with repairs as per attached and adhere to REPAIR TIMELINES <br>
@@ -988,15 +896,14 @@ class AdjusterController extends Controller
 
                         Jubilee Insurance Company
                     ",
-        ];
+            ];
 
-        InfobipEmailHelper::sendEmail($message, 'ondiekistephen5@gmail.com');
-        // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email', $userDetail['MSISDN']);
+            InfobipEmailHelper::sendEmail($message, $email);
+            // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email', $userDetail['MSISDN']);
 //            $user = User::where(["id" => $userDetail['id']])->first();
 //            Notification::send($user, new ClaimApproved($claim));
 
-        $flag = true;
-//        }
+            $flag = true;
         if ($flag)
             $response = array(
                 "STATUS_CODE" => Config::SUCCESS_CODE,
