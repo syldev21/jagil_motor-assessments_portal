@@ -953,18 +953,13 @@ class AdjusterController extends Controller
 
         $flag = false;
         $message = [
-            'subject' => "PROCEED TO REPAIR",
+            'subject' => "RELEASE LETTER FOR ".$claim->vehicleRegNo,
             'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
             'attachment' => $pdfFilePath,
             'message' => "
                         Dear Sirs, <br>
 
-                        Kindly proceed with repairs as per attached and adhere to REPAIR TIMELINES <br>
-
-                        Note: No supplmentaries will be allowed or price changes after repair commencement. <br> <br>
-                        Kindly adhere to above terms.
-
-
+                        Please release as per the attached. <br/>
 
                         Regards, <br><br>
 
