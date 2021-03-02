@@ -837,7 +837,6 @@ class AdjusterController extends Controller
     {
         $assessmentID = $request->assessmentID;
         $email = $request->email;
-        $claim = Claim::where(['id' =>$assessmentID])->with('customer')->with('garage')->first();
 
         $role = Config::$ROLES['ADJUSTER'];
         $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
