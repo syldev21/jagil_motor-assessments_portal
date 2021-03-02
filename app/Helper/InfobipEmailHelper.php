@@ -66,20 +66,36 @@ class InfobipEmailHelper
         //$doc_path = '/storage/app/public/documents/outputs/'.$policy_no.'.pdf';
 
         // Associate Array of the post parameters to be sent to the API
-        $attachment = isset($email['attachment']) ? $email['attachment'] : '';
-        $postData = array(
-            'from' => $email['from_user_email'],
-            'to' => $email_add,
-            'replyTo' => $email['from_user_email'],
-            'subject' => $email['subject'],
-            'html' => $email['message'],
-            'attachment' => $attachment,
-            // 'html' => view('emails.life.isfmail',['content'=>$email->message]),
-            // 'intermediateReport'=> 'true',
-            // 'notifyUrl' => env('NOTIFY_URL'),
-            // 'notifyContentType' => 'application/json',
-            // 'callbackData' => 'DLR callback data'
-        );
+        if(isset($email['attachment']))
+        {
+            $postData = array(
+                'from' => $email['from_user_email'],
+                'to' => $email_add,
+                'replyTo' => $email['from_user_email'],
+                'subject' => $email['subject'],
+                'html' => $email['message'],
+                'attachment' => $email['attachment'],
+                // 'html' => view('emails.life.isfmail',['content'=>$email->message]),
+                // 'intermediateReport'=> 'true',
+                // 'notifyUrl' => env('NOTIFY_URL'),
+                // 'notifyContentType' => 'application/json',
+                // 'callbackData' => 'DLR callback data'
+            );
+        }else
+        {
+            $postData = array(
+                'from' => $email['from_user_email'],
+                'to' => $email_add,
+                'replyTo' => $email['from_user_email'],
+                'subject' => $email['subject'],
+                'html' => $email['message'],
+                // 'html' => view('emails.life.isfmail',['content'=>$email->message]),
+                // 'intermediateReport'=> 'true',
+                // 'notifyUrl' => env('NOTIFY_URL'),
+                // 'notifyContentType' => 'application/json',
+                // 'callbackData' => 'DLR callback data'
+            );
+        }
 
 
         // Create the stream context.
