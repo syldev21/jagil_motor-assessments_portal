@@ -3859,6 +3859,12 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
+    $("body").on('click','#triggerRepairAuthority',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('repairAuthority');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+    });
     $("body").on('click','#triggerChangeRequests',function (e){
         e.preventDefault();
         const elem = document.getElementById('changeRequest');
@@ -4647,6 +4653,63 @@ $(document).ready(function () {
             }
 
         });
+    });
+    $("body").on('click','#SendRepairAuthority',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        var email = $("#email");
+        if(email.val() != '')
+        {
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+
+                url: '/adjuster/SendRepairAuthority',
+                data : {
+                    assessmentID : assessmentID,
+                    email : email.val()
+                },
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }
+
+            });
+
+        }else
+        {
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'You have not the specified Garage',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }
+        }
     });
     function addLoadingButton()
     {

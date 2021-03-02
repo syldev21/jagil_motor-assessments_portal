@@ -513,9 +513,46 @@
                             </div>
                             @endforeach
                         </div>
+                            <div class="row">
+                                <div class="col s6">
+                                    <a id="triggerRepairAuthority" data-target="repairAuthority"
+                                       class="btn teal darken-2">Send Repair Authority</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s4">
+                    <!-- Modal Structure -->
+                    <div id="repairAuthority" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a href="#" class="modal-action modal-close float-right"><i
+                                        class="material-icons">close</i></a>
+                            </div>
+                            <div class="modal-body clearfix">
+                                <div class="row">
+                                    <div class="input-field col m12 s12">
+                                        <input placeholder="Enter garage Email" type="text" name="email" id="email">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m8 s12">
+                                    </div>
+                                    <div class="input-field col m4 s12">
+                                        <a href="#" id="SendRepairAuthority" data-id="{{$assessment->id}}" class="btn blue lighten-2 waves-effect">Send</a>
+                                        <a href="#"
+                                           class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s2"></div>
             </div>
         </div>
     </div>
