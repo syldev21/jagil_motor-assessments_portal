@@ -513,12 +513,14 @@
                             </div>
                             @endforeach
                         </div>
+                            @if(isset($assessment['finalApprovalBy']))
                             <div class="row">
                                 <div class="col s6">
                                     <a id="triggerRepairAuthority" data-target="repairAuthority"
                                        class="btn teal darken-2">Send Repair Authority</a>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
