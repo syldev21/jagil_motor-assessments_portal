@@ -159,12 +159,18 @@
                                                                             class="material-icons">file_download</i>Claim Form</a></li>
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
-                                                                <li>
-                                                                    <a href="#" id="fillAssessmentReport"
-                                                                       data-id="{{$assessment['id']}}" data-claimid="{{$assessment['claimID']}}"><i
-                                                                            class="material-icons">insert_drive_file</i>Submit
-                                                                        Assessment </a>
-                                                                </li>
+                                                                <?php
+                                                                    $userID= isset(Auth::user()->id) ? Auth::user()->id : 0;
+                                                                ?>
+                                                                    @if($userID == $assessment['assessedBy'])
+                                                                        <li>
+                                                                            <a href="#" id="fillAssessmentReport"
+                                                                               data-id="{{$assessment['id']}}"
+                                                                               data-claimid="{{$assessment['claimID']}}"><i
+                                                                                    class="material-icons">insert_drive_file</i>Submit
+                                                                                Assessment </a>
+                                                                        </li>
+                                                                    @endif
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                     <li>
