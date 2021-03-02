@@ -2,6 +2,13 @@
 @include('_partials.navbar')
 @include('_partials.sidebar')
 <div id="main" style="margin-left:30px;">
+    <div class="row">
+        <div class="col s8"></div>
+        <div class="col s4">
+                <button type="button" class="btn teal float-right" onclick="printDiv()"><i class="material-icons" style="font-size: 2em;">local_printshop</i></button>
+        </div>
+    </div>
+    <div id="printableArea">
 
     <div style="text-align: center">
         <img src="{{ asset('images/logo/jubilee_logo.png') }}" class="content-group mt-5" alt="" style="width: 120px;">
@@ -45,9 +52,10 @@
         You will retain the scrap metal as per the agreed terms.
 
     </p>
+    </div>
     <div style="text-align: right; padding-right:10px;padding-bottom:10px;">
         <a data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
-           class="waves-effect waves-light btn fetch-assessments">{{"<< Back"}}</a>
+           class="waves-effect waves-light btn fetch-assessments"><i class="material-icons">arrow_back</i>Back</a>
         <a id="triggerSendReleaseLetter" data-target="releaseLetter"
            class="btn teal darken-2">Release</a>
     </div>
