@@ -882,7 +882,7 @@ class AdjusterController extends Controller
         $flag = false;
 
         $message = [
-            'subject' => "PROCEED TO REPAIR",
+            'subject' => "PROCEED TO REPAIR - ".$assessment['claim']['vehicleRegNo'],
             'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
             'attachment' => $pdfFilePath,
             'message' => "
