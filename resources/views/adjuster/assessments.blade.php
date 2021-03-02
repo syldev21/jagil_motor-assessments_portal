@@ -164,9 +164,14 @@
                                                                     <li><a href="{{url('/adjuster/re-inspection-letter/'.$assessment['id'])}}" target="_blank"><i
                                                                         class="material-icons">picture_as_pdf</i>View
                                                                     Re-inspection Letter</a></li>
-                                                            <li><a href="{{url('/adjuster/send-release-letter/'.$assessment['claimID'])}}" data-id="{{$assessment['claimID']}}" id=""><i
-                                                                        class="material-icons">picture_as_pdf</i>
-                                                                    Release Letter</a></li>
+{{--                                                            <li><a href="{{url('/adjuster/send-release-letter/'.$assessment['claimID'])}}" data-id="{{$assessment['claimID']}}" id=""><i--}}
+{{--                                                                        class="material-icons">picture_as_pdf</i>--}}
+{{--                                                                    Release Letter</a></li>--}}
+                                                                @if($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE'])
+                                                                    <li><a id="send-release-letter" data-id="{{$assessment['claimID']}}" id=""><i
+                                                                                class="material-icons">picture_as_pdf</i>
+                                                                            Release Letter</a></li>
+                                                                @endif
                                                             @endif
                                                                 @if(isset($assessment['supplementaries']))
                                                                     @foreach($assessment['supplementaries'] as $supplementary )

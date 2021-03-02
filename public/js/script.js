@@ -3865,6 +3865,12 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
+    $("body").on('click','#triggerSendReleaseLetter',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('releaseLetter');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+    });
     $("body").on('click','#triggerChangeRequests',function (e){
         e.preventDefault();
         const elem = document.getElementById('changeRequest');
@@ -4618,6 +4624,58 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#emailReleaseletter',function (){
+        var claimID = $(this).data("id");
+        var email = $("#email");
+        if(email.val() != '')
+        {
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                    email : email.val(),
+                    claimID : claimID
+                },
+                url: '/adjuster/emailReleaseletter',
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }
+
+            });
+        }else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: "Provide an email address",
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
+    });
     $("#main").on('click','#filterReInspections',function (){
         var fromDate = $("#from_date").val();
         var toDate = $("#to_date").val();
@@ -4710,6 +4768,30 @@ $(document).ready(function () {
                 })
             }
         }
+    });
+    $("body").on('click','#send-release-letter',function (){
+        var claimID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'GET',
+            url: '/adjuster/send-release-letter/'+claimID,
+            success: function (data) {
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
     });
     function addLoadingButton()
     {

@@ -513,7 +513,7 @@
                             </div>
                             @endforeach
                         </div>
-                            @if(isset($assessment['finalApprovalBy']))
+                            @if(isset($assessment['finalApprovalBy']) && $assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE'])
                             <div class="row">
                                 <div class="col s6">
                                     <a id="triggerRepairAuthority" data-target="repairAuthority"

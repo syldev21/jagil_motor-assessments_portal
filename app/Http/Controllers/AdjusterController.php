@@ -243,12 +243,12 @@ class AdjusterController extends Controller
 
         $toDate = Carbon::now()->toDateTimeString();
         $fromDate = Carbon::now()->subDays(Config::DATES_LIMIT)->toDateTimeString();
-        $data = ["fromDate"=>$fromDate,"toDate" => $toDate];
+        $data = ["fromDate" => $fromDate, "toDate" => $toDate];
         $response = $utility->getData($data, '/api/v1/b2b/general/claim/fetch', 'POST');
         $claim_data = json_decode($response->getBody()->getContents());
         if ($claim_data->status == 'success' && sizeof($claim_data->data->DB_VALUE1) != 0) {
-            $claims =json_decode(json_encode($claim_data->data->DB_VALUE1),true);
-        }else{
+            $claims = json_decode(json_encode($claim_data->data->DB_VALUE1), true);
+        } else {
             $claims = [];
         }
 
@@ -260,18 +260,19 @@ class AdjusterController extends Controller
         $claim = json_decode($request->getContent(), true);
         $garages = Garage::all();
 
-        $carDetails = CarModel::where(['makeCode'=> isset($claim['VEH_MAKE']) ? $claim['VEH_MAKE'] : '','modelCode'=> isset($claim['VEH_MODEL']) ? $claim['VEH_MODEL'] : ''])->first();
-        return view('adjuster.claim-form', ['claim' => $claim,'garages'=>$garages,'carDetails'=>$carDetails]);
+        $carDetails = CarModel::where(['makeCode' => isset($claim['VEH_MAKE']) ? $claim['VEH_MAKE'] : '', 'modelCode' => isset($claim['VEH_MODEL']) ? $claim['VEH_MODEL'] : ''])->first();
+        return view('adjuster.claim-form', ['claim' => $claim, 'garages' => $garages, 'carDetails' => $carDetails]);
     }
-    public function claimDetails(Request $request,$claimID)
+
+    public function claimDetails(Request $request, $claimID)
     {
-        $claim = Claim::where(["id"=>$claimID])->with('customer')->with('assessment')->with('documents')->first();
+        $claim = Claim::where(["id" => $claimID])->with('customer')->with('assessment')->with('documents')->first();
 
         $carDetails = CarModel::where(["modelCode" => isset($claim->carModelCode) ? $claim->carModelCode : 0])->first();
 
-        $assessment =Assessment::where(['claimID' => $claim->id])->with('assessor')->first();
+        $assessment = Assessment::where(['claimID' => $claim->id])->with('assessor')->first();
 
-        return view('adjuster.claim-details', ['claim' => $claim,"assessment" =>$assessment,"carDetails"=>$carDetails]);
+        return view('adjuster.claim-details', ['claim' => $claim, "assessment" => $assessment, "carDetails" => $carDetails]);
     }
 
     public function addClaim(Request $request)
@@ -294,7 +295,7 @@ class AdjusterController extends Controller
             $originalExcess = $request->originalExcess;
             $originalSumInsured = $request->originalSumInsured;
             $carMakeCode = $request->carMakeCode;
-            $carModelCode =$request->carModelCode;
+            $carModelCode = $request->carModelCode;
             $yom = $request->yom;
             $engineNumber = $request->engineNumber;
             $chassisNumber = $request->chassisNumber;
@@ -349,38 +350,36 @@ class AdjusterController extends Controller
                             "dateCreated" => $curDate
                         ]);
                         StatusTracker::create([
-                            "claimID" =>$claimID,
-                            "newStatus"=> Config::$STATUSES['CLAIM']['UPLOADED']['id'],
+                            "claimID" => $claimID,
+                            "newStatus" => Config::$STATUSES['CLAIM']['UPLOADED']['id'],
                             "oldStatus" => Config::DEFAULT_STATUS,
                             "statusType" => Config::$STATUS_TYPES["CLAIM"],
                             "createdBy" => Auth::id(),
                             "dateCreated" => $curDate
                         ]);
-                        if($originalExcess != $excess || $originalSumInsured != $sumInsured)
-                        {
+                        if ($originalExcess != $excess || $originalSumInsured != $sumInsured) {
                             $createdBy = Auth::id();
-                            $claimTrackerID =ClaimTracker::insertGetId([
+                            $claimTrackerID = ClaimTracker::insertGetId([
                                 'claimID' => $claimID,
                                 'claimNo' => $claimNo,
                                 'policyNo' => $policyNo,
-                                'excess' =>    $originalExcess,
+                                'excess' => $originalExcess,
                                 'sumInsured' => $originalSumInsured,
                                 'garageID' => $garageID,
                                 'createdBy' => $createdBy,
                                 'dateCreated' => $curDate
                             ]);
-                            if($claimTrackerID > 0)
-                            {
+                            if ($claimTrackerID > 0) {
                                 Claim::where(['id' => $claimID])->update([
                                     "changed" => Config::ACTIVE,
-                                    "updatedBy"=> Auth::id(),
+                                    "updatedBy" => Auth::id(),
                                     "dateModified" => $curDate
                                 ]);
                             }
                         }
                         $utility = new Utility();
                         $access_token = $utility->getToken();
-                        $data = ["claimNo"=>$claimNo];
+                        $data = ["claimNo" => $claimNo];
                         $response = $utility->getData($data, '/api/v1/b2b/general/claim/uploaded', 'POST');
                         $claim_data = json_decode($response->getBody()->getContents());
                         $response = array(
@@ -418,7 +417,7 @@ class AdjusterController extends Controller
                     ]);
                     $utility = new Utility();
                     $access_token = $utility->getToken();
-                    $data = ["claimNo"=>$claimNo];
+                    $data = ["claimNo" => $claimNo];
                     $response = $utility->getData($data, '/api/v1/b2b/general/claim/uploaded', 'POST');
                     $claim_data = json_decode($response->getBody()->getContents());
                     $response = array(
@@ -458,7 +457,7 @@ class AdjusterController extends Controller
                         ",
                             ];
                             $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                            SMSHelper::sendSMS('Hello '. $headAssessor->firstName .', A new claim : '.$claimNo.' has been created. You are required to assign an assessor',$headAssessor->MSISDN);
+                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', A new claim : ' . $claimNo . ' has been created. You are required to assign an assessor', $headAssessor->MSISDN);
                             $claim = Claim::where(['id' => $claimID])->first();
                             Notification::send($headAssessors, new NewClaimNotification($claim));
                         }
@@ -481,6 +480,7 @@ class AdjusterController extends Controller
 
         return json_encode($response);
     }
+
     public function uploadDocumentsForm(Request $request, $claimID)
     {
         $claim = Claim::where(['id' => $claimID])->first();
@@ -490,13 +490,11 @@ class AdjusterController extends Controller
     public function searchClaim(Request $request)
     {
         $userID = 3;
-        if(isset($request->fromDate) && isset($request->toDate) && !isset($request->vehicleRegNo))
-        {
-            $response =$this->functions->search($userID,$request->fromDate,$request->toDate,'');
+        if (isset($request->fromDate) && isset($request->toDate) && !isset($request->vehicleRegNo)) {
+            $response = $this->functions->search($userID, $request->fromDate, $request->toDate, '');
 
-        }else if(isset($request->vehicleRegNo))
-        {
-            $response =$this->functions->search($userID,'','',$request->vehicleRegNo);
+        } else if (isset($request->vehicleRegNo)) {
+            $response = $this->functions->search($userID, '', '', $request->vehicleRegNo);
         }
         return $response;
     }
@@ -508,27 +506,24 @@ class AdjusterController extends Controller
             if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
                 $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                    ->where('dateCreated',">=",Carbon::now()->subDays(Config::DATE_RANGE))
+                    ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
-            }elseif (isset($request->regNumber))
-            {
+            } elseif (isset($request->regNumber)) {
 //                $regNo = preg_replace("/\s+/", "", $request->regNumber);
-                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+                $claimids = Claim::where('vehicleRegNo', 'like', '%' . $request->regNumber . '%')->pluck('id')->toArray();
                 $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
 
-            }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
-            {
+            } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
                 $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
                 $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
                 $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
-            }else
-            {
+            } else {
                 $assessments = array();
             }
             return view('adjuster.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
@@ -537,24 +532,25 @@ class AdjusterController extends Controller
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
     }
-    public function assessmentDetails(Request $request,$assessmentID)
+
+    public function assessmentDetails(Request $request, $assessmentID)
     {
         try {
-            $assessment = Assessment::where('id','=',$assessmentID)->with('claim')->with('assessor')->first();
-            $customer = CustomerMaster::where(['customerCode' =>$assessment->claim->customerCode])->first();
-            return view('adjuster.assessment-details',['assessment' => $assessment,'customer' => $customer]);
-        }catch (\Exception $e)
-        {
+            $assessment = Assessment::where('id', '=', $assessmentID)->with('claim')->with('assessor')->first();
+            $customer = CustomerMaster::where(['customerCode' => $assessment->claim->customerCode])->first();
+            return view('adjuster.assessment-details', ['assessment' => $assessment, 'customer' => $customer]);
+        } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessment details. Error message " . $e->getMessage());
         }
     }
-    public function editClaimForm(Request $request,$claimID)
+
+    public function editClaimForm(Request $request, $claimID)
     {
-        $claim = Claim::where(["id"=>$claimID])->with('customer')->with('documents')->first();
+        $claim = Claim::where(["id" => $claimID])->with('customer')->with('documents')->first();
         $carDetails = CarModel::where(["modelCode" => isset($claim->carModelCode) ? $claim->carModelCode : 0])->first();
         $garages = Garage::all();
-        return view("adjuster.edit-claim-form",['claim' => $claim,'carDetails' =>$carDetails,'garages'=>$garages]);
+        return view("adjuster.edit-claim-form", ['claim' => $claim, 'carDetails' => $carDetails, 'garages' => $garages]);
     }
 
     public function updateClaim(Request $request)
@@ -591,7 +587,7 @@ class AdjusterController extends Controller
                     }
                 }
                 $documents = Document::where(["claimID" => $claim->id])->get();
-                if(isset($totalImages)) {
+                if (isset($totalImages)) {
                     if (count($documents) > 0) {
                         $affectedDocumentRows = Document::where(["claimID" => $claim->id])->delete();
                         if ($affectedDocumentRows > 0) {
@@ -656,34 +652,34 @@ class AdjusterController extends Controller
             $defaultToDate = Carbon::now()->toDateTimeString();
             $defaultFromDate = Carbon::now()->subDays(Config::DATES_LIMIT)->toDateTimeString();
             $vehicleRegNo = $request->vehicleRegNo;
-            if (isset($vehicleRegNo))
-            {
+            if (isset($vehicleRegNo)) {
                 $defaultFromDate = Carbon::now()->subDays(366)->toDateTimeString();
             }
             $toDate = isset($request->toDate) ? Carbon::parse($request->toDate)->format('Y-m-d H:i:s') : $defaultToDate;
             $fromDate = isset($request->fromDate) ? Carbon::parse($request->fromDate)->format('Y-m-d H:i:s') : $defaultFromDate;
-            $data = ["fromDate"=>$fromDate,"toDate" => $toDate,"vehicleRegNo"=>$vehicleRegNo];
+            $data = ["fromDate" => $fromDate, "toDate" => $toDate, "vehicleRegNo" => $vehicleRegNo];
             $response = $utility->getData($data, '/api/v1/b2b/general/claim/fetch', 'POST');
             $claim_data = json_decode($response->getBody()->getContents());
             if ($claim_data->status == 'success' && sizeof($claim_data->data->DB_VALUE1) != 0) {
-                $claims =json_decode(json_encode($claim_data->data->DB_VALUE1),true);
-            }else{
+                $claims = json_decode(json_encode($claim_data->data->DB_VALUE1), true);
+            } else {
                 $claims = [];
             }
-        }catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $claims = [];
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to filter claims. Error message " . $e->getMessage());
         }
         return view('adjuster.index', ['claims' => $claims]);
     }
+
     public function claimExceptionDetail(Request $request)
     {
         $claimID = $request->claimID;
-        $claim = Claim::where(["changed"=>Config::ACTIVE])->with('claimtracker')->orderBy('dateCreated', 'DESC')->first();
-        return view("adjuster.exception-report",['claim' => $claim]);
+        $claim = Claim::where(["changed" => Config::ACTIVE])->with('claimtracker')->orderBy('dateCreated', 'DESC')->first();
+        return view("adjuster.exception-report", ['claim' => $claim]);
     }
+
     public function assessmentReport(Request $request)
     {
         $assessmentID = $request->assessmentID;
@@ -693,55 +689,66 @@ class AdjusterController extends Controller
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
         $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
         $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
-        $insured= CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
-        $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
-        $assessor = User::where(['id'=> $assessment->assessedBy])->first();
-        $carDetail = CarModel::where(['makeCode'=> isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '','modelCode'=> isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-        return view("adjuster.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved' => $aproved,'carDetail'=>$carDetail,'priceChange'=>$priceChange]);
+        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
+        return view("adjuster.assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail, 'priceChange' => $priceChange]);
     }
 
     public function claims(Request $request)
     {
         $claimStatusID = $request->claimStatusID;
         $assessors = User::role('Assessor')->get();
-        $claims = Claim::where('claimStatusID','=',$claimStatusID)->with('adjuster')->get();
-        return view('adjuster.claims', ['claims' => $claims, 'assessors' => $assessors,'claimStatusID'=>$claimStatusID]);
+        $claims = Claim::where('claimStatusID', '=', $claimStatusID)->with('adjuster')->get();
+        return view('adjuster.claims', ['claims' => $claims, 'assessors' => $assessors, 'claimStatusID' => $claimStatusID]);
     }
 
     //Generate release letter
-    public function generateReleaseLetter($claim_id, $download=true) {
-        $claim = Claim::where(['id'=>$claim_id])->with('customer')->first();
+//    public function generateReleaseLetter($claim_id, $download=true) {
+//        $claim = Claim::where(['id'=>$claim_id])->with('customer')->first();
+//
+//        $role = Config::$ROLES['ADJUSTER'];
+//
+//        $pdf_html = view('adjuster.release-letter', compact('claim', 'role'))->render();
+//        $pdf_name = str_replace('/', '', $claim->claim_no).' - '.$claim->vehicle_reg.'.pdf';
+//        $pdf_path = public_path().'/release-letters';
+//        $pdf_url = url('/windscreen-repairs/'.$pdf_name);
+//
+//        if(!is_dir($pdf_path)){
+//            //Directory does not exist, so lets create it.
+//            mkdir($pdf_path, 0755);
+//
+//            $pdf_path = $pdf_path.'/'.$pdf_name;
+//        }
+//
+//        $pdf = app()->make('dompdf.wrapper');
+//        $pdf->getDomPDF()->set_option('enable_html5_parser', true);
+//        $pdf->loadHTML($pdf_html);
+//
+//        if($download) {
+//            return $pdf->stream($pdf_name, array("Attachment" => false));
+//        } else {
+//
+//            $pdf->save($pdf_path);
+//
+//            return public_path().'/windscreen-repairs/'.$pdf_name;
+//        }
+//    }
+//Generate release letter
+    public function generateReleaseLetter($claim_id, $download = true)
+    {
+        $claim = Claim::where(['id' => $claim_id])->with('customer')->first();
+        $claimID = $claim_id;
 
         $role = Config::$ROLES['ADJUSTER'];
 
-        $pdf_html = view('adjuster.release-letter', compact('claim', 'role'))->render();
-        $pdf_name = str_replace('/', '', $claim->claim_no).' - '.$claim->vehicle_reg.'.pdf';
-        $pdf_path = public_path().'/release-letters';
-        $pdf_url = url('/windscreen-repairs/'.$pdf_name);
-
-        if(!is_dir($pdf_path)){
-            //Directory does not exist, so lets create it.
-            mkdir($pdf_path, 0755);
-
-            $pdf_path = $pdf_path.'/'.$pdf_name;
-        }
-
-        $pdf = app()->make('dompdf.wrapper');
-        $pdf->getDomPDF()->set_option('enable_html5_parser', true);
-        $pdf->loadHTML($pdf_html);
-
-        if($download) {
-            return $pdf->stream($pdf_name, array("Attachment" => false));
-        } else {
-
-            $pdf->save($pdf_path);
-
-            return public_path().'/windscreen-repairs/'.$pdf_name;
-        }
+        return view('adjuster.release-letter', compact('claim', 'role', 'claimID'));
     }
 
-    public function reInspectionLetter(Request  $request, $id) {
+    public function reInspectionLetter(Request $request, $id)
+    {
         $assessment = Assessment::findOrFail($id);
         $assessmentIds = Assessment::where(['assessmentID' => $id, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']])->pluck('id')->toArray();
         array_push($assessmentIds, $assessment->id);
@@ -767,14 +774,14 @@ class AdjusterController extends Controller
             }
 
             $unReInspectedParts = AssessmentItem::whereIn("assessmentID", $assessmentIds)
-                ->where('reInspectionType','!=',Config::$JOB_CATEGORIES['REPLACE']['ID'])
-                ->where('reInspection',Config::ACTIVE)
-                ->where('total','!=',0)
+                ->where('reInspectionType', '!=', Config::$JOB_CATEGORIES['REPLACE']['ID'])
+                ->where('reInspection', Config::ACTIVE)
+                ->where('total', '!=', 0)
                 ->get();
             $assessor = User::where('id', $reinspection->createdBy)->first();
-            $insured = CustomerMaster::where(['customerCode'=> $claim->customerCode])->first();
+            $insured = CustomerMaster::where(['customerCode' => $claim->customerCode])->first();
             $insuredName = isset($insured->firstName) ? $insured->firstName : '' . isset($insured->lastName) ? $insured->lastName : '';
-            $assessorName = isset($assessor->firstName) ? $assessor->firstName : ''. isset($assessor->lastName) ? $assessor->lastName : '';
+            $assessorName = isset($assessor->firstName) ? $assessor->firstName : '' . isset($assessor->lastName) ? $assessor->lastName : '';
             $data = [
                 'assessor' => $assessorName,
                 'amount' => $reinspection->total,
@@ -811,7 +818,7 @@ class AdjusterController extends Controller
     {
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID,'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             return view('adjuster.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
@@ -852,7 +859,7 @@ class AdjusterController extends Controller
         $assessor = User::where(['id' => $assessment->assessedBy])->first();
         $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
         $pdf = App::make('snappy.pdf.wrapper');
-        $pdf->loadView('adjuster.send-repair-authority', compact('assessment', "assessmentItems", "jobDetails", "insured", 'documents', 'adjuster', 'assessor', 'aproved', 'carDetail','priceChange'));
+        $pdf->loadView('adjuster.send-repair-authority', compact('assessment', "assessmentItems", "jobDetails", "insured", 'documents', 'adjuster', 'assessor', 'aproved', 'carDetail', 'priceChange'));
 
         $pdfFilePath = public_path('images/assessment-report.pdf');
 
@@ -874,11 +881,11 @@ class AdjusterController extends Controller
 
         $flag = false;
 
-            $message = [
-                'subject' => "PROCEED TO REPAIR",
-                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                'attachment' => $pdfFilePath,
-                'message' => "
+        $message = [
+            'subject' => "PROCEED TO REPAIR",
+            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'attachment' => $pdfFilePath,
+            'message' => "
                         Dear Sirs, <br>
 
                         Kindly proceed with repairs as per attached and adhere to REPAIR TIMELINES <br>
@@ -896,14 +903,14 @@ class AdjusterController extends Controller
 
                         Jubilee Insurance Company
                     ",
-            ];
+        ];
 
-            InfobipEmailHelper::sendEmail($message, $email);
-            // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email', $userDetail['MSISDN']);
+        InfobipEmailHelper::sendEmail($message, $email);
+        // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email', $userDetail['MSISDN']);
 //            $user = User::where(["id" => $userDetail['id']])->first();
 //            Notification::send($user, new ClaimApproved($claim));
 
-            $flag = true;
+        $flag = true;
         if ($flag)
             $response = array(
                 "STATUS_CODE" => Config::SUCCESS_CODE,
@@ -919,6 +926,73 @@ class AdjusterController extends Controller
         return json_encode($response);
 
 
+    }
+    public function emailReleaseletter(Request $request)
+    {
+        $claim_id = $request->claimID;
+        $claim = Claim::where(['id' => $claim_id])->with('customer')->first();
+        $email = $request->email;
+        $role = Config::$ROLES['ADJUSTER'];
+        $assessment = Assessment::where(["id" => $claim_id])->first();
 
+        $adjusterID = $claim->createdBy;
+        $adjuster = User::where(["id" => $adjusterID])->first();
+        $assessorID = $assessment->assessedBy;
+        $assessor = User::where(["id" => $assessorID])->first();
+
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadView('adjuster.release', compact('claim', 'role'));
+
+        $pdfFilePath = public_path('images/release-letter.pdf');
+
+        if (File::exists($pdfFilePath)) {
+            File::delete($pdfFilePath);
+        }
+        $pdf->save($pdfFilePath);
+        // return $pdf->stream();
+
+        $flag = false;
+        $message = [
+            'subject' => "PROCEED TO REPAIR",
+            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'attachment' => $pdfFilePath,
+            'message' => "
+                        Dear Sirs, <br>
+
+                        Kindly proceed with repairs as per attached and adhere to REPAIR TIMELINES <br>
+
+                        Note: No supplmentaries will be allowed or price changes after repair commencement. <br> <br>
+                        Kindly adhere to above terms.
+
+
+
+                        Regards, <br><br>
+
+                        " . $role . ", <br>
+
+                        Claims Department, <br>
+
+                        Jubilee Insurance Company
+                    ",
+        ];
+
+        InfobipEmailHelper::sendEmail($message, $email);
+        // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email',$userDetail['MSISDN']);
+//            $user = User::where(["id" => $userDetail['id']])->first();
+//            Notification::send($user, new ClaimApproved($claim));
+
+        $flag = true;
+        if ($flag)
+            $response = array(
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "An email was sent successfuly"
+            );
+        else {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+        }
+        return json_encode($response);
     }
 }

@@ -61,6 +61,7 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->post('/supplementaries','AdjusterController@supplementaries');
     $router->post('/supplementary-report','AdjusterController@supplementaryReport');
     $router->post('/SendRepairAuthority', 'AdjusterController@SendRepairAuthority');
+    $router->post('/emailReleaseletter', 'AdjusterController@emailReleaseletter');
 });
 
 // Assessor Routes
