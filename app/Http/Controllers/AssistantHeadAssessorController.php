@@ -56,7 +56,17 @@ class AssistantHeadAssessorController extends Controller
             }elseif (isset($request->regNumber))
             {
 //                $regNo = preg_replace("/\s+/", "", $request->regNumber);
-                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+                $registrationNumber=preg_replace("/\s+/", "", $request->regNumber);
+                $regNoArray = preg_split('/(?=\d)/', $registrationNumber, 2);
+                $regNo1 =isset($regNoArray[0]) ? $regNoArray[0] : '';
+                $regNo2 = isset($regNoArray[1]) ? $regNoArray[1] : '';
+                $regNo = $request->regNumber;
+                $claimids = Claim::where(function($a) use ($regNo,$regNo1,$regNo2) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo.'%');
+                })->orWhere(function($a)use ($regNo1,$regNo2) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%');
+                })->pluck('id')->toArray();
+//                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
                 $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                     ->where('totalCost', '<=', Config::HEAD_ASSESSOR_THRESHOLD)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
