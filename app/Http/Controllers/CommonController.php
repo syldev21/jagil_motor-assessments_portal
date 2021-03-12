@@ -38,8 +38,20 @@ class CommonController extends Controller
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }elseif (isset($request->regNumber))
             {
-//                $regNo = preg_replace("/\s+/", "", $request->regNumber);
-                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+//              $regNo = preg_replace("/\s+/", "", $request->regNumber);
+                $registrationNumber=preg_replace("/\s+/", "", $request->regNumber);
+                $regNoArray = preg_split('/(?=\d)/', $registrationNumber, 2);
+                $regNo1 =isset($regNoArray[0]) ? $regNoArray[0] : '';
+                $regNo2 = isset($regNoArray[1]) ? $regNoArray[1] : '';
+                $regNo = $request->regNumber;
+                $claimids = Claim::where(function($a) use ($regNo,$regNo1,$regNo2) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo.'%');
+                })->orWhere(function($a)use ($regNo1,$regNo2) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%');
+                })->pluck('id')->toArray();
+
+//              $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+
                 $asmts=Assessment::whereIn('assessmentStatusID', $assessmentStatusIDs)
                     ->where('segment','=',Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
                 $assessments = Assessment::where("assessedBy","!=",$id)
