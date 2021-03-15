@@ -59,6 +59,7 @@
                                             <th>Assessor</th>
                                             <th>Status</th>
                                             <th>Time</th>
+                                            <th>Amount</th>
                                             <th>Type</th>
                                             <th>Operation</th>
                                         </tr>
@@ -131,6 +132,13 @@
                                                         {{\Carbon\Carbon::parse($date)->diffForHumans()}}
                                                     </td>
                                                     <td>
+                                                        @if(isset($assessment['totalCost']))
+                                                            {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
+                                                        @elseif(isset($assessment['totalLoss']))
+                                                             {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
                                                         {{ isset($assessment['assessmentTypeID'])  ?  \App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']] : ''}}
                                                     </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
@@ -148,10 +156,9 @@
                                                         <!-- Dropdown Structure -->
                                                         <?php
                                                         $claim='claim';
-                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->where('name','like','%' .$claim. '%')->first();
+                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>App\Conf\Config::PDF_TYPES['CLAIM_FORM']['ID']])->first();
 
-                                                        $invoice='invoice';
-                                                        $invoiceDoc =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->where('name','like','%' .$invoice. '%')->first();
+                                                        $invoiceDoc =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType' => App\Conf\Config::PDF_TYPES['INVOICE']['ID']])->first();
                                                         ?>
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             @if(isset($claimForm->name))
