@@ -422,10 +422,8 @@
                                                         {
                                                         $difference = ((\App\Conf\Config::TOTAL_PERCENTAGE) / \App\Conf\Config::INITIAL_PERCENTAGE * $difference);
                                                         }
-                                                $price_change = $assessment['totalCost'] + $difference;
                                             } else {
                                                 $difference = (\App\Conf\Config::NEW_MARKUP * $difference);
-                                                $price_change = $assessment['totalCost'] + $difference;
                                             }
                                             ?>
                                             <tr>
@@ -435,7 +433,7 @@
                                                 <td class="text-bold">Grand Total</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{{ number_format($reinspection['total'] + ($price_change > 0 ? $price_change : 0)) }}</td>
+                                                <td>{{ number_format($reinspection['total'] + ($difference > 0 ? $difference : 0)) }}</td>
                                                 <td></td>
                                             </tr>
 
