@@ -294,7 +294,7 @@
                                                 <td>{{ number_format($totalParts) }}</td>
                                                 <td>-</td>
                                             </tr>
-                                            @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+                                            @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'] && $assessment['dateCreated'] < \App\Conf\Config::MARK_UP_CUT_OFF_DATE)
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
