@@ -236,6 +236,9 @@
                                                 <th class="col-sm-1 text-bold">Contribution %</th>
 
                                                 <th class="col-sm-2 text-bold">Total</th>
+                                                <th class="col-sm-2 text-bold">Price Change</th>
+
+                                                <th class="col-sm-2 text-bold">Price Diff</th>
 
                                                 <th class="col-sm-2 text-bold">Remarks</th>
 
@@ -265,7 +268,17 @@
                                                     <td>{{ $assessmentItem['contribution'] }}</td>
 
                                                     <td>{{ number_format($assessmentItem['total']) }}</td>
+                                                    <td>
+                                                        @if(isset($assessmentItem['current']))
+                                                            {{ number_format($assessmentItem['current']) }}
+                                                        @endif
+                                                    </td>
 
+                                                    <td>
+                                                        @if(isset($assessmentItem['difference']))
+                                                            {{ number_format($assessmentItem['difference']) }}
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $assessmentItem['remark']['name'] }}</td>
                                                     <td>@if($assessmentItem['reInspectionType'] == \App\Conf\Config::$JOB_CATEGORIES['REPAIR']['ID']) <i class="material-icons" style="color: green">check</i> @else <i class="material-icons" style="color: red">clear</i> @endif</td>
 
@@ -397,7 +410,24 @@
                                                     </tr>
                                                 @endif
                                             @endif
-
+                                            <?php
+                                            $difference = \App\AssessmentItem::where('assessmentID', $reinspection['assessmentID'])
+                                                ->whereNotNull('current')
+                                                ->sum('difference');
+                                            if ($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                                                if($assessment['claim']->intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $assessment['claim']->intimationDate <= \App\Conf\Config::VAT_END_DATE)
+                                                    {
+                                                        $difference = ((\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE) / \App\Conf\Config::INITIAL_PERCENTAGE * $difference);
+                                                    }else
+                                                        {
+                                                        $difference = ((\App\Conf\Config::TOTAL_PERCENTAGE) / \App\Conf\Config::INITIAL_PERCENTAGE * $difference);
+                                                        }
+                                                $price_change = $assessment['totalCost'] + $difference;
+                                            } else {
+                                                $difference = (\App\Conf\Config::NEW_MARKUP * $difference);
+                                                $price_change = $assessment['totalCost'] + $difference;
+                                            }
+                                            ?>
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -405,7 +435,7 @@
                                                 <td class="text-bold">Grand Total</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{{ number_format($reinspection['total']) }}</td>
+                                                <td>{{ number_format($reinspection['total'] + ($price_change > 0 ? $price_change : 0)) }}</td>
                                                 <td></td>
                                             </tr>
 
