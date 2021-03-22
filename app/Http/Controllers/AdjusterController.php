@@ -770,7 +770,8 @@ class AdjusterController extends Controller
             $reinspection = ReInspection::where('assessmentID', $id)->first();
 
             $award = AssessmentItem::whereIn("assessmentID", $assessmentIds)
-                ->where('reInspectionType', Config::$JOB_CATEGORIES['CIL']['ID'])
+                ->where('reInspectionType','!=', Config::$JOB_CATEGORIES['REPLACE']['ID'])
+                ->where('reInspection', Config::ACTIVE)
                 ->sum('total');
 
             $status = $assessment->assessmentTypeID;
