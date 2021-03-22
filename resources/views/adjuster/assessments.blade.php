@@ -172,6 +172,10 @@
                                                                                 class="material-icons">picture_as_pdf</i>
                                                                             Release Letter</a></li>
                                                                 @endif
+                                                                    @if($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+                                                                        <li><a id="send-discharge-voucher" data-id="{{$assessment['claimID']}}" id=""><i class="material-icons">picture_as_pdf</i>
+                                                                                Discharge Voucher</a></li>
+                                                                    @endif
                                                             @endif
                                                                 @if(isset($assessment['supplementaries']))
                                                                     @foreach($assessment['supplementaries'] as $supplementary )

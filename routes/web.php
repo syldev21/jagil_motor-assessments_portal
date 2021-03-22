@@ -56,6 +56,9 @@ $router->group(['prefix' => 'adjuster'], function($router)
     //Re-inspection letter
     $router->get('/re-inspection-letter/{claim_id}', 'AdjusterController@reInspectionLetter');
 
+    //send - discharge - voucher
+    $router->get('/send-discharge-voucher/{claim_id}', 'AdjusterController@sendDischargeVoucher');
+
     //Reports
     $router->post('/assessmentReport','AdjusterController@assessmentReport');
     $router->post('/supplementaries','AdjusterController@supplementaries');

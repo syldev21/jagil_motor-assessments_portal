@@ -1000,4 +1000,35 @@ class AdjusterController extends Controller
         }
         return json_encode($response);
     }
+
+    public function sendDischargeVoucher($claim_id)
+    {
+        $assessment = Assessment::where(['claimID' => $claim_id])->with('claim')->first();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $assessmentItem = AssessmentItem::where(["assessmentID" => $assessment->id])->first();
+        $jobDetailsSum = JobDetail::where(["assessmentID" => $assessment->id])->get()->sum('cost');
+        $priceChange = PriceChange::where('assessmentID', $assessment->id)->first();
+
+        if($assessment['assessmentTypeID'] == Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+        {
+            $val = number_format(round((AssessmentItem::where('assessmentID', $assessment['id'])->sum('total')) + $jobDetailsSum - (isset($assessment->scrapValue) ? $assessment['scrapValue'] : 1) - $assessment['claim']['excess']));
+
+        }
+        elseif($assessment['assessmentTypeID'] == Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
+        {
+            if (isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt)) {
+                $val =  number_format(round($assessment['totalChange'] - $assessment['claim']['excess']));
+            } else {
+                $val = number_format(round($assessment['totalCost'] - $assessment['claim']['excess']));
+            }
+        }
+        $amt = str_replace(',',"", $val);
+
+        $amount = $amt;
+
+        $claimID = $claim_id;
+
+        return view('adjuster.discharge-voucher', compact('claimID', 'assessment', 'jobDetailsSum', 'amount','val', 'insured'));
+    }
 }

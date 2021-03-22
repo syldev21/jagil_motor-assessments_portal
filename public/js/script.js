@@ -4588,6 +4588,30 @@ $(document).ready(function () {
 
 
     });
+    $("body").on('click','#send-discharge-voucher',function (){
+        var claimID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'GET',
+            url: '/adjuster/send-discharge-voucher/'+claimID,
+            success: function (data) {
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
     $("body").on('click','#send-release-letter',function (){
         var claimID = $(this).data("id");
         $.ajaxSetup({
