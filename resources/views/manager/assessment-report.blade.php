@@ -418,13 +418,13 @@
                                             <td></td>
                                             <td></td>
                                             @if($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
-                                                <td>{{ number_format(round(($sumOfTotalItems * $markup)+$jobValue+$scrapValue)) }}
+                                                <td>{{ number_format(round(($sumOfTotalItems * $markup)+$jobValue-$scrapValue)) }}
                                             @else
                                             <td>
                                                 @if(isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt))
-                                                {{ number_format($assessment['totalChange']+$scrapValue) }}
+                                                {{ number_format($assessment['totalChange']-$scrapValue) }}
                                                 @else
-                                                    {{ number_format($assessment['totalCost']+$scrapValue) }}
+                                                    {{ number_format($assessment['totalCost']-$scrapValue) }}
                                                 @endif
                                             </td>
                                             @endif
