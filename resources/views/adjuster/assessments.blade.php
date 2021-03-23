@@ -186,6 +186,10 @@
                                                                         </li>
                                                                     @endforeach
                                                                 @endif
+                                                                <li>
+                                                                    <a href="#" id="triggerNotification" data-id="{{$assessment['id']}}"><i
+                                                                            class="material-icons">notifications_active</i>Send Notification </a>
+                                                                </li>
                                                         </ul>
 
                                                     </td>
@@ -200,6 +204,7 @@
                     </div>
                 </div>
             </div>
+            @include('common.generic-notification')
         </div>
     </div>
 </div>

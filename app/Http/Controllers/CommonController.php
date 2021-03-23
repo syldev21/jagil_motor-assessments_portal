@@ -7,6 +7,7 @@ use App\Claim;
 use App\Conf\Config;
 use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
+use App\Helper\InfobipEmailHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -87,5 +88,40 @@ class CommonController extends Controller
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
         }
+    }
+
+    public function sendNotification(Request $request)
+    {
+        $email = $request->email;
+        $message = $request->message;
+        $subject = $request->subject;
+        $flag = false;
+        $senderEmail = Auth::user()->email;
+
+        $message = [
+            'subject' => $subject,
+            'from_user_email' => $senderEmail,
+            'message' => $message,
+        ];
+
+        InfobipEmailHelper::sendEmail($message, $email);
+        // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email',$userDetail['MSISDN']);
+        // $user = User::where(["id" => $userDetail['id']])->first();
+        // Notification::send($user, new ClaimApproved($claim));
+
+        $flag = true;
+        // }
+        if ($flag == true)
+            $response = array(
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "An email was sent successfuly"
+            );
+        else {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+        }
+        return json_encode($response);
     }
 }

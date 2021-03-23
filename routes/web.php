@@ -183,6 +183,7 @@ $router->group(['prefix' => 'common'], function($router)
     //Motor  assessment Assessor Module
     $router->post('/fetch-re-inspections','CommonController@fetchReInspections');
     $router->post('/fetch-claims-by-type','CommonController@fetchClaimsByType');
+    $router->post('/sendNotification', 'CommonController@sendNotification');
 });
 
 // migrate

@@ -3859,6 +3859,12 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
+    $("body").on('click','#triggerNotification',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('genericNotification');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+    });
     $("body").on('click','#triggerRepairAuthority',function (e){
         e.preventDefault();
         const elem = document.getElementById('repairAuthority');
@@ -4813,6 +4819,52 @@ $(document).ready(function () {
                 w.document.open();
                 w.document.write(data);
                 w.document.close();
+            }
+
+        });
+    });
+    $("body").on('click','#sendNotification',function (){
+        var email = $("#email");
+        // var message =$("#message");
+        var subject =$("#subject");
+        var message = CKEDITOR.instances['message'].getData();
+
+
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/common/sendNotification/',
+            data: {
+                subject: subject.val(),
+                message: message,
+                email: email.val(),
+            },
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
             }
 
         });
