@@ -388,7 +388,26 @@
                                                 </tr>
                                             @endif
                                         @endif
-
+                                        <?php
+                                            $scrapValue=0;
+                                        ?>
+                                        @if($assessment['assessmentTypeID'] ==
+                                                        App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'] && $assessment['scrap'] == App\Conf\Config::ACTIVE)
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="">Scrap</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{ isset($assessment['scrapValue']) ? $assessment['scrapValue'] : 0 }}
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <?php
+                                            $scrapValue = isset($assessment['scrapValue']) ? $assessment['scrapValue'] : 0;
+                                            ?>
+                                        @endif
                                         <tr>
                                             <td></td>
                                             <td></td>
@@ -397,13 +416,13 @@
                                             <td></td>
                                             <td></td>
                                             @if($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
-                                                <td>{{ number_format(round(($sumOfTotalItems * $markup)+$jobValue)) }}
+                                                <td>{{ number_format(round(($sumOfTotalItems * $markup)+$jobValue+$scrapValue)) }}
                                             @else
                                             <td>
                                                 @if(isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt))
-                                                    {{ number_format($assessment['totalChange']) }}
+                                                    {{ number_format($assessment['totalChange']+$scrapValue) }}
                                                 @else
-                                                    {{ number_format($assessment['totalCost']) }}
+                                                    {{ number_format($assessment['totalCost']+$scrapValue) }}
                                                 @endif
                                             </td>
                                             @endif
