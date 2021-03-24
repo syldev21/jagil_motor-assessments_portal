@@ -400,7 +400,7 @@
                                                 <td class="">Scrap</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{{ isset($assessment['scrapValue']) ? $assessment['scrapValue'] : 0 }}
+                                                <td>{{ isset($assessment['scrapValue']) ? '('.$assessment['scrapValue'].')' : 0 }}
                                                 </td>
                                                 <td></td>
                                             </tr>
