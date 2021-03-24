@@ -100,7 +100,7 @@ class CommonController extends Controller
 
         $message = [
             'subject' => $subject,
-            'from_user_email' => $senderEmail,
+            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
             'message' => $message,
         ];
 
