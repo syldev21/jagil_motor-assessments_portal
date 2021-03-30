@@ -4842,7 +4842,7 @@ $(document).ready(function () {
         $.ajax({
 
             type: 'POST',
-            url: '/common/sendNotification/',
+            url: '/common/sendNotification',
             data: {
                 subject: subject.val(),
                 message: message,
@@ -4868,6 +4868,10 @@ $(document).ready(function () {
             }
 
         });
+    });
+    $("#main").on('click','.userType',function (){
+        var checkedValue =$("input[type='radio']").val();
+        alert(checkedValue);
     });
     function addLoadingButton()
     {
