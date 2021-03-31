@@ -103,8 +103,12 @@
                                                 @if($addLabor != 0)
 
                                                     <p>Additional labor to garage is KShs.
+                                                        @if($intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $intimationDate <= \App\Conf\Config::VAT_END_DATE)
 
                                                         <strong>{{ number_format($addLabor * (\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE/\App\Conf\Config::INITIAL_PERCENTAGE)) }}.</strong>
+                                                        @else
+                                                            <strong>{{ number_format($addLabor * (\App\Conf\Config::TOTAL_PERCENTAGE/\App\Conf\Config::INITIAL_PERCENTAGE)) }}.</strong>
+                                                        @endif
 
                                                         (<strong>NB</strong>: This has already been reflected in the total
                                                         amount)
@@ -115,7 +119,11 @@
 
                                                 <p>
 
-                                                    The garage to invoice Kshs. {{ number_format($amount) }} Inclusive {{\App\Conf\Config::CURRENT_VAT_PERCENTAGE}} VAT.
+                                                    @if($intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $intimationDate <= \App\Conf\Config::VAT_END_DATE)
+                                                        The garage to invoice Kshs. {{ number_format($amount) }} Inclusive {{\App\Conf\Config::CURRENT_VAT_PERCENTAGE}} VAT.
+                                                    @else
+                                                        The garage to invoice Kshs. {{ number_format($amount) }} Inclusive {{\App\Conf\Config::TOTAL_PERCENTAGE}} VAT.
+                                                    @endif
 
                                                 </p>
 

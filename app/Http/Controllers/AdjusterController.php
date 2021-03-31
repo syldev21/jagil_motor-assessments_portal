@@ -536,8 +536,7 @@ class AdjusterController extends Controller
             } else {
                 $assessments = array();
             }
-            $users = User::all();
-            return view('adjuster.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'users'=>$users]);
+            return view('adjuster.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
@@ -771,7 +770,7 @@ class AdjusterController extends Controller
             $reinspection = ReInspection::where('assessmentID', $id)->first();
 
             $award = AssessmentItem::whereIn("assessmentID", $assessmentIds)
-                ->where('reInspectionType','!=', Config::$JOB_CATEGORIES['REPLACE']['ID'])
+                ->where('reInspectionType','=', Config::$JOB_CATEGORIES['CIL']['ID'])
                 ->where('reInspection', Config::ACTIVE)
                 ->sum('total');
 
@@ -786,7 +785,7 @@ class AdjusterController extends Controller
             }
 
             $unReInspectedParts = AssessmentItem::whereIn("assessmentID", $assessmentIds)
-                ->where('reInspectionType', '!=', Config::$JOB_CATEGORIES['REPLACE']['ID'])
+                ->where('reInspectionType', '=', Config::$JOB_CATEGORIES['CIL']['ID'])
                 ->where('reInspection', Config::ACTIVE)
 //                ->where('total', '!=', 0)
                 ->get();
@@ -805,7 +804,8 @@ class AdjusterController extends Controller
                 'subAmount' => isset($subAmount) ? $subAmount : 0,
                 'parts' => $unReInspectedParts,
                 'labor' => $reinspection->labor,
-                'addLabor' => $reinspection->add_labor
+                'addLabor' => $reinspection->add_labor,
+                'intimationDate' => $claim->intimationDate
             ];
         } else {
             $data = [
@@ -819,7 +819,8 @@ class AdjusterController extends Controller
                 'subAmount' => 0,
                 'parts' => [],
                 'labor' => 0,
-                'addLabor' => 0
+                'addLabor' => 0,
+                'intimationDate' => '00:00:00'
             ];
         }
 
