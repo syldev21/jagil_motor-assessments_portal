@@ -191,7 +191,7 @@
 
                                         <tr>
                                             <td>Date & Time of Assessment</td>
-                                            <td>{{ date('l jS F Y h:i:s A', strtotime($assessment['dateCreated'])) }}</td>
+                                            <td>{{ date('l jS F Y h:i:s A', strtotime($assessment['assessedAt'])) }}</td>
                                         </tr>
 
 
@@ -295,7 +295,7 @@
 
                                         <?php
                                         $sumOfTotalItems = \App\Helper\GeneralFunctions::getSumOfTotalItems($assessment['id']);
-                                        $markup = $assessment['dateCreated'] > \App\Conf\Config::MARK_UP_CUT_OFF_DATE ? \App\Conf\Config::NEW_MARKUP : \App\Conf\Config::MARK_UP;
+                                        $markup = $assessment['assessedAt'] > \App\Conf\Config::MARK_UP_CUT_OFF_DATE ? \App\Conf\Config::NEW_MARKUP : \App\Conf\Config::MARK_UP;
                                         ?>
                                         <tr>
                                             <td></td>
@@ -307,7 +307,7 @@
                                             <td>{{ number_format($sumOfTotalItems) }}</td>
                                             <td>-</td>
                                         </tr>
-                                        @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'] && $assessment['dateCreated'] < \App\Conf\Config::MARK_UP_CUT_OFF_DATE)
+                                        @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'] && $assessment['assessedAt'] < \App\Conf\Config::MARK_UP_CUT_OFF_DATE)
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -465,7 +465,7 @@
 
 {{--                                            <p>Assessor: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
 
-                                            <p>Date: {{ date('l jS F Y', strtotime($assessment['dateCreated'])) }}</p>
+                                            <p>Date: {{ date('l jS F Y', strtotime($assessment['assessedAt'])) }}</p>
 
 
 
@@ -481,7 +481,7 @@
 
 {{--                                            <p>Assessor: {{ \App\User::where('id', $assessment['userID'])->first()->name }}</p>--}}
 
-                                            <p>Date: {{ date('l jS F Y', strtotime($assessment['dateCreated'])) }}</p>
+                                            <p>Date: {{ date('l jS F Y', strtotime($assessment['assessedAt'])) }}</p>
 
 
 
