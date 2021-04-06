@@ -667,6 +667,18 @@ class AssessorController extends Controller
                                     Jubilee Insurance.
                                 ",
                                             ];
+                                            $logData = array(
+                                                "vehicleRegNo" => $claim->vehicleRegNo,
+                                                "claimNo" => $claim->claimNo,
+                                                "policyNo" => $claim->policyNo,
+                                                "userID" => Auth::user()->id,
+                                                "role" => Config::$ROLES['HEAD-ASSESSOR'],
+                                                "activity" => Config::ACTIVITIES['SUBMITTING_ASSESSMENT_REPORT'],
+                                                "notification" => $email['message'],
+                                                "notificationTo" => $email_add,
+                                                "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                                            );
+                                            $this->functions->logActivity($logData);
                                             $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
 //                                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
                                             Notification::send($headAssessor, new NewAssessmentNotification($assessment));
@@ -706,8 +718,20 @@ class AssessorController extends Controller
                                     Jubilee Insurance.
                                 ",
                                             ];
+                                            $logData = array(
+                                                "vehicleRegNo" => $claim->vehicleRegNo,
+                                                "claimNo" => $claim->claimNo,
+                                                "policyNo" => $claim->policyNo,
+                                                "userID" => Auth::user()->id,
+                                                "role" => Config::$ROLES['ASSISTANT-HEAD'],
+                                                "activity" => Config::ACTIVITIES['SUBMITTING_ASSESSMENT_REPORT'],
+                                                "notification" => $email['message'],
+                                                "notificationTo" => $email_add,
+                                                "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                                            );
+                                            $this->functions->logActivity($logData);
                                             $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                            SMSHelper::sendSMS('Hello ' . $assistantHeadAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $assistantHeadAssessor->MSISDN);
+//                                            SMSHelper::sendSMS('Hello ' . $assistantHeadAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $assistantHeadAssessor->MSISDN);
                                             Notification::send($assistantHeadAssessor, new NewAssessmentNotification($assessment));
                                         }
                                     }
@@ -746,8 +770,20 @@ class AssessorController extends Controller
                             Jubilee Insurance.
                         ",
                                         ];
+                                        $logData = array(
+                                            "vehicleRegNo" => $claim->vehicleRegNo,
+                                            "claimNo" => $claim->claimNo,
+                                            "policyNo" => $claim->policyNo,
+                                            "userID" => Auth::user()->id,
+                                            "role" => Config::$ROLES['HEAD-ASSESSOR'],
+                                            "activity" => Config::ACTIVITIES['SUBMITTING_ASSESSMENT_REPORT'],
+                                            "notification" => $email['message'],
+                                            "notificationTo" => $email_add,
+                                            "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                                        );
+                                        $this->functions->logActivity($logData);
                                         $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+//                                      SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
                                         Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                     }
                                 }
@@ -786,8 +822,20 @@ class AssessorController extends Controller
                             Jubilee Insurance.
                         ",
                                         ];
+                                        $logData = array(
+                                            "vehicleRegNo" => $claim->vehicleRegNo,
+                                            "claimNo" => $claim->claimNo,
+                                            "policyNo" => $claim->policyNo,
+                                            "userID" => Auth::user()->id,
+                                            "role" => Config::$ROLES['HEAD-ASSESSOR'],
+                                            "activity" => Config::ACTIVITIES['SUBMITTING_ASSESSMENT_REPORT'],
+                                            "notification" => $email['message'],
+                                            "notificationTo" => $email_add,
+                                            "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                                        );
+                                        $this->functions->logActivity($logData);
                                         $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
+//                                        SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', An Assessment for vehicle : ' . $data['reg'] . ' has been Completed. You are required review and action', $headAssessor->MSISDN);
                                         Notification::send($headAssessor, new NewAssessmentNotification($assessment));
                                     }
                                 }
