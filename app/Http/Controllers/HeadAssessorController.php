@@ -358,15 +358,15 @@ class HeadAssessorController extends Controller
                     ]);
                     if ($approved) {
                         $claim = Claim::where(["id" => $assessment->claimID])->first();
-                        $assessorID = $assessment->assessedBy;
-                        $assessor = User::where(["id" => $assessorID])->first();
+//                      $assessorID = $assessment->assessedBy;
+                        $adjuster = User::where(["id" => $claim->createdBy])->first();
                         $link = 'assessment-report/' . $request->assessmentID;
-                        $firstName = $assessor->firstName;
-                        $email = $assessor->email;
-                        $MSISDN = $assessor->MSISDN;
+                        $firstName = $adjuster->firstName;
+                        $email = $adjuster->email;
+                        $MSISDN = $adjuster->MSISDN;
                         $vehicleReg = $claim->vehicleRegNo;
                         $claimNo = $claim->claimNo;
-                        $reviewNote = $request->report;
+                        $reviewNote = isset($request->report) ? $request->report : '';
                         $role = Config::$ROLES['HEAD-ASSESSOR'];
 
                         $message = [
@@ -393,9 +393,58 @@ class HeadAssessorController extends Controller
                     ",
                         ];
 
-//                        InfobipEmailHelper::sendEmail($message, $email);
+                        InfobipEmailHelper::sendEmail($message, $email);
 //                        SMSHelper::sendSMS('Hello ' . $firstName . ', Assessment for claimNo ' . $claimNo . ' has been provisionally approved', $MSISDN);
-                        Notification::send($assessor, new ClaimApproved($claim));
+//
+                        $logData = array(
+                            "vehicleRegNo" => $claim->vehicleRegNo,
+                            "claimNo" => $claim->claimNo,
+                            "policyNo" => $claim->policyNo,
+                            "userID" => Auth::user()->id,
+                            "role" => Config::$ROLES['ADJUSTER'],
+                            "activity" => Config::ACTIVITIES['PROVISIONAL_APPROVAL'],
+                            "notification" => $message['message'],
+                            "notificationTo" => $email,
+                            "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                        );
+                        $this->functions->logActivity($logData);
+
+                        $assessmentManagers = User::role(Config::$ROLES['ASSESSMENT-MANAGER'])->get(); // Returns only users with the role 'Assessment Managers'
+                        if (count($assessmentManagers) > 0) {
+                            foreach ($assessmentManagers as $assessmentManager) {
+                                $message = [
+                                    'subject' => "Assessment Report - " . $vehicleReg,
+                                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                    'message' => "
+                        Hello " . $assessmentManager->email . ", <br>
+
+                        This is in regards to claim number <strong>" . $claimNo . " </strong> <br>
+
+                        The assessment has been provisionally approved waiting for your final approval. Find attached report. <br> <br>
+
+                            <b><i><u>Notes</u></i></b> <br>
+
+                            <i> " . $reviewNote . " </i><br><br>
+
+                        Regards, <br><br>
+
+                        " . $role . ", <br>
+
+                        Claims Department, <br>
+
+                        Jubilee Insurance Company
+                    ",
+                                ];
+                        InfobipEmailHelper::sendEmail($message, $assessmentManager->email);
+//                        SMSHelper::sendSMS('Hello ' . $firstName . ', Assessment for claimNo ' . $claimNo . ' has been provisionally approved', $MSISDN);
+//                        Notification::send($assessor, new ClaimApproved($claim));
+
+                                $logData['notification'] = $message['message'];
+                                $logData["notificationTo"] = $assessmentManager->email;
+                                $logData["role"] = Config::$ROLES['ASSESSMENT-MANAGER'];
+                                $this->functions->logActivity($logData);
+                            }
+                        }
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
                             "STATUS_MESSAGE" => "Heads up! You have successfully approved an assessment"
