@@ -225,14 +225,16 @@ class AssessmentManagerController extends Controller
                                 "id"=> $adjuster->id,
                                 "name" => $adjuster->firstName,
                                 "email" => $adjuster->email,
-                                "MSISDN" => $adjuster->MSISDN
-                            ),
-                            array(
-                                "id"=> $assessor->id,
-                                "name" => $assessor->firstName,
-                                "email" => $assessor->email,
-                                "MSISDN" => $assessor->MSISDN
+                                "MSISDN" => $adjuster->MSISDN,
+                                "role" =>Config::$ROLES['ADJUSTER']
                             )
+//                            array(
+//                                "id"=> $assessor->id,
+//                                "name" => $assessor->firstName,
+//                                "email" => $assessor->email,
+//                                "MSISDN" => $assessor->MSISDN,
+//                                "role" => Config::$ROLES['ASSESSOR']
+//                            )
 
                         );
                         $link = 'assessment-report/' . $request->assessmentID;
@@ -267,8 +269,25 @@ class AssessmentManagerController extends Controller
                     ",
                             ];
 
+                            $logData = array(
+                                "vehicleRegNo" => $claim->vehicleRegNo,
+                                "claimNo" => $claim->claimNo,
+                                "policyNo" => $claim->policyNo,
+                                "userID" => Auth::user()->id,
+                                "role" => Config::$ROLES['ADJUSTER'],
+                                "activity" => Config::ACTIVITIES['FINAL_APPROVAL'],
+                                "notification" => $message['message'],
+                                "notificationTo" => $userDetail['email'],
+                                "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                            );
+                            $this->functions->logActivity($logData);
+                            $smsMessage = 'Hello '. $userDetail['name'] .', Assessment for claimNo '.$claimNo.' has been approved';
                             InfobipEmailHelper::sendEmail($message, $userDetail['email']);
-                            SMSHelper::sendSMS('Hello '. $userDetail['name'] .', Assessment for claimNo '.$claimNo.' has been approved',$userDetail['MSISDN']);
+                            SMSHelper::sendSMS($smsMessage,$userDetail['MSISDN']);
+                            $logData['notification'] = $smsMessage;
+                            $logData['notificationTo'] = $userDetail['MSISDN'];
+                            $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
+                            $this->functions->logActivity($logData);
                             $user = User::where(["id" => $userDetail['id']])->first();
                             Notification::send($user, new ClaimApproved($claim));
                         }
