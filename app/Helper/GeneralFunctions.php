@@ -4,6 +4,7 @@
 namespace App\Helper;
 
 
+use App\ActivityLog;
 use App\AssessmentItem;
 use App\Claim;
 use App\Conf\Config;
@@ -11,6 +12,7 @@ use App\Garage;
 use App\Role;
 use App\UserHasRole;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class GeneralFunctions
@@ -103,5 +105,29 @@ class GeneralFunctions
     {
         $sumTotal =AssessmentItem::where('assessmentID', $assessmentID)->sum('total');
         return $sumTotal;
+    }
+    public function logActivity($data)
+    {
+        try {
+            ActivityLog::create([
+                "vehicleRegNo" => isset($data['vehicleRegNo']) ? $data['vehicleRegNo'] : '',
+                "claimNo" => isset($data['claimNo']) ? $data['claimNo'] : '',
+                "policyNo" => isset($data['policyNo']) ? $data['policyNo'] : '',
+                "userID" => isset($data['userID']) ? $data['userID'] : '',
+                "role" => isset($data['role']) ? $data['role'] : '',
+                "activity" => isset($data['activity']) ? $data['activity'] : '',
+                "notification" => isset($data['notification']) ? $data['notification'] : '',
+                "notificationTo" => isset($data['notificationTo']) ? $data['notificationTo'] : '',
+                "notificationType" => isset($data['notificationType']) ? $data['notificationType'] : '',
+                "createdBy" => Auth::user()->id,
+                "dateCreated" => $this->curlDate()
+            ]);
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "Information logged successfully for activity ".$data['activity']);
+        }catch (\Exception $e)
+        {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to log an event. Error message " . $e->getMessage());
+        }
     }
 }

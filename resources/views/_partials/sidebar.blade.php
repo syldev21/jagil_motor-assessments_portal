@@ -825,6 +825,14 @@
         </li>
         @endhasanyrole
         <li class="bold ">
+            <a class="sidenav-link" id="showActivityLog"
+               href="#"
+            >
+                <i class="material-icons">update</i>
+                <span class="menu-title" data-i18n="Activity Log">Activity Log</span>
+            </a>
+        </li>
+        <li class="bold ">
             <a class="waves-effect waves-light sidenav-link"
                href="#"
             >

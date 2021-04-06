@@ -184,6 +184,9 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/fetch-re-inspections','CommonController@fetchReInspections');
     $router->post('/fetch-claims-by-type','CommonController@fetchClaimsByType');
     $router->post('/sendNotification', 'CommonController@sendNotification');
+    $router->post('/showActivityLog', 'CommonController@showActivityLog');
+    $router->post('/fetchLogDetails', 'CommonController@fetchLogDetails');
+    $router->post('/filter-logs', 'CommonController@filterLogs');
 });
 
 // migrate

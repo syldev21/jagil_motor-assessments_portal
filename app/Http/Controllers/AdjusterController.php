@@ -427,6 +427,7 @@ class AdjusterController extends Controller
                 }
                 if ($claimID > 0) {
                     $headAssessors = User::role('Head Assessor')->get(); // Returns only users with the role 'Head Assessor'
+                    $claim = Claim::where(['id' => $claimID])->with('customer')->first();
                     if (count($headAssessors) > 0) {
                         foreach ($headAssessors as $headAssessor) {
                             $data = [
@@ -438,10 +439,7 @@ class AdjusterController extends Controller
 
                             $email_add = $data['email'];
                             // $email_add = 'brian.otwoma@jubileekenya.com';
-                            $email = [
-                                'subject' => "New Claim " . $data['reg'],
-                                'from_user_email' => 'noreply@jubileeinsurance.com',
-                                'message' => "Hello " . $data['headAssessor'] . ", <br> <br>
+                            $emailMessage = "Hello " . $data['headAssessor'] . ", <br> <br>
 
                             A new claim " . $data['claim'] . " has been created. You are required to assign an assessor. <br>
 
@@ -454,13 +452,42 @@ class AdjusterController extends Controller
                             Claims Department, <br>
 
                             Jubilee Insurance.
-                        ",
+                        ";
+                            $smsMessage = 'Hello ' . $headAssessor->firstName . ', A new claim : ' . $claimNo . ' has been created. You are required to assign an assessor';
+                            $email = [
+                                'subject' => "New Claim " . $data['reg'],
+                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                'message' => $emailMessage,
                             ];
+                            $logData = array(
+                                "vehicleRegNo" => $vehicleRegNo,
+                                "claimNo" => $claimNo,
+                                "policyNo" => $policyNo,
+                                "userID" => Auth::user()->id,
+                                "role" => Config::$ROLES['HEAD-ASSESSOR'],
+                                "activity" => Config::ACTIVITIES['CLAIM_UPLOAD'],
+                                "notification" => $emailMessage,
+                                "notificationTo" => $email_add,
+                                "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                            );
+                            $this->functions->logActivity($logData);
                             $emailResult = InfobipEmailHelper::sendEmail($email, $email_add);
-                            SMSHelper::sendSMS('Hello ' . $headAssessor->firstName . ', A new claim : ' . $claimNo . ' has been created. You are required to assign an assessor', $headAssessor->MSISDN);
-                            $claim = Claim::where(['id' => $claimID])->first();
+                            $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
+                            $logData['notification'] = $smsMessage;
+                            $logData["notificationTo"] = $headAssessor->MSISDN;
+                            $this->functions->logActivity($logData);
+                            SMSHelper::sendSMS($smsMessage, $headAssessor->MSISDN);
                             Notification::send($headAssessors, new NewClaimNotification($claim));
                         }
+                        $MSISDN = isset($claim->customer->MSISDN) ? $claim->customer->MSISDN : '';
+                        $customerFirstName = isset($claim->customer->firstName) ? $claim->customer->firstName : 'customer';
+                        $smsMessage = $smsMessage = 'Dear ' . $customerFirstName . ', Your claim for vehicle regNumber : ' . $data['reg'] . ' has been initiated for processing. You will be notified for further stages';
+                        SMSHelper::sendSMS($smsMessage,$MSISDN);
+                        $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
+                        $logData['notification'] = $smsMessage;
+                        $logData['role'] = 'Customer';
+                        $logData["notificationTo"] = $MSISDN;
+                        $this->functions->logActivity($logData);
                     }
                 }
             } else {

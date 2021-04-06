@@ -76,10 +76,7 @@ class HeadAssessorController extends Controller
 //                    $garage = Garage::where(['garageID' => $request->garage])->first();
                         if ($assessor->id > 0) {
                             $email_add = $assessor->email;
-                            $email = [
-                                'subject' => 'Vehicle Assessment - ' . $claim->vehicleRegNo,
-                                'from_user_email' => 'noreply@jubileeinsurance.com',
-                                'message' => "
+                            $emailMessage = "
                     Hello, <br>
                     Please note that there's a vehicle
                     <br><strong>Claim number</strong>:  " . $claim->claimNo . "
@@ -94,10 +91,31 @@ class HeadAssessorController extends Controller
                     Regards,<br>
                     Claims Department,<br>
                     Jubilee Insurance
-                ",
+                ";
+                            $smsMessage = 'Hello ' . $assessor->firstName . ', You have been assigned to assess a claim. Vehicle registration: ' . $claim->vehicleRegNo . ', Location: ' . $location . '';
+                            $email = [
+                                'subject' => 'Vehicle Assessment - ' . $claim->vehicleRegNo,
+                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                'message' => $emailMessage,
                             ];
+                            $logData = array(
+                                "vehicleRegNo" => $claim->vehicleRegNo,
+                                "claimNo" => $claim->claimNo,
+                                "policyNo" => $claim->policyNo,
+                                "userID" => Auth::user()->id,
+                                "role" => Config::$ROLES['ASSESSOR'],
+                                "activity" => Config::ACTIVITIES['ASSIGN_ASSESSOR'],
+                                "notification" => $emailMessage,
+                                "notificationTo" => $email_add,
+                                "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                            );
+                            $this->functions->logActivity($logData);
                             InfobipEmailHelper::sendEmail($email, $email_add);
-                            SMSHelper::sendSMS('Hello ' . $assessor->firstName . ', You have been assigned to assess a claim. Vehicle registration: ' . $claim->vehicleRegNo . ', Location: ' . $location . '', $assessor->MSISDN);
+                            $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
+                            $logData['notification'] = $smsMessage;
+                            $logData["notificationTo"] = $assessor->MSISDN;
+                            $this->functions->logActivity($logData);
+                            SMSHelper::sendSMS($smsMessage, $assessor->MSISDN);
                             Notification::send($assessor, new AssignClaim($claim));
                         }
                         $response = array(
