@@ -55,6 +55,7 @@
                                             <th>Notification Type</th>
                                             <th>Notification</th>
                                             <th>Time</th>
+                                            <th>Operation</th>
 
                                         </tr>
                                         </thead>
@@ -64,7 +65,6 @@
                                                 $user = \App\User::where(["id"=>$log->userID])->first();
                                                 $notification = explode('.', $log->notification);
                                             ?>
-                                            <form class="assignForm">
                                                 <tr>
                                                     <td>{{$loop->iteration}}</td>
                                                     <td>{{$log->vehicleRegNo}}</td>
@@ -89,7 +89,6 @@
 
                                                     </td>
                                                 </tr>
-                                            </form>
                                         @endforeach
                                         </tbody>
                                     </table>

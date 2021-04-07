@@ -12,6 +12,7 @@
             <th>Notification Type</th>
             <th>Notification</th>
             <th>Time</th>
+            <th>Operation</th>
 
         </tr>
         </thead>

@@ -4884,9 +4884,16 @@ $(document).ready(function () {
 
             type: 'POST',
             url: '/common/showActivityLog',
-            data: {},
             success: function (data) {
                 $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
             }
 
         });
