@@ -145,8 +145,10 @@ class AssistantHeadAssessorController extends Controller
                 $email_add = $data['assessor']->email;
                 $email = [
                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                    'message' => "
+                    'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'to' => $email_add,
+                    'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'html' => "
                     Hello " . $data['assessor']->firstName . ", <br>
                     This is in regards to the vehicle you've recently assessed, Registration <strong>" . $data['reg'] . "</strong> <br>
                     You are required to make the following change(s) <br>
@@ -212,8 +214,10 @@ class AssistantHeadAssessorController extends Controller
 
                         $message = [
                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                            'message' => "
+                            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'to' => $email,
+                            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'html' => "
                         Hello " . $firstName . ", <br>
 
                         This is in regards to claim number <strong>" . $claimNo . " </strong> <br>
@@ -319,8 +323,10 @@ class AssistantHeadAssessorController extends Controller
 
                         $message = [
                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                            'message' => "
+                            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'to' => $email,
+                            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'html' => "
                         Hello " . $firstName . ", <br>
 
                         This is in regards to claim number <strong>" . $claimNo . " </strong> <br>
@@ -417,8 +423,10 @@ class AssistantHeadAssessorController extends Controller
                 $email_add = $data['assessor']->email;
                 $email = [
                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                    'message' => "
+                    'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'to' => $email_add,
+                    'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'html' => "
                     Hello " . $data['assessor']->firstName . ", <br>
                     This is in regards to the vehicle you've recently submitted supplementary, Registration <strong>" . $data['reg'] . "</strong> <br>
                     You are required to make the following change(s) <br>

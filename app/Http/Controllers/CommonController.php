@@ -97,8 +97,10 @@ class CommonController extends Controller
 
         $message = [
             'subject' => $subject,
-            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-            'message' => $message,
+            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'to' => $email,
+            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'html' => $message,
         ];
 
         InfobipEmailHelper::sendEmail($message, $email);

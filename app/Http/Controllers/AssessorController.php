@@ -645,11 +645,12 @@ class AssessorController extends Controller
                                                 'email' => $headAssessor->email
                                             ];
                                             $email_add = $data['email'];
-
                                             $email = [
                                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                                'message' => "
+                                                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                                'to' => $email_add,
+                                                'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                                'html' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                                     " . $assessorName . " has completed their assessment report. <br>
@@ -674,7 +675,7 @@ class AssessorController extends Controller
                                                 "userID" => Auth::user()->id,
                                                 "role" => Config::$ROLES['HEAD-ASSESSOR'],
                                                 "activity" => Config::ACTIVITIES['SUBMITTING_ASSESSMENT_REPORT'],
-                                                "notification" => $email['message'],
+                                                "notification" => $email['html'],
                                                 "notificationTo" => $email_add,
                                                 "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
                                             );
@@ -699,8 +700,10 @@ class AssessorController extends Controller
 
                                             $email = [
                                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                                'message' => "
+                                                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                                'to' => $email_add,
+                                                'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                                'html' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                                     " . $assessorName . " has completed their assessment report. <br>
@@ -725,7 +728,7 @@ class AssessorController extends Controller
                                                 "userID" => Auth::user()->id,
                                                 "role" => Config::$ROLES['ASSISTANT-HEAD'],
                                                 "activity" => Config::ACTIVITIES['SUBMITTING_ASSESSMENT_REPORT'],
-                                                "notification" => $email['message'],
+                                                "notification" => $email['html'],
                                                 "notificationTo" => $email_add,
                                                 "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
                                             );
@@ -751,8 +754,10 @@ class AssessorController extends Controller
 
                                         $email = [
                                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                            'message' => "
+                                            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                            'to' => $email_add,
+                                            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                            'html' => "
                             Hi, <br>
                             This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                             " . $assessorName . " has completed their assessment report. <br>
@@ -777,7 +782,7 @@ class AssessorController extends Controller
                                             "userID" => Auth::user()->id,
                                             "role" => Config::$ROLES['HEAD-ASSESSOR'],
                                             "activity" => Config::ACTIVITIES['SUBMITTING_ASSESSMENT_REPORT'],
-                                            "notification" => $email['message'],
+                                            "notification" => $email['html'],
                                             "notificationTo" => $email_add,
                                             "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
                                         );
@@ -803,8 +808,10 @@ class AssessorController extends Controller
 
                                         $email = [
                                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                            'message' => "
+                                            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                            'to' => $email_add,
+                                            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                            'html' => "
                             Hi, <br>
                             This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                             " . $assessorName . " has completed their assessment report. <br>
@@ -829,7 +836,7 @@ class AssessorController extends Controller
                                             "userID" => Auth::user()->id,
                                             "role" => Config::$ROLES['HEAD-ASSESSOR'],
                                             "activity" => Config::ACTIVITIES['SUBMITTING_ASSESSMENT_REPORT'],
-                                            "notification" => $email['message'],
+                                            "notification" => $email['html'],
                                             "notificationTo" => $email_add,
                                             "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
                                         );
@@ -1103,8 +1110,10 @@ class AssessorController extends Controller
 
                                 $email = [
                                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                    'message' => "
+                                    'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                    'to' => $email_add,
+                                    'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                    'html' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                                     " . $assessorName . " has completed supplementary report. Review and action <br>
@@ -1882,8 +1891,10 @@ class AssessorController extends Controller
 
                                             $email = [
                                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                                'message' => "
+                                                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                                'to' => $email_add,
+                                                'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                                'html' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                                     " . $assessorName . " has completed their assessment report. <br>
@@ -1921,8 +1932,10 @@ class AssessorController extends Controller
 
                                             $email = [
                                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                                'message' => "
+                                                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                                'to' => $email_add,
+                                                'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                                'html' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                                     " . $assessorName . " has completed their assessment report. <br>
@@ -1961,8 +1974,10 @@ class AssessorController extends Controller
 
                                         $email = [
                                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                            'message' => "
+                                            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                            'to' => $email_add,
+                                            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                            'html' => "
                             Hi, <br>
                             This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                             " . $assessorName . " has completed their assessment report. <br>
@@ -2001,8 +2016,10 @@ class AssessorController extends Controller
 
                                         $email = [
                                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                            'message' => "
+                                            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                            'to' => $email_add,
+                                            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                            'html' => "
                             Hi, <br>
                             This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
                             " . $assessorName . " has completed their assessment report. <br>

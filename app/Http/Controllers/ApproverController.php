@@ -54,8 +54,10 @@ class ApproverController extends Controller
 
                         $message = [
                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                            'message' =>"
+                            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'to' => $email,
+                            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'html' =>"
                         Hello ".$name.", <br>
 
                         This is in regards to claim number <strong>".$claimNo." </strong> <br>

@@ -3,6 +3,8 @@
 
 namespace App\Helper;
 
+use App\Conf\Config;
+
 define("MULTIPART_BOUNDARY", "----".md5(time()));
 define("EOL", "\r\n");// PHP_EOL cannot be used for emails we need the CRFL '\r\n'
 
@@ -58,7 +60,7 @@ class InfobipEmailHelper
     }
 
 
-    public static function sendEmail($email, $email_add)
+    public static function sendEmail($postData,$email=null)
     {
         // URL to the API that sends the email.
         $url = "https://rm3dm.api.infobip.com/email/1/send";
@@ -66,43 +68,12 @@ class InfobipEmailHelper
         //$doc_path = '/storage/app/public/documents/outputs/'.$policy_no.'.pdf';
 
         // Associate Array of the post parameters to be sent to the API
-        if(isset($email['attachment']))
-        {
-            $postData = array(
-                'from' => $email['from_user_email'],
-                'to' => $email_add,
-                'replyTo' => $email['from_user_email'],
-                'subject' => $email['subject'],
-                'html' => $email['message'],
-                'attachment' => $email['attachment'],
-                // 'html' => view('emails.life.isfmail',['content'=>$email->message]),
-                // 'intermediateReport'=> 'true',
-                // 'notifyUrl' => env('NOTIFY_URL'),
-                // 'notifyContentType' => 'application/json',
-                // 'callbackData' => 'DLR callback data'
-            );
-        }else
-        {
-            $postData = array(
-                'from' => $email['from_user_email'],
-                'to' => $email_add,
-                'replyTo' => $email['from_user_email'],
-                'subject' => $email['subject'],
-                'html' => $email['message'],
-                // 'html' => view('emails.life.isfmail',['content'=>$email->message]),
-                // 'intermediateReport'=> 'true',
-                // 'notifyUrl' => env('NOTIFY_URL'),
-                // 'notifyContentType' => 'application/json',
-                // 'callbackData' => 'DLR callback data'
-            );
-        }
-
 
         // Create the stream context.
         $context = stream_context_create(array(
             'http' => array(
                 'method' => 'POST',
-                'header' => self::getHeader('JubileeKenya', 'Jubilee4321'),
+                'header' => self::getHeader(Config::JUBILEE_NO_REPLY_EMAIL_USERNAME, Config::JUBILEE_NO_REPLY_EMAIL_PASSWORD),
                 'content' => self::getBody($postData),
             )
         ));
@@ -112,6 +83,60 @@ class InfobipEmailHelper
 
         return json_decode($response);
     }
+//    public static function sendEmail($email, $email_add)
+//    {
+//        // URL to the API that sends the email.
+//        $url = "https://rm3dm.api.infobip.com/email/1/send";
+//
+//        //$doc_path = '/storage/app/public/documents/outputs/'.$policy_no.'.pdf';
+//
+//        // Associate Array of the post parameters to be sent to the API
+//        if(isset($email['attachment']))
+//        {
+//            $postData = array(
+//                'from' => $email['from_user_email'],
+//                'to' => $email_add,
+//                'replyTo' => $email['from_user_email'],
+//                'subject' => $email['subject'],
+//                'html' => $email['message'],
+//                'attachment' => $email['attachment'],
+//                // 'html' => view('emails.life.isfmail',['content'=>$email->message]),
+//                // 'intermediateReport'=> 'true',
+//                // 'notifyUrl' => env('NOTIFY_URL'),
+//                // 'notifyContentType' => 'application/json',
+//                // 'callbackData' => 'DLR callback data'
+//            );
+//        }else
+//        {
+//            $postData = array(
+//                'from' => $email['from_user_email'],
+//                'to' => $email_add,
+//                'replyTo' => $email['from_user_email'],
+//                'subject' => $email['subject'],
+//                'html' => $email['message'],
+//                // 'html' => view('emails.life.isfmail',['content'=>$email->message]),
+//                // 'intermediateReport'=> 'true',
+//                // 'notifyUrl' => env('NOTIFY_URL'),
+//                // 'notifyContentType' => 'application/json',
+//                // 'callbackData' => 'DLR callback data'
+//            );
+//        }
+//
+//
+//        // Create the stream context.
+//        $context = stream_context_create(array(
+//            'http' => array(
+//                'method' => 'POST',
+//                'header' => self::getHeader('JubileeKenya', 'Jubilee4321'),
+//                'content' => self::getBody($postData),
+//            )
+//        ));
+//
+//        // Read the response using the Stream Context.
+//        $response = file_get_contents($url, false, $context);
+//
+//        return json_decode($response);
+//    }
 
     public static function check_status()
     {

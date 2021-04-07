@@ -455,9 +455,11 @@ class AdjusterController extends Controller
                         ";
                             $smsMessage = 'Hello ' . $headAssessor->firstName . ', A new claim : ' . $claimNo . ' has been created. You are required to assign an assessor';
                             $email = [
-                                'subject' => "New Claim " . $data['reg'],
-                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                'message' => $emailMessage,
+                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                'to' => $email_add,
+                                'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                                'html' => $emailMessage,
                             ];
                             $logData = array(
                                 "vehicleRegNo" => $vehicleRegNo,
@@ -923,10 +925,12 @@ class AdjusterController extends Controller
         $flag = false;
 
         $message = [
-            'subject' => "PROCEED TO REPAIR - ".$assessment['claim']['vehicleRegNo'],
-            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'subject' => "PROCEED TO REPAIR - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
+            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'to' => $email,
+            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
             'attachment' => $pdfFilePath,
-            'message' => "
+            'html' => "
                         Dear Sirs, <br>
 
                         Kindly proceed with repairs as per attached and adhere to REPAIR TIMELINES <br>
@@ -994,10 +998,12 @@ class AdjusterController extends Controller
 
         $flag = false;
         $message = [
-            'subject' => "RELEASE LETTER FOR ".$claim->vehicleRegNo,
-            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'subject' => "RELEASE LETTER FOR ".$claim->claimNo.'_'.$claim->vehicleRegNo,
+            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'to' => $email,
+            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
             'attachment' => $pdfFilePath,
-            'message' => "
+            'html' => "
                         Dear Sirs, <br>
 
                         Please release as per the attached. <br/>
