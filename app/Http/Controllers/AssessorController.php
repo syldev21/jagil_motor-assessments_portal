@@ -648,7 +648,7 @@ class AssessorController extends Controller
 
                                             $email = [
                                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                                 'message' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
@@ -699,7 +699,7 @@ class AssessorController extends Controller
 
                                             $email = [
                                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                                 'message' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
@@ -751,7 +751,7 @@ class AssessorController extends Controller
 
                                         $email = [
                                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                            'from_user_email' => 'noreply@jubileeinsurance.com',
+                                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                             'message' => "
                             Hi, <br>
                             This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
@@ -803,7 +803,7 @@ class AssessorController extends Controller
 
                                         $email = [
                                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                            'from_user_email' => 'noreply@jubileeinsurance.com',
+                                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                             'message' => "
                             Hi, <br>
                             This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
@@ -1103,7 +1103,7 @@ class AssessorController extends Controller
 
                                 $email = [
                                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                    'from_user_email' => 'noreply@jubileeinsurance.com',
+                                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                     'message' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
@@ -1882,7 +1882,7 @@ class AssessorController extends Controller
 
                                             $email = [
                                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                                 'message' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
@@ -1921,7 +1921,7 @@ class AssessorController extends Controller
 
                                             $email = [
                                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                                 'message' => "
                                     Hi, <br>
                                     This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
@@ -1961,7 +1961,7 @@ class AssessorController extends Controller
 
                                         $email = [
                                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                            'from_user_email' => 'noreply@jubileeinsurance.com',
+                                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                             'message' => "
                             Hi, <br>
                             This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>
@@ -2001,7 +2001,7 @@ class AssessorController extends Controller
 
                                         $email = [
                                             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                            'from_user_email' => 'noreply@jubileeinsurance.com',
+                                            'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                             'message' => "
                             Hi, <br>
                             This is in reference to claim number <strong>" . $data['claim'] . " </strong><br>

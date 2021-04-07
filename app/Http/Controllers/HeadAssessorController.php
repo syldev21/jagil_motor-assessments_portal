@@ -95,7 +95,7 @@ class HeadAssessorController extends Controller
                             $smsMessage = 'Hello ' . $assessor->firstName . ', You have been assigned to assess a claim. Vehicle registration: ' . $claim->vehicleRegNo . ', Location: ' . $location . '';
                             $email = [
                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'message' => $emailMessage,
                             ];
                             $logData = array(
@@ -168,7 +168,7 @@ class HeadAssessorController extends Controller
                     $email_add = $assessor->email;
                     $email = [
                         'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                        'from_user_email' => 'noreply@jubileeinsurance.com',
+                        'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                         'message' => "
                     Hello, <br>
                     Please note that there's a vehicle
@@ -599,7 +599,7 @@ class HeadAssessorController extends Controller
                 $email_add = $data['assessor']->email;
                 $email = [
                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                    'from_user_email' => 'noreply@jubileeinsurance.com',
+                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'message' => "
                     Hello " . $data['assessor']->firstName . ", <br>
                     This is in regards to the vehicle you've recently assessed, Registration <strong>" . $data['reg'] . "</strong> <br>
@@ -688,7 +688,7 @@ class HeadAssessorController extends Controller
                 $email_add = $data['assessor']->email;
                 $email = [
                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                    'from_user_email' => 'noreply@jubileeinsurance.com',
+                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'message' => "
                     Hello " . $data['assessor']->firstName . ", <br>
                     This is in regards to the vehicle you've recently submitted supplementary, Registration <strong>" . $data['reg'] . "</strong> <br>

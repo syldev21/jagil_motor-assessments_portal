@@ -456,7 +456,7 @@ class AssessmentManagerController extends Controller
                 $email_add = $data['assessor']->email;
                 $email = [
                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                    'from_user_email' => 'noreply@jubileeinsurance.com',
+                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'message' =>"
                     Hello ".$data['assessor']->firstName.", <br>
                     This is in regards to the vehicle you've recently assessed, Registration <strong>".$data['reg']."</strong> <br>
@@ -545,7 +545,7 @@ class AssessmentManagerController extends Controller
                 $email_add = $data['assessor']->email;
                 $email = [
                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
-                    'from_user_email' => 'noreply@jubileeinsurance.com',
+                    'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'message' =>"
                     Hello ".$data['assessor']->firstName.", <br>
                     This is in regards to the vehicle you've recently submitted supplementary, Registration <strong>".$data['reg']."</strong> <br>

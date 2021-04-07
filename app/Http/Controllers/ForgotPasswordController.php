@@ -51,7 +51,7 @@ class ForgotPasswordController extends Controller
                     $email_add = $data['email'];
                     $email = [
                         'subject' => 'Reset password',
-                        'from_user_email' => 'noreply@jubileeinsurance.com',
+                        'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                         'message' => "
                     Hello,   <br>
                     Please click the link below to reset your password <br>

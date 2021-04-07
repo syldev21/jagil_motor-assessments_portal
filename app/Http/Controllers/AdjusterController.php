@@ -456,7 +456,7 @@ class AdjusterController extends Controller
                             $smsMessage = 'Hello ' . $headAssessor->firstName . ', A new claim : ' . $claimNo . ' has been created. You are required to assign an assessor';
                             $email = [
                                 'subject' => "New Claim " . $data['reg'],
-                                'from_user_email' => 'noreply@jubileeinsurance.com',
+                                'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'message' => $emailMessage,
                             ];
                             $logData = array(
