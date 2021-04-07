@@ -1219,16 +1219,24 @@ class AssessorController extends Controller
                 ->sum('total');
 
             $sumAssessmentDetails = JobDetail::whereIn("assessmentID", $assessmentIds)->sum('cost');
+
             $status = $assessment->assessmentTypeID;
 
 //            $unReInspectedAmount = AssessmentItem::whereIn('assessmentID', $assessmentIds)
 //                ->whereNotIn('id', $replaced)
 //                ->sum('total');
+            if($assessment->assessedAt < Config::MARK_UP_CUT_OFF_DATE)
+            {
+                $markup = Config::MARK_UP;
+            }else
+            {
+                $markup = Config::NEW_MARKUP;
+            }
 
             if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                 $assessmentTotal = (($sumAssessmentParts + $sumAssessmentDetails + $addLabor) - $labor) * $vat;
             } else {
-                $assessmentTotal = ($sumAssessmentParts * Config::NEW_MARKUP) + ($sumAssessmentDetails + $addLabor) - $labor;
+                $assessmentTotal = ($sumAssessmentParts * $markup) + ($sumAssessmentDetails + $addLabor) - $labor;
             }
             $finalTotal = $assessmentTotal;
             if (isset($repaired) || isset($replaced) || isset($cil) || isset($reused)) {
@@ -1289,9 +1297,9 @@ class AssessorController extends Controller
 //                echo "finalTotal ".$finalTotal." assessmentTotal ".$assessmentTotal." addLabor ".$addLabor." labor ".$labor." unReInspectedAmount".$unReInspectedAmount;
 //                exit();
                 if ($status == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                    $subAmount = (Config::NEW_MARKUP * $award) + $labor;
+                    $subAmount = ($markup * $award) + $labor;
                 } elseif ($status == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $subAmount = (Config::NEW_MARKUP * $award) + $labor;
+                    $subAmount = ($markup * $award) + $labor;
                 }
                 $inspection = ReInspection::where(['assessmentID' => $assessmentID])->first();
                 if (isset($inspection->id)) {
@@ -1567,6 +1575,14 @@ class AssessorController extends Controller
             } else {
                 $vat = (Config::INITIAL_PERCENTAGE + Config::VAT) / Config::INITIAL_PERCENTAGE;
             }
+            $assessment= Assessment::where(['id'=>$assessmentID])->first();
+            if($assessment->assessedAt < Config::MARK_UP_CUT_OFF_DATE)
+            {
+                $markup = Config::MARK_UP;
+            }else
+            {
+                $markup = Config::NEW_MARKUP;
+            }
             if ($drafted == 1) {
                 AssessmentItem::where(["assessmentID" => $assessmentID])
                     ->whereNotNull("assessmentID")
@@ -1652,7 +1668,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * Config::NEW_MARKUP) + $others;
+                    $total = ($sum * $markup) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * $vat;
                 }
@@ -2052,6 +2068,14 @@ class AssessorController extends Controller
             } else {
                 $vat = (Config::INITIAL_PERCENTAGE + Config::VAT) / Config::INITIAL_PERCENTAGE;
             }
+            $assessment= Assessment::where(['id'=>$assessmentID])->first();
+            if($assessment->assessedAt < Config::MARK_UP_CUT_OFF_DATE)
+            {
+                $markup = Config::MARK_UP;
+            }else
+            {
+                $markup = Config::NEW_MARKUP;
+            }
             if ($drafted == 1) {
                 $affectedRows = AssessmentItem::where(["assessmentID" => $assessmentID])
                     ->whereNotNull('assessmentID')
@@ -2178,7 +2202,7 @@ class AssessorController extends Controller
                 if ($assessmentType == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                     $total = ($sum + $others) * $vat;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['CASH_IN_LIEU']) {
-                    $total = ($sum * Config::NEW_MARKUP) + $others;
+                    $total = ($sum * $markup) + $others;
                 } elseif ($assessmentType == Config::ASSESSMENT_TYPES['TOTAL_LOSS']) {
                     $total = ($sum + $others) * $vat;
                 }
