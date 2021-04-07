@@ -472,7 +472,25 @@ class AssessmentManagerController extends Controller
                 ",
                 ];
                 InfobipEmailHelper::sendEmail($email, $email_add);
-                SMSHelper::sendSMS('Hello '. $data['assessor']->firstName .', Check your email for changes due for vehicle Reg. '.$data['reg'],$data['assessor']->MSISDN);
+                $logData = array(
+                    "vehicleRegNo" => $claim->vehicleRegNo,
+                    "claimNo" => $claim->claimNo,
+                    "policyNo" => $claim->policyNo,
+                    "userID" => Auth::user()->id,
+                    "role" => Config::$ROLES['ASSESSOR'],
+                    "activity" => Config::ACTIVITIES['REQUEST_CHANGES'],
+                    "notification" => $email['message'],
+                    "notificationTo" => $email_add,
+                    "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                );
+                $this->functions->logActivity($logData);
+                $smsMessage = 'Hello '. $data['assessor']->firstName .', Check your email for changes due for vehicle Reg. '.$data['reg'];
+                SMSHelper::sendSMS($smsMessage,$data['assessor']->MSISDN);
+
+                $logData['notification'] = $smsMessage;
+                $logData['notificationTo'] = $data['assessor']->MSISDN;
+                $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
+                $this->functions->logActivity($logData);
                 Notification::send($assessor, new NewChangeRequest($claim));
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
