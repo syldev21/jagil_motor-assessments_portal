@@ -647,7 +647,7 @@ class AssessorController extends Controller
                                             $email_add = $data['email'];
 
                                             $email = [
-                                                'subject' => 'Survey Report - ' . $data['reg'],
+                                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                                 'from_user_email' => 'noreply@jubileeinsurance.com',
                                                 'message' => "
                                     Hi, <br>
@@ -698,7 +698,7 @@ class AssessorController extends Controller
                                             $email_add = $data['email'];
 
                                             $email = [
-                                                'subject' => 'Survey Report - ' . $data['reg'],
+                                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                                 'from_user_email' => 'noreply@jubileeinsurance.com',
                                                 'message' => "
                                     Hi, <br>
@@ -750,7 +750,7 @@ class AssessorController extends Controller
                                         $email_add = $data['email'];
 
                                         $email = [
-                                            'subject' => 'Survey Report - ' . $data['reg'],
+                                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                             'from_user_email' => 'noreply@jubileeinsurance.com',
                                             'message' => "
                             Hi, <br>
@@ -802,7 +802,7 @@ class AssessorController extends Controller
                                         $email_add = $data['email'];
 
                                         $email = [
-                                            'subject' => 'Survey Report - ' . $data['reg'],
+                                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                             'from_user_email' => 'noreply@jubileeinsurance.com',
                                             'message' => "
                             Hi, <br>
@@ -1102,7 +1102,7 @@ class AssessorController extends Controller
                                 $email_add = $data['email'];
 
                                 $email = [
-                                    'subject' => 'Survey Report - ' . $data['reg'],
+                                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                     'from_user_email' => 'noreply@jubileeinsurance.com',
                                     'message' => "
                                     Hi, <br>
@@ -1865,7 +1865,7 @@ class AssessorController extends Controller
                                             $email_add = $data['email'];
 
                                             $email = [
-                                                'subject' => 'Survey Report - ' . $data['reg'],
+                                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                                 'from_user_email' => 'noreply@jubileeinsurance.com',
                                                 'message' => "
                                     Hi, <br>
@@ -1904,7 +1904,7 @@ class AssessorController extends Controller
                                             $email_add = $data['email'];
 
                                             $email = [
-                                                'subject' => 'Survey Report - ' . $data['reg'],
+                                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                                 'from_user_email' => 'noreply@jubileeinsurance.com',
                                                 'message' => "
                                     Hi, <br>
@@ -1944,7 +1944,7 @@ class AssessorController extends Controller
                                         $email_add = $data['email'];
 
                                         $email = [
-                                            'subject' => 'Survey Report - ' . $data['reg'],
+                                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                             'from_user_email' => 'noreply@jubileeinsurance.com',
                                             'message' => "
                             Hi, <br>
@@ -1984,7 +1984,7 @@ class AssessorController extends Controller
                                         $email_add = $data['email'];
 
                                         $email = [
-                                            'subject' => 'Survey Report - ' . $data['reg'],
+                                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                             'from_user_email' => 'noreply@jubileeinsurance.com',
                                             'message' => "
                             Hi, <br>

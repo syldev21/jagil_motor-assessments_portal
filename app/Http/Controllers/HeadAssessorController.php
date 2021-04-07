@@ -94,7 +94,7 @@ class HeadAssessorController extends Controller
                 ";
                             $smsMessage = 'Hello ' . $assessor->firstName . ', You have been assigned to assess a claim. Vehicle registration: ' . $claim->vehicleRegNo . ', Location: ' . $location . '';
                             $email = [
-                                'subject' => 'Vehicle Assessment - ' . $claim->vehicleRegNo,
+                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                 'from_user_email' => 'noreply@jubileeinsurance.com',
                                 'message' => $emailMessage,
                             ];
@@ -167,7 +167,7 @@ class HeadAssessorController extends Controller
                 if ($assessor->id > 0) {
                     $email_add = $assessor->email;
                     $email = [
-                        'subject' => 'Vehicle Assessment - ' . $claim->vehicleRegNo,
+                        'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                         'from_user_email' => 'noreply@jubileeinsurance.com',
                         'message' => "
                     Hello, <br>
@@ -370,7 +370,7 @@ class HeadAssessorController extends Controller
                         $role = Config::$ROLES['HEAD-ASSESSOR'];
 
                         $message = [
-                            'subject' => "Assessment Report - " . $vehicleReg,
+                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                             'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'message' => "
                         Hello " . $firstName . ", <br>
@@ -413,7 +413,7 @@ class HeadAssessorController extends Controller
                         if (count($assessmentManagers) > 0) {
                             foreach ($assessmentManagers as $assessmentManager) {
                                 $message = [
-                                    'subject' => "Assessment Report - " . $vehicleReg,
+                                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                                     'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                                     'message' => "
                         Hello " . $assessmentManager->email . ", <br>
@@ -499,7 +499,7 @@ class HeadAssessorController extends Controller
                         $role = Config::$ROLES['HEAD-ASSESSOR'];
 
                         $message = [
-                            'subject' => "Assessment Report - " . $vehicleReg,
+                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                             'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'message' => "
                         Hello " . $firstName . ", <br>
@@ -598,7 +598,7 @@ class HeadAssessorController extends Controller
                 ]);
                 $email_add = $data['assessor']->email;
                 $email = [
-                    'subject' => 'Survey Report for - ' . $data['reg'],
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                     'from_user_email' => 'noreply@jubileeinsurance.com',
                     'message' => "
                     Hello " . $data['assessor']->firstName . ", <br>
@@ -687,7 +687,7 @@ class HeadAssessorController extends Controller
                 ]);
                 $email_add = $data['assessor']->email;
                 $email = [
-                    'subject' => 'Supplementary Report for - ' . $data['reg'],
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                     'from_user_email' => 'noreply@jubileeinsurance.com',
                     'message' => "
                     Hello " . $data['assessor']->firstName . ", <br>

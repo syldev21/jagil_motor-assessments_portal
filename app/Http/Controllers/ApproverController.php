@@ -53,7 +53,7 @@ class ApproverController extends Controller
                         $role = Config::$ROLES['ASSESSMENT-MANAGER'];
 
                         $message = [
-                            'subject' => "Assessment Report - " .$vehicleReg,
+                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                             'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'message' =>"
                         Hello ".$name.", <br>

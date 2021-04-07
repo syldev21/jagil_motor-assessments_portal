@@ -144,7 +144,7 @@ class AssistantHeadAssessorController extends Controller
                 ]);
                 $email_add = $data['assessor']->email;
                 $email = [
-                    'subject' => 'Survey Report for - ' . $data['reg'],
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                     'from_user_email' => 'noreply@jubileeinsurance.com',
                     'message' => "
                     Hello " . $data['assessor']->firstName . ", <br>
@@ -211,7 +211,7 @@ class AssistantHeadAssessorController extends Controller
                         $role = Config::$ROLES['ASSISTANT-HEAD'];
 
                         $message = [
-                            'subject' => "Assessment Report - " . $vehicleReg,
+                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                             'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'message' => "
                         Hello " . $firstName . ", <br>
@@ -318,7 +318,7 @@ class AssistantHeadAssessorController extends Controller
                         $role = Config::$ROLES['ASSISTANT-HEAD'];
 
                         $message = [
-                            'subject' => "Assessment Report - " . $vehicleReg,
+                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                             'from_user_email' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'message' => "
                         Hello " . $firstName . ", <br>
@@ -416,7 +416,7 @@ class AssistantHeadAssessorController extends Controller
                 ]);
                 $email_add = $data['assessor']->email;
                 $email = [
-                    'subject' => 'Supplementary Report for - ' . $data['reg'],
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
                     'from_user_email' => 'noreply@jubileeinsurance.com',
                     'message' => "
                     Hello " . $data['assessor']->firstName . ", <br>
