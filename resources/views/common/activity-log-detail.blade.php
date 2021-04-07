@@ -15,7 +15,7 @@
                             <div class="divider"></div>
                             <?php
                             $fromUser = \App\User::where(["id" =>$activityLog->createdBy])->first();
-                            $toUser = \App\User::where(["id" =>$activityLog->userID])->first();
+//                            $toUser = \App\User::where(["id" =>$activityLog->userID])->first();
                             ?>
                             <div class="row">
                                 <div class="col s12">
@@ -62,7 +62,7 @@
                                         </div>
                                         <div class="input-field col m4 s12">
                                             <input id="to" type="text" name="to"
-                                                   value="{{isset($toUser->firstName) ? $toUser->firstName : ''}} {{isset($toUser->lastName) ? $toUser->lastName : ''}}" disabled>
+                                                   value="{{$activityLog->notificationTo}}" disabled>
                                             <label for="to" class="active">To</label>
                                         </div>
                                         <div class="input-field col m4 s12">
