@@ -930,6 +930,7 @@ class AdjusterController extends Controller
             'to' => $email,
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
             'attachment' => $pdfFilePath,
+            'cc' => Auth::user()->email,
             'html' => "
                         Dear Sirs, <br>
 
@@ -1003,6 +1004,7 @@ class AdjusterController extends Controller
             'to' => $email,
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
             'attachment' => $pdfFilePath,
+            'cc' => Auth::user()->email,
             'html' => "
                         Dear Sirs, <br>
 

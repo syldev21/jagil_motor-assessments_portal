@@ -463,6 +463,7 @@ class AssessmentManagerController extends Controller
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $email_add,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'cc' => Auth::user()->email,
                     'html' =>"
                     Hello ".$data['assessor']->firstName.", <br>
                     This is in regards to the vehicle you've recently assessed, Registration <strong>".$data['reg']."</strong> <br>
@@ -554,6 +555,7 @@ class AssessmentManagerController extends Controller
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $email_add,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'cc' => Auth::user()->email,
                     'html' =>"
                     Hello ".$data['assessor']->firstName.", <br>
                     This is in regards to the vehicle you've recently submitted supplementary, Registration <strong>".$data['reg']."</strong> <br>
