@@ -547,6 +547,7 @@ class AssessmentManagerController extends Controller
                 Assessment::where('id', $request->assessmentID)->update([
                     'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'],
                     'dateModified' => date('Y-m-d H:i:s'),
+                    'changeRequestAt' => date('Y-m-d H:i:s'),
                     'updatedBy'=> Auth::user()->id
                 ]);
                 $email_add = $data['assessor']->email;

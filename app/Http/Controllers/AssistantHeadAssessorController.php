@@ -140,6 +140,7 @@ class AssistantHeadAssessorController extends Controller
                 Assessment::where('id', $request->assessmentID)->update([
                     'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'],
                     'dateModified' => date('Y-m-d H:i:s'),
+                    'changeRequestAt' => date('Y-m-d H:i:s'),
                     'updatedBy' => Auth::user()->id
                 ]);
                 $email_add = $data['assessor']->email;
@@ -148,6 +149,7 @@ class AssistantHeadAssessorController extends Controller
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $email_add,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'cc' => Auth::user()->email,
                     'html' => "
                     Hello " . $data['assessor']->firstName . ", <br>
                     This is in regards to the vehicle you've recently assessed, Registration <strong>" . $data['reg'] . "</strong> <br>
@@ -418,6 +420,7 @@ class AssistantHeadAssessorController extends Controller
                 Assessment::where('id', $request->assessmentID)->update([
                     'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'],
                     'dateModified' => date('Y-m-d H:i:s'),
+                    'changeRequestAt' => date('Y-m-d H:i:s'),
                     'updatedBy' => Auth::user()->id
                 ]);
                 $email_add = $data['assessor']->email;
@@ -426,6 +429,7 @@ class AssistantHeadAssessorController extends Controller
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $email_add,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'cc' => Auth::user()->email,
                     'html' => "
                     Hello " . $data['assessor']->firstName . ", <br>
                     This is in regards to the vehicle you've recently submitted supplementary, Registration <strong>" . $data['reg'] . "</strong> <br>
