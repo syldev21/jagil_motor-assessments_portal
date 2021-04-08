@@ -63,7 +63,7 @@ class InfobipEmailHelper
     public static function sendEmail($postData,$email=null)
     {
         // URL to the API that sends the email.
-        $url = "https://rm3dm.api.infobip.com/email/1/send";
+        $url = "https://rm3dm.api.infobip.com/email/2/send";
 
         //$doc_path = '/storage/app/public/documents/outputs/'.$policy_no.'.pdf';
 
@@ -86,7 +86,7 @@ class InfobipEmailHelper
 //    public static function sendEmail($email, $email_add)
 //    {
 //        // URL to the API that sends the email.
-//        $url = "https://rm3dm.api.infobip.com/email/1/send";
+//        $url = "https://rm3dm.api.infobip.com/email/2/send";
 //
 //        //$doc_path = '/storage/app/public/documents/outputs/'.$policy_no.'.pdf';
 //
@@ -141,7 +141,7 @@ class InfobipEmailHelper
     public static function check_status()
     {
 
-        $url = "https://rm3dm.api.infobip.com/email/1/logs";
+        $url = "https://rm3dm.api.infobip.com/email/2/logs";
         $ch = curl_init();
         // Set some options - we are passing in a useragent too here
         curl_setopt_array($ch, array(
