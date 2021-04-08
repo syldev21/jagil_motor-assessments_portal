@@ -53,6 +53,9 @@
 
     </p>
     </div>
+    <?php
+    $garageEmail = \App\Garage::where(['id'=>$claim->garageID])->first()->email
+    ?>
     <div style="text-align: right; padding-right:10px;padding-bottom:10px;">
         <a data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}"
            class="waves-effect waves-light btn fetch-assessments"><i class="material-icons">arrow_back</i>Back</a>
@@ -72,7 +75,8 @@
                     <div class="modal-body clearfix">
                         <div class="row">
                             <div class="input-field col m12 s12">
-                                <input placeholder="Enter garage Email" type="text" name="email" id="email">
+                                <input value="{{$garageEmail}}" type="text" name="email" id="email" disabled>
+                                <label for="email" class="active">Confirm Email</label>
                             </div>
                         </div>
                         <div class="row">

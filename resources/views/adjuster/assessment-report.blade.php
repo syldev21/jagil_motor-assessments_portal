@@ -544,6 +544,9 @@
                     </div>
                 </div>
             </div>
+            <?php
+            $garageEmail = \App\Garage::where(['id' => $assessment['claim']['garageID']])->first()->email;
+            ?>
             <div class="row">
                 <div class="col s2"></div>
                 <div class="col s4">
@@ -557,7 +560,8 @@
                             <div class="modal-body clearfix">
                                 <div class="row">
                                     <div class="input-field col m12 s12">
-                                        <input placeholder="Enter garage Email" type="text" name="email" id="email">
+                                        <input value="{{$garageEmail}}" type="text" name="email" id="email" disabled>
+                                        <label for="email" class="active">Confirm Email</label>
                                     </div>
                                 </div>
                                 <div class="row">
