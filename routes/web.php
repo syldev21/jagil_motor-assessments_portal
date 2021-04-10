@@ -187,6 +187,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/showActivityLog', 'CommonController@showActivityLog');
     $router->post('/fetchLogDetails', 'CommonController@fetchLogDetails');
     $router->post('/filter-logs', 'CommonController@filterLogs');
+    $router->post('/flagged-assessments', 'CommonController@flaggedAssessments');
 });
 
 // migrate

@@ -170,4 +170,71 @@ class CommonController extends Controller
                 "An exception occurred when trying to filter logs. Error message " . $e->getMessage());
         }
     }
+
+    public function flaggedAssessments(Request $request)
+    {
+        $provisonal =Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'];
+        $changesDue = Config::$STATUSES["ASSESSMENT"]["CHANGES-DUE"]["id"];
+        $assigned = Config::$STATUSES["ASSESSMENT"]["ASSIGNED"]["id"];
+        $draft = Config::$STATUSES["ASSESSMENT"]["IS-DRAFT"]["id"];
+        $assessed= Config::$STATUSES["ASSESSMENT"]["ASSESSED"]["id"];
+        $flagThreshold = Carbon::now()->subDays(Config::FLAG_THRESHOLD)->toDateTimeString();
+        $userID = Auth::user()->id;
+        if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
+            $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->whereRaw(
+                    ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
+             WHEN assessmentStatusID='$changesDue' THEN changeRequestAt < '$flagThreshold'
+             WHEN assessmentStatusID='$assigned' THEN dateCreated < '$flagThreshold'
+             WHEN assessmentStatusID='$draft' THEN assessedAt < '$flagThreshold'
+             WHEN assessmentStatusID='$assessed' THEN assessedAt < '$flagThreshold'
+             ELSE 0 END"));
+        }elseif (isset($request->regNumber))
+        {
+//                $regNo = preg_replace("/\s+/", "", $request->regNumber);
+            $registrationNumber=preg_replace("/\s+/", "", $request->regNumber);
+            $regNoArray = preg_split('/(?=\d)/', $registrationNumber, 2);
+            $regNo1 =isset($regNoArray[0]) ? $regNoArray[0] : '';
+            $regNo2 = isset($regNoArray[1]) ? $regNoArray[1] : '';
+            $regNo = $request->regNumber;
+            $claimids = Claim::where(function($a) use ($regNo,$regNo1,$regNo2) {
+                $a->where('vehicleRegNo','like', '%'.$regNo.'%');
+            })->orWhere(function($a)use ($regNo1,$regNo2) {
+                $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%');
+            })->pluck('id')->toArray();
+            $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->whereIn('claimID', $claimids)
+                ->whereRaw(
+                    ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
+             WHEN assessmentStatusID='$changesDue' THEN changeRequestAt < '$flagThreshold'
+             WHEN assessmentStatusID='$assigned' THEN dateCreated < '$flagThreshold'
+             WHEN assessmentStatusID='$draft' THEN assessedAt < '$flagThreshold'
+             WHEN assessmentStatusID='$assessed' THEN assessedAt < '$flagThreshold'
+             ELSE 0 END"));
+        }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
+        {
+            $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+            $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+            $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->whereBetween('dateCreated', [$fromDate, $toDate])
+                ->whereRaw(
+                    ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
+             WHEN assessmentStatusID='$changesDue' THEN changeRequestAt < '$flagThreshold'
+             WHEN assessmentStatusID='$assigned' THEN dateCreated < '$flagThreshold'
+             WHEN assessmentStatusID='$draft' THEN assessedAt < '$flagThreshold'
+             WHEN assessmentStatusID='$assessed' THEN assessedAt < '$flagThreshold'
+             ELSE 0 END"));
+        }else
+        {
+            $assessments = array();
+        }
+        if(Auth::user()->hasRole('Assessor'))
+        {
+            $assessments = $assessments->where('assessedBy','=',$userID)->get();
+        }else
+        {
+            $assessments = $assessments->get();
+        }
+        return view('common.flagged-assessments', ['assessments' => $assessments]);
+    }
 }

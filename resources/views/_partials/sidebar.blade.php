@@ -113,6 +113,12 @@
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-assessments">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Assessments</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -206,6 +212,12 @@
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link assessor-fetch-assessments">
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-assessments">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Assessments</span>
                         </a>
                     </li>
                 </ul>
@@ -339,6 +351,12 @@
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link head-assessor-assessments">
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-assessments">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Assessments</span>
                         </a>
                     </li>
                 </ul>
@@ -476,6 +494,12 @@
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-assessments">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Assessments</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -595,6 +619,12 @@
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-assessments">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Assessments</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -712,6 +742,12 @@
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link assessment-manager-assessments">
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-assessments">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Assessments</span>
                         </a>
                     </li>
                 </ul>
