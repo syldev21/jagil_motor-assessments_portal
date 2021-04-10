@@ -164,6 +164,12 @@
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-supplementaries">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Supplementaries</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -263,6 +269,12 @@
                         >
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-supplementaries">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Supplementaries</span>
                         </a>
                     </li>
                 </ul>
@@ -402,6 +414,12 @@
                         >
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-supplementaries">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Supplementaries</span>
                         </a>
                     </li>
                 </ul>
@@ -545,6 +563,12 @@
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-supplementaries">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Supplementaries</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -670,6 +694,12 @@
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-supplementaries">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Supplementaries</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -793,6 +823,12 @@
                         >
                             <i class="material-icons">announcement</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="sidenav-link flagged-supplementaries">
+                            <i class="material-icons">flag</i>
+                            <span data-i18n="Chartist">Flagged Supplementaries</span>
                         </a>
                     </li>
                 </ul>

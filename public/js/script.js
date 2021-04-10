@@ -4992,6 +4992,37 @@ $(document).ready(function () {
 
         });
     });
+    $(".flagged-supplementaries").on('click',function (e){
+        e.preventDefault();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {},
+            url: '/common/flagged-supplementaries',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
     $("#main").on('click','#filter-flagged-assessments',function (e){
         e.preventDefault();
         var assessmentStatusID = $("#assessmentStatusID").val();
@@ -5017,6 +5048,46 @@ $(document).ready(function () {
                 regNumber : regNumber
             },
             url: '/common/flagged-assessments',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
+    $("#main").on('click','#filter-flagged-supplementaries',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $("#assessmentStatusID").val();
+        var fromDate = $("#from_date").val();
+        var toDate = $("#to_date").val();
+        var regNumber = $("#vehicle_reg_no").val();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentStatusID : assessmentStatusID,
+                fromDate : fromDate,
+                toDate : toDate,
+                regNumber : regNumber
+            },
+            url: '/common/flagged-supplementaries',
 
             success: function (data) {
                 $("#main").html(data);
