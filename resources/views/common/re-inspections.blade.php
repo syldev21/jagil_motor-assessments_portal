@@ -118,12 +118,14 @@
                                                         </td>
                                                     @endif
                                                     <?php
-                                                    if (isset($assessment['finalApprovedAt'])) {
+                                                    if ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']) {
                                                         $date = $assessment['finalApprovedAt'];
-                                                    } elseif ($assessment['approvedAt']) {
+                                                    } elseif ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']) {
                                                         $date = $assessment['approvedAt'];
-                                                    } elseif ($assessment['assessedAt']) {
+                                                    } elseif ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']) {
                                                         $date = $assessment['assessedAt'];
+                                                    } elseif ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']) {
+                                                        $date = $assessment['changeRequestAt'];
                                                     } else {
                                                         $date = $assessment['dateCreated'];
                                                     }
