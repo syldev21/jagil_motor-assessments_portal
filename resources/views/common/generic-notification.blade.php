@@ -11,20 +11,9 @@
                     <div class="row">
                         <div class="input-field col m12 s12">
                             <div class="container">
-
-                                <div>To:</div>
-                                <div>
-                                    <select id="email" name="email" class="browser-default">
-                                        @foreach($users as $user)
-                                            <option value="{{$user->email}}" >{{$user->name}}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                <div id="users">
                                 </div>
-                                <div class="input-field col s12">
-                                    <input class="col s6"  id="subject" type="text" >
-                                    <label for="subject">subject</label>
-                                </div>
+                                <div>Message:</div>
                                 <textarea  id="message" class="materialize-textarea" name="message">
                                     </textarea>
                                 <script>
@@ -33,6 +22,7 @@
                                         uiColor: ''
                                     });
                                 </script>
+                                <input type="hidden" id="assessmentID" name="assessmentID">
                             </div>
                         </div>
                     </div>

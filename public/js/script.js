@@ -3861,9 +3861,33 @@ $(document).ready(function () {
     });
     $("body").on('click','#triggerNotification',function (e){
         e.preventDefault();
-        const elem = document.getElementById('genericNotification');
-        const instance = M.Modal.init(elem, {dismissible: true});
-        instance.open();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data: {
+                assessmentID : assessmentID
+            },
+            url: '/common/getUsers',
+            success: function (data) {
+                const elem = document.getElementById('genericNotification');
+                const instance = M.Modal.init(elem, {dismissible: true});
+                instance.open();
+                $("#users").html(data);
+                $("#assessmentID").val(assessmentID);
+                $('.multiple-emails').select2();
+            }
+
+        });
     });
     $("body").on('click','#triggerRepairAuthority',function (e){
         e.preventDefault();
@@ -4825,11 +4849,9 @@ $(document).ready(function () {
     });
     $("body").on('click','#sendNotification',function (){
         var email = $("#email");
-        // var message =$("#message");
-        var subject =$("#subject");
+        var ccEmail = $("#cc_emails");
+        var assessmentID = $("#assessmentID").val();
         var message = CKEDITOR.instances['message'].getData();
-
-
         $.ajaxSetup({
 
             headers: {
@@ -4844,9 +4866,10 @@ $(document).ready(function () {
             type: 'POST',
             url: '/common/sendNotification',
             data: {
-                subject: subject.val(),
+                assessmentID: assessmentID,
                 message: message,
-                email: email.val(),
+                emails: email.val(),
+                ccEmails: ccEmail.val(),
             },
             success: function (data) {
                 var result = $.parseJSON(data);

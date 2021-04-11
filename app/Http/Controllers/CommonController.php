@@ -6,9 +6,12 @@ use App\ActivityLog;
 use App\Assessment;
 use App\Claim;
 use App\Conf\Config;
+use App\CustomerMaster;
+use App\Garage;
 use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
 use App\Helper\InfobipEmailHelper;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -89,21 +92,24 @@ class CommonController extends Controller
 
     public function sendNotification(Request $request)
     {
-        $email = $request->email;
+        $emails = $request->emails;
+        $ccEmails = $request->ccEmails;
         $message = $request->message;
-        $subject = $request->subject;
-        $flag = false;
-        $senderEmail = Auth::user()->email;
+        $assessmentID = $request->assessmentID;
+        $assessment = Assessment::where(['id'=>$assessmentID])->first();
+        $claim = Claim::where(['id'=>$assessment->claimID])->first();
 
         $message = [
-            'subject' => $subject,
+            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-            'to' => $email,
+            'to' => $emails,
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+//            'cc' => Auth::user()->email,
+            'cc' => $ccEmails,
             'html' => $message,
         ];
 
-        InfobipEmailHelper::sendEmail($message, $email);
+        InfobipEmailHelper::sendEmail($message);
         // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email',$userDetail['MSISDN']);
         // $user = User::where(["id" => $userDetail['id']])->first();
         // Notification::send($user, new ClaimApproved($claim));
@@ -302,5 +308,35 @@ class CommonController extends Controller
             $assessments = $assessments->get();
         }
         return view('common.flagged-supplementaries', ['assessments' => $assessments]);
+    }
+
+    public function getUsers(Request $request)
+    {
+        $emails = array();
+        $assessment  = Assessment::where(['id'=>$request->assessmentID])->first();
+        $claim = Claim::where(['id'=>$assessment->claimID])->first();
+        $garageEmail = Garage::where(['id'=>$claim->garageID])->first()->email;
+        array_push($emails,array("email"=>$garageEmail,"name"=>"Garage_".$garageEmail));
+        $adjusterEmail = User::where(['id'=>$claim->createdBy])->first()->email;
+        array_push($emails,array("email"=>$adjusterEmail,"name"=>"Adjuster_".$adjusterEmail));
+        $customerEmail = CustomerMaster::where(['customerCode'=>$claim->customerCode])->first()->email;
+        array_push($emails,array("email"=>$customerEmail,"name"=>"Customer_".$customerEmail));
+        if(isset($assessment->assessedBy))
+        {
+            $assessorEmail = User::where(['id'=>$assessment->assessedBy])->first()->email;
+            array_push($emails,array("email"=>$assessorEmail,"name"=>"Assessor_".$assessorEmail));
+        }
+        if(isset($assessment->approvedBy))
+        {
+            $headAssessorEmail = User::where(['id'=>$assessment->approvedBy])->first()->email;
+            array_push($emails,array("email"=>$headAssessorEmail,"name"=>"Provisional approver_".$headAssessorEmail));
+        }
+        if(isset($assessment->finalApprovalBy))
+        {
+            $assessmentManagerEmail = User::where(['id'=>$assessment->finalApprovalBy])->first()->email;
+            array_push($emails,array("email"=>$assessmentManagerEmail,"name"=>"Final approver_".$assessmentManagerEmail));
+        }
+        $users = User::select('email')->get();
+        return view('common.user-list',['users'=>$users,'emails'=>$emails]);
     }
 }

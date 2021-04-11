@@ -565,8 +565,7 @@ class AdjusterController extends Controller
             } else {
                 $assessments = array();
             }
-            $users = User::all();
-            return view('adjuster.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'users'=>$users]);
+            return view('adjuster.assessments', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());

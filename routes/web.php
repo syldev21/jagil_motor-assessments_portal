@@ -189,6 +189,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/filter-logs', 'CommonController@filterLogs');
     $router->post('/flagged-assessments', 'CommonController@flaggedAssessments');
     $router->post('/flagged-supplementaries', 'CommonController@flaggedSupplementaries');
+    $router->post('/getUsers', 'CommonController@getUsers');
 });
 
 // migrate
