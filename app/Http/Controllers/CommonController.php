@@ -100,7 +100,7 @@ class CommonController extends Controller
         $claim = Claim::where(['id'=>$assessment->claimID])->first();
 
         $message = [
-            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
             'to' => $emails,
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,

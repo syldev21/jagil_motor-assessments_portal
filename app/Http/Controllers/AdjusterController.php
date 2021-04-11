@@ -455,7 +455,7 @@ class AdjusterController extends Controller
                         ";
                             $smsMessage = 'Hello ' . $headAssessor->firstName . ', A new claim : ' . $claimNo . ' has been created. You are required to assign an assessor';
                             $email = [
-                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'to' => $email_add,
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -998,7 +998,7 @@ class AdjusterController extends Controller
 
         $flag = false;
         $message = [
-            'subject' => "RELEASE LETTER FOR ".$claim->claimNo.'_'.$claim->vehicleRegNo,
+            'subject' => "RELEASE LETTER FOR ".$claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
             'to' => $email,
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,

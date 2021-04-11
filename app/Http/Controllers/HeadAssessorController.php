@@ -94,7 +94,7 @@ class HeadAssessorController extends Controller
                 ";
                             $smsMessage = 'Hello ' . $assessor->firstName . ', You have been assigned to assess a claim. Vehicle registration: ' . $claim->vehicleRegNo . ', Location: ' . $location . '';
                             $email = [
-                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'to' => $email_add,
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -169,7 +169,7 @@ class HeadAssessorController extends Controller
                 if ($assessor->id > 0) {
                     $email_add = $assessor->email;
                     $email = [
-                        'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                        'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                         'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                         'to' => $email_add,
                         'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -374,7 +374,7 @@ class HeadAssessorController extends Controller
                         $role = Config::$ROLES['HEAD-ASSESSOR'];
 
                         $message = [
-                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'to' => $email,
                             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -419,7 +419,7 @@ class HeadAssessorController extends Controller
                         if (count($assessmentManagers) > 0) {
                             foreach ($assessmentManagers as $assessmentManager) {
                                 $message = [
-                                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                                     'to' => $email,
                                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -507,7 +507,7 @@ class HeadAssessorController extends Controller
                         $role = Config::$ROLES['HEAD-ASSESSOR'];
 
                         $message = [
-                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'to' => $email,
                             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -608,7 +608,7 @@ class HeadAssessorController extends Controller
                 ]);
                 $email_add = $data['assessor']->email;
                 $email = [
-                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $email_add,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -701,7 +701,7 @@ class HeadAssessorController extends Controller
                 ]);
                 $email_add = $data['assessor']->email;
                 $email = [
-                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $email_add,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,

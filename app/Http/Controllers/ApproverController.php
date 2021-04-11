@@ -53,7 +53,7 @@ class ApproverController extends Controller
                         $role = Config::$ROLES['ASSESSMENT-MANAGER'];
 
                         $message = [
-                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                             'to' => $email,
                             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,

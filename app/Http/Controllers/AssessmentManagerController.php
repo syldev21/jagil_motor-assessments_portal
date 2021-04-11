@@ -246,7 +246,7 @@ class AssessmentManagerController extends Controller
                         foreach ($userDetails as $userDetail)
                         {
                             $message = [
-                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'to' => $userDetail['email'],
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -367,7 +367,7 @@ class AssessmentManagerController extends Controller
                         foreach ($userDetails as $userDetail)
                         {
                             $message = [
-                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'to' => $userDetail['email'],
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -459,7 +459,7 @@ class AssessmentManagerController extends Controller
                 ]);
                 $email_add = $data['assessor']->email;
                 $email = [
-                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $email_add,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
@@ -552,7 +552,7 @@ class AssessmentManagerController extends Controller
                 ]);
                 $email_add = $data['assessor']->email;
                 $email = [
-                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo,
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $email_add,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
