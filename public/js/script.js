@@ -4852,6 +4852,7 @@ $(document).ready(function () {
         var ccEmail = $("#cc_emails");
         var assessmentID = $("#assessmentID").val();
         var message = CKEDITOR.instances['message'].getData();
+        addLoadingButton();
         $.ajaxSetup({
 
             headers: {
@@ -4888,6 +4889,7 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                removeLoadingButton();
             }
 
         });

@@ -27,9 +27,28 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12" style="text-align:right;">
-                            <a href="#" id="sendNotification" class=" s6 btn blue lighten-2 waves-effect">Send</a>
-                            <a href="#" class="s6 modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                        <div class="col s8"></div>
+                        <div class="input-field col s2">
+                            <a href="#" id="sendNotification" class="btn blue lighten-2 waves-effect showActionButton actionButton">Send</a>
+                            <a href="#"
+                               class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
+                            >
+                                <div class="preloader-wrapper small active float-left">
+                                    <div class="spinner-layer spinner-blue-only">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="float-right"> Loading</div>
+                            </a>
+                        </div>
+                        <div class="input-field col s2">
+                            <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
                         </div>
                     </div>
                 </div>
