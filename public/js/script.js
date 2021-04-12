@@ -634,6 +634,7 @@ $(document).ready(function () {
     $("body").on('click','.head-assessor-claims',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -661,6 +662,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
