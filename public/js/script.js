@@ -493,6 +493,7 @@ $(document).ready(function () {
     });
     $("body").on('click','#headAssessorClaims',function (e){
         e.preventDefault();
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -517,6 +518,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -524,6 +526,7 @@ $(document).ready(function () {
     $("body").on('click','.manager-claims',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -551,6 +554,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -558,6 +562,7 @@ $(document).ready(function () {
     $("body").on('click','.assistant-head-assessor-claims',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -585,6 +590,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -592,6 +598,7 @@ $(document).ready(function () {
     $("body").on('click','.assessment-manager-claims',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -619,6 +626,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -659,6 +667,7 @@ $(document).ready(function () {
     });
     $("body").on('click','#assessorAssessments',function (e){
         e.preventDefault();
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -683,6 +692,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -690,6 +700,7 @@ $(document).ready(function () {
     $("body").on('click','.assessment-manager-assessments',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -717,6 +728,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1209,6 +1221,7 @@ $(document).ready(function () {
     $(".assessor-fetch-supplementaries").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1235,6 +1248,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1242,6 +1256,7 @@ $(document).ready(function () {
     $(".head-assessor-fetch-supplementaries").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1268,6 +1283,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1275,6 +1291,7 @@ $(document).ready(function () {
     $(".assistant-head-assessor-fetch-supplementaries").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1301,6 +1318,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1343,6 +1361,7 @@ $(document).ready(function () {
     $(".manager-fetch-supplementaries").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1369,6 +1388,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1376,6 +1396,7 @@ $(document).ready(function () {
     $(".assessment-manager-fetch-supplementaries").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1402,6 +1423,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1409,6 +1431,7 @@ $(document).ready(function () {
     $(".head-assessor-assessments").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1436,6 +1459,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1483,6 +1507,7 @@ $(document).ready(function () {
     $(".manager-assessments").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1510,6 +1535,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1557,6 +1583,7 @@ $(document).ready(function () {
     $(".assistant-head-assessor-assessments").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1584,6 +1611,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
