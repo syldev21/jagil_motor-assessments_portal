@@ -4852,7 +4852,6 @@ $(document).ready(function () {
         var ccEmail = $("#cc_emails");
         var assessmentID = $("#assessmentID").val();
         var message = CKEDITOR.instances['message'].getData();
-        addLoadingButton();
         $.ajaxSetup({
 
             headers: {
@@ -4862,37 +4861,60 @@ $(document).ready(function () {
             }
 
         });
-        $.ajax({
+        if(email.val() != '')
+        {
+            if(message != '')
+            {
+                addLoadingButton();
+                $.ajax({
 
-            type: 'POST',
-            url: '/common/sendNotification',
-            data: {
-                assessmentID: assessmentID,
-                message: message,
-                emails: email.val(),
-                ccEmails: ccEmail.val(),
-            },
-            success: function (data) {
-                var result = $.parseJSON(data);
-                if (result.STATUS_CODE == SUCCESS_CODE) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
-                }
-                removeLoadingButton();
+                    type: 'POST',
+                    url: '/common/sendNotification',
+                    data: {
+                        assessmentID: assessmentID,
+                        message: message,
+                        emails: email.val(),
+                        ccEmails: ccEmail.val(),
+                    },
+                    success: function (data) {
+                        var result = $.parseJSON(data);
+                        if (result.STATUS_CODE == SUCCESS_CODE) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: result.STATUS_MESSAGE,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                        }
+                        removeLoadingButton();
+                    }
+
+                });
+            }else
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Message required',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
             }
-
-        });
+        }else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'Email required',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
     });
     $("body").on('click','#showActivityLog',function (){
 

@@ -92,19 +92,20 @@ class CommonController extends Controller
 
     public function sendNotification(Request $request)
     {
-        $emails = $request->emails;
-        $ccEmails = $request->ccEmails;
+
+        $emails = isset($request->emails) ? $request->emails : array();
+        $ccEmails = isset($request->ccEmails) ? $request->ccEmails : array();
         $message = $request->message;
         $assessmentID = $request->assessmentID;
         $assessment = Assessment::where(['id'=>$assessmentID])->first();
         $claim = Claim::where(['id'=>$assessment->claimID])->first();
+        array_push($ccEmails,Auth::user()->email);
 
         $message = [
             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
             'to' => $emails,
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
-//            'cc' => Auth::user()->email,
             'cc' => $ccEmails,
             'html' => $message,
         ];
