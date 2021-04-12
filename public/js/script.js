@@ -5010,6 +5010,7 @@ $(document).ready(function () {
     });
     $(".flagged-assessments").on('click',function (e){
         e.preventDefault();
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -5035,6 +5036,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });

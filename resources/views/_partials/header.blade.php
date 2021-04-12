@@ -46,6 +46,7 @@
     <link rel="stylesheet" type="text/css" href=" {{ asset('css/laravel-custom.css') }} ">
     <link rel="stylesheet" type="text/css" href=" {{ asset('css/custom/custom.css') }} ">
     <link rel="stylesheet" type="text/css" href=" {{ asset('css/image-uploader.min.css') }} ">
+    <link rel="stylesheet" type="text/css" href=" {{ asset('css/page-loader.css') }} ">
     <!-- END: Custom CSS-->
 
     <!-- BEGIN: VENDOR CSS-->
