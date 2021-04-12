@@ -118,6 +118,7 @@ class GeneralFunctions
                 "activity" => isset($data['activity']) ? $data['activity'] : '',
                 "notification" => isset($data['notification']) ? $data['notification'] : '',
                 "notificationTo" => isset($data['notificationTo']) ? $data['notificationTo'] : '',
+                "cc" => isset($data['cc']) ? $data['cc'] : '',
                 "notificationType" => isset($data['notificationType']) ? $data['notificationType'] : '',
                 "createdBy" => Auth::user()->id,
                 "dateCreated" => $this->curlDate()

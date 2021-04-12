@@ -111,6 +111,19 @@ class CommonController extends Controller
         ];
 
         InfobipEmailHelper::sendEmail($message);
+        $logData = array(
+            "vehicleRegNo" => $claim->vehicleRegNo,
+            "claimNo" => $claim->claimNo,
+            "policyNo" => $claim->policyNo,
+            "userID" => Auth::user()->id,
+            "role" => Auth::user()->roles->pluck('name')[0],
+            "activity" => Config::ACTIVITIES['GENERIC_NOTIFICATION'],
+            "notification" => $message['html'],
+            "notificationTo" => json_encode($emails),
+            "cc" => json_encode($ccEmails),
+            "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+        );
+        $this->functions->logActivity($logData);
         // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email',$userDetail['MSISDN']);
         // $user = User::where(["id" => $userDetail['id']])->first();
         // Notification::send($user, new ClaimApproved($claim));

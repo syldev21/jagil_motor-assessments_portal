@@ -23,6 +23,7 @@ class CreateActivityLogsTable extends Migration
             $table->string('activity')->nullable();
             $table->longText('notification')->nullable();
             $table->string('notificationTo')->nullable();
+            $table->longText('cc')->nullable();
             $table->string('notificationType')->nullable();
             $table->bigInteger('modifiedBy')->nullable();
             $table->bigInteger('createdBy')->nullable();

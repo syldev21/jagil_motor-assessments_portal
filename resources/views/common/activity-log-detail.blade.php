@@ -73,6 +73,14 @@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m8 s12">
+                                                <p style="border-bottom: 1px dotted lightgrey">CC</p><br/>
+                                                <p style="border-bottom: 1px dotted lightgrey">
+                                                    {!! $activityLog->cc !!}
+                                                </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col m8 s12">
                                                 <p style="border-bottom: 1px dotted lightgrey">Notification</p><br/>
                                                 <p style="border-bottom: 1px dotted lightgrey">
                                                     {!! $activityLog->notification !!}
