@@ -9,12 +9,12 @@
 
 .loader-section {
     width: 77%;
-    height: 35%;
+    height: 40%;
     z-index: 1000;
     margin-right: 2%;
     background: lightgrey;
     float: right;
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 #loader-wrapper .loader-section.section-left {

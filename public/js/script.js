@@ -460,6 +460,7 @@ $(document).ready(function () {
     });
     $("#uploadClaims").on('click',function (e){
         e.preventDefault();
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -485,6 +486,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -955,6 +957,7 @@ $(document).ready(function () {
     $(".fetch-assessments").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -982,6 +985,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1029,6 +1033,7 @@ $(document).ready(function () {
     $(".fetch-claims-by-type").on('click',function (e){
         e.preventDefault();
         var assessmentTypeID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1055,6 +1060,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1062,6 +1068,7 @@ $(document).ready(function () {
     $(".fetch-claims").on('click',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1088,12 +1095,14 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
     });
     $(".re-inspections").on('click',function (e){
         e.preventDefault();
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1118,6 +1127,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -1298,6 +1308,7 @@ $(document).ready(function () {
     $(".adjuster-fetch-supplementaries").on('click',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -1324,6 +1335,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -4917,7 +4929,7 @@ $(document).ready(function () {
         }
     });
     $("body").on('click','#showActivityLog',function (){
-
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -4941,6 +4953,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -5043,6 +5056,7 @@ $(document).ready(function () {
     });
     $(".flagged-supplementaries").on('click',function (e){
         e.preventDefault();
+        $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -5068,6 +5082,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
