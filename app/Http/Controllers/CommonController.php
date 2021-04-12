@@ -100,6 +100,14 @@ class CommonController extends Controller
         $assessment = Assessment::where(['id'=>$assessmentID])->first();
         $claim = Claim::where(['id'=>$assessment->claimID])->first();
         array_push($ccEmails,Auth::user()->email);
+        $footer = "<p>
+               <br/>
+               <br/>
+             <i>Regards <br/>
+             ".Auth::user()->name."<br/>
+             <b>Claims ".Auth::user()->roles->pluck('name')[0]."</b></i>
+         </p>";
+        $message = $message.$footer;
 
         $message = [
             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
