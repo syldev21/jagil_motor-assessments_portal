@@ -37,6 +37,7 @@ class CreateClaimsTable extends Migration
             $table->integer('createdBy')->nullable();
             $table->integer('updatedBy')->nullable();
             $table->integer('claimStatusID')->nullable();
+            $table->tinyInteger('active')->nullable();
             $table->dateTime('dateModified')->nullable();
             $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
