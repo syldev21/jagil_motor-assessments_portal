@@ -413,6 +413,7 @@ class AdjusterController extends Controller
                         "intimationDate" => $intimationDate,
                         "loseDate" => $loseDate,
                         "garageID" => $garageID,
+                        "active" => Config::ACTIVE,
                         "createdBy" => Auth::id(),
                         "dateCreated" => $curDate
                     ]);
