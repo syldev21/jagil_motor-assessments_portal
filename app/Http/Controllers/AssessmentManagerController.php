@@ -45,8 +45,8 @@ class AssessmentManagerController extends Controller
                 {
                     $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                        ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
-                        ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
+                        ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                        ->orderBy('finalApprovedAt', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
                 }else
                 {
                     $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])

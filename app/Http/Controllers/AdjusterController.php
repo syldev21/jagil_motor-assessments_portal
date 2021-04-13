@@ -533,10 +533,18 @@ class AdjusterController extends Controller
         $assessmentStatusID = $request->assessmentStatusID;
         try {
             if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
-                $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
-                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
-                    ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
-                    ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+                if($assessmentStatusID == Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                {
+                    $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
+                        ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                        ->orderBy('finalApprovedAt', 'DESC')->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+                }else
+                {
+                    $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
+                        ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+                }
             } elseif (isset($request->regNumber)) {
 //                $regNo = preg_replace("/\s+/", "", $request->regNumber);
                 $registrationNumber=preg_replace("/\s+/", "", $request->regNumber);
