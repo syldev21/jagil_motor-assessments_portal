@@ -173,7 +173,7 @@
                                                 <tr>
                                                     <td>Place of Assessment</td>
 
-                                                    <td>{{ \App\Garage::where(['id'=>$assessment['claim']['garageID']])->first()->location }}</td>
+                                                    <td>{{ \App\Garage::where(['id'=>$assessment['claim']['garageID']])->first()->name }}</td>
 
                                                 </tr>
 
