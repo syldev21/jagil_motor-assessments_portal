@@ -346,6 +346,7 @@ class AdjusterController extends Controller
                             "intimationDate" => $intimationDate,
                             "loseDate" => $loseDate,
                             "garageID" => $garageID,
+                            "active" =>Config::ACTIVE,
                             "createdBy" => Auth::id(),
                             "dateCreated" => $curDate
                         ]);
@@ -482,8 +483,8 @@ class AdjusterController extends Controller
                             Notification::send($headAssessors, new NewClaimNotification($claim));
                         }
                         $MSISDN = isset($claim->customer->MSISDN) ? $claim->customer->MSISDN : '';
-                        $customerFirstName = isset($claim->customer->firstName) ? $claim->customer->firstName : 'customer';
-                        $smsMessage = $smsMessage = 'Dear ' . $customerFirstName . ', Your claim for vehicle regNumber : ' . $data['reg'] . ' has been initiated for processing. You will be notified for further stages';
+                        $customerFullName = isset($claim->customer->fullName) ? $claim->customer->fullName : 'customer';
+                        $smsMessage = $smsMessage = 'Dear ' . $customerFullName . ', Your claim for vehicle regNumber : ' . $data['reg'] . ' has been initiated for processing. You will be notified for further stages';
                         SMSHelper::sendSMS($smsMessage,$MSISDN);
                         $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
                         $logData['notification'] = $smsMessage;
