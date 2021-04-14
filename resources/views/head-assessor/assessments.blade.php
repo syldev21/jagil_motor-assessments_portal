@@ -225,6 +225,10 @@
                                                                     @endforeach
                                                                 @endif
                                                                 <li>
+                                                                    <a href="#" id="fetchDMSDocuments" data-id="{{$claimNo}}" data-id2="{{$policyNo}}"><i
+                                                                            class="material-icons">attachment</i>DMS</a>
+                                                                </li>
+                                                                <li>
                                                                     <a href="#" id="triggerNotification" data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">notifications_active</i>Send Notification </a>
                                                                 </li>
