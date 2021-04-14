@@ -30,11 +30,11 @@
                                         @foreach($documents as $document)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
-                                                <td><a href="{{$document['link']}}">Document_{{$loop->iteration}}</a></td>
-                                                <td>{{$document['claimNo']}}</td>
-                                                <td>{{$document['policyNo']}}</td>
-                                                <td>{{$document['type']}}</td>
-                                                <td>{{$document['source']}}</td>
+                                                <td><a href="{{$document->link}}">Document_{{$loop->iteration}}</a></td>
+                                                <td>{{$document->claimNo}}</td>
+                                                <td>{{$document->policyNo}}</td>
+                                                <td>{{$document->type}}</td>
+                                                <td>{{$document->source}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>

@@ -14,6 +14,7 @@ use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
 use App\Helper\InfobipEmailHelper;
 use App\User;
+use App\Utility;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -455,32 +456,15 @@ class CommonController extends Controller
     {
         $claimNo = $request->claimNo;
         $policyNo = $request->policyNo;
-        $claimUrl = Config::DMS_BASE_URL.'claim_documents/'.$claimNo;
-        $headers = array(
-            "Content-Type:application/json"
+        $data = array(
+            "claimNo"=>$claimNo,
+            "policyNo" =>$policyNo
         );
-        $claimDocuments = $this->functions->generateCurlget($claimUrl,'',$headers);
-        $policyUrl = Config::DMS_BASE_URL.'policy_documents/'.$policyNo;
-        $policyDocuments = $this->functions->generateCurlget($policyUrl,'',$headers);
-        $claimNumber = str_replace("_","/",$claimNo);
-        $claimData = json_decode($claimDocuments,true);
-        $claimArray = [];
-        foreach ($claimData as $claim)
-        {
-            $claim['type'] = "Claim";
-            array_push($claimArray,$claim);
-        }
-        foreach (json_decode($policyDocuments,true) as $policyDocument)
-        {
-            if ($claimNumber == $policyDocument['claimNo'])
-            {
-                $policyDocument['type']= "Policy";
-                array_push($claimArray,$policyDocument);
-            }
-        }
+        $utility = new Utility();
+        $response = $utility->getData($data, '/api/v1/b2b/general/dms/fetchDMSDocuments', 'POST');
+        $claim_data = json_decode($response->getBody()->getContents());
 
-
-        return view('common.dms-documents',['documents'=>$claimArray]);
+        return view('common.dms-documents',['documents'=>$claim_data]);
     }
 
 }
