@@ -192,6 +192,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/getUsers', 'CommonController@getUsers');
     $router->post('/getClaimsWithoutClaimForm', 'CommonController@getClaimsWithoutClaimForm');
     $router->post('/sendClaimFormNotification', 'CommonController@sendClaimFormNotification');
+    $router->post('/fetchDMSDocuments', 'CommonController@fetchDMSDocuments');
 });
 
 // migrate

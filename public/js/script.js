@@ -5197,6 +5197,44 @@ $(document).ready(function () {
 
         });
     });
+    $("#main").on('click','#fetchDMSDocuments',function (e){
+        e.preventDefault();
+        var claimNo= $(this).data("id");
+        var policyNo= $(this).data("id2");
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                claimNo : claimNo,
+                policyNo : policyNo
+            },
+            url: '/common/fetchDMSDocuments',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+    });
     $("#main").on('click','.userType',function (){
         var checkedValue =$("input[type='radio']").val();
         alert(checkedValue);

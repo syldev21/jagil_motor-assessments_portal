@@ -131,4 +131,22 @@ class GeneralFunctions
                 "An exception occurred when trying to log an event. Error message " . $e->getMessage());
         }
     }
+    public function generateCurlget($url, $params = null, $headers)
+    {
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            $result = curl_exec($ch);
+            curl_close($ch);
+            return $result;
+        } catch (Exception $ex) {
+
+
+        }
+    }
 }

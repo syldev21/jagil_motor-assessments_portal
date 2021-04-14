@@ -451,5 +451,36 @@ class CommonController extends Controller
             }
         }
     }
+    public function fetchDMSDocuments(Request $request)
+    {
+        $claimNo = $request->claimNo;
+        $policyNo = $request->policyNo;
+        $claimUrl = Config::DMS_BASE_URL.'claim_documents/'.$claimNo;
+        $headers = array(
+            "Content-Type:application/json"
+        );
+        $claimDocuments = $this->functions->generateCurlget($claimUrl,'',$headers);
+        $policyUrl = Config::DMS_BASE_URL.'policy_documents/'.$policyNo;
+        $policyDocuments = $this->functions->generateCurlget($policyUrl,'',$headers);
+        $claimNumber = str_replace("_","/",$claimNo);
+        $claimData = json_decode($claimDocuments,true);
+        $claimArray = [];
+        foreach ($claimData as $claim)
+        {
+            $claim['type'] = "Claim";
+            array_push($claimArray,$claim);
+        }
+        foreach (json_decode($policyDocuments,true) as $policyDocument)
+        {
+            if ($claimNumber == $policyDocument['claimNo'])
+            {
+                $policyDocument['type']= "Policy";
+                array_push($claimArray,$policyDocument);
+            }
+        }
+
+
+        return view('common.dms-documents',['documents'=>$claimArray]);
+    }
 
 }
