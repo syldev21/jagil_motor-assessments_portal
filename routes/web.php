@@ -190,6 +190,8 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/flagged-assessments', 'CommonController@flaggedAssessments');
     $router->post('/flagged-supplementaries', 'CommonController@flaggedSupplementaries');
     $router->post('/getUsers', 'CommonController@getUsers');
+    $router->post('/getClaimsWithoutClaimForm', 'CommonController@getClaimsWithoutClaimForm');
+    $router->post('/sendClaimFormNotification', 'CommonController@sendClaimFormNotification');
 });
 
 // migrate

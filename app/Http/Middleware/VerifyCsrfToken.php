@@ -21,6 +21,8 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
         '/assessor/resizeImages',
-        '/updatePdfType'
+        '/updatePdfType',
+        'common/getClaimsWithoutClaimForm',
+        'common/sendClaimFormNotification'
     ];
 }

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\ActivityLog;
 use App\Assessment;
 use App\Claim;
+use App\ClaimFormTracker;
 use App\Conf\Config;
 use App\CustomerMaster;
+use App\Document;
 use App\Garage;
 use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
@@ -361,4 +363,93 @@ class CommonController extends Controller
         $users = User::select('email')->get();
         return view('common.user-list',['users'=>$users,'emails'=>$emails]);
     }
+    public function getClaimsWithoutClaimForm(Request  $request)
+    {
+        $claimIds =Document::select('claimID')->where(['documentType'=>Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>Config::PDF_TYPES['CLAIM_FORM']['ID']])->pluck('claimID')->toArray();
+
+        $claims = Claim::select('id','claimNo','policyNo','vehicleRegNo','customerCode','createdBy','dateCreated')->whereNotIn('id', $claimIds);
+        $idsWithoutClaimForm = $claims->pluck('id')->toArray();
+        $claims = $claims->get();
+        foreach ($claims as $claim)
+        {
+            $claimTracker=ClaimFormTracker::where(['claimNo'=>$claim->claimNo])->first();
+            if(isset($claimTracker->id))
+            {
+
+            }else
+            {
+                ClaimFormTracker::create([
+                    "claimID" =>$claim->id,
+                    "claimNo" =>$claim->claimNo,
+                    "policyNo" => $claim->policyNo,
+                    "vehicleRegNo" => $claim->vehicleRegNo,
+                    "customerCode" => $claim->customerCode,
+                    "notificationCount" => Config::INACTIVE,
+                    "status" => Config::INACTIVE,
+                    "createdBy" => $claim->createdBy,
+                    "dateCreated" => $claim->dateCreated
+                ]);
+//                $documentsArray [] = $data;
+            }
+        }
+          ClaimFormTracker::whereNotIn('claimID', $idsWithoutClaimForm)->delete();
+//        $collection = collect($documentsArray);
+//        $save = ClaimFormTracker::insert($collection->values()->all());
+    }
+    public function sendClaimFormNotification(Request $request)
+    {
+        $threshold = Carbon::now()->subDays(1)->toDateTimeString();
+        $claims = ClaimFormTracker::where('dateCreated','<',$threshold)
+            ->where(['status'=>Config::INACTIVE])->get();
+        if(count($claims)>0)
+        {
+            foreach ($claims as $claim)
+            {
+                if($claim->notificationCount ==0)
+                {
+                    $user = User::where(['id'=>$claim->createdBy])->first();
+                    $email = [
+                        'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
+                        'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                        'to' => $user->email,
+                        'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                        'html' => "Dear ".$user->firstName."<br/>
+                                   A polite reminder to upload claim form for vehicleRegNo : ".$claim->vehicleRegNo." for claimNo : ".$claim->claimNo."
+                                   <br/>
+                                   Regards<br/>
+                                   IT Department Jubilee Insurance",
+                    ];
+                    InfobipEmailHelper::sendEmail($email, $email);
+                    ClaimFormTracker::where(["claimID"=>$claim->claimID])->update([
+                        "notificationCount"=>1
+                    ]);
+                }elseif ($claim->notificationCount == 1)
+                {
+                    $user = User::where(['id'=>$claim->createdBy])->first();
+                    ClaimFormTracker::where(["claimID"=>$claim->claimID])->update([
+                        "notificationCount"=>2
+                    ]);
+                    $email = [
+                        'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
+                        'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                        'to' => $user->email,
+                        'cc' => 'Josphat.Njoroge@jubileekenya.com',
+                        'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                        'html' => "Dear ".$user->firstName."<br/>
+                                   A 2nd polite reminder to upload claim form for vehicleRegNo : ".$claim->vehicleRegNo." for claimNo : ".$claim->claimNo."
+                                   <br/>
+                                   Regards<br/>
+                                   IT Department Jubilee Insurance",
+                    ];
+                    InfobipEmailHelper::sendEmail($email, $email);
+                }elseif ($claim->notificationCount == 1)
+                {
+                    ClaimFormTracker::where(["claimID"=>$claim->claimID])->update([
+                        "status"=>Config::ACTIVE
+                    ]);
+                }
+            }
+        }
+    }
+
 }
