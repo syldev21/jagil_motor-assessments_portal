@@ -134,14 +134,15 @@
 
                                                         <!-- Dropdown Structure -->
                                                         <?php
-                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID']])->first();
+                                                        $claim='claim';
+                                                        $claimNo = str_replace("/","_",$assessment['claim']['claimNo']);
+                                                        $policyNo = str_replace("/","_",$assessment['claim']['policyNo']);
+                                                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>App\Conf\Config::PDF_TYPES['CLAIM_FORM']['ID']])->first();
+
+                                                        $invoiceDoc =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType' => App\Conf\Config::PDF_TYPES['INVOICE']['ID']])->first();
                                                         ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
-                                                            @if(isset($claimForm->name))
-                                                                <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
-                                                                            class="material-icons">file_download</i>Claim Form</a></li>
-                                                            @endif
                                                             @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                 <li>
                                                                     <a href="#" id="view-adjuster-supplementary-report"
@@ -150,6 +151,18 @@
                                                                         Supplementary Report </a>
                                                                 </li>
                                                             @endif
+                                                                @if(isset($claimForm->name))
+                                                                    <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
+                                                                                class="material-icons">file_download</i> Claim Form </a></li>
+                                                                @endif
+                                                                @if(isset($invoiceDoc->name))
+                                                                    <li><a href="{{asset('documents/'.$invoiceDoc->name)}}" download><i
+                                                                                class="material-icons">file_download</i>Invoice</a></li>
+                                                                @endif
+                                                                <li>
+                                                                    <a href="#" id="fetchDMSDocuments" data-id="{{$claimNo}}" data-id2="{{$policyNo}}"><i
+                                                                            class="material-icons">attachment</i>DMS</a>
+                                                                </li>
                                                                 <li>
                                                                     <a href="#" id="triggerNotification" data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">notifications_active</i>Send Notification </a>
