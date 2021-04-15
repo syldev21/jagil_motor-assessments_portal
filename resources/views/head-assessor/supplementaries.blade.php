@@ -145,7 +145,11 @@
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                             @if(isset($claimForm->name))
                                                                 <li><a href="{{asset('documents/'.$claimForm->name)}}" download><i
-                                                                            class="material-icons">file_download</i>Claim Form</a></li>
+                                                                            class="material-icons">file_download</i> Claim Form </a></li>
+                                                            @endif
+                                                            @if(isset($invoiceDoc->name))
+                                                                <li><a href="{{asset('documents/'.$invoiceDoc->name)}}" download><i
+                                                                            class="material-icons">file_download</i>Invoice</a></li>
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] != \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
                                                                     <li>
