@@ -2,6 +2,7 @@ const SUCCESS_CODE = 2000;
 const GENERIC_ERROR_CODE = 4000;
 const NO_RECORDS_FOUND = 3000;
 $(document).ready(function () {
+    $(".sidenav").sidenav();
     $('.materialboxed').materialbox();
     $("#login-btn").on('click', function (e) {
         e.preventDefault();

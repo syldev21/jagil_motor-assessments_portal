@@ -9,15 +9,15 @@
     <meta name="description" content="Materialize is a Material Design Admin Template,It's modern, responsive and based on Material Design by Google. ">
     <meta name="keywords" content="materialize, admin template, dashboard template, flat admin template, responsive admin template,">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>Login Page | Materialize - Material Design Admin Template</title>
+    <title>Jubilee Kenya</title>
 
     <!-- Favicons-->
-    <link rel="icon" href="{{ asset('logins/images/favicon/favicon-32x32.png') }}" sizes="32x32">
+    <link rel="icon" href="{{ asset('logins/images/favicon/jubilee_favicon.png') }}">
     <!-- Favicons-->
-    <link rel="apple-touch-icon-precomposed" href="{{ asset('logins/images/favicon/apple-touch-icon-152x152.png') }}">
+    <link rel="apple-touch-icon-precomposed" href="{{ asset('logins/images/favicon/jubilee_favicon.png') }}">
     <!-- For iPhone -->
     <meta name="msapplication-TileColor" content="#00bcd4">
-    <meta name="msapplication-TileImage" content="{{ asset('logins/images/favicon/mstile-144x144.png') }}">
+    <meta name="msapplication-TileImage" content="{{ asset('logins/images/favicon/jubilee_favicon.png') }}">
     <!-- For Windows Phone -->
 
 
