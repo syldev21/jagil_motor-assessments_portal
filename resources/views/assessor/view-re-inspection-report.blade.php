@@ -411,7 +411,8 @@
                                                 @endif
                                             @endif
                                             <?php
-                                            $difference = \App\AssessmentItem::where('assessmentID', $reinspection['assessmentID'])
+                                            $difference = \App\AssessmentItem::where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
+                                                ->whereIn('assessmentID', $assessmentIds)
                                                 ->whereNotNull('current')
                                                 ->sum('difference');
                                             if ($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
