@@ -1695,7 +1695,6 @@ class AssessorController extends Controller
                     "assessmentStatusID" => $assessmentStatusID,
                     "scrapValue" => $scrapValue,
                     "scrap" => $scrap,
-                    "assessedAt" => $curDate,
                     "dateModified" => $curDate
                 ]);
                 $detail = JobDetail::where('assessmentID', $assessmentID)->exists();
@@ -2235,7 +2234,6 @@ class AssessorController extends Controller
                     "totalLoss" => $totalLoss,
                     "assessmentTypeID" => $assessmentType,
                     "assessmentStatusID" => $assessmentStatusID,
-                    "assessedAt" => $curDate,
                     "dateModified" => $curDate
                 ]);
                 $detail = JobDetail::where('assessmentID', $assessmentID)->exists();
