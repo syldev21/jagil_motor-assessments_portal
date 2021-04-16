@@ -152,12 +152,12 @@
                                                                             class="material-icons">file_download</i>Invoice</a></li>
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'])
-                                                                <li>
-                                                                    <a href="#" id="fillAssessmentReport"
-                                                                       data-id="{{$assessment['id']}}"><i
-                                                                            class="material-icons">insert_drive_file</i>Submit
-                                                                        Assessment </a>
-                                                                </li>
+{{--                                                                <li>--}}
+{{--                                                                    <a href="#" id="fillAssessmentReport"--}}
+{{--                                                                       data-id="{{$assessment['id']}}"><i--}}
+{{--                                                                            class="material-icons">insert_drive_file</i>Submit--}}
+{{--                                                                        Assessment </a>--}}
+{{--                                                                </li>--}}
                                                             @endif
                                                             @if(($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']) || ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']))
                                                                 <li>
@@ -167,12 +167,12 @@
                                                                 </li>
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id'])
-                                                                <li>
-                                                                    <a href="#" id="fillAssessmentReport"
-                                                                       data-id="{{$assessment['id']}}"><i
-                                                                            class="material-icons">insert_drive_file</i>Fill
-                                                                        Report </a>
-                                                                </li>
+{{--                                                                <li>--}}
+{{--                                                                    <a href="#" id="fillAssessmentReport"--}}
+{{--                                                                       data-id="{{$assessment['id']}}"><i--}}
+{{--                                                                            class="material-icons">insert_drive_file</i>Fill--}}
+{{--                                                                        Report </a>--}}
+{{--                                                                </li>--}}
                                                             @else
                                                                 <li>
                                                                     <a href="#" id="view-assessor-supplementary-report"
@@ -182,27 +182,27 @@
                                                                 </li>
                                                             @endif
                                                             @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
-                                                                <li>
-                                                                    <a href="#" id="fillReInspectionReport"
-                                                                       data-id="{{$assessment['id']}}"><i
-                                                                            class="material-icons">insert_drive_file</i>Re-Inspection
-                                                                        Report</a></li>
-                                                                <li>
-                                                                    <a href="#"
-                                                                       id="assessor-view-re-inspection-report"
-                                                                       data-id="{{$assessment['id']}}"><i
-                                                                            class="material-icons">insert_drive_file</i>View
-                                                                        Re-Inspection
-                                                                        Report</a></li>
-                                                                <li><a href="#!"><i
-                                                                            class="material-icons">compare_arrows</i>Price
-                                                                        Change</a></li>
-                                                                <li><a href="#!" id="fillSupplementaryReport" data-id="{{$assessment['id']}}"><i
-                                                                            class="material-icons">insert_drive_file</i>Add
-                                                                        Supplementary Report</a></li>
-                                                                <li><a href="#!"><i
-                                                                            class="material-icons">picture_as_pdf</i>Claim
-                                                                        Form</a></li>
+{{--                                                                <li>--}}
+{{--                                                                    <a href="#" id="fillReInspectionReport"--}}
+{{--                                                                       data-id="{{$assessment['id']}}"><i--}}
+{{--                                                                            class="material-icons">insert_drive_file</i>Re-Inspection--}}
+{{--                                                                        Report</a></li>--}}
+{{--                                                                <li>--}}
+{{--                                                                    <a href="#"--}}
+{{--                                                                       id="assessor-view-re-inspection-report"--}}
+{{--                                                                       data-id="{{$assessment['id']}}"><i--}}
+{{--                                                                            class="material-icons">insert_drive_file</i>View--}}
+{{--                                                                        Re-Inspection--}}
+{{--                                                                        Report</a></li>--}}
+{{--                                                                <li><a href="#!"><i--}}
+{{--                                                                            class="material-icons">compare_arrows</i>Price--}}
+{{--                                                                        Change</a></li>--}}
+{{--                                                                <li><a href="#!" id="fillSupplementaryReport" data-id="{{$assessment['id']}}"><i--}}
+{{--                                                                            class="material-icons">insert_drive_file</i>Add--}}
+{{--                                                                        Supplementary Report</a></li>--}}
+{{--                                                                <li><a href="#!"><i--}}
+{{--                                                                            class="material-icons">picture_as_pdf</i>Claim--}}
+{{--                                                                        Form</a></li>--}}
                                                             @endif
                                                                 <li>
                                                                     <a href="#" id="fetchDMSDocuments" data-id="{{$claimNo}}" data-id2="{{$policyNo}}"><i

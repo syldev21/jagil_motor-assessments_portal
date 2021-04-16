@@ -175,42 +175,8 @@ class AssessorController extends Controller
         $parts = Cache::remember('parts', Config::CACHE_EXPIRY_PERIOD, function () {
             return Part::select("id", "name")->get();
         });
-        $assessmentItems = AssessmentItem::where(["assessmentID" => isset($supplementaryAssessment->id) ? $supplementaryAssessment->id : 0, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with("part")->get();
-        $jobDetails = JobDetail::where(["assessmentID" => isset($supplementaryAssessment->id) ? $supplementaryAssessment->id : 0, "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->get();
+        $assessmentItems = [];
         $jobDraftDetail = [];
-        foreach ($jobDetails as $jobDetail) {
-
-            if ($jobDetail->jobType == Config::$JOB_TYPES["LABOUR"]["ID"]) {
-                $jobDraftDetail["Labour"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["PAINTING"]["ID"]) {
-                $jobDraftDetail["Painting"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["MISCELLANEOUS"]["ID"]) {
-                $jobDraftDetail["Miscellaneous"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["PRIMER"]["ID"]) {
-                $jobDraftDetail["2k Primer"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["JIGGING"]["ID"]) {
-                $jobDraftDetail["Jigging"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["RECONSTRUCTION"]["ID"]) {
-                $jobDraftDetail["Reconstruction"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["AC_GAS"]["ID"]) {
-                $jobDraftDetail["AC/Gas"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["WELDING_GAS"]["ID"]) {
-                $jobDraftDetail["Welding/Gas"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["BUMPER_FIBRE"]["ID"]) {
-                $jobDraftDetail["Bumper Fibre"] = $jobDetail->cost;
-            }
-            if ($jobDetail->jobType == Config::$JOB_TYPES["DAM_KIT"]["ID"]) {
-                $jobDraftDetail["Dam Kit"] = $jobDetail->cost;
-            }
-        }
 
         return view('assessor.supplementary-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "supplementaryAssessment" => $supplementaryAssessment, "carDetails" => $carDetails]);
     }
@@ -880,6 +846,10 @@ class AssessorController extends Controller
             $assessmentType = $request->assessmentType;
             $curDate = $this->functions->curlDate();
             $assess = Assessment::where(["id" => $assessmentID])->first();
+            if($assess->segment == Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+            {
+                $assessmentID = $assess->assessmentID;
+            }
             $claim = Claim::where(['id' => isset($assess->claimID) ? $assess->claimID : 0])->first();
 
             if ($claim->intimationDate >= Config::VAT_REDUCTION_DATE && $claim->intimationDate <= Config::VAT_END_DATE) {
