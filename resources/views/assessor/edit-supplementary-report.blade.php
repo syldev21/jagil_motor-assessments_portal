@@ -113,22 +113,22 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input id="quantity_{{$count}}" oninput="getTotal(0);findTotal()"
+                                                            <input id="quantity_{{$count}}" oninput="getTotal({{$count}});findTotal()"
                                                                    placeholder="" type="text" name="quantity[]"
                                                                    value="{{$assessmentItem->quantity}}" />
                                                         </td>
                                                         <td>
-                                                            <input id="partPrice_{{$count}}" oninput="getTotal(0);findTotal()"
+                                                            <input id="partPrice_{{$count}}" oninput="getTotal({{$count}});findTotal()"
                                                                    placeholder="" type="text" name="partPrice[]"
                                                                    value="{{$assessmentItem->cost}}" />
                                                         </td>
                                                         <td>
                                                             <input id="contribution_{{$count}}" placeholder="" type="text"
-                                                                   name="contribution[]" oninput="getTotal(0);findTotal()"
+                                                                   name="contribution[]" oninput="getTotal({{$count}});findTotal()"
                                                                    value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}" />
                                                         </td>
                                                         <td>
-                                                            <input id="discount_{{$count}}" oninput="getTotal(0);findTotal()"
+                                                            <input id="discount_{{$count}}" oninput="getTotal({{$count}});findTotal()"
                                                                    placeholder="" type="text" name="discount[]"
                                                                    value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}" />
                                                         </td>
@@ -192,7 +192,7 @@
                                                                maxlength="2" />
                                                     </td>
                                                     <td>
-                                                        <input id="discount_0" oninput="getTotal(0)" placeholder=""
+                                                        <input id="discount_0" oninput="getTotal(0);findTotal()" placeholder=""
                                                                type="text" name="discount[]" value="" maxlength="2" />
                                                     </td>
                                                     <td>
