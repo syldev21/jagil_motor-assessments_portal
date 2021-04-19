@@ -27,6 +27,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('image:resize')->everyMinute()->withoutOverlapping();
+        $schedule->command('claimform:sendnotification')->dailyAt('08:00')->withoutOverlapping();
+        $schedule->command('fetchclaimform:withoutclaimform')->dailyAt('05:00')->withoutOverlapping();
     }
 
     /**

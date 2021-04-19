@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ActivityLog;
 use App\Assessment;
+use App\CarModel;
 use App\Claim;
 use App\ClaimFormTracker;
 use App\Conf\Config;
@@ -465,6 +466,12 @@ class CommonController extends Controller
         $claim_data = json_decode($response->getBody()->getContents());
 
         return view('common.dms-documents',['documents'=>$claim_data]);
+    }
+    public function fetchModelsByMake(Request $request)
+    {
+        $carMakeCode = $request->carMakeCode;
+        $carModels= CarModel::where(["makeCode"=>$carMakeCode])->get();
+        return view('common.car-models',["carModels"=>$carModels]);
     }
 
 }
