@@ -365,7 +365,7 @@ class CommonController extends Controller
         $users = User::select('email')->get();
         return view('common.user-list',['users'=>$users,'emails'=>$emails]);
     }
-    public function getClaimsWithoutClaimForm(Request  $request)
+    public function getClaimsWithoutClaimForm()
     {
         $claimIds =Document::select('claimID')->where(['documentType'=>Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>Config::PDF_TYPES['CLAIM_FORM']['ID']])->pluck('claimID')->toArray();
 
@@ -398,7 +398,7 @@ class CommonController extends Controller
 //        $collection = collect($documentsArray);
 //        $save = ClaimFormTracker::insert($collection->values()->all());
     }
-    public function sendClaimFormNotification(Request $request)
+    public function sendClaimFormNotification()
     {
         $threshold = Carbon::now()->subDays(1)->toDateTimeString();
         $claims = ClaimFormTracker::where('dateCreated','<',$threshold)
