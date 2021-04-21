@@ -188,75 +188,100 @@ $(document).ready(function () {
         var yom = $("#yom");
         var engineNumber = $("#engineNumber");
         var chassisNumber = $("#chassisNumber");
+        var safRegex=/^(?:(?:254|0|)(?:(?:(?:11(?:[0-5]))(?:[0-9]{6})|(?:(?:7|2)(?:(?:(?:[0-2]{1})(?:[0-9]{7}))|(?:(?:4(?:[0-35-68]{1}))|(?:57|58|59)|(?:68|69)|(?:9(?:[0-35-9]{1})))(?:[0-9]{6}))))))$/i;
+        var airtelRegex=/^((?:254|0|)(?:(?:[7](?:[38]{1}(?:[0-9]{7})|(?:(?:(?:5(?:[0-6]{1}))|(?:[6][2]{1}))(?:[0-9]{6})))|(?:(?:10(?:[0-5])))(?:[0-9]{6}))))$/i;
+        var telkomRegex=/^(25477|020|040|050|060|066)([0-9]{7})$/i;
         if(garageID.val() != '')
         {
-            if(excess.val() >= originalExcess.val()) {
-                addLoadingButton();
+            MSISDN = MSISDN.val();
+            MSISDN= MSISDN.replace(/\s+/g, '');
+            var firstChar = MSISDN[0];
+            if (firstChar == '+') {
+                MSISDN = MSISDN.substr(1);
+            }
+            var code = MSISDN.substring(0, 3);
+            if(firstChar != 0 && code !=254)
+            {
+                MSISDN = "0"+MSISDN;
+            }
+            if(safRegex.test(MSISDN) || airtelRegex.test(MSISDN) || telkomRegex.test(MSISDN))
+            {
+                if(excess.val() >= originalExcess.val()) {
+                    addLoadingButton();
 
-                $.ajaxSetup({
+                    $.ajaxSetup({
 
-                    headers: {
+                        headers: {
 
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 
-                    }
-
-                });
-                $.ajax({
-
-                    type: 'POST',
-
-                    url: '/adjuster/addClaim',
-
-                    data: {
-                        claimNo: claimNo.val(),
-                        customerCode: customerCode.val(),
-                        claimType: claimType.val(),
-                        sumInsured: sumInsured.val(),
-                        excess: excess.val(),
-                        vehicleRegNo: vehicleRegNo.val(),
-                        policyNo: policyNo.val(),
-                        branch: branch.val(),
-                        loseDate: loseDate.val(),
-                        intimationDate: intimationDate.val(),
-                        email: email.val(),
-                        fullName: fullName.val(),
-                        MSISDN: MSISDN.val(),
-                        garageID: garageID.val(),
-                        originalExcess: originalExcess.val(),
-                        originalSumInsured: originalSumInsured.val(),
-                        carMakeCode: carMakeCode.val(),
-                        carModelCode: carModelCode.val(),
-                        yom: yom.val(),
-                        engineNumber: engineNumber.val(),
-                        chassisNumber: chassisNumber.val()
-                    },
-                    success: function (data) {
-                        var result = $.parseJSON(data);
-                        if (result.STATUS_CODE == SUCCESS_CODE) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: result.STATUS_MESSAGE,
-                                showConfirmButton: false,
-                                timer: 3000
-                            })
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: result.STATUS_MESSAGE,
-                                showConfirmButton: false,
-                                timer: 3000
-                            })
                         }
-                        removeLoadingButton();
-                    }
 
-                });
+                    });
+                    $.ajax({
+
+                        type: 'POST',
+
+                        url: '/adjuster/addClaim',
+
+                        data: {
+                            claimNo: claimNo.val(),
+                            customerCode: customerCode.val(),
+                            claimType: claimType.val(),
+                            sumInsured: sumInsured.val(),
+                            excess: excess.val(),
+                            vehicleRegNo: vehicleRegNo.val(),
+                            policyNo: policyNo.val(),
+                            branch: branch.val(),
+                            loseDate: loseDate.val(),
+                            intimationDate: intimationDate.val(),
+                            email: email.val(),
+                            fullName: fullName.val(),
+                            MSISDN: MSISDN,
+                            garageID: garageID.val(),
+                            originalExcess: originalExcess.val(),
+                            originalSumInsured: originalSumInsured.val(),
+                            carMakeCode: carMakeCode.val(),
+                            carModelCode: carModelCode.val(),
+                            yom: yom.val(),
+                            engineNumber: engineNumber.val(),
+                            chassisNumber: chassisNumber.val()
+                        },
+                        success: function (data) {
+                            var result = $.parseJSON(data);
+                            if (result.STATUS_CODE == SUCCESS_CODE) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: result.STATUS_MESSAGE,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: result.STATUS_MESSAGE,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            }
+                            removeLoadingButton();
+                        }
+
+                    });
+                }else
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Excess must be greater than '+originalExcess.val(),
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
             }else
             {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Excess must be greater than '+originalExcess.val(),
+                    title: 'Provide a valid Mobile Number',
                     showConfirmButton: false,
                     timer: 3000
                 })

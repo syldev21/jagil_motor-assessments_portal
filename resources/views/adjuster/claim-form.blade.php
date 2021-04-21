@@ -120,11 +120,22 @@
                                                    value="{{$claim['CUST_CODE']}}" disabled>
                                             <label for="customerCode" class="active">Client Code</label>
                                         </div>
-                                        <input type="hidden" name="email" id="email" value="{{$claim['CUST_EMAIL1']}}">
-                                        <input type="hidden" name="fullName" id="fullName"
-                                               value="{{$claim['CUST_NAME']}}">
-                                        <input type="hidden" name="MSISDN" id="MSISDN"
-                                               value="{{$claim['CUST_MOBILE_NO']}}">
+                                        <div class="input-field col m4 s12">
+                                            <input type="text" name="email" id="email" value="{{$claim['CUST_EMAIL1']}}">
+                                            <label for="email" class="active">Email</label>
+                                        </div>
+                                        <div class="input-field col m4 s12">
+                                            <input type="text" name="fullName" id="fullName"
+                                                   value="{{$claim['CUST_NAME']}}">
+                                            <label for="fullName" class="active">Full Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col m4 s12">
+                                            <input type="text" name="MSISDN" id="MSISDN"
+                                                   value="{{$claim['CUST_MOBILE_NO']}}">
+                                            <label for="MSISDN" class="active">MSISDN</label>
+                                        </div>
                                         <div class="input-field col m4 s12">
                                             <a href="#"
                                                class="float-right btn  waves-effect waves-effect waves-light showActionButton actionButton"
@@ -133,7 +144,7 @@
                                             </a>
                                             <a href="#"
                                                class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
-                                               >
+                                            >
                                                 <div class="preloader-wrapper small active float-left">
                                                     <div class="spinner-layer spinner-blue-only">
                                                         <div class="circle-clipper left">
