@@ -369,7 +369,9 @@ class CommonController extends Controller
     {
         $claimIds =Document::select('claimID')->where(['documentType'=>Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>Config::PDF_TYPES['CLAIM_FORM']['ID']])->pluck('claimID')->toArray();
 
-        $claims = Claim::select('id','claimNo','policyNo','vehicleRegNo','customerCode','createdBy','dateCreated')->whereNotIn('id', $claimIds);
+        $claims = Claim::select('id','claimNo','policyNo','vehicleRegNo','customerCode','createdBy','dateCreated')
+            ->where(["active" =>Config::ACTIVE])
+            ->whereNotIn('id', $claimIds);
         $idsWithoutClaimForm = $claims->pluck('id')->toArray();
         $claims = $claims->get();
         foreach ($claims as $claim)
