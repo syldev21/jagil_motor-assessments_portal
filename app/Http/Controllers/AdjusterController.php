@@ -831,7 +831,7 @@ class AdjusterController extends Controller
             $assessor = User::where('id', $reinspection->createdBy)->first();
             $insured = CustomerMaster::where(['customerCode' => $claim->customerCode])->first();
             $insuredName = isset($insured->firstName) ? $insured->firstName : '' . isset($insured->lastName) ? $insured->lastName : '';
-            $assessorName = isset($assessor->firstName) ? $assessor->firstName : '' . isset($assessor->lastName) ? $assessor->lastName : '';
+            $assessorName = isset($assessor->name) ? $assessor->name : '';
             $data = [
                 'assessor' => $assessorName,
                 'amount' => $reinspection->total,
