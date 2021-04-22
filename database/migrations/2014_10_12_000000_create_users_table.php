@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
             $table->boolean('active')->default(0);
             $table->boolean('online')->default(0);
             $table->integer('durationOnline')->default(0);
+            $table->string('signature')->nullable();
             $table->boolean('accountLocked')->default(0);
             $table->dateTime('dateModified')->nullable();
             $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));

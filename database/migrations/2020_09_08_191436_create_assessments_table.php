@@ -41,6 +41,7 @@ class CreateAssessmentsTable extends Migration
             $table->longText('reviewNote')->nullable();
             $table->double('scrapValue')->nullable();
             $table->tinyInteger('scrap')->nullable();
+            $table->tinyInteger('active')->default(0);
             $table->bigInteger('createdBy')->nullable();
             $table->bigInteger('updatedBy')->nullable();
             $table->dateTime('dateModified')->nullable();
