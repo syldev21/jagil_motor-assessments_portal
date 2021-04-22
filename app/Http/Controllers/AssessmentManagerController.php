@@ -45,12 +45,14 @@ class AssessmentManagerController extends Controller
                 {
                     $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->where('active','=',Config::ACTIVE)
                         ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
                         ->orderBy('finalApprovedAt', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
                 }else
                 {
                     $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->where('active','=',Config::ACTIVE)
                         ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
                 }
             } elseif (isset($request->regNumber)) {
@@ -69,12 +71,14 @@ class AssessmentManagerController extends Controller
                 $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
+                    ->where('active','=',Config::ACTIVE)
                     ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
             } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
                 $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
                 $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
                 $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('active','=',Config::ACTIVE)
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
                     ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
             } else {
@@ -151,7 +155,7 @@ class AssessmentManagerController extends Controller
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID,'segment'=>Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],'active'=>Config::ACTIVE])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             return view('assessment-manager.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID,'assessmentStatusID'=>$assessmentStatusID,'id'=>$id]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
