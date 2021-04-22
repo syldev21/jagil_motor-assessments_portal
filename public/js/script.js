@@ -3978,6 +3978,14 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
+    $("body").on('click','#archiveClaimTrigger',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('archiveClaim');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+        var claimID = $(this).data("id");
+        $("#claimID").val(claimID);
+    });
     $("body").on('click','#reviewAssessment',function (e){
         e.preventDefault();
         var assessmentID = $("#assessmentID").val();
@@ -5263,6 +5271,62 @@ $(document).ready(function () {
             }
 
         });
+    });
+    $("#main").on('click','#submitClaimArchival',function (e){
+        e.preventDefault();
+        var archiveNote= CKEDITOR.instances['archiveNote'].getData();
+        var claimID= $("#claimID").val();
+        if(archiveNote != '')
+        {
+            addLoadingButton();
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                    archiveNote : archiveNote,
+                    claimID : claimID
+                },
+                url: '/adjuster/archiveClaim',
+
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    removeLoadingButton();
+                }
+
+            });
+        }else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'You have not provided a note',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
     });
     $("#main").on('click','.userType',function (){
         var checkedValue =$("input[type='radio']").val();

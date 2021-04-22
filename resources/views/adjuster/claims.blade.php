@@ -141,6 +141,9 @@
                                                                             class="material-icons">picture_as_pdf</i>
                                                                         Exception Report</a></li>
                                                             @endif
+                                                            <li><a href="#" data-id="{{$claim['id']}}" id="archiveClaimTrigger"><i
+                                                                        class="material-icons">archive</i>
+                                                                    Archive</a></li>
                                                         </ul>
 
                                                     </td>
@@ -154,6 +157,63 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s8">
+                    <!-- Modal Structure -->
+                    <div id="archiveClaim" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+                            </div>
+                            <div class="modal-body clearfix">
+                                <div class="row">
+                                    <input type="hidden" id="claimID" name="claimID">
+                                    <div class="input-field col m12 s12">
+                                        <div class="container">
+                                            <div>Note:</div>
+                                            <textarea  id="archiveNote" class="materialize-textarea" name="archiveNote">
+                                    </textarea>
+                                            <script>
+                                                CKEDITOR.replace('archiveNote',{
+                                                    language: 'en',
+                                                    uiColor: ''
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s8"></div>
+                                    <div class="input-field col s2">
+                                        <a href="#" id="submitClaimArchival" class="btn blue lighten-2 waves-effect showActionButton actionButton">Send</a>
+                                        <a href="#"
+                                           class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
+                                        >
+                                            <div class="preloader-wrapper small active float-left">
+                                                <div class="spinner-layer spinner-blue-only">
+                                                    <div class="circle-clipper left">
+                                                        <div class="circle"></div>
+                                                    </div><div class="gap-patch">
+                                                        <div class="circle"></div>
+                                                    </div><div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="float-right"> Loading</div>
+                                        </a>
+                                    </div>
+                                    <div class="input-field col s2">
+                                        <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s2"></div>
             </div>
         </div>
     </div>
