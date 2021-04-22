@@ -51,6 +51,7 @@ class HeadAssessorController extends Controller
                         "assessedBy" => $request->assessor,
                         "assessmentStatusID" => Config::$STATUSES["ASSESSMENT"]["ASSIGNED"]["id"],
                         "createdBy" => Auth::id(),
+                        "active" => Config::ACTIVE,
                         "segment" => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'],
                         "dateCreated" => $curlDate
                     ]);
