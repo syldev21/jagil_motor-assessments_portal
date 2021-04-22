@@ -45,11 +45,13 @@ class AssistantHeadAssessorController extends Controller
                         ->where('totalCost', '<=', Config::HEAD_ASSESSOR_THRESHOLD)
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                        ->where('active','=',Config::ACTIVE)
                         ->orderBy('finalApprovedAt', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
                 }else
                 {
                     $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                         ->where('totalCost', '<=', Config::HEAD_ASSESSOR_THRESHOLD)
+                        ->where('active','=',Config::ACTIVE)
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
                 }
@@ -71,6 +73,7 @@ class AssistantHeadAssessorController extends Controller
                     ->where('totalCost', '<=', Config::HEAD_ASSESSOR_THRESHOLD)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
+                    ->where('active','=',Config::ACTIVE)
                     ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
             {
@@ -80,6 +83,7 @@ class AssistantHeadAssessorController extends Controller
                     ->where('totalCost', '<=', Config::HEAD_ASSESSOR_THRESHOLD)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->where('active','=',Config::ACTIVE)
                     ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             }else
             {
@@ -275,7 +279,7 @@ class AssistantHeadAssessorController extends Controller
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],'active'=>Config::ACTIVE])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             return view('assistant-head-assessor.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID, 'assessmentStatusID' => $assessmentStatusID, 'id' => $id]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .

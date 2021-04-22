@@ -43,6 +43,7 @@ class CommonController extends Controller
                 $assessments = Assessment::where("assessedBy", "!=", $id)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                    ->where('active','=',Config::ACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             } elseif (isset($request->regNumber)) {
 //              $regNo = preg_replace("/\s+/", "", $request->regNumber);
@@ -64,6 +65,7 @@ class CommonController extends Controller
                 $assessments = Assessment::where("assessedBy", "!=", $id)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
+                    ->where('active','=',Config::ACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
                 $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
@@ -73,6 +75,7 @@ class CommonController extends Controller
                 $assessments = Assessment::where("assessedBy", "!=", $id)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->where('active','=',Config::ACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }
             return view('common.re-inspections', ['assessments' => $assessments, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'], 'asmts' => $asmts]);
@@ -86,7 +89,7 @@ class CommonController extends Controller
     {
         $assessmentTypeID = $request->assessmentTypeID;
         try {
-            $assessments = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'], 'assessmentTypeID' => $assessmentTypeID])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->get();
+            $assessments = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'], 'assessmentTypeID' => $assessmentTypeID,'active'=>Config::ACTIVE])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->get();
             return view('common.assessment-types', ['assessments' => $assessments, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'], 'assessmentTypeID' => $assessmentTypeID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
@@ -214,6 +217,7 @@ class CommonController extends Controller
         $userID = Auth::user()->id;
         if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
             $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->where('active','=',Config::ACTIVE)
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
              WHEN assessmentStatusID='$changesDue' THEN changeRequestAt < '$flagThreshold'
@@ -235,6 +239,7 @@ class CommonController extends Controller
                 $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%');
             })->pluck('id')->toArray();
             $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->where('active','=',Config::ACTIVE)
                 ->whereIn('claimID', $claimids)
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
@@ -248,6 +253,7 @@ class CommonController extends Controller
             $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
             $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
             $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->where('active','=',Config::ACTIVE)
                 ->whereBetween('dateCreated', [$fromDate, $toDate])
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
@@ -280,6 +286,7 @@ class CommonController extends Controller
         $userID = Auth::user()->id;
         if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
             $assessments = Assessment::where('segment', "=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->where('active','=',Config::ACTIVE)
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
              WHEN assessmentStatusID='$changesDue' THEN changeRequestAt < '$flagThreshold'
@@ -301,6 +308,7 @@ class CommonController extends Controller
                 $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%');
             })->pluck('id')->toArray();
             $assessments = Assessment::where('segment', "=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->where('active','=',Config::ACTIVE)
                 ->whereIn('claimID', $claimids)
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
@@ -314,6 +322,7 @@ class CommonController extends Controller
             $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
             $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
             $assessments = Assessment::where('segment', "=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                ->where('active','=',Config::ACTIVE)
                 ->whereBetween('dateCreated', [$fromDate, $toDate])
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'

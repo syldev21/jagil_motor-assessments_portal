@@ -51,6 +51,7 @@ class AssessorController extends Controller
             if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
                 $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->where('active','=',Config::ACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }elseif (isset($request->regNumber))
             {
@@ -69,6 +70,7 @@ class AssessorController extends Controller
                 $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
+                    ->where('active','=',Config::ACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
             {
@@ -77,6 +79,7 @@ class AssessorController extends Controller
                 $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->where('active','=',Config::ACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }else
             {
@@ -94,7 +97,7 @@ class AssessorController extends Controller
         $id = Auth::id();
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],'active'=>Config::ACTIVE])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             return view('assessor.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID, 'assessmentStatusID' => $assessmentStatusID, 'id' => $id]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
