@@ -538,6 +538,7 @@ class AdjusterController extends Controller
                 if($assessmentStatusID == Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                 {
                     $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
+                        ->where('active','=',Config::ACTIVE)
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
                         ->orderBy('finalApprovedAt', 'DESC')->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
@@ -545,6 +546,7 @@ class AdjusterController extends Controller
                 {
                     $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->where('active','=',Config::ACTIVE)
                         ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
                 }
             } elseif (isset($request->regNumber)) {
@@ -563,6 +565,7 @@ class AdjusterController extends Controller
                 $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
+                    ->where('active','=',Config::ACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
 
             } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
@@ -571,6 +574,7 @@ class AdjusterController extends Controller
                 $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->where('active','=',Config::ACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             } else {
                 $assessments = array();
@@ -870,7 +874,8 @@ class AdjusterController extends Controller
     {
         $assessmentStatusID = $request->assessmentStatusID;
         try {
-            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID']])->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
+            $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, 'segment' => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],'active'=>Config::ACTIVE])
+                ->with('claim')->with('user')->with('approver')->with('assessor')->orderBy('dateCreated', 'DESC')->get();
             return view('adjuster.supplementaries', ['assessments' => $assessments, 'assessmentStatusID' => $assessmentStatusID, 'assessmentStatusID' => $assessmentStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
