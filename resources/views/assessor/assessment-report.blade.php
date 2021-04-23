@@ -1,3 +1,7 @@
+<?php
+$makeCode = isset($carDetails->makeCode)  ? $carDetails->makeCode : '';
+$modelCode = isset($carDetails->modelCode)  ? $carDetails->modelCode : '';
+?>
 <div class="row">
 
     <div
@@ -15,7 +19,7 @@
                     <div class="row">
                         <div class="col s12">
                             <ul class="stepper parallel horizontal">
-                                <li class="step active">
+                                <li class="step active" id="custom-step-one">
                                     <div class="step-title waves-effect waves-dark">Assessment Report</div>
                                     <div class="step-content">
                                         <div class="row">
@@ -31,7 +35,7 @@
                                                 <select id="carMake" name="carMake" class="browser-default">
                                                     @foreach($modelsAndMakes->unique("makeCode") as $modelAndMake)
                                                         <option value="{{$modelAndMake->makeCode}}" @if($modelAndMake->
-                                                        makeCode==$carDetails->makeCode) selected
+                                                        makeCode==$assessment->claim->carMakeCode) selected
                                                             @endif>{{$modelAndMake->makeName}}
                                                         </option>
                                                     @endforeach
@@ -39,15 +43,21 @@
                                             </div>
                                             <div class="input-field col m2 s12">
 {{--                                                <input placeholder="" id="carModel" type="text" name="carModel" value="{{$carDetails->modelName}}" disabled/>--}}
-                                                <label for="carModel" class="active">Car Model</label>
+                                                <label for="carModel" class="active" id="modelLabel">Car Model <span style="color: red">*</span></label>
                                                 <br>
+                                                <?php
+                                                $models = \App\CarModel::where(["makeCode" =>$assessment->claim->carMakeCode])->get();
+                                                $valid = '';
+                                                ?>
                                                 <select id="carModel" name="carModel" class="browser-default">
-                                                    @foreach($modelsAndMakes as $modelAndMake)
-                                                        <option value="{{$modelAndMake->modelCode}}" @if($modelAndMake->modelCode ==
-                                                        $carDetails->modelCode) selected @endif>{{$modelAndMake->modelName}}
+                                                    <option value="">Select Model</option>
+                                                    @foreach($models as $model)
+                                                        <option value="{{$model->modelCode}}" @if($model->modelCode ==
+                                                        $modelCode) {{$valid = 1}} selected @endif>{{$model->modelName}}
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                <input type="text" id="validModel" value="{{$valid}}" required  style="display: none"/>
                                             </div>
                                             <div class="input-field col m2 s12">
                                                 <input placeholder="" id="YOM" type="text" name="YOM" value="{{$assessment->claim->yom}}"/>

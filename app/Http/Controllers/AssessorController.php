@@ -115,7 +115,8 @@ class AssessorController extends Controller
         } else {
             $draftAssessment = array();
         }
-        $carDetails = CarModel::where(["modelCode" => isset($assessment->claim->carModelCode) ? $assessment->claim->carModelCode : 0])->first();
+        $carDetails = CarModel::where(["modelCode" => $assessment->claim->carModelCode,"makeCode"=>$assessment->claim->carMakeCode])->first();
+
         $modelsAndMakes = CarModel::select('id', 'makeCode', 'modelCode', 'makeName', 'modelName')->get();
 //        $remarks = Remarks::select("id","name")->get();
 //        $parts = Part::select("id","name")->get();

@@ -23,7 +23,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'branchID','MSISDN','firstName','middleName','lastName','fullName','name', 'email', 'password','idTypeID','idNumber','userTypeID','role','username','password','loginAttemps',
-        'accountLocked','location','latitude','longitude','loggedInAt','online','durationOnline',
+        'accountLocked','location','latitude','longitude','loggedInAt','online','durationOnline','signature',
         'emailVerifiedAt','loggedOutAt','','active','status','dateModified','dateCreated'
     ];
     public $timestamps= false;

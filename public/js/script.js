@@ -3,6 +3,16 @@ const GENERIC_ERROR_CODE = 4000;
 const NO_RECORDS_FOUND = 3000;
 $(document).ready(function () {
     $(".sidenav").sidenav();
+    $("#main").on("click","#validateStepOne",function (){
+        var validModel = $("#validModel").val();
+        if(validModel == '')
+        {
+            $("#modelLabel").addClass('error');
+        }else
+        {
+            $("#modelLabel").removeClass('error');
+        }
+    });
     $(".toggle-fullscreen").click(function() {
         document.fullScreenElement && null !== document.fullScreenElement || !document.mozFullScreen && !document.webkitIsFullScreen ? document.documentElement.requestFullScreen ? document.documentElement.requestFullScreen() : document.documentElement.mozRequestFullScreen ? document.documentElement.mozRequestFullScreen() : document.documentElement.webkitRequestFullScreen ? document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT) : document.documentElement.msRequestFullscreen && (document.msFullscreenElement ? document.msExitFullscreen() : document.documentElement.msRequestFullscreen()) : document.cancelFullScreen ? document.cancelFullScreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitCancelFullScreen && document.webkitCancelFullScreen();
     });
@@ -5328,9 +5338,54 @@ $(document).ready(function () {
             })
         }
     });
+    $("body").on('change','#carMake',function (e){
+        e.preventDefault();
+        var carMakeCode = $("#carMake").val();
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                carMakeCode : carMakeCode,
+            },
+            url: '/common/fetchModelsByMake',
+
+            success: function (data) {
+                $("#carModel").html(data);
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+    });
+    $("body").on('change','#carModel',function (e){
+        e.preventDefault();
+        var carModelCode = $("#carModel").val();
+        if(carModelCode !='')
+        {
+            $('#validModel').val(1);
+            $("#modelLabel").removeClass('error');
+            $("#custom-step-one").removeClass('wrong');
+            $("#custom-step-one").addClass('done');
+        }else
+        {
+            $('#validModel').val('');
+            $("#modelLabel").addClass('error');
+            $("#custom-step-one").addClass('wrong');
+            $("#custom-step-one").removeClass('done');
+        }
+
+    });
     $("#main").on('click','.userType',function (){
         var checkedValue =$("input[type='radio']").val();
-        alert(checkedValue);
     });
     function addLoadingButton()
     {
