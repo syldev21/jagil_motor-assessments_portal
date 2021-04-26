@@ -4001,6 +4001,9 @@ $(document).ready(function () {
         var assessmentID = $("#assessmentID").val();
         var assessmentReviewType = $("input[name='assessmentReviewType']:checked").val();
         var report = CKEDITOR.instances['report'].getData();
+        var pav = $("#pav").val();
+        var grandTotal = $("#grandTotal").val();
+        var assessmentTypeID = $("#assessmentTypeID").val();
         $.ajaxSetup({
 
             headers: {
@@ -4016,7 +4019,10 @@ $(document).ready(function () {
             data : {
                 assessmentID : assessmentID,
                 assessmentReviewType : assessmentReviewType,
-                report : report
+                report : report,
+                grandTotal : grandTotal,
+                assessmentTypeID : assessmentTypeID,
+                pav : pav
             },
             url: '/assessment-manager/review-assessment',
             success: function (data) {

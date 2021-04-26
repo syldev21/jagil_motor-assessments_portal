@@ -38,6 +38,7 @@ class CreateClaimsTable extends Migration
             $table->integer('updatedBy')->nullable();
             $table->integer('claimStatusID')->nullable();
             $table->tinyInteger('active')->nullable();
+            $table->tinyInteger('inPremia')->nullable();
             $table->longText('archivalNote')->nullable();
             $table->integer('archivedBy')->nullable();
             $table->dateTime('archivedAt')->nullable();

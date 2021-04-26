@@ -17,8 +17,10 @@ use App\Helper\SMSHelper;
 use App\JobDetail;
 use App\Notifications\ClaimApproved;
 use App\Notifications\NewChangeRequest;
+use App\PremiaIntegrations;
 use App\PriceChange;
 use App\User;
+use App\Utility;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -207,6 +209,9 @@ class AssessmentManagerController extends Controller
     public function reviewAssessment(Request $request)
     {
         try {
+            $grandTotal= $request->grandTotal;
+            $assessmentTypeID = $request->assessmentTypeID;
+            $pav = $request->pav;
             if(isset($request->assessmentReviewType))
             {
                 $assessment = Assessment::where(["id" => $request->assessmentID])->first();
@@ -301,6 +306,36 @@ class AssessmentManagerController extends Controller
                             "STATUS_CODE" => Config::SUCCESS_CODE,
                             "STATUS_MESSAGE" => "Heads up! You have successfully approved an assessment"
                         );
+                    }
+                    $finalData = [
+                        'claim_number' => $claim->claimNo,
+                        'reserve_amount' => $assessmentTypeID == Config::ASSESSMENT_TYPES['TOTAL_LOSS'] ? $pav : $grandTotal,
+                        'claim_type' => Config::DISPLAY_ASSESSMENT_TYPES[$assessmentTypeID]
+                    ];
+                    $utility = new Utility();
+                    $access_token = $utility->getToken();
+                    $resp = $utility->getData($finalData, '/api/v1/b2b/general/claim/create-reserve', 'POST');
+                    $reserveClaim = json_decode($resp->getBody()->getContents());
+                    if ($reserveClaim->status == 'success') {
+                        PremiaIntegrations::create([
+                            "claimNo" => $claimNo,
+                            "status" => $reserveClaim->status,
+                            "response" => json_encode($reserveClaim),
+                            "createdBy" => Auth::id(),
+                            "dateCreated" => $this->functions->curlDate()
+                        ]);
+                        $updateClaim = Claim::where('claimNo', $claimNo)->update([
+                            'inPremia' => Config::ACTIVE
+                        ]);
+
+                    }else{
+                        $pushedPremiaData = new PremiaIntergration();
+                        $pushedPremiaData->claim_no = $claim_no;
+                        $pushedPremiaData->response = json_encode($reserveClaim);
+                        $pushedPremiaData->status = "Failed";
+                        $pushedPremiaData->save();
+                        alert()->error('Error', 'Something went wrong.')->autoclose(3000);
+                        return redirect()->back();
                     }
                 }else if($request->assessmentReviewType == Config::HALT)
                 {

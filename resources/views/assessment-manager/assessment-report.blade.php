@@ -400,14 +400,27 @@
                                             <td class="text-bold">Grand Total</td>
                                             <td></td>
                                             <td></td>
+                                            <?php
+                                            $grandTotal = 0
+                                            ?>
                                             @if($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
                                                 <td>{{ number_format(round(($sumOfTotalItems * $markup)+$jobValue-$scrapValue)) }}
+                                                <?php
+                                                $grandTotal = ($sumOfTotalItems * $markup)+$jobValue-$scrapValue
+                                                ?>
+
                                             @else
                                                 <td>
                                                     @if(isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt))
                                                         {{ number_format($assessment['totalChange']-$scrapValue) }}
+                                                        <?php
+                                                        $grandTotal = $assessment['totalChange']-$scrapValue
+                                                        ?>
                                                     @else
                                                         {{ number_format($assessment['totalCost']-$scrapValue) }}
+                                                        <?php
+                                                        $grandTotal= $assessment['totalCost']-$scrapValue
+                                                        ?>
                                                     @endif
                                                 </td>
                                             @endif
@@ -564,6 +577,9 @@
                                                        class="with-gap assessmentReviewType" value="{{\App\Conf\Config::APPROVE}}"/>
                                                 <span>Approve</span>
                                             </label>
+                                            <input type="hidden" value="{{$assessment['pav']}}" id="pav" name="pav">
+                                            <input type="hidden" value="{{$grandTotal}}" id="grandTotal" name="grandTotal">
+                                            <input type="hidden" value="{{$assessment['assessmentTypeID']}}" id="assessmentTypeID" name="assessmentTypeID">
                                         </div>
                                         <div class="col m4">
                                             <label>
