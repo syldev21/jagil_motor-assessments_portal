@@ -891,6 +891,7 @@ class AssessorController extends Controller
                 "assessmentStatusID" => $assessmentStatusID,
                 "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
                 "assessedAt" => $curDate,
+                "active" => Config::ACTIVE,
                 "dateModified" => $curDate
             ]);
             $drafted = $request->drafted;
