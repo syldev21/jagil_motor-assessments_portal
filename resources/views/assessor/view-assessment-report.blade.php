@@ -242,6 +242,9 @@
                                             <th class="col-sm-1 text-bold">Disc</th>
 
                                             <th class="col-sm-2 text-bold">Total</th>
+                                            <th class="col-sm-2 text-bold">Price Change</th>
+
+                                            <th class="col-sm-2 text-bold">Price Diff</th>
 
                                             <th class="col-sm-2 text-bold">Remarks</th>
                                         </tr>
@@ -270,6 +273,17 @@
                                                 <td>{{ $assessmentItem['discount'] }}</td>
 
                                                 <td>{{ number_format($assessmentItem['total']) }}</td>
+                                                <td>
+                                                    @if(isset($assessmentItem['current']))
+                                                        {{ number_format($assessmentItem['current']) }}
+                                                    @endif
+                                                </td>
+
+                                                <td>
+                                                    @if(isset($assessmentItem['difference']))
+                                                        {{ number_format($assessmentItem['difference']) }}
+                                                    @endif
+                                                </td>
 
                                                 <td>{{ $assessmentItem['remark']['name'] }}</td>
 
