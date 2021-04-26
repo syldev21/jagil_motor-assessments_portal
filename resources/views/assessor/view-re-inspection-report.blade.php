@@ -450,7 +450,7 @@
                                     <div class="col s12">
                                         <h5 class="underline">Notes</h5>
 
-                                        <p>{!! $assessment['note'] !!}</p>
+                                        <p>{!! $reinspection['notes'] !!}</p>
 
                                         <p>Assessed By: {{$assessor->firstName}} {{$assessor->lastName}}</p>
                                         <?php
