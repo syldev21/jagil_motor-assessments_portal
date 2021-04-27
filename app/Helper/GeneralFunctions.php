@@ -5,10 +5,12 @@ namespace App\Helper;
 
 
 use App\ActivityLog;
+use App\Assessment;
 use App\AssessmentItem;
 use App\Claim;
 use App\Conf\Config;
 use App\Garage;
+use App\PriceChange;
 use App\Role;
 use App\UserHasRole;
 use Carbon\Carbon;
@@ -104,9 +106,13 @@ class GeneralFunctions
     public static function getSumOfTotalItems($assessmentID)
     {
         $sumTotal =AssessmentItem::where('assessmentID', $assessmentID)->sum('total');
-        $difference = AssessmentItem::where('assessmentID', $assessmentID)
-              ->whereNotNull('current')
-              ->sum('difference');
+        $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
+        $difference = 0;
+        if(isset($priceChange->finalApprovedAt)) {
+            $difference = AssessmentItem::where('assessmentID', $assessmentID)
+                ->whereNotNull('current')
+                ->sum('difference');
+        }
         $total = $sumTotal+$difference;
         return $total;
     }
