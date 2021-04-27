@@ -807,7 +807,7 @@ class AdjusterController extends Controller
         array_push($assessmentIds, $assessment->id);
 
         $claimExists = Claim::where('id', $assessment->claimID)->exists();
-
+        $scrapValue = isset($assessment->scrapValue) ? $assessment['scrapValue'] : 0;
         if ($claimExists) {
             $claim = Claim::where('id', $assessment->claimID)->first();
             $reinspection = ReInspection::where('assessmentID', $id)->first();
@@ -836,9 +836,22 @@ class AdjusterController extends Controller
             $insured = CustomerMaster::where(['customerCode' => $claim->customerCode])->first();
             $insuredName = isset($insured->firstName) ? $insured->firstName : '' . isset($insured->lastName) ? $insured->lastName : '';
             $assessorName = isset($assessor->name) ? $assessor->name : '';
+            if(isset($assessment->totalChange) && isset($priceChange->finalApprovedAt))
+            {
+                if($assessment->assessmentTypeID= Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+                {
+                    $amount = $assessment->totalChange - $scrapValue;
+                }else
+                {
+                    $amount = $assessment->totalChange;
+                }
+            }else
+            {
+                $amount = $reinspection->total;
+            }
             $data = [
                 'assessor' => $assessorName,
-                'amount' => $reinspection->total,
+                'amount' => $amount,
                 'vehicleRegNo' => $claim->vehicleRegNo,
                 'assessmentDate' => $assessment->dateCreated,
                 'day' => $reinspection->dateCreated,
