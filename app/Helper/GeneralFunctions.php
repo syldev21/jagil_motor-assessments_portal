@@ -104,7 +104,11 @@ class GeneralFunctions
     public static function getSumOfTotalItems($assessmentID)
     {
         $sumTotal =AssessmentItem::where('assessmentID', $assessmentID)->sum('total');
-        return $sumTotal;
+        $difference = AssessmentItem::where('assessmentID', $assessmentID)
+              ->whereNotNull('current')
+              ->sum('difference');
+        $total = $sumTotal+$difference;
+        return $total;
     }
     public function logActivity($data)
     {
