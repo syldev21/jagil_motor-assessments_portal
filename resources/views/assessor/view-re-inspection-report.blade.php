@@ -303,8 +303,12 @@
                                                 $totalParts = \App\AssessmentItem::whereIn('assessmentID', $assessmentIds)
                                                     ->where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
                                                     ->sum('total');
+                                                $difference = \App\AssessmentItem::where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
+                                                    ->whereIn('assessmentID', $assessmentIds)
+                                                    ->whereNotNull('current')
+                                                    ->sum('difference');
                                                 ?>
-                                                <td>{{ number_format($totalParts) }}</td>
+                                                <td>{{ number_format($totalParts+$difference) }}</td>
                                                 <td>-</td>
                                             </tr>
                                             @if($assessment['assessmentTypeID'] == \App\Conf\Config::ASSESSMENT_TYPES['CASH_IN_LIEU'] && $assessment['assessedAt'] < \App\Conf\Config::MARK_UP_CUT_OFF_DATE)
