@@ -808,6 +808,7 @@ class AdjusterController extends Controller
 
         $claimExists = Claim::where('id', $assessment->claimID)->exists();
         $scrapValue = isset($assessment->scrapValue) ? $assessment['scrapValue'] : 0;
+        $priceChange = PriceChange::where('assessmentID', $id)->first();
         if ($claimExists) {
             $claim = Claim::where('id', $assessment->claimID)->first();
             $reinspection = ReInspection::where('assessmentID', $id)->first();
