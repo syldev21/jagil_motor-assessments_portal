@@ -341,6 +341,13 @@
                                                 @endforeach
 
                                                 @if($assessment['assessmentTypeID'] != 2)
+                                                    <?php
+                                                    if (isset($assessment['totalChange']) && isset($priceChange->finalApprovedAt)) {
+                                                        $totalCostSubjected = $assessment['totalChange'];
+                                                    } else {
+                                                        $totalCostSubjected = $assessment['totalCost'];
+                                                    }
+                                                    ?>
 
                                                     @if($assessment['claim']->intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $assessment['claim']->intimationDate <= \App\Conf\Config::VAT_END_DATE)
                                                         <tr>
@@ -350,7 +357,7 @@
                                                             <td class="text-bold">Sum Total</td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td>{{ number_format(($assessment['totalCost']) - round(($assessment['totalCost']*\App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
+                                                            <td>{{ number_format(($totalCostSubjected) - round(($totalCostSubjected*\App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
                                                             <td></td>
                                                         </tr>
 
@@ -363,7 +370,7 @@
                                                             </td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td>{{ number_format(round(($assessment['totalCost']*App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
+                                                            <td>{{ number_format(round(($totalCostSubjected*App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
                                                             <td></td>
                                                         </tr>
                                                     @else
@@ -374,7 +381,7 @@
                                                             <td class="text-bold">Sum Total</td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td>{{ number_format(($assessment['totalCost']) - round(($assessment['totalCost']*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
+                                                            <td>{{ number_format(($totalCostSubjected) - round(($totalCostSubjected*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
                                                             <td></td>
                                                         </tr>
 
@@ -385,7 +392,7 @@
                                                             <td class="">{{\App\Conf\Config::VAT_PERCENTAGE}} VAT</td>
                                                             <td></td>
                                                             <td></td>
-                                                            <td>{{ number_format(round(($assessment['totalCost']*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
+                                                            <td>{{ number_format(round(($totalCostSubjected*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
                                                             <td></td>
                                                         </tr>
                                                     @endif
