@@ -567,7 +567,7 @@
                             <div class="modal-body clearfix">
                                 <div class="row">
                                     <div class="input-field col m12 s12">
-                                        <input value="{{$garageEmail}}" type="text" name="email" id="email" disabled>
+                                        <input value="{{$garageEmail}}" type="text" name="email" id="email">
                                         <label for="email" class="active">Confirm Email</label>
                                     </div>
                                 </div>
