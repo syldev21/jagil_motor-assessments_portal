@@ -4942,6 +4942,27 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#dashboard',function (){
+
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/dashboard',
+            success: function (data) {
+                $("#main").html(data);
+            }
+
+        });
+    });
     $("body").on('click','#sendNotification',function (){
         var email = $("#email");
         var ccEmail = $("#cc_emails");

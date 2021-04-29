@@ -22,6 +22,16 @@
             <a class="navigation-header-text">Quick Operations</a>
             <i class="navigation-header-icon material-icons">more_horiz</i>
         </li>
+        @hasanyrole('Admin|Head Assessor|Assistant Head|Manager|Assessment Manager|Adjuster')
+        <li class="bold ">
+            <a class="sidenav-link" id="dashboard"
+               href="#"
+            >
+                <i class="material-icons">dashboard</i>
+                <span class="menu-title" data-i18n="dashboard">Dashboard</span>
+            </a>
+        </li>
+        @endhasanyrole
         @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
         <li class="bold ">
             <a class="collapsible-header sidenav-link"

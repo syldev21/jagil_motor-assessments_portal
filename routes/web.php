@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/dashboard', 'HomeController@dashboard')->name('dashboard');
 Route::post('/markNotification', 'HomeController@markNotification')->name('home');
 
 Route::view('forgot_password', 'auth.reset_password')->name('password.reset');
@@ -67,7 +68,7 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->post('/assessmentReport','AdjusterController@assessmentReport');
     $router->post('/supplementaries','AdjusterController@supplementaries');
     $router->post('/supplementary-report','AdjusterController@supplementaryReport');
-    $router->post('/SendRepairAuthority', 'AdjusterController@SendRepairAuthority');
+    $router->post('/sendRepairAuthority', 'AdjusterController@SendRepairAuthority');
     $router->post('/emailReleaseletter', 'AdjusterController@emailReleaseletter');
 });
 
