@@ -303,8 +303,11 @@
                                                 $totalParts = \App\AssessmentItem::whereIn('assessmentID', $assessmentIds)
                                                     ->where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
                                                     ->sum('total');
+                                                $priceChangeAssessmentIds = \App\PriceChange::whereIn('assessmentID',$assessmentIds)
+                                                    ->whereNotNull(['finalApprovedAt'])
+                                                    ->pluck('assessmentID')->toArray();
                                                 $difference = \App\AssessmentItem::where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
-                                                    ->whereIn('assessmentID', $assessmentIds)
+                                                    ->whereIn('assessmentID', $priceChangeAssessmentIds)
                                                     ->whereNotNull('current')
                                                     ->sum('difference');
                                                 ?>
@@ -363,6 +366,26 @@
 
                                                 ?>
                                             @endforeach
+                                            <?php
+                                            $priceChangeAssessmentIds = \App\PriceChange::whereIn('assessmentID',$assessmentIds)
+                                                ->whereNotNull(['finalApprovedAt'])
+                                                ->pluck('assessmentID')->toArray();
+                                            $difference = \App\AssessmentItem::where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
+                                                ->whereIn('assessmentID', $priceChangeAssessmentIds)
+                                                ->whereNotNull('current')
+                                                ->sum('difference');
+                                            if ($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                                                if($assessment['claim']->intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $assessment['claim']->intimationDate <= \App\Conf\Config::VAT_END_DATE)
+                                                {
+                                                    $difference = ((\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE) / \App\Conf\Config::INITIAL_PERCENTAGE * $difference);
+                                                }else
+                                                {
+                                                    $difference = ((\App\Conf\Config::TOTAL_PERCENTAGE) / \App\Conf\Config::INITIAL_PERCENTAGE * $difference);
+                                                }
+                                            } else {
+                                                $difference = (\App\Conf\Config::NEW_MARKUP * $difference);
+                                            }
+                                            ?>
 
                                             @if($assessment['assessmentTypeID'] != 2)
 
@@ -374,7 +397,7 @@
                                                         <td class="text-bold">Sum Total</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>{{ number_format(($reinspection['total']) - round(($reinspection['total']*\App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
+                                                        <td>{{ number_format(($reinspection['total']+$difference) - round((($reinspection['total']+$difference)*\App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
                                                         <td></td>
                                                     </tr>
 
@@ -387,7 +410,7 @@
                                                         </td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>{{ number_format(round(($reinspection['total']*App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
+                                                        <td>{{ number_format(round((($reinspection['total']+$difference)*App\Conf\Config::CURRENT_VAT)/\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE)) }}</td>
                                                         <td></td>
                                                     </tr>
                                                 @else
@@ -398,7 +421,7 @@
                                                         <td class="text-bold">Sum Total</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>{{ number_format(($reinspection['total']) - round(($reinspection['total']*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
+                                                        <td>{{ number_format(($reinspection['total']+$difference) - round((($reinspection['total']+$difference)*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
                                                         <td></td>
                                                     </tr>
 
@@ -409,28 +432,11 @@
                                                         <td class="">{{\App\Conf\Config::VAT_PERCENTAGE}} VAT</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>{{ number_format(round(($reinspection['total']*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
+                                                        <td>{{ number_format(round((($reinspection['total']+$difference)*\App\Conf\Config::VAT)/\App\Conf\Config::TOTAL_PERCENTAGE)) }}</td>
                                                         <td></td>
                                                     </tr>
                                                 @endif
                                             @endif
-                                            <?php
-                                            $difference = \App\AssessmentItem::where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
-                                                ->whereIn('assessmentID', $assessmentIds)
-                                                ->whereNotNull('current')
-                                                ->sum('difference');
-                                            if ($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                                                if($assessment['claim']->intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $assessment['claim']->intimationDate <= \App\Conf\Config::VAT_END_DATE)
-                                                    {
-                                                        $difference = ((\App\Conf\Config::CURRENT_TOTAL_PERCENTAGE) / \App\Conf\Config::INITIAL_PERCENTAGE * $difference);
-                                                    }else
-                                                        {
-                                                        $difference = ((\App\Conf\Config::TOTAL_PERCENTAGE) / \App\Conf\Config::INITIAL_PERCENTAGE * $difference);
-                                                        }
-                                            } else {
-                                                $difference = (\App\Conf\Config::NEW_MARKUP * $difference);
-                                            }
-                                            ?>
                                             <tr>
                                                 <td></td>
                                                 <td></td>
