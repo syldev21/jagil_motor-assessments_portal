@@ -111,7 +111,7 @@ class GeneralFunctions
         if(isset($priceChange->finalApprovedAt)) {
             $difference = AssessmentItem::where('assessmentID', $assessmentID)
                 ->whereNotNull('current')
-                ->sum('difference');
+                ->sum('totalDifference');
         }
         $total = $sumTotal+$difference;
         return $total;
