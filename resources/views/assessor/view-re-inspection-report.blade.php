@@ -275,8 +275,8 @@
                                                     </td>
 
                                                     <td>
-                                                        @if(isset($assessmentItem['difference']))
-                                                            {{ number_format($assessmentItem['difference']) }}
+                                                        @if(isset($assessmentItem['totalDifference']))
+                                                            {{ number_format($assessmentItem['totalDifference']) }}
                                                         @endif
                                                     </td>
                                                     <td>{{ $assessmentItem['remark']['name'] }}</td>
@@ -309,7 +309,7 @@
                                                 $difference = \App\AssessmentItem::where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
                                                     ->whereIn('assessmentID', $priceChangeAssessmentIds)
                                                     ->whereNotNull('current')
-                                                    ->sum('difference');
+                                                    ->sum('totalDifference');
                                                 ?>
                                                 <td>{{ number_format($totalParts+$difference) }}</td>
                                                 <td>-</td>
@@ -373,7 +373,7 @@
                                             $difference = \App\AssessmentItem::where(['reInspectionType'=>\App\Conf\Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>\App\Conf\Config::ACTIVE])
                                                 ->whereIn('assessmentID', $priceChangeAssessmentIds)
                                                 ->whereNotNull('current')
-                                                ->sum('difference');
+                                                ->sum('totalDifference');
                                             if ($assessment['assessmentTypeID'] == App\Conf\Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
                                                 if($assessment['claim']->intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $assessment['claim']->intimationDate <= \App\Conf\Config::VAT_END_DATE)
                                                 {

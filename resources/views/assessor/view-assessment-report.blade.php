@@ -280,8 +280,8 @@
                                                 </td>
 
                                                 <td>
-                                                    @if(isset($assessmentItem['difference']))
-                                                        {{ number_format($assessmentItem['difference']) }}
+                                                    @if(isset($assessmentItem['totalDifference']))
+                                                        {{ number_format($assessmentItem['totalDifference']) }}
                                                     @endif
                                                 </td>
 
