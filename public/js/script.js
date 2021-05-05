@@ -2704,7 +2704,8 @@ $(document).ready(function () {
             var partData = {
                 current: current.length > 0 ? current : 0,
                 partID: partID,
-                difference: difference.length > 0 ? difference : 0
+                difference: difference.length > 0 ? difference : 0,
+                quantity : quantity
             };
             partsData.push(partData);
         }

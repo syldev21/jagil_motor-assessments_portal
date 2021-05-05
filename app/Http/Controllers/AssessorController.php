@@ -2331,9 +2331,12 @@ class AssessorController extends Controller
                 $partID = $partDetail['partID'];
                 $current = $partDetail['current'];
                 $difference = $partDetail['difference'];
+                $quantity = $partDetail['quantity'];
+                $totalDifference = $quantity*$difference;
                 AssessmentItem::where(["id" => $partID])->update([
                         "current" => $current,
                         "difference" => $difference,
+                        "totalDifference" =>$totalDifference
                     ]
                 );
             }
@@ -2344,7 +2347,7 @@ class AssessorController extends Controller
 
             $difference = AssessmentItem::where('assessmentID', $assessmentID)
                 ->whereNotNull('current')
-                ->sum('difference');
+                ->sum('totalDifference');
 
             $assessment = Assessment::where('id', $assessmentID)->first();
 
