@@ -2353,7 +2353,7 @@ class AssessorController extends Controller
 
 
             if ($assessment->assessmentTypeID == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
-                if($assessment->claim->intimationDate >= VAT_REDUCTION_DATE && $assessment->claim->intimationDate <= Config::VAT_END_DATE)
+                if($assessment->claim->intimationDate >= Config::VAT_REDUCTION_DATE && $assessment->claim->intimationDate <= Config::VAT_END_DATE)
                 {
                     $difference = ((Config::CURRENT_TOTAL_PERCENTAGE) / Config::INITIAL_PERCENTAGE * $difference);
                 }else
