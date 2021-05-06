@@ -73,8 +73,8 @@ class HeadAssessorController extends Controller
                         ]);
                         $assessor = User::where(['id' => $request->assessor])->first();
                         $claim = Claim::where(['id' => $request->claimID])->first();
-                        $location = isset($claim->garage->name) ? $claim->garage->name : '';
-//                    $garage = Garage::where(['garageID' => $request->garage])->first();
+                        $garage = Garage::where(['garageID' => $claim->garageID])->first();
+                        $location = isset($garage->name) ? $garage->name : '';
                         if ($assessor->id > 0) {
                             $email_add = $assessor->email;
                             $emailMessage = "
