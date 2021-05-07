@@ -48,6 +48,7 @@
                                             <th>No</th>
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
+                                            <th>Adjuster</th>
                                             <th>Status</th>
                                             <th>Garage</th>
                                             <th>Assessor</th>
@@ -61,6 +62,7 @@
                                                     <td>{{$loop->iteration}}</td>
                                                     <td><a href="#" data-id="{{$claim['id']}}" id="claimDetails">{{$claim['claimNo']}}</a></td>
                                                     <td>{{$claim['vehicleRegNo']}}</td>
+                                                    <td>{{isset($claim['adjuster']->name) ? $claim['adjuster']->name : ''}}</td>
                                                     @if($claim['claimStatusID']  == \App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id'])
                                                         <td>
                                                             <button
