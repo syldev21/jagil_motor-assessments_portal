@@ -36,6 +36,7 @@ class ManagerController extends Controller
             $claims = Claim::with("assessment")
                 ->where("claimStatusID", "=", $claimStatusID)
                 ->where("active", "=", Config::ACTIVE)
+                ->where("claimType","=". Config::CLAIM_TYPES['ASSESSMENT'])
                 ->orderBy('dateCreated', 'DESC')->with('assessment')->get();
             $assessors = User::role('Assessor')->get();
             return view('manager.claims', ['claims' => $claims, 'assessors' => $assessors, "claimStatusID" => $claimStatusID]);
