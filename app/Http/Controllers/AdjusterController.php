@@ -754,7 +754,7 @@ class AdjusterController extends Controller
     {
         $claimStatusID = $request->claimStatusID;
         $assessors = User::role('Assessor')->get();
-        $claims = Claim::where(['claimStatusID'=> $claimStatusID,'active'=>Config::ACTIVE])->with('adjuster')->get();
+        $claims = Claim::where(['claimStatusID'=> $claimStatusID,'active'=>Config::ACTIVE,'claimType'=> Config::CLAIM_TYPES['WINDSCREEN']])->with('adjuster')->get();
         return view('adjuster.claims', ['claims' => $claims, 'assessors' => $assessors, 'claimStatusID' => $claimStatusID]);
     }
 
