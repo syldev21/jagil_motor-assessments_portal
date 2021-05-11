@@ -61,6 +61,7 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->get('/send-discharge-voucher/{claim_id}', 'AdjusterController@sendDischargeVoucher');
 
     $router->post('/archiveClaim', 'AdjusterController@archiveClaim');
+    $router->post('/fetch-claim-types', 'AdjusterController@fetchClaimTypes');
 
 
 

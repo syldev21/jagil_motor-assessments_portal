@@ -76,6 +76,22 @@
                 </ul>
             </div>
         </li>
+        <li class="bold ">
+            <a class="sidenav-link fetch-claim-types" id="theft" data-id="{{App\Conf\Config::CLAIM_TYPES['THEFT']}}"
+               href="#"
+            >
+                <i class="material-icons">no_transfer</i>
+                <span class="menu-title" data-i18n="Theft Claims">Theft Claims</span>
+            </a>
+        </li>
+        <li class="bold ">
+            <a class="sidenav-link fetch-claim-types" id="windscreen" data-id="{{App\Conf\Config::CLAIM_TYPES['WINDSCREEN']}}"
+               href="#"
+            >
+                <i class="material-icons">taxi_alert</i>
+                <span class="menu-title" data-i18n="Windscreen claims">Windscreen Claims</span>
+            </a>
+        </li>
         @endhasrole
         @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
         <li class="bold ">

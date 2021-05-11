@@ -1153,6 +1153,41 @@ $(document).ready(function () {
 
         });
     });
+    $(".fetch-claim-types").on('click',function (e){
+        e.preventDefault();
+        var claimType = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'claimType' : claimType
+            },
+            url: '/adjuster/fetch-claim-types',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+    });
     $(".re-inspections").on('click',function (e){
         e.preventDefault();
         $("#mainLoader").removeClass('hideLoader');

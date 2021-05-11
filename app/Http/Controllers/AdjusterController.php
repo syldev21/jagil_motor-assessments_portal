@@ -757,6 +757,13 @@ class AdjusterController extends Controller
         $claims = Claim::where(['claimStatusID'=> $claimStatusID,'active'=>Config::ACTIVE,'claimType'=> Config::CLAIM_TYPES['ASSESSMENT']])->with('adjuster')->get();
         return view('adjuster.claims', ['claims' => $claims, 'assessors' => $assessors, 'claimStatusID' => $claimStatusID]);
     }
+    public function fetchClaimTypes(Request $request)
+    {
+        $claimType = $request->claimType;
+        $assessors = User::role('Assessor')->get();
+        $claims = Claim::where(['claimType'=> $claimType,'active'=>Config::ACTIVE])->with('adjuster')->get();
+        return view('adjuster.claim-types', ['claims' => $claims, 'assessors' => $assessors]);
+    }
 
     //Generate release letter
 //    public function generateReleaseLetter($claim_id, $download=true) {
