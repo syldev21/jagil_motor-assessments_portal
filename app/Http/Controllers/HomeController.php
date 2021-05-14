@@ -27,10 +27,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function assessments()
     {
         $user = Auth::user();
         return view('dashboard',['user' => $user]);
+    }
+    public function mainDashboard()
+    {
+        $user = Auth::user();
+        return view('dashboard.main',['user' => $user]);
     }
     public function markNotification(Request $request)
     {

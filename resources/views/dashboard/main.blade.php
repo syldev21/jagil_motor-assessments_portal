@@ -1,0 +1,6 @@
+@include('_partials.dashboard.header')
+@include('_partials.dashboard.navbar')
+@include('_partials.dashboard.sidebar')
+@include('includes.main-menu')
+@include('_partials.dashboard.settings')
+@include('_partials.dashboard.footer')

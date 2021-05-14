@@ -3,7 +3,7 @@
     class="sidenav-main nav-expanded nav-lock nav-collapsible  sidenav-active-square  sidenav-light">
     <div class="brand-sidebar">
         <h1 class="logo-wrapper">
-            <a class="brand-logo darken-1" href="index.html">
+            <a class="brand-logo darken-1" href="{{ url('home') }}">
                 <img class="hide-on-med-and-down" src="{{ url('images/logo/jubilee_logo.png') }}" alt="Jubilee logo"/>
                 <img class="show-on-medium-and-down hide-on-med-and-up" src="{{ url('images/logo/jubilee_logo.png') }}"
                      alt="Jubilee logo"/>
