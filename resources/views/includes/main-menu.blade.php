@@ -18,6 +18,7 @@
             </div>
         </div>
         <div class="col s12 m6 l4">
+            @if($user->userTypeID == App\Conf\Config::$USER_TYPES['INTERNAL']['ID'])
             <div class="card padding-4 animate fadeLeft">
                 <center>
                     <h5>Motor Valuation Service</h5>
@@ -32,8 +33,10 @@
                     <p></p>
                 </center>
             </div>
+            @endif
         </div>
         <div class="col s12 m6 l4">
+            @if($user->userTypeID == App\Conf\Config::$USER_TYPES['INTERNAL']['ID'])
             <div class="card padding-4 animate fadeRight">
                 <center>
                     <h5>Policy Renewals Service</h5>
@@ -47,10 +50,12 @@
                     <button class="btn float-right">Access Service</button>
                 </center>
             </div>
+            @endif
         </div>
     </div>
     <div class="row">
         <div class="col s12 m6 l4">
+            @if($user->userTypeID == App\Conf\Config::$USER_TYPES['INTERNAL']['ID'])
             <div class="card padding-4 animate fadeRight">
                 <center>
                     <h5>Safaricom Home Fibre Service</h5>
@@ -65,6 +70,7 @@
                     <p></p>
                 </center>
             </div>
+            @endif
         </div>
         <div class="col s12 m6 l4">
         </div>

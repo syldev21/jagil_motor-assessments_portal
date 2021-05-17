@@ -29,6 +29,7 @@
                 <span class="menu-title" data-i18n="Motor Assessment">Motor Assessment</span>
             </a>
         </li>
+        @if($user->userTypeID == App\Conf\Config::$USER_TYPES['INTERNAL']['ID'])
         <li class="bold ">
             <a class="sidenav-link"
                href="#"
@@ -53,6 +54,7 @@
                 <span class="menu-title" data-i18n="Policy Renewals">Safaricom Home Fiber</span>
             </a>
         </li>
+        @endif
         <li class="bold ">
             <a class="sidenav-link"
                href="#"
