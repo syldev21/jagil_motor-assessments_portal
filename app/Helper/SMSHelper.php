@@ -4,6 +4,7 @@
 namespace App\Helper;
 
 
+use App\Conf\Config;
 use infobip\api\client\SendMultipleTextualSmsAdvanced;
 use infobip\api\configuration\BasicAuthConfiguration;
 use infobip\api\model\Destination;
@@ -16,7 +17,7 @@ class SMSHelper
 
     public static function sendSMS($text, $recipient) {
 
-        $client = new SendMultipleTextualSmsAdvanced(new BasicAuthConfiguration('JubileeKenya', 'Jubilee4321'));
+        $client = new SendMultipleTextualSmsAdvanced(new BasicAuthConfiguration(Config::JUBILEE_SMS_USERNAME, Config::JUBILEE_SMS_PASSWORD));
 
 
 
