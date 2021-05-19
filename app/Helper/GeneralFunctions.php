@@ -81,6 +81,11 @@ class GeneralFunctions
         return json_encode($response);
     }
 
+    public function formatDate($date)
+    {
+        return date('Y-m-d',strtotime($date));
+    }
+
     public function humanTiming($time)
     {
 

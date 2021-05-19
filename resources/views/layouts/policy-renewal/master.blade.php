@@ -1,0 +1,6 @@
+@include('_partials.policy.header')
+@include('_partials.policy.navbar')
+@include('_partials.policy.sidebar')
+@include('includes.policy.main')
+@include('_partials.policy.settings')
+@include('_partials.policy.footer')

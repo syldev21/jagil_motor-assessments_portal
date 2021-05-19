@@ -207,3 +207,45 @@ $router->group(['prefix' => 'common'], function($router)
 Route::get('/users', 'MigrateController@users');
 Route::post('/updatePdfType', 'MigrateController@updatePdfType');
 
+
+//policy renewals
+
+Route::get('/policy-renewals', 'RenewalsController@policyRenewal')->name("policy-renewals");
+
+
+
+Route::post('/fetchRenewals', 'RenewalsController@fetchRenewals');
+Route::post('/fetchPolicyDetail', 'RenewalsController@fetchPolicyDetail');
+Route::post('/approveRenewalPolicy', 'RenewalsController@approveRenewalPolicy');
+Route::post('/updatePolicyRenewal', 'RenewalsController@updatePolicyRenewal');
+Route::post('/importData', 'RenewalsController@importData');
+
+Route::post('/fetchSubRenewals', 'RenewalsController@fetchRenewals');
+
+Route::get('/getselect', 'RenewalsController@getselect');
+
+
+Route::post('/filterRenewals', 'RenewalsController@filterRenewals');
+Route::post('/filterBy', 'RenewalsController@filterBy');
+Route::get('/getMoreRenewals', 'RenewalsController@getMoreRenewals');
+Route::get('/getMoreFilteredRenewals', 'RenewalsController@getMoreFilteredRenewals');
+Route::get('/moreFilterBy', 'RenewalsController@moreFilterBy');
+Route::get('/moreFilterByRange', 'RenewalsController@moreFilterByRange');
+
+
+
+Route::post('/updatingRenewalPremium', 'RenewalsController@updatingRenewalPremium');
+Route::post('/approveParentDetails', 'RenewalsController@approveParentDetails');
+Route::post('/approveAllParents', 'RenewalsController@approveAllParents');
+
+
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('user.logout');
+Route::get('/dv', function(){
+
+    $renewal = Renewal::find('556');
+    $pdf = App::make('snappy.pdf.wrapper');
+    $pdf = PDF::loadView('layouts.renewal_notice',compact('renewal'));
+    return $pdf->stream();
+    // return view('common.renewal_notice');
+});
+

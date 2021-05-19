@@ -47,7 +47,7 @@
                         </div>
                         <div class="col s2"></div>
                     </div>
-                    <button class="btn float-right">Access Service</button>
+                    <a href="{{ route("policy-renewals") }}" class="btn float-right">Access Service</a>
                 </center>
             </div>
             @endif

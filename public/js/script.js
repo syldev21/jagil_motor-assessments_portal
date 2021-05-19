@@ -2,6 +2,38 @@ const SUCCESS_CODE = 2000;
 const GENERIC_ERROR_CODE = 4000;
 const NO_RECORDS_FOUND = 3000;
 $(document).ready(function () {
+
+    $("#policyRenewlLink").on('click', function (e) {
+
+       e.preventDefault();
+       $.ajaxSetup({
+
+           headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           }
+       });
+       $.ajax({
+
+           type: 'GET',
+
+           url: '/policy-renewals',
+
+           success: function (data) {
+
+            //    $("#main").html(data);
+               // $('.datepicker').datepicker();
+               // $('#data-table-simple').DataTable({
+               //     dom: 'Bfrtip',
+               //     buttons: [
+               //         'copy', 'csv', 'excel', 'pdf', 'print'
+               //     ],
+               //     "pageLength": 25
+               // });
+           }
+
+       });
+
+   });
     $(".sidenav").sidenav();
     $("#main").on("click","#validateStepOne",function (){
         var validModel = $("#validModel").val();
