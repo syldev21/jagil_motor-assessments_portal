@@ -75,7 +75,7 @@ class RenewalsController extends Controller
             $renewalDate = Carbon::now()->addDays(Config::$PERIOD['TWO_MONTHS']['DAYS'])->toDateTimeString();
             $formattedDate = $this->functions->formatDate($renewalDate);
 
-            $renewals =Renewal::whereDate('policyToDate','=', $formattedDate)->with('departments')->with('divisions')->groupBy('policyNumber','ID')->paginate(150);
+            $renewals =Renewal::whereDate('policyToDate','=', $formattedDate)->with('departments')->with('divisions')->groupBy('policyNumber')->paginate(150);
 
 
         }elseif ($period == Config::$PERIOD['THREE_MONTHS']['ID'])
