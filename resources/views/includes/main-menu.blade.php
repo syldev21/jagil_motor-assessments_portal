@@ -12,7 +12,11 @@
                         </div>
                         <div class="col s2"></div>
                     </div>
+                    @hasanyrole('Admin|Head Assessor|Assistant Head|Manager|Assessment Manager|Adjuster')
                     <a href="{{ route("assessments") }}" class="btn float-right">Access Service</a>
+                    @else
+                    <a href="#" class="btn tooltipped float-right" data-position="top" data-tooltip="You have no permission">Access Service</a>
+                    @endhasanyrole
                     <p></p>
                 </center>
             </div>
@@ -47,7 +51,11 @@
                         </div>
                         <div class="col s2"></div>
                     </div>
+                    @hasanyrole('Underwriter|Valuer')
                     <a href="{{ route("policy-renewals") }}" class="btn float-right">Access Service</a>
+                    @else
+                    <a href="#" class="btn float-right tooltipped" data-position="top" data-tooltip="You have no permission">Access Service</a>
+                    @endhasrole
                 </center>
             </div>
             @endif

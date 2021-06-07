@@ -39,6 +39,9 @@
                                             <th>Manager</th>
                                             @endhasrole
                                             <th>Assessment Manager</th>
+                                            @hasrole('Admin')
+                                            <th>Underwriter</th>
+                                            @endhasrole
                                             <th>Operation</th>
                                             {{--                                                <th>Operation</th>--}}
                                         </tr>
@@ -104,6 +107,14 @@
                                                         <span></span>
                                                     </label>
                                                 </td>
+                                                @hasrole('Admin')
+                                                <td>
+                                                    <label>
+                                                        <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['UNDERWRITER'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['UNDERWRITER']}}"/>
+                                                        <span></span>
+                                                    </label>
+                                                </td>
+                                                @endhasrole
                                                 <td>
                                                     <a data-id="{{$loop->iteration}}"  data-user="{{$user->id}}" href="#" class="btn cyan waves-effect waves-effect waves-light" id="assignRole"><i class="material-icons left">edit</i>Update</a>
                                                 </td>
