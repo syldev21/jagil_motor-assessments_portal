@@ -12,7 +12,7 @@
                         </div>
                         <div class="col s2"></div>
                     </div>
-                    @hasanyrole('Admin|Head Assessor|Assistant Head|Manager|Assessment Manager|Adjuster')
+                    @hasanyrole('Admin|Head Assessor|Assistant Head|Manager|Assessment Manager|Adjuster|Assessor')
                     <a href="{{ route("assessments") }}" class="btn float-right">Access Service</a>
                     @else
                     <a href="#" class="btn tooltipped float-right" data-position="top" data-tooltip="You have no permission">Access Service</a>
