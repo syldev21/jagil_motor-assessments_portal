@@ -74,7 +74,7 @@
                         </div>
                         <div class="col s2"></div>
                     </div>
-                    <button class="btn float-right">Access Service</button>
+                    <a href="{{ route("safaricom-home-fibre") }}" class="btn float-right">Access Service</a>
                     <p></p>
                 </center>
             </div>

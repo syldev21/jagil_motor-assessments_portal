@@ -249,3 +249,15 @@ Route::get('/dv', function(){
     // return view('common.renewal_notice');
 });
 
+
+//Safaricom Home Fibre apis
+
+$router->group(['prefix' => 'safaricom-home-fibre'], function($router)
+{
+    $router->get('/', 'homeFibre\SafaricomHomeFibreController@index')->name("safaricom-home-fibre");
+    $router->post('/fetch-customers', 'homeFibre\SafaricomHomeFibreController@fetchCustomers');
+    $router->post('/fetch-payments', 'homeFibre\SafaricomHomeFibreController@fetchPayments');
+    $router->post('/fetch-customer-payments', 'homeFibre\SafaricomHomeFibreController@fetchCustomerPayments');
+    $router->post('/fetch-policy-details', 'homeFibre\SafaricomHomeFibreController@fetchPolicyDetails');
+});
+
