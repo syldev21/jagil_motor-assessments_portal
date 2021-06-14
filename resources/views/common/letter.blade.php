@@ -120,9 +120,9 @@
                                                 <p>
 
                                                     @if($intimationDate >= \App\Conf\Config::VAT_REDUCTION_DATE && $intimationDate <= \App\Conf\Config::VAT_END_DATE)
-                                                        The garage to invoice Kshs. {{ number_format($amount) }} Inclusive {{\App\Conf\Config::CURRENT_VAT_PERCENTAGE}} VAT.
+                                                        The garage to invoice Kshs. {{ number_format($amount-isset($subAmount) ? $subAmount : 0) }} Inclusive {{\App\Conf\Config::CURRENT_VAT_PERCENTAGE}} VAT.
                                                     @else
-                                                        The garage to invoice Kshs. {{ number_format($amount) }} Inclusive {{\App\Conf\Config::TOTAL_PERCENTAGE}} VAT.
+                                                        The garage to invoice Kshs. {{ number_format($amount-isset($subAmount) ? $subAmount : 0) }} Inclusive {{\App\Conf\Config::TOTAL_PERCENTAGE}} VAT.
                                                     @endif
 
                                                 </p>
