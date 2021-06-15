@@ -60,6 +60,7 @@
                                             <th>Status</th>
                                             <th>{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}}</th>
                                             <th>Type</th>
+                                            <th>Amount</th>
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
@@ -119,6 +120,13 @@
                                                     </td>
                                                     <td>
                                                         {{ isset($assessment['assessmentTypeID'])  ?  \App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']] : ''}}
+                                                    </td>
+                                                    <td>
+                                                        @if(isset($assessment['totalCost']))
+                                                            {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
+                                                        @elseif(isset($assessment['totalLoss']))
+                                                            {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
+                                                        @endif
                                                     </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
                                                            id="claimID{{$loop->iteration}}"
