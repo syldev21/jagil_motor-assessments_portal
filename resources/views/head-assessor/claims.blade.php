@@ -51,6 +51,7 @@
                                             <th>Adjuster</th>
                                             <th>Status</th>
                                             <th>Garage</th>
+                                            <th>Created</th>
                                             <th>Assessor</th>
                                             <th>Operation</th>
                                         </tr>
@@ -91,6 +92,9 @@
                                                     $garage = \App\Garage::where(['id'=>isset($claim['garageID']) ? $claim['garageID'] : ''])->first();
                                                     ?>
                                                     <td>{{$garage->name}}</td>
+                                                    <td>
+                                                        {{\Carbon\Carbon::parse($claim['dateCreated'])->diffForHumans()}}
+                                                    </td>
                                                     <td>
                                                         <div class="input-field">
                                                             <select class="browser-default"
