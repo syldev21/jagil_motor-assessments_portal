@@ -10,6 +10,7 @@ use App\Role;
 use App\User;
 use Dompdf\Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -99,6 +100,7 @@ class AdminController extends Controller
                     "STATUS_CODE" => Config::SUCCESS_CODE,
                     "STATUS_MESSAGE" => "Part added successfully"
                 );
+                Artisan::call("cache:clear");
             }else
             {
                 $response = array(
