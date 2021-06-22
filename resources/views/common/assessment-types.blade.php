@@ -56,6 +56,11 @@
                                             <th>Status</th>
                                             <th>{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}}</th>
                                             <th>Operation</th>
+                                            <th>PAV</th>
+                                            @if($assessmentTypeID == App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
+                                            <th>Salvage</th>
+                                            @endif
+                                            <th>Amount</th>
                                             <th>Type</th>
                                         </tr>
                                         </thead>
@@ -110,6 +115,17 @@
                                                     </td>
                                                     <td>
                                                         {{ isset($assessment['assessmentTypeID'])  ?  \App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']] : ''}}
+                                                    </td>
+                                                    <td>{{ number_format($assessment['pav']) }}</td>
+                                                    @if($assessmentTypeID == App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
+                                                    <td>{{ number_format($assessment['salvage']) }}</td>
+                                                    @endif
+                                                    <td>
+                                                        @if(isset($assessment['totalCost']))
+                                                            {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
+                                                        @elseif(isset($assessment['totalLoss']))
+                                                            {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
+                                                        @endif
                                                     </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
                                                            id="claimID{{$loop->iteration}}"
