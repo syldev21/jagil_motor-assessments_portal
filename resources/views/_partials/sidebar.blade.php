@@ -900,8 +900,8 @@
         </li>
         @endhasrole
         @hasanyrole('Admin|Head Assessor')
-        <li class="bold ">
-            <a class="collapsible-header"
+        <li class="bold">
+            <a class="collapsible-header sidenav-link"
                href="javascript:void(0) "
             >
                 <i class="material-icons">settings</i>
@@ -912,10 +912,18 @@
 
                     <li class="">
                         <a href="#"
-                           class="listUsers"
+                           class="listUsers sidenav-link"
                         >
                             <i class="material-icons">person</i>
                             <span data-i18n="Invoice List">Users</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="listParts sidenav-link"
+                        >
+                            <i class="material-icons">build</i>
+                            <span data-i18n="Invoice List">Parts</span>
                         </a>
                     </li>
                 </ul>

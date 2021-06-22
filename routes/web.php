@@ -179,6 +179,8 @@ $router->group(['prefix' => 'admin'], function($router)
     $router->get('/registerUserForm','AdminController@registerUserForm');
     $router->post('/assignRole','AdminController@assignRole');
     $router->post('/registerUser','AdminController@registerUser');
+    $router->post('/listParts','AdminController@listParts');
+    $router->post('/add-part','AdminController@addPart');
 });
 $router->group(['prefix' => 'migration'], function($router)
 {

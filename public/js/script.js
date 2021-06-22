@@ -3188,6 +3188,36 @@ $(document).ready(function () {
 
         });
     });
+    $(".listParts").on('click',function (e){
+        e.preventDefault();
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/admin/listParts',
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+        });
+    });
     $("body").on('click','#registerUserForm',function (e){
         e.preventDefault();
         $.ajaxSetup({
@@ -4005,6 +4035,12 @@ $(document).ready(function () {
     $("body").on('click','#triggerDiscount',function (e){
         e.preventDefault();
         const elem = document.getElementById('discount');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+    });
+    $("body").on('click','#triggerAddpart',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('addPartModal');
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
@@ -5496,6 +5532,53 @@ $(document).ready(function () {
         $('.loadingButton').addClass("hideLoadingButton");
         $('.actionButton').addClass("showActionButton");
     }
+    $("body").on('click','#addPart',function (e){
+        e.preventDefault();
+        var name = $("#name").val();
+        addLoadingButton();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                name : name,
+            },
+            url: '/admin/add-part',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    $("#addPartModal").modal('close');
+                    removeLoadingButton();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    $("#addPartModal").modal('close');
+                    removeLoadingButton();
+                }
+            }
+
+        });
+
+
+    });
 });
 
 function isNotEmpty(caller) {
