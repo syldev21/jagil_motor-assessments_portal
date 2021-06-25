@@ -42,6 +42,8 @@ class CreateAssessmentsTable extends Migration
             $table->double('scrapValue')->nullable();
             $table->tinyInteger('scrap')->nullable();
             $table->tinyInteger('active')->default(0);
+            $table->tinyInteger('isSubrogate')->default(0);
+            $table->bigInteger('companyID')->nullable();
             $table->bigInteger('createdBy')->nullable();
             $table->bigInteger('updatedBy')->nullable();
             $table->dateTime('dateModified')->nullable();

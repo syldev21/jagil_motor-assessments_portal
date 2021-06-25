@@ -4108,6 +4108,8 @@ $(document).ready(function () {
         var pav = $("#pav").val();
         var grandTotal = $("#grandTotal").val();
         var assessmentTypeID = $("#assessmentTypeID").val();
+        var isSubrogate = $(".subrogation").is(':checked') ? 1 : 0;
+        var companyID = $("#company").val();
         $.ajaxSetup({
 
             headers: {
@@ -4126,7 +4128,9 @@ $(document).ready(function () {
                 report : report,
                 grandTotal : grandTotal,
                 assessmentTypeID : assessmentTypeID,
-                pav : pav
+                pav : pav,
+                isSubrogate : isSubrogate,
+                companyID : companyID
             },
             url: '/assessment-manager/review-assessment',
             success: function (data) {
@@ -5577,6 +5581,20 @@ $(document).ready(function () {
 
         });
 
+
+    });
+
+    $("#subrogationForm :checkbox").on('change',function (e){
+        e.preventDefault();
+        var isSubrogate = $(".subrogation").is(':checked') ? 1 : 0;
+        if(isSubrogate)
+        {
+            $(".subrogationSelect").removeClass('hideSubrogation');
+        }else
+        {
+            $("#company").val(0);
+            $(".subrogationSelect").addClass('hideSubrogation');
+        }
 
     });
 });

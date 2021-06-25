@@ -86,5 +86,7 @@ h6{
 .error{
     color: red !important;
 }
-
+.hideSubrogation{
+    display: none !important;
+}
 

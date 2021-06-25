@@ -7,6 +7,7 @@ use App\AssessmentItem;
 use App\CarModel;
 use App\ChangeRequest;
 use App\Claim;
+use App\Company;
 use App\Conf\Config;
 use App\CustomerMaster;
 use App\Document;
@@ -190,8 +191,9 @@ class AssessmentManagerController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
         $adjuster = User::where(['id'=> $assessment->claim->createdBy])->first();
         $assessor = User::where(['id'=> $assessment->assessedBy])->first();
+        $companies = Company::select('id','name')->get();
         $carDetail = CarModel::where(['makeCode'=> isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '','modelCode'=> isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-        return view("assessment-manager.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved'=>$aproved,'carDetail'=>$carDetail,'priceChange'=>$priceChange]);
+        return view("assessment-manager.assessment-report",['assessment' => $assessment,"assessmentItems" => $assessmentItems,"jobDetails" => $jobDetails,"insured"=>$insured,'documents'=> $documents,'adjuster'=>$adjuster,'assessor'=>$assessor,'aproved'=>$aproved,'carDetail'=>$carDetail,'priceChange'=>$priceChange,'companies'=>$companies]);
     }
     public function supplementaryReport(Request $request)
     {
@@ -212,13 +214,17 @@ class AssessmentManagerController extends Controller
             $grandTotal= $request->grandTotal;
             $assessmentTypeID = $request->assessmentTypeID;
             $pav = $request->pav;
+            $isSubrogate = isset($request->isSubrogate) ? $request->isSubrogate : 0;
+            $companyID = isset($request->companyID) ? $request->companyID : null;
             if(isset($request->assessmentReviewType))
             {
                 $assessment = Assessment::where(["id" => $request->assessmentID])->first();
                 if ($request->assessmentReviewType == Config::APPROVE) {
                     $approved = Assessment::where(["id" =>$request->assessmentID])->update([
-                        "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
+//                        "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
                         "changesDue" => 0,
+                        "isSubrogate" => $isSubrogate,
+                        "companyID"=> $companyID,
                         "reviewNote" => isset($request->report) ? $request->report : null,
                         "finalApprovalBy" => Auth::id(),
                         "finalApprovedAt" => $this->functions->curlDate()
