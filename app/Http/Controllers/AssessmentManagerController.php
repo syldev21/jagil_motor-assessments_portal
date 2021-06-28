@@ -221,7 +221,7 @@ class AssessmentManagerController extends Controller
                 $assessment = Assessment::where(["id" => $request->assessmentID])->first();
                 if ($request->assessmentReviewType == Config::APPROVE) {
                     $approved = Assessment::where(["id" =>$request->assessmentID])->update([
-//                        "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
+                        "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
                         "changesDue" => 0,
                         "isSubrogate" => $isSubrogate,
                         "companyID"=> $companyID,
