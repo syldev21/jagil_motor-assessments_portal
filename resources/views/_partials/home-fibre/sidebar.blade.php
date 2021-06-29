@@ -3,16 +3,20 @@
     class="sidenav-main nav-expanded nav-lock nav-collapsible  sidenav-active-square  sidenav-light">
     <div class="brand-sidebar">
         <h1 class="logo-wrapper">
-            <a class="brand-logo darken-1" href="index.html">
-                <img class="hide-on-med-and-down" src="{{ url('images/logo/jubilee_logo.png') }}" alt="Jubilee logo"/>
-                <img class="show-on-medium-and-down hide-on-med-and-up" src="{{ url('images/logo/jubilee_logo.png') }}"
-                     alt="Jubilee logo"/>
-
-                <span class="logo-text hide-on-med-and-down">
-                    Insurance
-                  </span>
-            </a>
-            <a class="navbar-toggler" href="javascript:void(0)"><i class="material-icons">radio_button_checked</i></a>
+            <div class="row">
+                <div class="col s1"></div>
+                <div class="col s10">
+                    <a class="darken-1 hide-on-med-and-down" href="{{ url('home') }}">
+                        <img class="responsive-img" src="{{ url('images/logo/jubilee_logo.png') }}" alt="Jubilee logo"/>
+                    </a>
+                    <a class="brand-logo darken-1 show-on-medium-and-down hide-on-med-and-up" href="{{ url('home') }}">
+                        <img class="" src="{{ url('images/logo/jubilee_logo.png') }}"
+                             alt="Jubilee logo"/>
+                    </a>
+                </div>
+                <div class="col s1"></div>
+            </div>
+{{--            <a class="navbar-toggler" href="javascript:void(0)"><i class="material-icons">radio_button_checked</i></a>--}}
         </h1>
     </div>
     <ul class="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out"
