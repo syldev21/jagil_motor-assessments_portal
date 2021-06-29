@@ -25,13 +25,13 @@
                             <div class="divider"></div>
                             <div id="printableArea">
                             <div class="row">
-                                <div class="col s5">
+                                <div class="col s4">
 
                                 </div>
-                                <div class="col s2">
+                                <div class="col s4">
                                     <img class="responsive-img" src="{{url('images/logo/jubilee_logo.png') }}">
                                 </div>
-                                <div class="col s5">
+                                <div class="col s4">
 
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
 
                                 </div>
                                 <div class="col s8 center-align">
-                                    <h5>JUBILEE INSURANCE IN-HOUSE ASSESSORS REPORT</h5>
+                                    <h5>JUBILEE ALLIANZ INSURANCE IN-HOUSE ASSESSORS REPORT</h5>
                                     <h6>PRIVATE AND CONFIDENTIAL</h6>
                                     <h6>MOTOR ASSESSMENT REPORT</h6>
                                 </div>

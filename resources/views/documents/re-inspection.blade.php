@@ -13,7 +13,7 @@
                                 <div class="col s4"></div>
                                 <div class="col s4">
                                     <div class="center-align">
-                                        <h4 class="card-title float-left">JUBILEE INSURANCE ASSESSORS REPORT</h4>
+                                        <h4 class="card-title float-left">JUBILEE ALLIANZ INSURANCE ASSESSORS REPORT</h4>
                                         <h5 class="card-title float-left">MOTOR RE-INSPECTION REPORT</h5>
                                     </div>
                                 </div>
