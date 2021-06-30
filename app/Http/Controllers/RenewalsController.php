@@ -289,12 +289,12 @@ class RenewalsController extends Controller
 
 
                   if($val2 == "lossRatio_below_60"){
-                    $renewals = Renewal::where('lossRatio','<','61')->whereDate('policyToDate','>=', $this->functions->formatDate($fromDate))->whereDate('policyToDate','<=', $this->functions->formatDate($toDate))->groupBy('policyNumber')->paginate(150);
+                    $renewals = Renewal::where('lossRatio','<','60')->whereDate('policyToDate','>=', $this->functions->formatDate($fromDate))->whereDate('policyToDate','<=', $this->functions->formatDate($toDate))->groupBy('policyNumber')->paginate(150);
 
 
                  }
                   if($val2 == "lossRatio_above_60"){
-                    $renewals = Renewal::where('lossRatio','>','60')->whereDate('policyToDate','>=', $this->functions->formatDate($fromDate))->whereDate('policyToDate','<=', $this->functions->formatDate($toDate))->groupBy('policyNumber')->paginate(150);
+                    $renewals = Renewal::where('lossRatio','>=','60')->whereDate('policyToDate','>=', $this->functions->formatDate($fromDate))->whereDate('policyToDate','<=', $this->functions->formatDate($toDate))->groupBy('policyNumber')->paginate(150);
 
 
                  }
