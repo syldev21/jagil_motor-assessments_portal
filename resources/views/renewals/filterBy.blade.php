@@ -112,7 +112,7 @@
                         $formattedDate ])->get() as $subrenewal )
                         {{-- @foreach ($subrenewal2 as $subrenewal) --}}
                         <tr class="test2">
-                            <td style="width: 150px; word-break: break-all;">{{$subrenewal->premiumDescription}}</td>
+                            <td style="width: 150px; word-break: break-all;">{{$subrenewal->coverDescription}}</td>
                             <td style="text-align: center;">{{$subrenewal->premiumSiFc}}</td>
                             <td style="text-align: center;">{{$subrenewal->applicationRate}}</td>
                             <td style="text-align: center;">{{$subrenewal->applicationRatePer}}</td>
