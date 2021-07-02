@@ -11,7 +11,7 @@
     <div id="printableArea">
 
     <div style="text-align: center">
-        <img src="{{ asset('images/logo/jubilee_logo.png') }}" class="content-group mt-5" alt="" style="width: 120px;">
+        <img src="{{ asset('images/logo/jubilee_logo.png') }}" class="content-group mt-5" alt="" style="width: 170px;">
     </div>
     <h5>DATE: {{ Carbon\Carbon::now()->format('l, F d, Y') }}</h5>
     <h5>OUR REF: <span style="margin-left: 20px">{{ $claim->claimNo }}</span></h5>

@@ -982,7 +982,7 @@ class AdjusterController extends Controller
 
                         Claims Department, <br>
 
-                        Jubilee Insurance Company
+                        Jubilee Allianz Insurance Company
                     ",
         ];
 
@@ -1051,7 +1051,7 @@ class AdjusterController extends Controller
 
                         Claims Department, <br>
 
-                        Jubilee Insurance Company
+                        Jubilee Allianz Insurance Company
                     ",
         ];
 

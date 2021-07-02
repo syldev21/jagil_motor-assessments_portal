@@ -190,7 +190,7 @@
 
                                                     Claims Department, <br>
 
-                                                    Jubilee Insurance Company.
+                                                    Jubilee Allianz Insurance Company.
 
                                                 </p>
                                             </div>

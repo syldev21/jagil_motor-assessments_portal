@@ -282,7 +282,7 @@ class AssessmentManagerController extends Controller
 
                         Claims Department, <br>
 
-                        Jubilee Insurance Company
+                        Jubilee Allianz Insurance Company
                     ",
                             ];
 
@@ -433,7 +433,7 @@ class AssessmentManagerController extends Controller
 
                         Claims Department, <br>
 
-                        Jubilee Insurance Company
+                        Jubilee Allianz Insurance Company
                     ",
                             ];
 
@@ -520,7 +520,7 @@ class AssessmentManagerController extends Controller
                     Regards, <br><br>
                      ".$data['role'].", <br>
                     Claims Department, <br>
-                    Jubilee Insurance Company of Kenya.
+                    Jubilee Allianz Insurance Company of Kenya.
                 ",
                 ];
                 InfobipEmailHelper::sendEmail($email, $email_add);
@@ -613,7 +613,7 @@ class AssessmentManagerController extends Controller
                     Regards, <br><br>
                      ".$data['role'].", <br>
                     Claims Department, <br>
-                    Jubilee Insurance Company of Kenya.
+                    Jubilee Allianz Insurance Company of Kenya.
                 ",
                 ];
                 InfobipEmailHelper::sendEmail($email, $email_add);
