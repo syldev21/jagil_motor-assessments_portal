@@ -431,10 +431,10 @@ class HeadAssessorController extends Controller
                                 $message = [
                                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                    'to' => $email,
+                                    'to' => $assessmentManager->email,
                                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                                     'html' => "
-                        Hello " . $assessmentManager->email . ", <br>
+                        Hello " . $assessmentManager->firstName . ", <br>
 
                         This is in regards to claim number <strong>" . $claimNo . " </strong> <br>
 
