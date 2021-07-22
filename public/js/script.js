@@ -1795,6 +1795,37 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#subrogate-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/common/subrogation-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
     $("body").on('click','#assessment-manager-assessment-report',function (e){
         e.preventDefault();
         var assessmentID = $(this).data("id");
@@ -5536,7 +5567,7 @@ $(document).ready(function () {
         $('.loadingButton').addClass("hideLoadingButton");
         $('.actionButton').addClass("showActionButton");
     }
-    $("body").on('click','#addPart',function (e){
+    $("body").on('click','#addPartMaster',function (e){
         e.preventDefault();
         var name = $("#name").val();
         addLoadingButton();

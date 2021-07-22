@@ -95,7 +95,7 @@
                     <div class="row">
                         <div class="col s8"></div>
                         <div class="input-field col s2">
-                            <a href="#" id="addPart" class="btn blue lighten-2 waves-effect showActionButton actionButton">Submit</a>
+                            <a href="#" id="addPartMaster" class="btn blue lighten-2 waves-effect showActionButton actionButton">Submit</a>
                             <a href="#"
                                class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
                             >
