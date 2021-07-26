@@ -1150,9 +1150,12 @@ $(document).ready(function () {
 
         });
     });
-    $(".fetch-claims").on('click',function (e){
+    $("body").on('click','.fetch-claims',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
+        var fromDate = $("#from_date").val();
+        var toDate = $("#to_date").val();
+        var regNumber = $("#vehicle_reg_no").val();
         $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
@@ -1167,12 +1170,16 @@ $(document).ready(function () {
 
             type: 'POST',
             data : {
-                'claimStatusID' : claimStatusID
+                claimStatusID : claimStatusID,
+                fromDate : fromDate,
+                toDate : toDate,
+                regNumber : regNumber
             },
             url: '/adjuster/fetch-claims',
 
             success: function (data) {
                 $("#main").html(data);
+                $('.datepicker').datepicker();
                 $('#data-table-simple').DataTable({
                     dom: 'Bfrtip',
                     buttons: [
