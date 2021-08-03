@@ -755,12 +755,22 @@ class AdjusterController extends Controller
         $claimStatusID = $request->claimStatusID;
         $assessors = User::role('Assessor')->get();
         if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
-            $claims = Claim::where([
-                'claimStatusID'=> $claimStatusID,
-                'active'=>Config::ACTIVE,
-                'claimType'=> Config::CLAIM_TYPES['ASSESSMENT']
-            ])  ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
-                ->with('adjuster')->get();
+            if($claimStatusID == Config::$STATUSES['CLAIM']['UPLOADED']['id'])
+            {
+                $claims = Claim::where([
+                    'claimStatusID'=> $claimStatusID,
+                    'active'=>Config::ACTIVE,
+                    'claimType'=> Config::CLAIM_TYPES['ASSESSMENT']
+                ])->with('adjuster')->get();
+            }else
+            {
+                $claims = Claim::where([
+                    'claimStatusID'=> $claimStatusID,
+                    'active'=>Config::ACTIVE,
+                    'claimType'=> Config::CLAIM_TYPES['ASSESSMENT']
+                ])  ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                    ->with('adjuster')->get();
+            }
         } elseif (isset($request->regNumber)) {
 //                $regNo = preg_replace("/\s+/", "", $request->regNumber);
             $registrationNumber=preg_replace("/\s+/", "", $request->regNumber);
@@ -882,19 +892,39 @@ class AdjusterController extends Controller
             $insured = CustomerMaster::where(['customerCode' => $claim->customerCode])->first();
             $insuredName = isset($insured->firstName) ? $insured->firstName : '' . isset($insured->lastName) ? $insured->lastName : '';
             $assessorName = isset($assessor->name) ? $assessor->name : '';
-            if(isset($assessment->totalChange) && isset($priceChange->finalApprovedAt))
-            {
-                if($assessment->assessmentTypeID= Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+
+            $priceChangeAssessmentIds = PriceChange::whereIn('assessmentID',$assessmentIds)
+                ->whereNotNull(['finalApprovedAt'])
+                ->pluck('assessmentID')->toArray();
+            $difference = AssessmentItem::where(['reInspectionType'=>Config::$JOB_CATEGORIES['REPLACE']['ID'],'reInspection'=>Config::ACTIVE])
+                ->whereIn('assessmentID', $priceChangeAssessmentIds)
+                ->whereNotNull('current')
+                ->sum('totalDifference');
+            if ($assessment['assessmentTypeID'] == Config::ASSESSMENT_TYPES['AUTHORITY_TO_GARAGE']) {
+                if($assessment['claim']->intimationDate >= Config::VAT_REDUCTION_DATE && $assessment['claim']->intimationDate <= Config::VAT_END_DATE)
                 {
-                    $amount = $assessment->totalChange - $scrapValue;
+                    $difference = ((Config::CURRENT_TOTAL_PERCENTAGE) / Config::INITIAL_PERCENTAGE * $difference);
                 }else
                 {
-                    $amount = $assessment->totalChange;
+                    $difference = ((Config::TOTAL_PERCENTAGE) / Config::INITIAL_PERCENTAGE * $difference);
                 }
-            }else
-            {
-                $amount = $reinspection->total;
+            } else {
+                $difference = (Config::NEW_MARKUP * $difference);
             }
+            $amount = $reinspection->total+$difference;
+//            if(isset($assessment->totalChange) && isset($priceChange->finalApprovedAt))
+//            {
+//                if($assessment->assessmentTypeID= Config::ASSESSMENT_TYPES['CASH_IN_LIEU'])
+//                {
+//                    $amount = $assessment->totalChange - $scrapValue;
+//                }else
+//                {
+//                    $amount = $assessment->totalChange;
+//                }
+//            }else
+//            {
+//                $amount = $reinspection->total;
+//            }
             $data = [
                 'assessor' => $assessorName,
                 'amount' => $amount,
