@@ -536,6 +536,24 @@
                                             </div>
                                         </div>
                                         <div class="row">
+
+                                            @if(auth()->user()->userTypeID==\App\Conf\Config::$USER_TYPES['EXTERNAL']['ID'])
+                                                <div class="input-field col m6 s12">
+                                                    <div class="file-field input-field">
+                                                        <div class="btn">
+                                                            <span>Invoice </span>
+                                                            <input type="file" id="invoice" name="invoice" value="invoice">
+                                                        </div>
+                                                        <div class="file-path-wrapper">
+                                                            <input class="file-path validate" type="text" placeholder="Upload invoice">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            <div class="input-field col m6 s12">
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col m6">
                                                 <div class="input-field">
                                                     <label>
