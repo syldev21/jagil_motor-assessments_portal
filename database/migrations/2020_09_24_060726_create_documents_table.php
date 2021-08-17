@@ -24,6 +24,7 @@ class CreateDocumentsTable extends Migration
             $table->string('mime')->nullable();
             $table->integer('size')->nullable();
             $table->tinyInteger('isResized')->default(0);
+            $table->tinyInteger('processed')->default(0);
             $table->string('url')->nullable();
             $table->integer('modifiedBy')->nullable();
             $table->integer('createdBy')->nullable();
