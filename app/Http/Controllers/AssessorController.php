@@ -2504,14 +2504,42 @@ class AssessorController extends Controller
         return json_encode($response);
     }
 
-    public function resizeImages($ids = null)
+//    public function resizeImages($ids = null)
+//    {
+//
+//        $ids = is_array($ids) ? $ids : array();
+//        $documents = Document::where(['isResized' => 0, "documentType" => Config::$DOCUMENT_TYPES['IMAGE']['ID']])
+//            ->whereNotIn('id', $ids)
+//            ->where('dateCreated', '>=', Carbon::now(Config::DEFAULT_TIMEZONE)->subDays(1))
+//            ->get();
+//        if (count($documents) > 0) {
+//            foreach ($documents as $document) {
+//                try {
+//                    $img = Image::make(public_path('documents/') . $document->name);
+//                    $size = $img->filesize();
+//                    if ($size > 300) {
+//                        $img->resize(850, null, function ($constraint) {
+//                            $constraint->aspectRatio();
+//                            $constraint->upsize();
+//                        });
+//                        $img->save(public_path('thumbnail/') . $document->name);
+//                    }
+//
+//                    Document::where('id', $document->id)->update(['isResized' => 1]);
+//                } catch (\Exception $e) {
+//                    array_push($ids, $document->id);
+//                    $this->resizeImages($ids);
+//                }
+//            }
+//        }
+//    }
+    public function resizeImages()
     {
-
-        $ids = is_array($ids) ? $ids : array();
-        $documents = Document::where(['isResized' => 0, "documentType" => Config::$DOCUMENT_TYPES['IMAGE']['ID']])
-            ->whereNotIn('id', $ids)
-            ->where('dateCreated', '>=', Carbon::now(Config::DEFAULT_TIMEZONE)->subDays(1))
-            ->get();
+        $documents = Document::where([
+            'isResized' => 0,
+            "documentType" => Config::$DOCUMENT_TYPES['IMAGE']['ID'],
+            "processed" => Config::INACTIVE
+        ])->get();
         if (count($documents) > 0) {
             foreach ($documents as $document) {
                 try {
@@ -2524,11 +2552,11 @@ class AssessorController extends Controller
                         });
                         $img->save(public_path('thumbnail/') . $document->name);
                     }
-
                     Document::where('id', $document->id)->update(['isResized' => 1]);
                 } catch (\Exception $e) {
-                    array_push($ids, $document->id);
-                    $this->resizeImages($ids);
+                    Document::where(['id'=>$document->id])->update([
+                        "processed" => Config::ACTIVE
+                    ]);
                 }
             }
         }
