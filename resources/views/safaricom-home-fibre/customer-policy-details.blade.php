@@ -85,7 +85,7 @@
                                                             <a href="#"><i class="material-icons">attach_money</i>View Payments</a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" id="sendPolicyDocument" data-id="{{$email}}" data-id2="{{$policy['policy_number']}}"><i
+                                                            <a href="#" id="sendPolicyDocument" data-id="{{$email}}" data-id2="{{$policy['policy_number']}}" data-id3="{{$policy['assured_name']}}"><i
                                                                     class="material-icons">notifications_active</i>Send Policy Document </a>
                                                         </li>
                                                         <li>

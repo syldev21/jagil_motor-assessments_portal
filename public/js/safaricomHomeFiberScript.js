@@ -135,6 +135,49 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#sendPolicyDocument',function (){
+        var email = $(this).data("id");
+        var policyNumber = $(this).data("id2");
+        var name = $(this).data("id3");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/safaricom-home-fibre/sendPolicyDocument',
+            data: {
+                email : email,
+                policyNumber : policyNumber,
+                name : name
+            },
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+
+        });
+    });
 
     $('body').on('focus',".dropdown-trigger", function(){
         $(this).dropdown({

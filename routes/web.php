@@ -203,6 +203,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/sendClaimFormNotification', 'CommonController@sendClaimFormNotification');
     $router->post('/fetchDMSDocuments', 'CommonController@fetchDMSDocuments');
     $router->post('/fetchModelsByMake', 'CommonController@fetchModelsByMake');
+    $router->post('/subrogation-report', 'CommonController@subrogationReport');
 });
 
 // migrate
@@ -215,8 +216,8 @@ Route::post('/updatePdfType', 'MigrateController@updatePdfType');
 Route::get('/policy-renewals', 'RenewalsController@policyRenewal')->name("policy-renewals");
 
 
-
-Route::post('/fetchRenewals', 'RenewalsController@fetchRenewals');
+//Motor Renewals
+Route::post('/fetchMotorRenewals', 'RenewalsController@fetchRenewals');
 Route::post('/fetchPolicyDetail', 'RenewalsController@fetchPolicyDetail');
 Route::post('/approveRenewalPolicy', 'RenewalsController@approveRenewalPolicy');
 Route::post('/updatePolicyRenewal', 'RenewalsController@updatePolicyRenewal');
@@ -251,6 +252,12 @@ Route::get('/dv', function(){
     // return view('common.renewal_notice');
 });
 
+//Non-Motor Renewals
+$router->group(['prefix' => 'non-motor'], function($router)
+{
+    $router->post('/display-premium-calculator-form', 'NonMotorRenewalController@displayPremiumCalculatorForm');
+    $router->post('/fetchNonMotorRenewals', 'NonMotorRenewalController@fetchRenewals');
+});
 
 //Safaricom Home Fibre apis
 
@@ -261,5 +268,5 @@ $router->group(['prefix' => 'safaricom-home-fibre'], function($router)
     $router->post('/fetch-payments', 'homeFibre\SafaricomHomeFibreController@fetchPayments');
     $router->post('/fetch-customer-payments', 'homeFibre\SafaricomHomeFibreController@fetchCustomerPayments');
     $router->post('/fetch-policy-details', 'homeFibre\SafaricomHomeFibreController@fetchPolicyDetails');
+    $router->post('/sendPolicyDocument', 'homeFibre\SafaricomHomeFibreController@sendPolicyDocument');
 });
-
