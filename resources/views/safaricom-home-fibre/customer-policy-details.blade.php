@@ -70,8 +70,8 @@
                                                 <td>{{ isset($policy['premium']) ? number_format($policy['premium']) : '' }}</td>
                                                 <td>{{ isset($policy['product_description']) ? $policy['product_description'] : ''}}</td>
                                                 <td>{{ isset($policy['assured_name']) ? $policy['assured_name'] : '' }}</td>
-                                                <td>{{ isset($email) ? $email : '' }}</td>
-                                                <td>{{ isset($phone) ? $phone : '' }}</td>
+                                                <td>{{ $email }}</td>
+                                                <td>{{ $phone }}</td>
                                                 <td>{{ isset($policy['kra_pin']) ? $policy['kra_pin'] : '' }}</td>
                                                 <td>
                                                     <!-- Dropdown Trigger -->
