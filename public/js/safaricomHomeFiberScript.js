@@ -101,6 +101,8 @@ $(document).ready(function () {
     });
     $("body").on('click','#fetch-policy-details',function (){
         var ci_code = $(this).data("id");
+        var email = $(this).data("id2");
+        var phone = $(this).data("id3");
         $.ajaxSetup({
 
             headers: {
@@ -115,7 +117,9 @@ $(document).ready(function () {
             type: 'POST',
             url: '/safaricom-home-fibre/fetch-policy-details',
             data: {
-                ci_code : ci_code
+                ci_code : ci_code,
+                email : email,
+                phone : phone
             },
             success: function (data) {
                 $("#main").html(data);

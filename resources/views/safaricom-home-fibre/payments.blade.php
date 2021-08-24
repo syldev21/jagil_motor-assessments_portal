@@ -82,7 +82,7 @@
                                                         <li id="fetch-customer-payments" data-id="{{$payment['code']}}">
                                                             <a href="#"><i class="material-icons">attach_money</i>View Payments</a>
                                                         </li>
-                                                        <li id="fetch-policy-details" data-id="{{$payment['code']}}">
+                                                        <li id="fetch-policy-details" data-id="{{$payment['code']}}" data-id2="{{$payment['client_email']}}" data-id3="{{$payment['client_phone']}}">
                                                             <a href="#"><i class="material-icons">attach_money</i>View Policy</a>
                                                         </li>
                                                         <li>

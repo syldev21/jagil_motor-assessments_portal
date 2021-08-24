@@ -70,8 +70,8 @@
                                                 <td>{{ isset($policy['premium']) ? number_format($policy['premium']) : '' }}</td>
                                                 <td>{{ isset($policy['product_description']) ? $policy['product_description'] : ''}}</td>
                                                 <td>{{ isset($policy['assured_name']) ? $policy['assured_name'] : '' }}</td>
-                                                <td>{{ isset($policy['email_address']) ? $policy['email_address'] : '' }}</td>
-                                                <td>{{ isset($policy['mobile_number']) ? $policy['mobile_number'] : '' }}</td>
+                                                <td>{{ isset($email) ? $email : '' }}</td>
+                                                <td>{{ isset($phone) ? $phone : '' }}</td>
                                                 <td>{{ isset($policy['kra_pin']) ? $policy['kra_pin'] : '' }}</td>
                                                 <td>
                                                     <!-- Dropdown Trigger -->
@@ -83,6 +83,10 @@
                                                     <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                         <li id="fetch-customer-payments" data-id="{{$ci_code}}">
                                                             <a href="#"><i class="material-icons">attach_money</i>View Payments</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" id="sendPolicyDocument" data-id="{{$email}}" data-id2="{{$policy['policy_number']}}"><i
+                                                                    class="material-icons">notifications_active</i>Send Policy Document </a>
                                                         </li>
                                                         <li>
                                                             <a href="#" id="triggerNotification" data-id=""><i

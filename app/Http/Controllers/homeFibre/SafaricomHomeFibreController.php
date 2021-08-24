@@ -74,6 +74,8 @@ class SafaricomHomeFibreController extends Controller
     public function fetchPolicyDetails(Request $request)
     {
         $ci_code= $request->ci_code;
+        $email = $request->email;
+        $phone = $request->phone;
         $data = array(
             "unique_id" => $ci_code
         );
@@ -84,6 +86,6 @@ class SafaricomHomeFibreController extends Controller
         } else {
             $policies = [];
         }
-        return view('safaricom-home-fibre.customer-policy-details',['policies'=>$policies,'ci_code'=>$ci_code]);
+        return view('safaricom-home-fibre.customer-policy-details',['policies'=>$policies,'ci_code'=>$ci_code,'email'=>$email,'phone'=>$phone]);
     }
 }

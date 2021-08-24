@@ -79,7 +79,7 @@
                                                             class="Medium material-icons">menu</i><i
                                                             class="Medium material-icons">expand_more</i></a>
                                                     <ul id='{{$loop->iteration}}' class='dropdown-content'>
-                                                        <li id="fetch-policy-details" data-id="{{$payment['code']}}">
+                                                        <li id="fetch-policy-details" data-id="{{$payment['code']}}" data-id2="{{$payment['client_email']}}" data-id3="{{$payment['client_phone']}}">
                                                             <a href="#"><i class="material-icons">attach_money</i>View Policy</a>
                                                         </li>
                                                         <li>
