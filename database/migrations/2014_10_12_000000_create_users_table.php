@@ -32,6 +32,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('emailVerifiedAt')->nullable();
             $table->timestamp('loggedOutAt')->nullable();
+            $table->double('minAmount')->nullable();
+            $table->double('maxAmount')->nullable();
             $table->string('password');
             $table->boolean('loginAttemps')->default(0);
             $table->boolean('active')->default(0);

@@ -555,9 +555,16 @@
                         </div>
                         <div class="col s4">
                             <!-- Modal Trigger -->
-                            <button id="triggerApprove" data-target="approve" class="btn blue lighten-2 btn">
-                                Approve/Halt/Cancel
-                            </button>
+                            @if($grandTotal <= auth()->user()->maxAmount )
+                                <button id="triggerApprove" data-target="approve" class="btn blue lighten-2 btn">
+                                    Approve/Halt/Cancel
+                                </button>
+                            @else
+                                <button id="" class="btn red lighten-2 btn">
+                                    Amount Exceeded your approval limit
+                                </button>
+                            @endif
+
                         </div>
                         <div class="col s4">
                             <a id="triggerDiscount" data-target="discount" class="btn teal darken-2">Apply Discount</a>
