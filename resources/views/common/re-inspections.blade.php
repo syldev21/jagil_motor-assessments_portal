@@ -61,6 +61,7 @@
                                             <th>Time</th>
                                             <th>Amount</th>
                                             <th>Type</th>
+                                            <th>Assessed At</th>
                                             <th>Operation</th>
                                         </tr>
                                         </thead>
@@ -142,6 +143,11 @@
                                                     </td>
                                                     <td>
                                                         {{ isset($assessment['assessmentTypeID'])  ?  \App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']] : ''}}
+                                                    </td>
+                                                    <td>
+                                                        @if(isset($assessment['assessedAt']))
+                                                            {{$assessment['assessedAt']}}
+                                                        @endif
                                                     </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
                                                            id="claimID{{$loop->iteration}}"
