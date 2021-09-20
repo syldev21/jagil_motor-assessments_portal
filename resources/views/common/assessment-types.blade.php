@@ -61,6 +61,7 @@
                                             <th>Salvage</th>
                                             @endif
                                             <th>Amount</th>
+                                            <th>Assessed At</th>
                                             <th>Type</th>
                                         </tr>
                                         </thead>
@@ -125,6 +126,11 @@
                                                             {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
                                                         @elseif(isset($assessment['totalLoss']))
                                                             {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if(isset($assessment['assessedAt']))
+                                                            {{$assessment['assessedAt']}}
                                                         @endif
                                                     </td>
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
