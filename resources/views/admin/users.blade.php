@@ -27,20 +27,23 @@
                                             <th>S/N</th>
                                             <th>Email</th>
                                             @hasrole('Admin')
-                                            <th>Admin</th>
+                                            <th>{{\App\Conf\Config::$ROLES['ADMIN']}}</th>
                                             @endhasrole
-                                            <th>Assessor</th>
+                                            <th>{{\App\Conf\Config::$ROLES['ASSESSOR']}}</th>
                                             @hasrole('Admin')
-                                            <th>Adjuster</th>
+                                            <th>{{\App\Conf\Config::$ROLES['ADJUSTER']}}</th>
                                             @endhasrole
-                                            <th>Head Assessor</th>
-                                            <th>Assistant Head</th>
+                                            <th>{{\App\Conf\Config::$ROLES['HEAD-ASSESSOR']}}</th>
+                                            <th>{{\App\Conf\Config::$ROLES['ASSISTANT-HEAD']}}</th>
                                             @hasrole('Admin')
-                                            <th>Manager</th>
+                                            <th>{{\App\Conf\Config::$ROLES['MANAGER']}}</th>
                                             @endhasrole
-                                            <th>Assessment Manager</th>
+                                            <th>{{\App\Conf\Config::$ROLES['ASSESSMENT-MANAGER']}}</th>
                                             @hasrole('Admin')
-                                            <th>Underwriter</th>
+                                            <th>{{\App\Conf\Config::$ROLES['UNDERWRITER']}}</th>
+                                            @endhasrole
+                                            @hasrole('Admin')
+                                            <th>{{\App\Conf\Config::$ROLES['CUSTOMER-SERVICE']}}</th>
                                             @endhasrole
                                             <th>Operation</th>
                                             {{--                                                <th>Operation</th>--}}
@@ -111,6 +114,14 @@
                                                 <td>
                                                     <label>
                                                         <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['UNDERWRITER'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['UNDERWRITER']}}"/>
+                                                        <span></span>
+                                                    </label>
+                                                </td>
+                                                @endhasrole
+                                                @hasrole('Admin')
+                                                <td>
+                                                    <label>
+                                                        <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['CUSTOMER-SERVICE'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['CUSTOMER-SERVICE']}}"/>
                                                         <span></span>
                                                     </label>
                                                 </td>

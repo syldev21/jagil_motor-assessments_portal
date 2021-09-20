@@ -74,7 +74,11 @@
                         </div>
                         <div class="col s2"></div>
                     </div>
+                    @hasrole(\App\Conf\Config::$ROLES["CUSTOMER-SERVICE"])
                     <a href="{{ route("safaricom-home-fibre") }}" class="btn float-right">Access Service</a>
+                    @else
+                    <a href="#" class="btn float-right tooltipped" data-position="top" data-tooltip="You have no permission">Access Service</a>
+                    @endhasrole
                     <p></p>
                 </center>
             </div>
