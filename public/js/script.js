@@ -93,6 +93,7 @@ $(document).ready(function () {
      */
     $("#validatepasswordreset").on('click', function (e) {
         e.preventDefault();
+        alert('clicked');
         var email = $("#email");
         if (isNotEmpty(email)) {
             $.ajaxSetup({
@@ -3197,6 +3198,53 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#assignPermission',function (e){
+        e.preventDefault();
+        var userID = $("#userID").val();
+        var permissions = [];
+        $('input[name="permissions[]"]:checked').each(function() {
+            permissions.push(this.value);
+        });
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/admin/assignPermission',
+
+            data: {
+                permissions : permissions,
+                userID : userID
+            },
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+
+        });
+    });
     $(".listUsers").on('click',function (e){
         e.preventDefault();
         $.ajaxSetup({
@@ -3213,6 +3261,39 @@ $(document).ready(function () {
             type: 'POST',
 
             url: '/admin/listUsers',
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+            }
+
+        });
+    });
+    $("body").on('click','#fetchPermissions',function (e){
+        e.preventDefault();
+        var userID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/admin/permissions',
+            data : {
+                userID : userID
+            },
             success: function (data) {
                 $("#main").html(data);
                 $('#data-table-simple').DataTable({
@@ -4080,6 +4161,30 @@ $(document).ready(function () {
         e.preventDefault();
         const elem = document.getElementById('addPartModal');
         const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+    });
+    $("body").on('click','#triggerAddpermission',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('addPermissionModal');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+    });
+    $("body").on('click','#processSalvage',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('processSalvageModal');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        var claimID = $(this).data("id");
+        $("#claimID").val(claimID);
+        $('select').formSelect();
+        $('.datepicker').datepicker();
+        instance.open();
+    });
+    $("body").on('click','#triggerSaleSalvageModal',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('saleSalvageModal');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        var salvageID = $(this).data("id");
+        $("#salvageID").val(salvageID);
         instance.open();
     });
     $("body").on('click','#triggerNotification',function (e){
@@ -5511,6 +5616,144 @@ $(document).ready(function () {
             })
         }
     });
+    $("#main").on('click','#submitSalvageRequest',function (e){
+        e.preventDefault();
+        var claimID= $("#claimID").val();
+        var logbookReceived = $("#logbookReceived").val();
+        var documentsReceived = $("#documentsReceived").val();
+        var dateRecovered = $("#dateRecovered").val();
+        var location = $("#location").val();
+            addLoadingButton();
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                    logbookReceived : logbookReceived,
+                    documentsReceived : documentsReceived,
+                    claimID : claimID,
+                    dateRecovered : dateRecovered,
+                    location : location
+                },
+                url: '/common/submitSalvageRequest',
+
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    removeLoadingButton();
+                }
+
+            });
+    });
+    $("#main").on('click','#submitSaleSalvageRequest',function (e){
+        e.preventDefault();
+        var salvageID= $("#salvageID").val();
+        var vendor = $("#vendor").val();
+        var cost = $("#cost").val();
+            addLoadingButton();
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                    salvageID : salvageID,
+                    vendor : vendor,
+                    cost : cost
+                },
+                url: '/common/submitSaleSalvageRequest',
+
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    removeLoadingButton();
+                }
+
+            });
+    });
+    $("body").on('click','.fetch-salvage-register',function (e){
+        e.preventDefault();
+            addLoadingButton();
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                },
+                url: '/common/fetch-salvage-register',
+
+                success: function (data) {
+                    $("#main").html(data);
+                    $('.datepicker').datepicker();
+                    $('#data-table-simple').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ],
+                        "columnDefs": [
+                            { 'visible': false, 'targets': [2] },
+                            { 'visible': false, 'targets': [3] },
+                            { 'visible': false, 'targets': [4] },
+                            { 'visible': false, 'targets': [5] },
+                            { 'visible': false, 'targets': [6] }
+                        ],
+                        "pageLength": 25
+                    });
+                    $("#mainLoader").addClass('hideLoader');
+                }
+            });
+    });
     $("body").on('change','#carMake',function (e){
         e.preventDefault();
         var carMakeCode = $("#carMake").val();
@@ -5594,6 +5837,53 @@ $(document).ready(function () {
                 name : name,
             },
             url: '/admin/add-part',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    $("#addPartModal").modal('close');
+                    removeLoadingButton();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    $("#addPartModal").modal('close');
+                    removeLoadingButton();
+                }
+            }
+
+        });
+
+
+    });
+    $("body").on('click','#addPermission',function (e){
+        e.preventDefault();
+        var name = $("#name").val();
+        addLoadingButton();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                name : name,
+            },
+            url: '/admin/add-permission',
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {

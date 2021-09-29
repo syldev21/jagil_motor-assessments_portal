@@ -7,6 +7,7 @@ use App\Assessment;
 use App\CarModel;
 use App\Claim;
 use App\ClaimFormTracker;
+use App\Company;
 use App\Conf\Config;
 use App\CustomerMaster;
 use App\Document;
@@ -14,6 +15,7 @@ use App\Garage;
 use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
 use App\Helper\InfobipEmailHelper;
+use App\SalvageRegister;
 use App\User;
 use App\Utility;
 use Carbon\Carbon;
@@ -485,4 +487,140 @@ class CommonController extends Controller
         return view('common.car-models',["carModels"=>$carModels]);
     }
 
+    public function subrogationReport(Request $request)
+    {
+        $assessmentID= $request->assessmentID;
+        $assessment = Assessment::where(["id"=>$assessmentID])->first();
+        $claim = Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
+        $company = Company::where(["id"=>$assessment->companyID])->first();
+        return view('common.subrogation',['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
+
+    }
+    public function submitSalvageRequest(Request $request)
+    {
+        try {
+            if(isset($request->claimID) && isset($request->logbookReceived) && isset($request->documentsReceived) && isset($request->location) && isset($request->dateRecovered))
+            {
+                $claimId = $request->claimID;
+                $logbookReceived = $request->logbookReceived;
+                $documentsReceived = $request->documentsReceived;
+                $dateRecovered = Carbon::parse($request->dateRecovered)->format('Y-m-d H:i:s');
+                $location = $request->location;
+                $claim = Claim::where(["id"=>$claimId])->first();
+                $salvageRegister = SalvageRegister::where(['claimID'=>$claimId])->first();
+                if(!isset($salvageRegister->id))
+                {
+                    if(isset($claim->id))
+                    {
+                        SalvageRegister::create([
+                            "claimID"=>$claimId,
+                            "vehicleRegNo"=>$claim->vehicleRegNo,
+                            "claimNo" => $claim->claimNo,
+                            "logbookReceived"=>$logbookReceived,
+                            "logbookDateReceived"=> $this->functions->curlDate(),
+                            "recordsReceived" => $documentsReceived,
+                            "dateRecovered" => $dateRecovered,
+                            "location"=>$location,
+                            "createdBy" => Auth::user()->id,
+                            "dateCreated"=>$this->functions->curlDate()
+                        ]);
+                        Claim::where(["id"=>$claimId])->update([
+                            "salvageProcessed"=>Config::ACTIVE,
+                            "salvageProcessedDate"=>$this->functions->curlDate(),
+                            "salvageProcessedBy"=>Auth::user()->id
+                        ]);
+                        $response = array(
+                            "STATUS_CODE" => Config::SUCCESS_CODE,
+                            "STATUS_MESSAGE" => "Record added successfully to Salvage Register"
+                        );
+                    }else
+                    {
+                        $response = array(
+                            "STATUS_CODE" => Config::NO_RECORDS_FOUND,
+                            "STATUS_MESSAGE" => "No record found for the provided claim No"
+                        );
+                    }
+                }else
+                {
+                    $response = array(
+                        "STATUS_CODE" => Config::RECORD_ALREADY_EXISTS,
+                        "STATUS_MESSAGE" => "Salvage register already processed"
+                    );
+                }
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Invalid Payload"
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to insert to salvage register. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
+
+    public function fetchSalvageRegister(Request $request)
+    {
+        $salvageRegisters = SalvageRegister::with('assessment')->with('vendor')->with('claim')->get();
+        return view('common.salvage-register',['salvageRegisters'=>$salvageRegisters]);
+    }
+    public function submitSaleSalvageRequest(Request $request)
+    {
+        try {
+            if(isset($request->salvageID) && isset($request->vendor) && isset($request->cost))
+            {
+                $salvage = SalvageRegister::where(['id'=>$request->salvageID])->first();
+                if(isset($salvage->id))
+                {
+                    if(!isset($salvage->buyerID))
+                    {
+                        SalvageRegister::where(['id'=>$request->salvageID])->update([
+                            "buyerID"=>$request->vendor,
+                            "cost"=>$request->cost,
+                            "updatedBy"=>Auth::user()->id,
+                            "dateModified"=>$this->functions->curlDate()
+                        ]);
+                        $response = array(
+                            "STATUS_CODE" => Config::SUCCESS_CODE,
+                            "STATUS_MESSAGE" => "Salvage Register Updated Successfully"
+                        );
+                    }else
+                    {
+                        $response = array(
+                            "STATUS_CODE" => Config::RECORD_ALREADY_EXISTS,
+                            "STATUS_MESSAGE" => "Salvage Already Sold"
+                        );
+                    }
+                }else
+                {
+                    $response = array(
+                        "STATUS_CODE" => Config::NO_RECORDS_FOUND,
+                        "STATUS_MESSAGE" => "The request can't be completed at the moment try again later"
+                    );
+                }
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Invalid data provided"
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to update salvage register. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
 }

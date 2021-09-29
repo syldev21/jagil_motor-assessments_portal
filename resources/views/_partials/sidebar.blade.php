@@ -935,19 +935,19 @@
         </li>
         @endhasanyrole
         <li class="bold ">
+            <a class="sidenav-link fetch-salvage-register"
+               href="#"
+            >
+                <i class="material-icons">compare_arrows</i>
+                <span class="menu-title" data-i18n="Salvage Register">Salvage Register</span>
+            </a>
+        </li>
+        <li class="bold ">
             <a class="sidenav-link" id="showActivityLog"
                href="#"
             >
                 <i class="material-icons">update</i>
                 <span class="menu-title" data-i18n="Activity Log">Activity Log</span>
-            </a>
-        </li>
-        <li class="bold ">
-            <a class="waves-effect waves-light sidenav-link"
-               href="#"
-            >
-                <i class="material-icons">compare_arrows</i>
-                <span class="menu-title" data-i18n="logout">Migrate Data</span>
             </a>
         </li>
         <li class="bold ">

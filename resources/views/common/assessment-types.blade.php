@@ -169,6 +169,16 @@
                                                             <li><a href="{{url('/adjuster/send-release-letter/'.$assessment['claimID'])}}" data-id="{{$assessment['claimID']}}" id=""><i
                                                                         class="material-icons">picture_as_pdf</i>
                                                                     Release Letter</a></li>
+                                                                @can(App\Conf\Config::PERMISSIONS['PROCESS_SALVAGE'])
+                                                                    <?php
+                                                                        $salvageProcessed = isset($assessment['claim']['salvageProcessed']) ? $assessment['claim']['salvageProcessed'] : 0;
+                                                                    ?>
+                                                                    @if($salvageProcessed != \App\Conf\Config::ACTIVE)
+                                                                    <li><a href="#" data-id="{{$assessment['claimID']}}" id="processSalvage"><i
+                                                                                class="material-icons">attach_money</i>
+                                                                            Process Salvage</a></li>
+                                                                    @endif
+                                                                @endcan
                                                             @endif
                                                         </ul>
 
@@ -183,6 +193,64 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col s2"></div>
+                <div class="col s8">
+                    <!-- Modal Structure -->
+                    <div id="processSalvageModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="input-field col m12 s12">
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <span class="float-left" style="font-size: 1.6em">Initiate Salvage for Processing</span>
+                                                <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m6 s12">
+                                        <select id="logbookReceived" required name="logbookReceived">
+                                            <option value="0">NO</option>
+                                            <option value="1">YES</option>
+                                        </select>
+                                        <label for="logbookReceived">Logbook Received</label>
+                                    </div>
+                                    <div class="input-field col m6 s12">
+                                        <select id="documentsReceived" required name="documentsReceived">
+                                            <option value="0">NO</option>
+                                            <option value="1">YES</option>
+                                        </select>
+                                        <label for="logbookReceived">Documents Received</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m6 s12">
+                                        <input type="text" id="location" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field col m6 s12">
+                                        <input type="text" id="dateRecovered" name="dateRecovered" class="datepicker">
+                                        <label for="dateRecovered">Date Recovered</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m8 s12">
+                                    </div>
+                                    <div class="input-field col m4 s12">
+                                        <input type="hidden" id="claimID" >
+                                        <a href="#" class="btn blue lighten-2 waves-effect" id="submitSalvageRequest">Submit</a>
+                                        <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s2"></div>
             </div>
         </div>
     </div>

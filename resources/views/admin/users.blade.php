@@ -45,7 +45,8 @@
                                             @hasrole('Admin')
                                             <th>{{\App\Conf\Config::$ROLES['CUSTOMER-SERVICE']}}</th>
                                             @endhasrole
-                                            <th>Operation</th>
+                                            <th>Role</th>
+                                            <th>Permission</th>
                                             {{--                                                <th>Operation</th>--}}
                                         </tr>
                                         </thead>
@@ -127,7 +128,10 @@
                                                 </td>
                                                 @endhasrole
                                                 <td>
-                                                    <a data-id="{{$loop->iteration}}"  data-user="{{$user->id}}" href="#" class="btn cyan waves-effect waves-effect waves-light" id="assignRole"><i class="material-icons left">edit</i>Update</a>
+                                                    <a data-id="{{$loop->iteration}}"  data-user="{{$user->id}}" href="#" class="btn" id="assignRole"><i class="material-icons">exposure</i></a>
+                                                </td>
+                                                <td>
+                                                    <a data-id="{{$user->id}}"  href="#" class="btn" id="fetchPermissions"><i class="material-icons">exposure</i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

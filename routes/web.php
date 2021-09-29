@@ -181,6 +181,9 @@ $router->group(['prefix' => 'admin'], function($router)
     $router->post('/registerUser','AdminController@registerUser');
     $router->post('/listParts','AdminController@listParts');
     $router->post('/add-part','AdminController@addPart');
+    $router->post('/permissions','AdminController@permissions');
+    $router->post('/assignPermission','AdminController@assignPermission');
+    $router->post('/add-permission','AdminController@addPermission');
 });
 $router->group(['prefix' => 'migration'], function($router)
 {
@@ -204,6 +207,9 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/fetchDMSDocuments', 'CommonController@fetchDMSDocuments');
     $router->post('/fetchModelsByMake', 'CommonController@fetchModelsByMake');
     $router->post('/subrogation-report', 'CommonController@subrogationReport');
+    $router->post('/submitSalvageRequest', 'CommonController@submitSalvageRequest');
+    $router->post('/fetch-salvage-register', 'CommonController@fetchSalvageRegister');
+    $router->post('/submitSaleSalvageRequest', 'CommonController@submitSaleSalvageRequest');
 });
 
 // migrate
