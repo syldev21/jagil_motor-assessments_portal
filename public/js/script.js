@@ -3337,6 +3337,36 @@ $(document).ready(function () {
             }
         });
     });
+    $("body").on('click','.fetch-salvage-vendors',function (e){
+        e.preventDefault();
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/admin/fetch-salvage-vendors',
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+        });
+    });
     $("body").on('click','#registerUserForm',function (e){
         e.preventDefault();
         $.ajaxSetup({
@@ -3353,6 +3383,29 @@ $(document).ready(function () {
             type: 'GET',
 
             url: '/admin/registerUserForm',
+            success: function (data) {
+                $("#main").html(data);
+                $('select').formSelect();
+            }
+
+        });
+    });
+    $("body").on('click','#addVendorForm',function (e){
+        e.preventDefault();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/admin/addVendorForm',
             success: function (data) {
                 $("#main").html(data);
                 $('select').formSelect();
@@ -3409,6 +3462,58 @@ $(document).ready(function () {
                     })
                 }
                 $('select').formSelect();
+            }
+
+        });
+    });
+    $("body").on('click','#addVendor',function (e){
+        e.preventDefault();
+        var firstName = $("#firstName");
+        var lastName = $("#lastName");
+        var email = $("#email");
+        var MSISDN = $("#MSISDN");
+        var idNumber = $("#idNumber");
+        var companyName = $("#companyName");
+        var location = $("#location");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'post',
+            data : {
+                firstName : firstName.val(),
+                lastName : lastName.val(),
+                email : email.val(),
+                MSISDN : MSISDN.val(),
+                idNumber : idNumber.val(),
+                companyName : companyName.val(),
+                location : location.val()
+            },
+            url: '/admin/addVendor',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
             }
 
         });

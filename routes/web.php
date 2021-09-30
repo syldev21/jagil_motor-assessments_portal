@@ -184,6 +184,9 @@ $router->group(['prefix' => 'admin'], function($router)
     $router->post('/permissions','AdminController@permissions');
     $router->post('/assignPermission','AdminController@assignPermission');
     $router->post('/add-permission','AdminController@addPermission');
+    $router->post('/fetch-salvage-vendors','AdminController@fetchSalvageVendors');
+    $router->post('/addVendorForm','AdminController@addVendorForm');
+    $router->post('/addVendor','AdminController@addVendor');
 });
 $router->group(['prefix' => 'migration'], function($router)
 {

@@ -930,6 +930,14 @@
                             <span data-i18n="Invoice List">Parts</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a href="#"
+                           class="fetch-salvage-vendors sidenav-link"
+                        >
+                            <i class="material-icons">people_outline</i>
+                            <span data-i18n="Invoice List">Salvage Vendors</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>

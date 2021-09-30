@@ -20,11 +20,14 @@ class CreateVendorsTable extends Migration
             $table->string('fullName')->nullable();
             $table->string('email')->nullable();
             $table->string('MSISDN')->nullable();
+            $table->string('idNumber')->nullable();
             $table->integer('type')->nullable();
             $table->integer('businessType')->nullable();
             $table->string('companyName')->nullable();
             $table->string('location')->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->integer('createdBy')->nullable();
+            $table->integer('updatedBy')->nullable();
             $table->dateTime('dateModified')->nullable();
             $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
