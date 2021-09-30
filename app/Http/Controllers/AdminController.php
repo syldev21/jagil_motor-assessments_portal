@@ -249,9 +249,11 @@ class AdminController extends Controller
             if(isset($request->firstName) && isset($request->lastName) && isset($request->email)
            && isset($request->MSISDN) && isset($request->idNumber) && isset($request->companyName) && isset($request->location))
             {
+                $fullName = $request->firstName." ".$request->lastName;
                 Vendor::create([
                     "firstName"=>$request->firstName,
                     "lastName"=>$request->lastName,
+                    "fullName"=>$request->fullName,
                     "email"=>$request->email,
                     "MSISDN"=>$request->MSISDN,
                     "idNumber"=>$request->idNumber,
