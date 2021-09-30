@@ -1892,6 +1892,36 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#salvage-release-letter',function (e){
+        e.preventDefault();
+        var salvageRegisterID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'post',
+            data: {
+               salvageRegisterID : salvageRegisterID
+            },
+            url: '/common/salvage-release-letter',
+
+            success: function (data) {
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+                // $("#main").html(data);
+            }
+
+        });
+    });
     $("body").on('click','#assessor-assessment-report',function (e){
         e.preventDefault();
         var assessmentID = $(this).data("id");

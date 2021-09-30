@@ -213,6 +213,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/submitSalvageRequest', 'CommonController@submitSalvageRequest');
     $router->post('/fetch-salvage-register', 'CommonController@fetchSalvageRegister');
     $router->post('/submitSaleSalvageRequest', 'CommonController@submitSaleSalvageRequest');
+    $router->post('/salvage-release-letter', 'CommonController@salvageReleaseLetter');
 });
 
 // migrate

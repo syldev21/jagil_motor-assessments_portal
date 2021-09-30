@@ -155,6 +155,12 @@
                                                                     </li>
                                                                 @endcan
                                                             @endif
+                                                                @if(isset($salvageRegister->buyerID))
+                                                                    <li>
+                                                                        <a href="#" id="salvage-release-letter" data-id="{{$salvageRegister->id}}"><i
+                                                                                class="material-icons">attach_file</i>salvage Release Report</a>
+                                                                    </li>
+                                                                @endif
                                                             <li>
                                                                 <a href="#" id="triggerNotification" data-id="{{$salvageRegister->id}}"><i
                                                                         class="material-icons">notifications_active</i>Send Notification </a>

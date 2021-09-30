@@ -623,4 +623,11 @@ class CommonController extends Controller
         }
         return json_encode($response);
     }
+
+    public function salvageReleaseLetter(Request $request)
+    {
+        $salvageRegisterID = $request->salvageRegisterID;
+        $salvageRegister = SalvageRegister::where(['id'=>$salvageRegisterID])->with('assessment')->with('vendor')->with('claim')->first();
+        return view('common.salvage-release-letter',['salvageRegister'=>$salvageRegister]);
+    }
 }
