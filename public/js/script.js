@@ -34,7 +34,6 @@ $(document).ready(function () {
        });
 
    });
-    $(".sidenav").sidenav();
     $("#main").on("click","#validateStepOne",function (){
         var validModel = $("#validModel").val();
         if(validModel == '')
@@ -93,7 +92,6 @@ $(document).ready(function () {
      */
     $("#validatepasswordreset").on('click', function (e) {
         e.preventDefault();
-        alert('clicked');
         var email = $("#email");
         if (isNotEmpty(email)) {
             $.ajaxSetup({
@@ -518,8 +516,6 @@ $(document).ready(function () {
             dateFormat: 'yyyy'
         });
     });
-    $('.datepicker').datepicker();
-    $('.collapsible').collapsible();
     $(".sidenav-link").on('click',function (e){
         e.preventDefault();
         $(".sidenav-link").removeClass('active');
@@ -6060,6 +6056,9 @@ $(document).ready(function () {
         }
 
     });
+    $('.datepicker').datepicker();
+    $('.collapsible').collapsible();
+    $(".sidenav").sidenav();
 });
 
 function isNotEmpty(caller) {
