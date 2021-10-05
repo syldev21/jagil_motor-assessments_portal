@@ -903,7 +903,8 @@
             </div>
         </li>
         @endhasrole
-        @hasanyrole('Admin|Head Assessor')
+{{--        @hasanyrole('Admin|Head Assessor')--}}
+        @if( Auth::user()->hasRole('Admin') ||  Auth::user()->hasRole('Head Assessor') || Auth::user()->can(App\Conf\Config::PERMISSIONS['ADD_VENDOR']))
         <li class="bold">
             <a class="collapsible-header sidenav-link"
                href="javascript:void(0) "
@@ -913,7 +914,7 @@
             </a>
             <div class="collapsible-body">
                 <ul class="collapsible collapsible-sub" data-collapsible="accordion">
-
+                    @hasanyrole('Admin|Head Assessor')
                     <li class="">
                         <a href="#"
                            class="listUsers sidenav-link"
@@ -930,6 +931,8 @@
                             <span data-i18n="Invoice List">Parts</span>
                         </a>
                     </li>
+                    @endhasanyrole
+                    @can(App\Conf\Config::PERMISSIONS['ADD_VENDOR'])
                     <li class="">
                         <a href="#"
                            class="fetch-salvage-vendors sidenav-link"
@@ -938,10 +941,12 @@
                             <span data-i18n="Invoice List">Salvage Vendors</span>
                         </a>
                     </li>
+                    @endcan
                 </ul>
             </div>
         </li>
-        @endhasanyrole
+        @endif
+{{--        @endhasanyrole--}}
         <li class="bold ">
             <a class="sidenav-link fetch-salvage-register"
                href="#"
