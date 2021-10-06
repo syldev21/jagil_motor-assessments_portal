@@ -7,6 +7,7 @@ use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
 use App\Part;
 use App\Role;
+use App\SalvageRegister;
 use App\User;
 use App\Vendor;
 use Dompdf\Exception;
@@ -247,7 +248,7 @@ class AdminController extends Controller
     {
         try {
             if(isset($request->firstName) && isset($request->lastName) && isset($request->email)
-           && isset($request->MSISDN) && isset($request->idNumber) && isset($request->companyName) && isset($request->location))
+           && isset($request->MSISDN) && isset($request->idNumber) && isset($request->kraPin) && isset($request->location))
             {
                 $fullName = $request->firstName." ".$request->lastName;
                 Vendor::create([
@@ -257,7 +258,7 @@ class AdminController extends Controller
                     "email"=>$request->email,
                     "MSISDN"=>$request->MSISDN,
                     "idNumber"=>$request->idNumber,
-                    "companyName"=>$request->companyName,
+                    "kraPin"=>$request->kraPin,
                     "location"=>$request->location,
                     "createdBy"=>Auth::user()->id,
                     "dateCreated"=>$this->functions->curlDate()
