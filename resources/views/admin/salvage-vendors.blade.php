@@ -29,7 +29,7 @@
                                             <th>Last Name</th>
                                             <th>Email</th>
                                             <th>MSISDN</th>
-                                            <th>Company Name</th>
+                                            <th>KRA Pin</th>
                                             <th>Location</th>
                                         </tr>
                                         </thead>
@@ -41,7 +41,7 @@
                                                 <td>{{$vendor->lastName}}</td>
                                                 <td>{{$vendor->email}}</td>
                                                 <td>{{$vendor->MSISDN}}</td>
-                                                <td>{{$vendor->companyName}}</td>
+                                                <td>{{$vendor->kraPin}}</td>
                                                 <td>{{$vendor->location}}</td>
                                             </tr>
                                         @endforeach
