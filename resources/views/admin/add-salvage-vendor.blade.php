@@ -41,8 +41,8 @@
                                             <label for="idNumber" class="active">ID Number</label>
                                         </div>
                                         <div class="input-field col m4 s12">
-                                            <input placeholder="" id="companyName" type="text" name="companyName" value="">
-                                            <label for="companyName" class="active">Company Name</label>
+                                            <input placeholder="" id="kraPin" type="text" name="kraPin" value="">
+                                            <label for="kraPin" class="active">KRA Pin</label>
                                         </div>
                                     </div>
                                     <div class="row">

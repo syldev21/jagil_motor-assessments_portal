@@ -23,7 +23,7 @@ class CreateVendorsTable extends Migration
             $table->string('idNumber')->nullable();
             $table->integer('type')->nullable();
             $table->integer('businessType')->nullable();
-            $table->string('companyName')->nullable();
+            $table->string('kraPin')->nullable();
             $table->string('location')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->integer('createdBy')->nullable();

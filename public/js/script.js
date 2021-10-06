@@ -3499,7 +3499,7 @@ $(document).ready(function () {
         var email = $("#email");
         var MSISDN = $("#MSISDN");
         var idNumber = $("#idNumber");
-        var companyName = $("#companyName");
+        var kraPin = $("#kraPin");
         var location = $("#location");
         $.ajaxSetup({
 
@@ -3519,7 +3519,7 @@ $(document).ready(function () {
                 email : email.val(),
                 MSISDN : MSISDN.val(),
                 idNumber : idNumber.val(),
-                companyName : companyName.val(),
+                kraPin : kraPin.val(),
                 location : location.val()
             },
             url: '/admin/addVendor',
