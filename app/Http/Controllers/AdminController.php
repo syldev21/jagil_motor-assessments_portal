@@ -254,7 +254,7 @@ class AdminController extends Controller
                 Vendor::create([
                     "firstName"=>$request->firstName,
                     "lastName"=>$request->lastName,
-                    "fullName"=>$request->fullName,
+                    "fullName"=>$fullName,
                     "email"=>$request->email,
                     "MSISDN"=>$request->MSISDN,
                     "idNumber"=>$request->idNumber,
