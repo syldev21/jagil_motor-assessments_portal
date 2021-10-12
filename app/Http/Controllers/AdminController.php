@@ -169,7 +169,7 @@ class AdminController extends Controller
                     "lastName" => $request->lastName,
                     "email" => $request->email,
                     "name" => $request->firstName." ".$request->middleName." ".$request->lastName,
-                    "userType" => $request->userType,
+                    "userTypeID" => $request->userType,
                     "MSISDN" => $request->MSISDN,
                     "password"=>bcrypt(Config::DEFAULT_PASSWORD)
                 ]);
