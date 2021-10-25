@@ -1,3 +1,8 @@
+<div id="loader-wrapper" class="hideLoader">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+</div>
 <div class="row">
 
     <div
