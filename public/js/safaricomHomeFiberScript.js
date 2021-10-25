@@ -10,6 +10,8 @@ $(document).ready(function () {
     $('.materialboxed').materialbox();
 
     $("body").on('click','.fetch-customers',function (){
+
+        $("#loader-wrapper").removeClass('hideLoader');
         $.ajaxSetup({
 
             headers: {
@@ -34,11 +36,15 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#loader-wrapper").addClass('hideLoader');
             }
 
         });
     });
     $("body").on('click','.fetch-payments',function (){
+
+        $("#loader-wrapper").removeClass('hideLoader');
+
         $.ajaxSetup({
 
             headers: {
@@ -63,11 +69,12 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#loader-wrapper").addClass('hideLoader');
             }
-
         });
     });
     $("body").on('click','#fetch-customer-payments',function (){
+        $("#loader-wrapper").removeClass('hideLoader');
         var ci_code = $(this).data("id");
         $.ajaxSetup({
 
@@ -95,11 +102,13 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#loader-wrapper").addClass('hideLoader');
             }
 
         });
     });
     $("body").on('click','#fetch-policy-details',function (){
+        $("#loader-wrapper").removeClass('hideLoader');
         var ci_code = $(this).data("id");
         var email = $(this).data("id2");
         var phone = $(this).data("id3");
@@ -131,6 +140,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $("#loader-wrapper").addClass('hideLoader');
             }
 
         });
