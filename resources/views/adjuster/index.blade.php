@@ -51,6 +51,7 @@
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
                                             <th>Intimation Date</th>
+                                            <th>Claim Type</th>
                                             <th>Sum Insured</th>
                                             {{--                                                <th>Operation</th>--}}
                                         </tr>
@@ -64,6 +65,7 @@
                                                 </td>
                                                 <td>{{$claim['VEH_REG_NO']}}</td>
                                                 <td>{{$claim['CLM_INTM_DT']}}</td>
+                                                <td>{{$claim['CLAIM_TYPE']}}</td>
                                                 <td>{{$claim['SUM_INSURED']}}</td>
                                             </tr>
                                         @endforeach
