@@ -109,7 +109,16 @@
                                                 @if(count($garages)>0)
                                                     @foreach($garages as $garage)
                                                         @if($garage->garageType == App\Conf\Config::GARAGE_TYPES[$claim['CLAIM_TYPE']]['ID'])
-                                                        <option value="{{$garage->id}}">{{$garage->name}}</option>
+                                                        <option value="{{$garage->id}}"
+                                                                @if($claim['CLAIM_TYPE'] == App\Conf\Config::GARAGE_TYPES['Theft']['TEXT']) selected @endif
+                                                        >{{$garage->name}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                    @foreach($garages as $garage)
+                                                        @if($claim['CLAIM_TYPE'] == App\Conf\Config::GARAGE_TYPES['Windscreen']['TEXT'])
+                                                            @if($garage->garageType == App\Conf\Config::GARAGE_TYPES['Assessement']['ID'])
+                                                                <option value="{{$garage->id}}">{{$garage->name}}</option>
+                                                            @endif
                                                         @endif
                                                     @endforeach
                                                 @endif
