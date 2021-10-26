@@ -108,7 +108,9 @@
                                                 <option value="">Select Garage</option>
                                                 @if(count($garages)>0)
                                                     @foreach($garages as $garage)
+                                                        @if($garage->garageType == App\Conf\Config::GARAGE_TYPES[$claim['CLAIM_TYPE']]['ID'])
                                                         <option value="{{$garage->id}}">{{$garage->name}}</option>
+                                                        @endif
                                                     @endforeach
                                                 @endif
                                             </select>
