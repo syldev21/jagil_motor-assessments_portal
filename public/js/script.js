@@ -3545,6 +3545,7 @@ $(document).ready(function () {
         });
     });
     $("body").on("click",'#searchClaim',function (){
+        $("#mainLoader").removeClass('hideLoader');
         var fromDate = $("#fromDate");
         var toDate = $("#toDate");
         var vehicleRegNo = $("#vehicleRegNo");
@@ -3573,6 +3574,7 @@ $(document).ready(function () {
             success: function (data) {
                 $("#main").html(data);
                 $('.datepicker').datepicker();
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
