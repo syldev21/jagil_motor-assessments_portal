@@ -129,8 +129,8 @@
                                                             <b class="red-text text-darken-3">{{App\Conf\Config::YES_OR_NO['NO']['TEXT']}}</b>
                                                         @endif
                                                     </td>
-                                                    <td>{{$salvageRegister->assessment->salvage}}</td>
                                                     <td>{{$salvageRegister->assessment->pav}}</td>
+                                                    <td>{{$salvageRegister->assessment->salvage}}</td>
                                                     <td>
                                                         {{isset($salvageRegister->cost) ? $salvageRegister->cost : ''}}
                                                     </td>
@@ -163,7 +163,7 @@
                                                                     </li>
                                                                 @endif
                                                             <li>
-                                                                <a href="#" id="triggerNotification" data-id="{{$salvageRegister->id}}"><i
+                                                                <a href="#" id="triggerNotification" data-id="{{$salvageRegister->assessment->id}}"><i
                                                                         class="material-icons">notifications_active</i>Send Notification </a>
                                                             </li>
                                                         </ul>
