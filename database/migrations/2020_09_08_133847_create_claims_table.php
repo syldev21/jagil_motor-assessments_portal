@@ -37,6 +37,9 @@ class CreateClaimsTable extends Migration
             $table->tinyInteger('salvageProcessed')->default(0);
             $table->dateTime('salvageProcessedDate')->nullable();
             $table->integer('salvageProcessedBy')->nullable();
+            $table->bigInteger('LPOAmount')->nullable();
+            $table->integer('LPOAddedBy')->nullable();
+            $table->dateTime('LPODateCreated')->nullable();
             $table->integer('createdBy')->nullable();
             $table->integer('updatedBy')->nullable();
             $table->integer('claimStatusID')->nullable();

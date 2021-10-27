@@ -72,6 +72,7 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->post('/supplementary-report','AdjusterController@supplementaryReport');
     $router->post('/sendRepairAuthority', 'AdjusterController@SendRepairAuthority');
     $router->post('/emailReleaseletter', 'AdjusterController@emailReleaseletter');
+    $router->post('/addLPO', 'AdjusterController@addLPO');
 });
 
 // Assessor Routes
@@ -214,6 +215,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/fetch-salvage-register', 'CommonController@fetchSalvageRegister');
     $router->post('/submitSaleSalvageRequest', 'CommonController@submitSaleSalvageRequest');
     $router->post('/salvage-release-letter', 'CommonController@salvageReleaseLetter');
+    $router->post('/viewLPOReport', 'CommonController@viewLPOReport');
 });
 
 // migrate

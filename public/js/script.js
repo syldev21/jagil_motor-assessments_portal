@@ -1918,6 +1918,36 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#viewLPOReport',function (e){
+        e.preventDefault();
+        var claimID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'post',
+            data: {
+                claimID : claimID
+            },
+            url: '/common/viewLPOReport',
+
+            success: function (data) {
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+                // $("#main").html(data);
+            }
+
+        });
+    });
     $("body").on('click','#assessor-assessment-report',function (e){
         e.preventDefault();
         var assessmentID = $(this).data("id");
@@ -4376,6 +4406,14 @@ $(document).ready(function () {
         var claimID = $(this).data("id");
         $("#claimID").val(claimID);
     });
+    $("body").on('click','#addLPOModalTrigger',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('addLPOModal');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+        var claimID = $(this).data("id");
+        $("#claimID").val(claimID);
+    });
     $("body").on('click','#reviewAssessment',function (e){
         e.preventDefault();
         var assessmentID = $("#assessmentID").val();
@@ -5744,6 +5782,62 @@ $(document).ready(function () {
             Swal.fire({
                 icon: 'error',
                 title: 'You have not provided a note',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
+    });
+    $("#main").on('click','#submitAddLPORequest',function (e){
+        e.preventDefault();
+        var claimID= $("#claimID").val();
+        var amount = $("#amount").val();
+        if(amount != '')
+        {
+            addLoadingButton();
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                    amount : amount,
+                    claimID : claimID
+                },
+                url: '/adjuster/addLPO',
+
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    removeLoadingButton();
+                }
+
+            });
+        }else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'You have not provided an amount',
                 showConfirmButton: false,
                 timer: 3000
             })

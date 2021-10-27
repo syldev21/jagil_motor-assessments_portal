@@ -630,4 +630,10 @@ class CommonController extends Controller
         $salvageRegister = SalvageRegister::where(['id'=>$salvageRegisterID])->with('assessment')->with('vendor')->with('claim')->first();
         return view('common.salvage-release-letter',['salvageRegister'=>$salvageRegister]);
     }
+    public function viewLPOReport(Request $request)
+    {
+        $claimID = $request->claimID;
+        $claim = Claim::where(['id'=>$claimID])->with('garage')->first();
+        return view('common.view-LPO-report',['claim'=>$claim]);
+    }
 }
