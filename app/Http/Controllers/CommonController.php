@@ -499,13 +499,14 @@ class CommonController extends Controller
     public function submitSalvageRequest(Request $request)
     {
         try {
-            if(isset($request->claimID) && isset($request->logbookReceived) && isset($request->documentsReceived) && isset($request->location) && isset($request->dateRecovered))
+            if(isset($request->claimID) && isset($request->logbookReceived) && isset($request->documentsReceived) && isset($request->location) && isset($request->dateRecovered) && isset($request->insuredInterestedWithSalvage))
             {
                 $claimId = $request->claimID;
                 $logbookReceived = $request->logbookReceived;
                 $documentsReceived = $request->documentsReceived;
                 $dateRecovered = Carbon::parse($request->dateRecovered)->format('Y-m-d H:i:s');
                 $location = $request->location;
+                $insuredInterestedWithSalvage = $request->insuredInterestedWithSalvage;
                 $claim = Claim::where(["id"=>$claimId])->first();
                 $salvageRegister = SalvageRegister::where(['claimID'=>$claimId])->first();
                 if(!isset($salvageRegister->id))
@@ -519,6 +520,7 @@ class CommonController extends Controller
                             "logbookReceived"=>$logbookReceived,
                             "logbookDateReceived"=> $this->functions->curlDate(),
                             "recordsReceived" => $documentsReceived,
+                            "insuredInterestedWithSalvage"=>$insuredInterestedWithSalvage,
                             "dateRecovered" => $dateRecovered,
                             "location"=>$location,
                             "createdBy" => Auth::user()->id,

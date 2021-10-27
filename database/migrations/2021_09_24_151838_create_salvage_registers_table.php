@@ -21,6 +21,7 @@ class CreateSalvageRegistersTable extends Migration
             $table->bigInteger('buyerID')->nullable();
             $table->double('cost')->nullable();
             $table->tinyInteger('logbookReceived')->default(0);
+            $table->tinyInteger('insuredInterestedWithSalvage')->default(0);
             $table->dateTime('logbookDateReceived')->nullable();
             $table->tinyInteger('recovered')->default(0);
             $table->bigInteger('recoveredBy')->nullable();

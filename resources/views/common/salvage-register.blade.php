@@ -61,7 +61,8 @@
                                             <th>Chassis Number</th>
                                             <th>Received Logbook</th>
                                             <th>Received Documents</th>
-                                            <th>Buyer</th>
+                                            <th>Insured Interested with Salvage</th>
+                                            <th>PAV</th>
                                             <th>Salvage Estimate</th>
                                             <th>Salvage Sold</th>
                                             <th>Operation</th>
@@ -122,14 +123,14 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if(isset($salvageRegister->buyerID))
-                                                            <?php
-                                                            $vendor = \App\Vendor::where(["id"=>$salvageRegister->buyerID])->first();
-                                                            ?>
-                                                            {{isset($vendor->fullName) ? $vendor->fullName : '' }}
+                                                        @if($salvageRegister->insuredInterestedWithSalvage == App\Conf\Config::YES_OR_NO['YES']['ID'])
+                                                            <b class="green-text text-darken-3">{{App\Conf\Config::YES_OR_NO['YES']['TEXT']}}</b>
+                                                        @else
+                                                            <b class="red-text text-darken-3">{{App\Conf\Config::YES_OR_NO['NO']['TEXT']}}</b>
                                                         @endif
                                                     </td>
                                                     <td>{{$salvageRegister->assessment->salvage}}</td>
+                                                    <td>{{$salvageRegister->assessment->pav}}</td>
                                                     <td>
                                                         {{isset($salvageRegister->cost) ? $salvageRegister->cost : ''}}
                                                     </td>

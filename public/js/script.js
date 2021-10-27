@@ -5850,6 +5850,7 @@ $(document).ready(function () {
         var documentsReceived = $("#documentsReceived").val();
         var dateRecovered = $("#dateRecovered").val();
         var location = $("#location").val();
+        var insuredInterestedWithSalvage = $("#insuredInterestedWithSalvage").val();
             addLoadingButton();
             $.ajaxSetup({
 
@@ -5868,7 +5869,8 @@ $(document).ready(function () {
                     documentsReceived : documentsReceived,
                     claimID : claimID,
                     dateRecovered : dateRecovered,
-                    location : location
+                    location : location,
+                    insuredInterestedWithSalvage : insuredInterestedWithSalvage
                 },
                 url: '/common/submitSalvageRequest',
 
