@@ -50,6 +50,12 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Claim Number</th>
+                                            <th>Policy Number</th>
+                                            <th>Sub Class Code</th>
+                                            <th>Sub Class</th>
+                                            <th>Claims loss date</th>
+                                            <th>Claims creation date</th>
+                                            <th>Intimation Date</th>
                                             <th>Model</th>
                                             <th>Chassis</th>
                                             <th>RegNo</th>
@@ -71,6 +77,12 @@
                                                 <tr>
                                                     <td>{{$loop->iteration}}</td>
                                                     <td><a href="#" data-id="{{$assessment['claim']['id']}}" id="claimDetails">{{$assessment['claim']['claimNo']}}</a></td>
+                                                    <td>{{$assessment['claim']['policyNo']}}</td>
+                                                    <td>{{isset($assessment['claim']['subClassCode']) ? $assessment['claim']['subClassCode'] : ''}}</td>
+                                                    <td>{{isset($assessment['claim']['subClassCode']) ? \App\Conf\Config::SUB_CLASSES[$assessment['claim']['subClassCode']] : ''}}</td>
+                                                    <td>{{$assessment['claim']['loseDate']}}</td>
+                                                    <td>{{$assessment['claim']['dateCreated']}}</td>
+                                                    <td>{{$assessment['claim']['intimationDate']}}</td>
                                                     <?php
                                                     $carDetail = \App\CarModel::where(["modelCode" => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : 0])->first();
                                                     $adjuster = \App\User::where(['id'=> $assessment['claim']['createdBy']])->first();

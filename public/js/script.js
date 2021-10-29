@@ -1224,6 +1224,41 @@ $(document).ready(function () {
 
         });
     });
+    $(".fetch-theft-claims").on('click',function (e){
+        e.preventDefault();
+        var claimType = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'claimType' : claimType
+            },
+            url: '/common/fetch-theft-claims',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+    });
     $(".re-inspections").on('click',function (e){
         e.preventDefault();
         $("#mainLoader").removeClass('hideLoader');
@@ -1248,6 +1283,14 @@ $(document).ready(function () {
                     dom: 'Bfrtip',
                     buttons: [
                         'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "columnDefs": [
+                        { 'visible': false, 'targets': [2] },
+                        { 'visible': false, 'targets': [3] },
+                        { 'visible': false, 'targets': [4] },
+                        { 'visible': false, 'targets': [5] },
+                        { 'visible': false, 'targets': [6] },
+                        { 'visible': false, 'targets': [7] }
                     ],
                     "pageLength": 25
                 });
