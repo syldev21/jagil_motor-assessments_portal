@@ -279,6 +279,8 @@ class AdjusterController extends Controller
     {
         try {
             $claimNo = $request->claimNo;
+            $claimArray = explode('/',$claimNo);
+            $subClassCode =$claimArray[2];
             $customerCode = $request->customerCode;
             $email = $request->email;
             $policyNo = $request->policyNo;
@@ -332,6 +334,7 @@ class AdjusterController extends Controller
                             "claimNo" => $claimNo,
                             "policyNo" => $policyNo,
                             "branch" => $branch,
+                            "subClassCode"=>$subClassCode,
                             "vehicleRegNo" => $vehicleRegNo,
                             "carMakeCode" => $carMakeCode,
                             "carModelCode" => $carModelCode,
@@ -399,6 +402,7 @@ class AdjusterController extends Controller
                         "claimNo" => $claimNo,
                         "policyNo" => $policyNo,
                         "branch" => $branch,
+                        "subClassCode" =>$subClassCode,
                         "vehicleRegNo" => $vehicleRegNo,
                         "carMakeCode" => $carMakeCode,
                         "carModelCode" => $carModelCode,
