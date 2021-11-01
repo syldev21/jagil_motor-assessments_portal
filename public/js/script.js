@@ -5320,6 +5320,14 @@ $(document).ready(function () {
                     buttons: [
                         'copy', 'csv', 'excel', 'pdf', 'print'
                     ],
+                    "columnDefs": [
+                        { 'visible': false, 'targets': [2] },
+                        { 'visible': false, 'targets': [3] },
+                        { 'visible': false, 'targets': [4] },
+                        { 'visible': false, 'targets': [5] },
+                        { 'visible': false, 'targets': [6] },
+                        { 'visible': false, 'targets': [7] }
+                    ],
                     "pageLength": 25
                 });
             }
