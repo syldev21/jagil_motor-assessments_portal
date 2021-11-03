@@ -198,11 +198,8 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="input-field col m4 s6">
-                                        <p>Buyer</p>
-                                    </div>
-                                    <div class="input-field col m4 s6">
-                                        <select id="vendor" required name="vendor" class="browser-default">
+                                    <div class="input-field col m6 s12">
+                                        <select id="vendor" required name="vendor">
                                             <?php
                                             $vendors = \App\Vendor::all();
                                             ?>
@@ -210,14 +207,22 @@
                                                     <option value="{{$vendor->id}}">{{$vendor->fullName}}</option>
                                             @endforeach
                                         </select>
+                                        <label for="vendor">Buyer</label>
+                                    </div>
+                                    <div class="input-field col m6 s12">
+                                        <select id="logbookReceivedByRecoveryOfficer" required name="logbookReceivedByRecoveryOfficer">
+                                            <option value="0">NO</option>
+                                            <option value="1">YES</option>
+                                        </select>
+                                        <label for="logbookReceivedByRecoveryOfficer">Logbook Received</label>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="input-field col m4 s6">
-                                        <p>Cost</p>
-                                    </div>
-                                    <div class="input-field col m4 s6">
+                                    <div class="input-field col m6 s12">
                                         <input type="text" name="cost" id="cost">
+                                        <label for="location">Cost</label>
+                                    </div>
+                                    <div class="input-field col m6 s12">
                                     </div>
                                 </div>
                                 <div class="row">

@@ -4391,6 +4391,7 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         var salvageID = $(this).data("id");
         $("#salvageID").val(salvageID);
+        $('select').formSelect();
         instance.open();
     });
     $("body").on('click','#triggerNotification',function (e){
@@ -5952,6 +5953,7 @@ $(document).ready(function () {
         var salvageID= $("#salvageID").val();
         var vendor = $("#vendor").val();
         var cost = $("#cost").val();
+        var logbookReceivedByRecoveryOfficer = $("#logbookReceivedByRecoveryOfficer").val();
             addLoadingButton();
             $.ajaxSetup({
 
@@ -5968,7 +5970,8 @@ $(document).ready(function () {
                 data : {
                     salvageID : salvageID,
                     vendor : vendor,
-                    cost : cost
+                    cost : cost,
+                    logbookReceivedByRecoveryOfficer : logbookReceivedByRecoveryOfficer
                 },
                 url: '/common/submitSaleSalvageRequest',
 

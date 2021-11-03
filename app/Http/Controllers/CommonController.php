@@ -576,7 +576,7 @@ class CommonController extends Controller
     public function submitSaleSalvageRequest(Request $request)
     {
         try {
-            if(isset($request->salvageID) && isset($request->vendor) && isset($request->cost))
+            if(isset($request->salvageID) && isset($request->vendor) && isset($request->cost) && isset($request->logbookReceivedByRecoveryOfficer))
             {
                 $salvage = SalvageRegister::where(['id'=>$request->salvageID])->first();
                 if(isset($salvage->id))
@@ -586,6 +586,7 @@ class CommonController extends Controller
                         SalvageRegister::where(['id'=>$request->salvageID])->update([
                             "buyerID"=>$request->vendor,
                             "cost"=>$request->cost,
+                            "logbookReceivedByRecoveryOfficer"=>$request->logbookReceivedByRecoveryOfficer,
                             "updatedBy"=>Auth::user()->id,
                             "dateModified"=>$this->functions->curlDate()
                         ]);
@@ -637,5 +638,12 @@ class CommonController extends Controller
         $claimID = $request->claimID;
         $claim = Claim::where(['id'=>$claimID])->with('garage')->first();
         return view('common.view-LPO-report',['claim'=>$claim]);
+    }
+    public function fetchTheftClaims(Request $request)
+    {
+        $claimType = $request->claimType;
+        $assessors = User::role('Assessor')->get();
+        $claims = Claim::where(['claimType'=> $claimType,'active'=>Config::ACTIVE])->with('adjuster')->get();
+        return view('common.theft-claims',['claims' => $claims, 'assessors' => $assessors]);
     }
 }
