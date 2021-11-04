@@ -1,4 +1,99 @@
 <div class="row">
+    <div id="userStatus" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="row">
+                    <div class="input-field col m12 s12">
+                        <div class="container">
+                            <div class="input-field">
+
+                                <table>
+                                    <thead>
+                                    <tr >
+                                        <th><b>S/N</b></th>
+                                        <th><b>Name</b></th>
+                                        <th><b>Email</b></th>
+                                        <th><b>Switch Status</b></th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr>
+
+                                        <td id="sn" style="text-align: center !important;"></td>
+                                        <td id="u_id" style="text-align: center !important; display: none"></td>
+                                        <td id="name" style="text-align: center !important;"></td>
+                                        <td id="email" style="text-align: center !important;"></td>
+                                        <td style="text-align: center !important;">
+                                            <div class="switch">
+                                                <label>
+                                                    Inactive
+                                                    <input  id="user_switch" type="checkbox" >
+                                                    <span class="lever"></span>
+                                                    Active
+                                                </label>
+                                            </div>
+                                        </td>
+
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s8"></div>
+                    <div class="input-field col s2">
+                        <a href="#"
+                           class="float-right btn cyan waves-effect waves-effect waves-light hideLoadingButton loadingButton"
+                        >
+                            <div class="preloader-wrapper small active float-left">
+                                <div class="spinner-layer spinner-blue-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="float-right"> Loading</div>
+                        </a>
+                    </div>
+                    <div class="input-field col s2">
+                        <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div
         class="content-wrapper-before  gradient-45deg-red-pink">
@@ -12,7 +107,7 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <h4 class="card-title float-left">User Management</h4>
+                                <h4 class="card-title float-left um">User Management</h4>
                                 @hasrole('Admin')
                                 <a href="#" id="registerUserForm" class="float-right btn cyan darken-3 waves-effect waves-effect waves-light"><i class="material-icons left">add_circle_outline</i> Add User</a>
                                 @endhasrole
@@ -45,8 +140,8 @@
                                             @hasrole('Admin')
                                             <th>{{\App\Conf\Config::$ROLES['CUSTOMER-SERVICE']}}</th>
                                             @endhasrole
-                                            <th>Role</th>
-                                            <th>Permission</th>
+                                            <th>Status</th>
+{{--                                            <th>Permission</th>--}}
                                             {{--                                                <th>Operation</th>--}}
                                         </tr>
                                         </thead>
@@ -61,8 +156,14 @@
                                                 ?>
                                             @endforeach
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>
-                                                <td>{{$user->email}}</td>
+                                                <td class="name" style="display: none">{{$user->name}}</td>
+                                                <td class="userID" style="display: none">{{$user->id}}</td>
+                                                <td class="userStatus" style="display: none">{{$user->status}}</td>
+
+
+
+                                                <td class="sn">{{$loop->iteration}}</td>
+                                                <td class="email">{{$user->email}}</td>
                                                 @hasrole('Admin')
                                                 <td>
                                                         <label>
@@ -121,6 +222,8 @@
                                                 @endhasrole
                                                 @hasrole('Admin')
                                                 <td>
+
+
                                                     <label>
                                                         <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['CUSTOMER-SERVICE'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['CUSTOMER-SERVICE']}}"/>
                                                         <span></span>
@@ -128,12 +231,27 @@
                                                 </td>
                                                 @endhasrole
                                                 <td>
-                                                    <a data-id="{{$loop->iteration}}"  data-user="{{$user->id}}" href="#" class="btn" id="assignRole"><i class="material-icons">exposure</i></a>
+                                                    <select id="" name="" class="browser-default">
+                                                            <option data-userid="{{$user->id}}" id="user_status" value="{{$user->id}}">
+                                                                @if($user->status==0)
+                                                                    Activate
+
+                                                                @else
+                                                                    Deactivate
+                                                                @endif
+
+                                                            </option>
+                                                            <option data-id="{{$loop->iteration}}"  data-user="{{$user->id}}" id="assignRole" value="">Role</option>
+                                                            <option data-id="{{$user->id}}" id="fetchPermissions" value="">Permission</option>
+                                                    </select>
+{{--                                                    <a data-id="{{$loop->iteration}}"  data-user="{{$user->id}}" href="#" class="btn" id="assignRole"><i class="material-icons">exposure</i></a>--}}
                                                 </td>
-                                                <td>
-                                                    <a data-id="{{$user->id}}"  href="#" class="btn" id="fetchPermissions"><i class="material-icons">exposure</i></a>
-                                                </td>
+{{--                                                <td>--}}
+{{--                                                    <a data-id="{{$user->id}}"  href="#" class="btn" id="fetchPermissions"><i class="material-icons">exposure</i></a>--}}
+{{--                                                </td>--}}
+                                                <td></td>
                                             </tr>
+
                                         @endforeach
                                         </tbody>
                                     </table>
