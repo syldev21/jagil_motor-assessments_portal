@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('loginAttemps')->default(0);
             $table->boolean('active')->default(0);
+            $table->boolean('status')->default(false);
             $table->boolean('online')->default(0);
             $table->integer('durationOnline')->default(0);
             $table->string('signature')->nullable();

@@ -69,6 +69,52 @@ class AdminController extends Controller
         return json_encode($response);
 
     }
+
+    public  function setStatus(Request $request)
+    {
+        if($request->status=='true')
+        {
+            $res=User::find($request->id)->update(['status'=>true]);
+            if($res)
+            {
+                $response= response()->json(["status"=>"successful"]);
+            }else{
+                $response= response()->json(["status"=>"failed"]);
+            }
+
+
+        }else{
+            $result=User::find($request->id)->update(['status'=>false]);
+            if($result)
+            {
+                $response= response()->json(["status"=>"successful"]);
+            }else{
+                $response= response()->json(["status"=>"failed"]);
+            }
+
+        }
+
+        return $response;
+
+
+    }
+
+    public function getUser(Request $request)
+    {
+      $res= User::find($request->id)->status;
+      if($res == '1')
+      {
+
+          $response= response()->json(["status"=>'1']);
+      }else{
+
+          $response= response()->json(["status"=>'0']);
+      }
+
+      return $response;
+    }
+
+
     public function assignPermission(Request $request)
     {
         try {
@@ -103,6 +149,7 @@ class AdminController extends Controller
     }
     public function listUsers(Request $request)
     {
+
         if(auth()->user()->hasRole(Config::$ROLES['HEAD-ASSESSOR']))
         {
             $users = User::role([Config::$ROLES['ASSESSOR'],Config::$ROLES['HEAD-ASSESSOR'],Config::$ROLES['ASSISTANT-HEAD'],Config::$ROLES['ASSESSMENT-MANAGER']])->get();
@@ -110,6 +157,9 @@ class AdminController extends Controller
         }else
         {
             $users = User::with('roles')->get();
+        }
+        if(isset($request->id)){
+            return view("admin.users",['users' =>$users,'userID'=>$request->id]);
         }
         return view("admin.users",['users' =>$users]);
     }
@@ -285,4 +335,7 @@ class AdminController extends Controller
         }
         return json_encode($response);
     }
+    public function changeStatus(){
+        return view("status");
+}
 }
