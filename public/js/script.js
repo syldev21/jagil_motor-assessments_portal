@@ -803,6 +803,52 @@ $(document).ready(function () {
 
         });
     });
+
+
+    $("body").on('click','#user_switch',function (){
+        var status=$(this).prop("checked");
+        var id=$("#u_id").text();
+
+
+
+        $.ajaxSetup({
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+         });
+         $.ajax({
+         type:"POST",
+         url:'/admin/set-status',
+         data:{
+         status:status,
+         id:id
+         },
+         success:function(data){
+          if(data.status=="successful")
+          {
+          Swal.fire({
+              icon: 'success',
+              title: "Successful",
+              showConfirmButton: false,
+              timer: 3000
+              })
+          }
+
+         },
+         error:function(data){
+//         var result = $.parseJSON(data);
+
+         }
+
+
+         });
+
+
+    });
+
+
+
     $("#main").on('click','#filter-assessment-manager-assessments',function (e){
         e.preventDefault();
         var assessmentStatusID = $("#assessmentStatusID").val();
@@ -810,13 +856,10 @@ $(document).ready(function () {
         var toDate = $("#to_date").val();
         var regNumber = $("#vehicle_reg_no").val();
         $.ajaxSetup({
-
             headers: {
 
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
             }
-
         });
         $.ajax({
 
@@ -1189,6 +1232,9 @@ $(document).ready(function () {
 
         });
     });
+
+
+
     $(".fetch-claim-types").on('click',function (e){
         e.preventDefault();
         var claimType = $(this).data("id");
@@ -1272,7 +1318,6 @@ $(document).ready(function () {
 
         });
         $.ajax({
-
             type: 'POST',
             url: '/common/fetch-re-inspections',
 
@@ -4375,6 +4420,54 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
+
+
+    $("body").on('click','#user_status',function (e){
+        e.preventDefault();
+
+        var _this=$(this).parents('tr');
+
+
+        var id=_this.find('.userID').text();
+
+        $("#email").text(_this.find('.email').text());
+        $("#u_id").text(_this.find('.userID').text());
+        $("#sn").text(_this.find('.sn').text());
+        $("#name").text(_this.find('.name').text());
+
+        $.ajaxSetup({
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+
+             $.ajax({
+
+                        type: 'GET',
+                        data: {
+                            id : id
+                        },
+                        url: '/admin/fetch-user-status',
+                        success: function (data) {
+                                if(data.status=='1')
+                                {
+                                 $("#user_switch").prop("checked",true);
+                                }else{
+                                $("#user_switch").prop("checked",false
+
+                                );
+                                }
+
+                               const elem = document.getElementById('userStatus');
+                               const instance = M.Modal.init(elem, {dismissible: true});
+                               instance.open();
+                        }
+
+                    });
+
+    });
+
     $("body").on('click','#processSalvage',function (e){
         e.preventDefault();
         const elem = document.getElementById('processSalvageModal');

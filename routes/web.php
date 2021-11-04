@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@mainDashboard')->name('home');
 Route::get('/assessments', 'HomeController@assessments')->name('assessments');
 Route::post('/dashboard', 'HomeController@dashboard')->name('dashboard');
@@ -188,6 +189,8 @@ $router->group(['prefix' => 'admin'], function($router)
     $router->post('/fetch-salvage-vendors','AdminController@fetchSalvageVendors');
     $router->post('/addVendorForm','AdminController@addVendorForm');
     $router->post('/addVendor','AdminController@addVendor');
+    $router->get('/fetch-user-status','AdminController@getUser');
+    $router->post('/set-status','AdminController@setStatus');
 });
 $router->group(['prefix' => 'migration'], function($router)
 {
