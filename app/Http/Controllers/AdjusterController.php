@@ -279,6 +279,8 @@ class AdjusterController extends Controller
     {
         try {
             $claimNo = $request->claimNo;
+            $claimArray = explode('/',$claimNo);
+            $subClassCode =$claimArray[2];
             $customerCode = $request->customerCode;
             $email = $request->email;
             $policyNo = $request->policyNo;
@@ -332,6 +334,7 @@ class AdjusterController extends Controller
                             "claimNo" => $claimNo,
                             "policyNo" => $policyNo,
                             "branch" => $branch,
+                            "subClassCode"=>$subClassCode,
                             "vehicleRegNo" => $vehicleRegNo,
                             "carMakeCode" => $carMakeCode,
                             "carModelCode" => $carModelCode,
@@ -399,6 +402,7 @@ class AdjusterController extends Controller
                         "claimNo" => $claimNo,
                         "policyNo" => $policyNo,
                         "branch" => $branch,
+                        "subClassCode" =>$subClassCode,
                         "vehicleRegNo" => $vehicleRegNo,
                         "carMakeCode" => $carMakeCode,
                         "carModelCode" => $carModelCode,
@@ -810,7 +814,14 @@ class AdjusterController extends Controller
         $claimType = $request->claimType;
         $assessors = User::role('Assessor')->get();
         $claims = Claim::where(['claimType'=> $claimType,'active'=>Config::ACTIVE])->with('adjuster')->get();
-        return view('adjuster.claim-types', ['claims' => $claims, 'assessors' => $assessors]);
+        if($request->claimType == Config::CLAIM_TYPES['WINDSCREEN'])
+        {
+            $view = 'windscreen-claims';
+
+        }else{
+            $view = 'claim-types';
+        }
+        return view('adjuster.'.$view, ['claims' => $claims, 'assessors' => $assessors]);
     }
 
     //Generate release letter
@@ -1205,6 +1216,48 @@ class AdjusterController extends Controller
             );
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
                 "An exception occurred when trying archive claim. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
+    public function addLPO(Request $request)
+    {
+        try {
+            if(isset($request->claimID) && isset($request->amount))
+            {
+                $claim = Claim::where(['id'=>$request->claimID])->first();
+                if(isset($claim->id))
+                {
+                    Claim::where(['id'=>$claim->id])->update([
+                        "LPOAmount"=>$request->amount,
+                        "LPOAddedBy"=>Auth::user()->id,
+                        "LPODateCreated"=>$this->functions->curlDate()
+                    ]);
+                    $response = array(
+                        "STATUS_CODE" => Config::SUCCESS_CODE,
+                        "STATUS_MESSAGE" => "LPO added successfully"
+                    );
+                }else
+                {
+                    $response = array(
+                        "STATUS_CODE" => Config::NO_RECORDS_FOUND,
+                        "STATUS_MESSAGE" => "Record not found"
+                    );
+                }
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Invalid payload provided"
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying addPLO. Error message " . $e->getMessage());
         }
         return json_encode($response);
     }

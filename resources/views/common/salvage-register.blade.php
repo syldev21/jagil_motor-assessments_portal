@@ -61,7 +61,8 @@
                                             <th>Chassis Number</th>
                                             <th>Received Logbook</th>
                                             <th>Received Documents</th>
-                                            <th>Buyer</th>
+                                            <th>Insured Interested with Salvage</th>
+                                            <th>PAV</th>
                                             <th>Salvage Estimate</th>
                                             <th>Salvage Sold</th>
                                             <th>Operation</th>
@@ -122,13 +123,13 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if(isset($salvageRegister->buyerID))
-                                                            <?php
-                                                            $vendor = \App\Vendor::where(["id"=>$salvageRegister->buyerID])->first();
-                                                            ?>
-                                                            {{isset($vendor->fullName) ? $vendor->fullName : '' }}
+                                                        @if($salvageRegister->insuredInterestedWithSalvage == App\Conf\Config::YES_OR_NO['YES']['ID'])
+                                                            <b class="green-text text-darken-3">{{App\Conf\Config::YES_OR_NO['YES']['TEXT']}}</b>
+                                                        @else
+                                                            <b class="red-text text-darken-3">{{App\Conf\Config::YES_OR_NO['NO']['TEXT']}}</b>
                                                         @endif
                                                     </td>
+                                                    <td>{{$salvageRegister->assessment->pav}}</td>
                                                     <td>{{$salvageRegister->assessment->salvage}}</td>
                                                     <td>
                                                         {{isset($salvageRegister->cost) ? $salvageRegister->cost : ''}}
@@ -162,7 +163,7 @@
                                                                     </li>
                                                                 @endif
                                                             <li>
-                                                                <a href="#" id="triggerNotification" data-id="{{$salvageRegister->id}}"><i
+                                                                <a href="#" id="triggerNotification" data-id="{{$salvageRegister->assessment->id}}"><i
                                                                         class="material-icons">notifications_active</i>Send Notification </a>
                                                             </li>
                                                         </ul>
@@ -197,11 +198,8 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="input-field col m4 s6">
-                                        <p>Buyer</p>
-                                    </div>
-                                    <div class="input-field col m4 s6">
-                                        <select id="vendor" required name="vendor" class="browser-default">
+                                    <div class="input-field col m6 s12">
+                                        <select id="vendor" required name="vendor">
                                             <?php
                                             $vendors = \App\Vendor::all();
                                             ?>
@@ -209,14 +207,22 @@
                                                     <option value="{{$vendor->id}}">{{$vendor->fullName}}</option>
                                             @endforeach
                                         </select>
+                                        <label for="vendor">Buyer</label>
+                                    </div>
+                                    <div class="input-field col m6 s12">
+                                        <select id="logbookReceivedByRecoveryOfficer" required name="logbookReceivedByRecoveryOfficer">
+                                            <option value="0">NO</option>
+                                            <option value="1">YES</option>
+                                        </select>
+                                        <label for="logbookReceivedByRecoveryOfficer">Logbook Received</label>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="input-field col m4 s6">
-                                        <p>Cost</p>
-                                    </div>
-                                    <div class="input-field col m4 s6">
+                                    <div class="input-field col m6 s12">
                                         <input type="text" name="cost" id="cost">
+                                        <label for="location">Cost</label>
+                                    </div>
+                                    <div class="input-field col m6 s12">
                                     </div>
                                 </div>
                                 <div class="row">

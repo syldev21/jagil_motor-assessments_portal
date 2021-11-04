@@ -238,6 +238,18 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="input-field col m6 s12">
+                                        <select id="insuredInterestedWithSalvage" required name="insuredInterestedWithSalvage">
+                                            <option value="0">NO</option>
+                                            <option value="1">YES</option>
+                                        </select>
+                                        <label for="insuredInterestedWithSalvage">Insured interested with salvage</label>
+                                    </div>
+                                    <div class="input-field col m6 s12">
+
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="input-field col m8 s12">
                                     </div>
                                     <div class="input-field col m4 s12">

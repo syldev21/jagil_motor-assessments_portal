@@ -1270,11 +1270,41 @@ $(document).ready(function () {
 
         });
     });
+    $(".fetch-theft-claims").on('click',function (e){
+        e.preventDefault();
+        var claimType = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
 
+            headers: {
 
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 
+            }
 
+        });
+        $.ajax({
 
+            type: 'POST',
+            data : {
+                'claimType' : claimType
+            },
+            url: '/common/fetch-theft-claims',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+    });
     $(".re-inspections").on('click',function (e){
         e.preventDefault();
         $("#mainLoader").removeClass('hideLoader');
@@ -1298,6 +1328,14 @@ $(document).ready(function () {
                     dom: 'Bfrtip',
                     buttons: [
                         'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "columnDefs": [
+                        { 'visible': false, 'targets': [2] },
+                        { 'visible': false, 'targets': [3] },
+                        { 'visible': false, 'targets': [4] },
+                        { 'visible': false, 'targets': [5] },
+                        { 'visible': false, 'targets': [6] },
+                        { 'visible': false, 'targets': [7] }
                     ],
                     "pageLength": 25
                 });
@@ -1957,6 +1995,36 @@ $(document).ready(function () {
                salvageRegisterID : salvageRegisterID
             },
             url: '/common/salvage-release-letter',
+
+            success: function (data) {
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+                // $("#main").html(data);
+            }
+
+        });
+    });
+    $("body").on('click','#viewLPOReport',function (e){
+        e.preventDefault();
+        var claimID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'post',
+            data: {
+                claimID : claimID
+            },
+            url: '/common/viewLPOReport',
 
             success: function (data) {
                 var w = window.open('about:blank');
@@ -3595,6 +3663,7 @@ $(document).ready(function () {
         });
     });
     $("body").on("click",'#searchClaim',function (){
+        $("#mainLoader").removeClass('hideLoader');
         var fromDate = $("#fromDate");
         var toDate = $("#toDate");
         var vehicleRegNo = $("#vehicleRegNo");
@@ -3623,6 +3692,7 @@ $(document).ready(function () {
             success: function (data) {
                 $("#main").html(data);
                 $('.datepicker').datepicker();
+                $("#mainLoader").addClass('hideLoader');
             }
 
         });
@@ -4414,6 +4484,7 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         var salvageID = $(this).data("id");
         $("#salvageID").val(salvageID);
+        $('select').formSelect();
         instance.open();
     });
     $("body").on('click','#triggerNotification',function (e){
@@ -4467,6 +4538,14 @@ $(document).ready(function () {
     $("body").on('click','#archiveClaimTrigger',function (e){
         e.preventDefault();
         const elem = document.getElementById('archiveClaim');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+        var claimID = $(this).data("id");
+        $("#claimID").val(claimID);
+    });
+    $("body").on('click','#addLPOModalTrigger',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('addLPOModal');
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
         var claimID = $(this).data("id");
@@ -5335,6 +5414,14 @@ $(document).ready(function () {
                     buttons: [
                         'copy', 'csv', 'excel', 'pdf', 'print'
                     ],
+                    "columnDefs": [
+                        { 'visible': false, 'targets': [2] },
+                        { 'visible': false, 'targets': [3] },
+                        { 'visible': false, 'targets': [4] },
+                        { 'visible': false, 'targets': [5] },
+                        { 'visible': false, 'targets': [6] },
+                        { 'visible': false, 'targets': [7] }
+                    ],
                     "pageLength": 25
                 });
             }
@@ -5845,6 +5932,62 @@ $(document).ready(function () {
             })
         }
     });
+    $("#main").on('click','#submitAddLPORequest',function (e){
+        e.preventDefault();
+        var claimID= $("#claimID").val();
+        var amount = $("#amount").val();
+        if(amount != '')
+        {
+            addLoadingButton();
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                    amount : amount,
+                    claimID : claimID
+                },
+                url: '/adjuster/addLPO',
+
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    removeLoadingButton();
+                }
+
+            });
+        }else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'You have not provided an amount',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
+    });
     $("#main").on('click','#submitSalvageRequest',function (e){
         e.preventDefault();
         var claimID= $("#claimID").val();
@@ -5852,6 +5995,7 @@ $(document).ready(function () {
         var documentsReceived = $("#documentsReceived").val();
         var dateRecovered = $("#dateRecovered").val();
         var location = $("#location").val();
+        var insuredInterestedWithSalvage = $("#insuredInterestedWithSalvage").val();
             addLoadingButton();
             $.ajaxSetup({
 
@@ -5870,7 +6014,8 @@ $(document).ready(function () {
                     documentsReceived : documentsReceived,
                     claimID : claimID,
                     dateRecovered : dateRecovered,
-                    location : location
+                    location : location,
+                    insuredInterestedWithSalvage : insuredInterestedWithSalvage
                 },
                 url: '/common/submitSalvageRequest',
 
@@ -5901,6 +6046,7 @@ $(document).ready(function () {
         var salvageID= $("#salvageID").val();
         var vendor = $("#vendor").val();
         var cost = $("#cost").val();
+        var logbookReceivedByRecoveryOfficer = $("#logbookReceivedByRecoveryOfficer").val();
             addLoadingButton();
             $.ajaxSetup({
 
@@ -5917,7 +6063,8 @@ $(document).ready(function () {
                 data : {
                     salvageID : salvageID,
                     vendor : vendor,
-                    cost : cost
+                    cost : cost,
+                    logbookReceivedByRecoveryOfficer : logbookReceivedByRecoveryOfficer
                 },
                 url: '/common/submitSaleSalvageRequest',
 
