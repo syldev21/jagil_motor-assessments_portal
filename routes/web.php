@@ -216,6 +216,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/submitSaleSalvageRequest', 'CommonController@submitSaleSalvageRequest');
     $router->post('/salvage-release-letter', 'CommonController@salvageReleaseLetter');
     $router->post('/viewLPOReport', 'CommonController@viewLPOReport');
+    $router->post('/fetch-theft-claims', 'CommonController@fetchTheftClaims');
 });
 
 // migrate
