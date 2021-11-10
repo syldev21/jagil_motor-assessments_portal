@@ -67,6 +67,21 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <div class="input-field col m4 s12">
+                                                <label for="garageID" class="active">Garage</label>
+                                                <br>
+                                                <select id="garageID" required name="garageID" class="browser-default">
+                                                    @if(count($garages)>0)
+                                                        @foreach($garages as $garage)
+                                                            @if($garage->garageType == App\Conf\Config::GARAGE_TYPES['Assessement']['ID'])
+                                                                <option value="{{$garage->id}}" @if($assessment->claim->garageID == $garage->id) selected  @endif>{{$garage->name}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col m6 s12">
                                                 <p>Notes</p>
                                                 <textarea id="notes" class="materialize-textarea notes" name="notes">

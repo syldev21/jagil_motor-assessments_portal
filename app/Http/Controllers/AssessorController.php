@@ -163,7 +163,8 @@ class AssessorController extends Controller
                 $jobDraftDetail["Dam Kit"] = $jobDetail->cost;
             }
         }
-        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails, 'claim' => $claim, 'drafted' => $drafted, 'modelsAndMakes' => $modelsAndMakes]);
+        $garages = Garage::all();
+        return view('assessor.assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails, 'claim' => $claim, 'drafted' => $drafted, 'modelsAndMakes' => $modelsAndMakes,'garages'=>$garages]);
     }
 
     public function fillSupplementaryReport(Request $request, $assessmentID)
@@ -352,6 +353,7 @@ class AssessorController extends Controller
             $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
             $carMake = !empty($jobsData['carMake']) ? $jobsData['carMake'] : '';
             $carModel = !empty($jobsData['carModel']) ? $jobsData['carModel'] : '';
+            $garageID = !empty($jobsData['garageID']) ? $jobsData['garageID'] : '';
             $YOM = !empty($jobsData['YOM']) ? $jobsData['YOM'] : '';
             if ($chassisNumber != '' && $carMake != '' && $carModel != '') {
                 $assessment = Assessment::where(['id' => $assessmentID])->first();
@@ -359,6 +361,7 @@ class AssessorController extends Controller
                     "chassisNumber" => $chassisNumber,
                     "carMakeCode" => $carMake,
                     "carModelCode" => $carModel,
+                    "garageID" =>$garageID,
                     "yom" => $YOM
                 ]);
             }
@@ -1481,8 +1484,8 @@ class AssessorController extends Controller
                 $jobDraftDetail["Dam Kit"] = $jobDetail->cost;
             }
         }
-
-        return view('assessor.edit-assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails, "modelsAndMakes" => $modelsAndMakes]);
+        $garages= Garage::all();
+        return view('assessor.edit-assessment-report', ['assessment' => $assessment, 'remarks' => $remarks, 'parts' => $parts, 'assessmentItems' => $assessmentItems, "jobDraftDetail" => $jobDraftDetail, "draftAssessment" => $draftAssessment, "carDetails" => $carDetails, "modelsAndMakes" => $modelsAndMakes,'garages'=>$garages]);
     }
 
     public function editSupplementaryReport(Request $request, $assessmentID)
@@ -1597,6 +1600,7 @@ class AssessorController extends Controller
             $chassisNumber = !empty($jobsData['chassisNumber']) ? $jobsData['chassisNumber'] : '';
             $carMake = !empty($jobsData['carMake']) ? $jobsData['carMake'] : '';
             $carModel = !empty($jobsData['carModel']) ? $jobsData['carModel'] : '';
+            $garageID = !empty($jobsData['garageID']) ? $jobsData['garageID'] : '';
             $YOM = !empty($jobsData['YOM']) ? $jobsData['YOM'] : '';
             if ($chassisNumber != '' && $carMake != '' && $carModel != '') {
                 $assessment = Assessment::where(['id' => $assessmentID])->first();
@@ -1604,6 +1608,7 @@ class AssessorController extends Controller
                     "chassisNumber" => $chassisNumber,
                     "carMakeCode" => $carMake,
                     "carModelCode" => $carModel,
+                    "garageID"=>$garageID,
                     "YOM" => $YOM
                 ]);
             }

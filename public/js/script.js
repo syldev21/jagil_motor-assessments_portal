@@ -2385,6 +2385,7 @@ $(document).ready(function () {
         var chassisNumber = $("#chassisNumber");
         var carMake = $("#carMake");
         var carModel = $("#carModel");
+        var garageID = $("#garageID");
         var YOM = $("#YOM");
         var salvage = $("#salvage");
         var totalLoss = $("#total_loss");
@@ -2407,6 +2408,7 @@ $(document).ready(function () {
             chassisNumber : chassisNumber.val(),
             carMake : carMake.val(),
             carModel : carModel.val(),
+            garageID : garageID.val(),
             YOM : YOM.val(),
             salvage : salvage.val(),
             totalLoss : totalLoss.val(),
@@ -3808,6 +3810,7 @@ $(document).ready(function () {
         var chassisNumber = $("#chassisNumber");
         var carMake = $("#carMake");
         var carModel = $("#carModel");
+        var garageID=$("#garageID");
         var YOM = $("#YOM");
         var salvage = $("#salvage");
         var totalLoss = $("#total_loss");
@@ -3831,6 +3834,7 @@ $(document).ready(function () {
             chassisNumber : chassisNumber.val(),
             carMake : carMake.val(),
             carModel : carModel.val(),
+            garageID : garageID.val(),
             YOM : YOM.val(),
             salvage : salvage.val(),
             totalLoss : totalLoss.val(),
