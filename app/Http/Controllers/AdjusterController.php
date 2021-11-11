@@ -785,11 +785,13 @@ class AdjusterController extends Controller
             $claims = Claim::where(function($a) use ($regNo,$regNo1,$regNo2,$claimStatusID) {
                 $a->where('vehicleRegNo','like', '%'.$regNo.'%')
                     ->where('claimStatusID','=',$claimStatusID)
+                    ->where('claimType','=',Config::CLAIM_TYPES['ASSESSMENT'])
                     ->where('active','=',Config::ACTIVE);
             })->orWhere(function($a)use ($regNo1,$regNo2,$claimStatusID) {
                 $a->where('vehicleRegNo','like', '%'.$regNo1.'%')
                     ->where('vehicleRegNo','like', '%'.$regNo2.'%')
                     ->where('claimStatusID','=',$claimStatusID)
+                    ->where('claimType','=',Config::CLAIM_TYPES['ASSESSMENT'])
                     ->where('active','=',Config::ACTIVE);
             })->with('adjuster')
                 ->get();
