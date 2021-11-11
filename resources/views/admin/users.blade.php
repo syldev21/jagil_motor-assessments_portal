@@ -156,13 +156,12 @@
                                                 ?>
                                             @endforeach
                                             <tr>
-                                                <td class="name" style="display: none">{{$user->name}}</td>
-                                                <td class="userID" style="display: none">{{$user->id}}</td>
-                                                <td class="userStatus" style="display: none">{{$user->status}}</td>
-
-
-
-                                                <td class="sn">{{$loop->iteration}}</td>
+                                                <td class="sn">
+                                                    {{$loop->iteration}}
+                                                    <span class="name" style="display: none">{{$user->name}}</span>
+                                                    <span class="userID" style="display: none">{{$user->id}}</span>
+                                                    <span class="userStatus" style="display: none">{{$user->status}}</span>
+                                                </td>
                                                 <td class="email">{{$user->email}}</td>
                                                 @hasrole('Admin')
                                                 <td>
@@ -244,12 +243,7 @@
                                                             <option data-id="{{$loop->iteration}}"  data-user="{{$user->id}}" id="assignRole" value="">Role</option>
                                                             <option data-id="{{$user->id}}" id="fetchPermissions" value="">Permission</option>
                                                     </select>
-{{--                                                    <a data-id="{{$loop->iteration}}"  data-user="{{$user->id}}" href="#" class="btn" id="assignRole"><i class="material-icons">exposure</i></a>--}}
                                                 </td>
-{{--                                                <td>--}}
-{{--                                                    <a data-id="{{$user->id}}"  href="#" class="btn" id="fetchPermissions"><i class="material-icons">exposure</i></a>--}}
-{{--                                                </td>--}}
-                                                <td></td>
                                             </tr>
 
                                         @endforeach
