@@ -6051,6 +6051,10 @@ $(document).ready(function () {
         var vendor = $("#vendor").val();
         var cost = $("#cost").val();
         var logbookReceivedByRecoveryOfficer = $("#logbookReceivedByRecoveryOfficer").val();
+        // var irs = $("#insuredRetainedSalvage").val();
+        var insuredRetainedSalvage = $("#insuredRetainedSalvage").val();
+    
+        
             addLoadingButton();
             $.ajaxSetup({
 
@@ -6068,7 +6072,9 @@ $(document).ready(function () {
                     salvageID : salvageID,
                     vendor : vendor,
                     cost : cost,
-                    logbookReceivedByRecoveryOfficer : logbookReceivedByRecoveryOfficer
+                    logbookReceivedByRecoveryOfficer : logbookReceivedByRecoveryOfficer,
+                    // insuredRetainedSalvage:irs
+                    insuredRetainedSalvage:insuredRetainedSalvage
                 },
                 url: '/common/submitSaleSalvageRequest',
 

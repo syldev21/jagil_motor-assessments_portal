@@ -23,6 +23,9 @@ class CreateSalvageRegistersTable extends Migration
             $table->tinyInteger('logbookReceived')->default(0);
             $table->tinyInteger('logbookReceivedByRecoveryOfficer')->default(0);
             $table->tinyInteger('insuredInterestedWithSalvage')->default(0);
+
+            $table->tinyInteger('insuredRetainedSalvage')->default(0);
+         
             $table->dateTime('logbookDateReceived')->nullable();
             $table->tinyInteger('recovered')->default(0);
             $table->bigInteger('recoveredBy')->nullable();

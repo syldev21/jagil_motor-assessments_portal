@@ -222,6 +222,15 @@
                                         <input type="text" name="cost" id="cost">
                                         <label for="location">Cost</label>
                                     </div>
+
+                                    <div class="input-field col m6 s12">
+                                        <select id="insuredRetainedSalvage" required name="insuredRetainedSalvage">
+                                            <option value="0">NO</option>
+                                            <option value="1">YES</option>
+                                        </select>
+                                        <label for="insuredRetainedSalvage">Insured Retained Salvage </label>
+                                    </div>
+
                                     <div class="input-field col m6 s12">
                                     </div>
                                 </div>

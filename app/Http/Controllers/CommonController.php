@@ -498,8 +498,9 @@ class CommonController extends Controller
     }
     public function submitSalvageRequest(Request $request)
     {
+        // dd($request->insuredRetainedSalvage);
         try {
-            if(isset($request->claimID) && isset($request->logbookReceived) && isset($request->documentsReceived) && isset($request->location) && isset($request->dateRecovered) && isset($request->insuredInterestedWithSalvage))
+            if(isset($request->claimID) && isset($request->logbookReceived))
             {
                 $claimId = $request->claimID;
                 $logbookReceived = $request->logbookReceived;
@@ -507,6 +508,7 @@ class CommonController extends Controller
                 $dateRecovered = Carbon::parse($request->dateRecovered)->format('Y-m-d H:i:s');
                 $location = $request->location;
                 $insuredInterestedWithSalvage = $request->insuredInterestedWithSalvage;
+                $insuredRetainedSalvage = $request->insuredRetainedSalvage;
                 $claim = Claim::where(["id"=>$claimId])->first();
                 $salvageRegister = SalvageRegister::where(['claimID'=>$claimId])->first();
                 if(!isset($salvageRegister->id))
@@ -521,6 +523,7 @@ class CommonController extends Controller
                             "logbookDateReceived"=> $this->functions->curlDate(),
                             "recordsReceived" => $documentsReceived,
                             "insuredInterestedWithSalvage"=>$insuredInterestedWithSalvage,
+                            "insuredRetainedSalvage"=>$insuredRetainedSalvage,
                             "dateRecovered" => $dateRecovered,
                             "location"=>$location,
                             "createdBy" => Auth::user()->id,
@@ -575,6 +578,9 @@ class CommonController extends Controller
     }
     public function submitSaleSalvageRequest(Request $request)
     {
+
+        
+    //   dd($request->insuredRetainedSalvage);      
         try {
             if(isset($request->salvageID) && isset($request->vendor) && isset($request->cost) && isset($request->logbookReceivedByRecoveryOfficer))
             {
@@ -587,6 +593,7 @@ class CommonController extends Controller
                             "buyerID"=>$request->vendor,
                             "cost"=>$request->cost,
                             "logbookReceivedByRecoveryOfficer"=>$request->logbookReceivedByRecoveryOfficer,
+                            "insuredRetainedSalvage"=>$request->insuredRetainedSalvage,
                             "updatedBy"=>Auth::user()->id,
                             "dateModified"=>$this->functions->curlDate()
                         ]);

@@ -9,7 +9,7 @@ class SalvageRegister extends Model
     protected $connection = "mysql";
     protected $table = "salvage_registers";
     protected $primaryKey = "id";
-    protected $fillable = ['vehicleRegNo','claimID','claimNo','buyerID','cost','logbookReceived','logbookReceivedByRecoveryOfficer','logbookDateReceived','insuredInterestedWithSalvage','recovered','recoveredBy','recordsReceived','documentsIssued','dateRecovered','location','createdBy','updatedBy',
+    protected $fillable = ['vehicleRegNo','claimID','claimNo','buyerID','cost','logbookReceived','logbookReceivedByRecoveryOfficer','logbookDateReceived','insuredInterestedWithSalvage', 'insuredRetainedSalvage','recovered','recoveredBy','recordsReceived','documentsIssued','dateRecovered','location','createdBy','updatedBy',
         'dateModified','dateCreated'];
     public $timestamps= false;
 
