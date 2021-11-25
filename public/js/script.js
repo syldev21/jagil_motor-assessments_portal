@@ -1115,6 +1115,42 @@ $(document).ready(function () {
 
         });
     });
+    $(".fetch-theft-assessments").on('click',function (e){
+        e.preventDefault();
+        var assessmentStatusID = $(this).data("id");
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                'assessmentStatusID' : assessmentStatusID
+            },
+            url: '/common/fetch-theft-assessments',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+    });
     $("#main").on('click','#filter-adjuster-assessments',function (e){
         e.preventDefault();
         var assessmentStatusID = $("#assessmentStatusID").val();
@@ -1904,6 +1940,37 @@ $(document).ready(function () {
             type: 'POST',
 
             url: '/common/subrogation-report',
+            data : {
+                assessmentID : assessmentID
+            },
+            success: function (data) {
+                // $("#main").html(data);
+
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(data);
+                w.document.close();
+            }
+
+        });
+    });
+    $("body").on('click','#PTVReport',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+
+            url: '/common/PTVReport',
             data : {
                 assessmentID : assessmentID
             },
@@ -4424,6 +4491,14 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
+    $("body").on('click','#triggerPTVModal',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('PTVModal');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        var assessmentID = $(this).data("id");
+        $("#assessmentID").val(assessmentID);
+        instance.open();
+    });
 
 
     $("body").on('click','#user_status',function (e){
@@ -5992,6 +6067,62 @@ $(document).ready(function () {
             })
         }
     });
+    $("#main").on('click','#submitPTVRequest',function (e){
+        e.preventDefault();
+        var assessmentID= $("#assessmentID").val();
+        var amount = $("#amount").val();
+        if(amount != '')
+        {
+            addLoadingButton();
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                    amount : amount,
+                    assessmentID : assessmentID
+                },
+                url: '/assessor/submitPTVRequest',
+
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    removeLoadingButton();
+                }
+
+            });
+        }else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'You have not provided an amount',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
+    });
     $("#main").on('click','#submitSalvageRequest',function (e){
         e.preventDefault();
         var claimID= $("#claimID").val();
@@ -6053,8 +6184,8 @@ $(document).ready(function () {
         var logbookReceivedByRecoveryOfficer = $("#logbookReceivedByRecoveryOfficer").val();
         // var irs = $("#insuredRetainedSalvage").val();
         var insuredRetainedSalvage = $("#insuredRetainedSalvage").val();
-    
-        
+
+
             addLoadingButton();
             $.ajaxSetup({
 
@@ -6326,7 +6457,7 @@ function isNotEmpty(caller) {
     }
 }
 
-function assignAssessor(id) {
+function assignAssessor(id,claimType) {
     var claimID = $("#claimID" + id);
     var assessor = $("#assessor" + id);
     if (assessor.val() != '') {
@@ -6346,7 +6477,8 @@ function assignAssessor(id) {
 
             data: {
                 claimID: claimID.val(),
-                assessor: assessor.val()
+                assessor: assessor.val(),
+                claimType : claimType
             },
 
             success: function (data) {

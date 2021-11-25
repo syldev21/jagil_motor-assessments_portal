@@ -2566,4 +2566,47 @@ class AssessorController extends Controller
             }
         }
     }
+    public function submitPTVRequest(Request $request)
+    {
+        try {
+            if(isset($request->assessmentID) && isset($request->amount))
+            {
+                $assessment = Assessment::where(['id'=>$request->assessmentID])->first();
+                if(isset($assessment->id))
+                {
+                    Assessment::where(['id'=>$assessment->id])->update([
+                        "PTV"=>$request->amount,
+                        "assessedBy"=>Auth::user()->id,
+                        "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'],
+                        "assessedAt"=>$this->functions->curlDate()
+                    ]);
+                    $response = array(
+                        "STATUS_CODE" => Config::SUCCESS_CODE,
+                        "STATUS_MESSAGE" => "PTV added successfully"
+                    );
+                }else
+                {
+                    $response = array(
+                        "STATUS_CODE" => Config::NO_RECORDS_FOUND,
+                        "STATUS_MESSAGE" => "Record not found"
+                    );
+                }
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Invalid payload provided"
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying add PTV. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
 }

@@ -43,8 +43,15 @@ class HeadAssessorController extends Controller
     {
         $curlDate = $this->functions->curlDate();
         try {
-            if (isset($request->claimID) && isset($request->assessor)) {
+            if (isset($request->claimID) && isset($request->assessor) && isset($request->claimType)) {
                 $assessment = Assessment::where(['claimID' => $request->claimID])->get();
+                if($request->claimType == "Assessement")
+                {
+                    $isTheft = Config::INACTIVE;
+                }else
+                {
+                    $isTheft = Config::ACTIVE;
+                }
                 if (count($assessment) == 0) {
                     $assessmentID = Assessment::insertGetId([
                         "claimID" => $request->claimID,
@@ -52,6 +59,7 @@ class HeadAssessorController extends Controller
                         "assessmentStatusID" => Config::$STATUSES["ASSESSMENT"]["ASSIGNED"]["id"],
                         "createdBy" => Auth::id(),
                         "active" => Config::ACTIVE,
+                        "isTheft" =>$isTheft,
                         "segment" => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'],
                         "dateCreated" => $curlDate
                     ]);
@@ -77,7 +85,9 @@ class HeadAssessorController extends Controller
                         $location = isset($garage->name) ? $garage->name : '';
                         if ($assessor->id > 0) {
                             $email_add = $assessor->email;
-                            $emailMessage = "
+                            if($request->claimType == "Assessement")
+                            {
+                                $emailMessage = "
                     Hello, <br>
                     Please note that there's a vehicle
                     <br><strong>Claim number</strong>:  " . $claim->claimNo . "
@@ -93,7 +103,26 @@ class HeadAssessorController extends Controller
                     Claims Department,<br>
                     Jubilee Insurance
                 ";
-                            $smsMessage = 'Hello ' . $assessor->firstName . ', You have been assigned to assess a claim. Vehicle registration: ' . $claim->vehicleRegNo . ', Location: ' . $location . '';
+                                $smsMessage = 'Hello ' . $assessor->firstName . ', You have been assigned to assess a claim. Vehicle registration: ' . $claim->vehicleRegNo . ', Location: ' . $location . '';
+                            }else
+                            {
+                                $emailMessage = "
+                    Hello, <br>
+                    Please note that there's a vehicle
+                    <br><strong>Claim number</strong>:  " . $claim->claimNo . "
+                    <br><strong>Registration number</strong>: " . $claim->vehicleRegNo . "
+                    <br><strong>Location</strong>: $location
+                    <br><strong>Sum Insured</strong>: " . $claim->sumInsured . "
+                    <br> You are required to provide PTV
+                    <br>
+                    <br>
+                    <br><br>
+                    Regards,<br>
+                    Claims Department,<br>
+                    Jubilee Insurance
+                ";
+                                $smsMessage = 'Hello ' . $assessor->firstName . ', You have been assigned to provide PTV for Vehicle registration: ' . $claim->vehicleRegNo;
+                            }
                             $email = [
                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,

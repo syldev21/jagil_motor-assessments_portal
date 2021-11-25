@@ -579,8 +579,8 @@ class CommonController extends Controller
     public function submitSaleSalvageRequest(Request $request)
     {
 
-        
-    //   dd($request->insuredRetainedSalvage);      
+
+    //   dd($request->insuredRetainedSalvage);
         try {
             if(isset($request->salvageID) && isset($request->vendor) && isset($request->cost) && isset($request->logbookReceivedByRecoveryOfficer))
             {
@@ -649,8 +649,104 @@ class CommonController extends Controller
     public function fetchTheftClaims(Request $request)
     {
         $claimType = $request->claimType;
-        $assessors = User::role('Assessor')->get();
+        $assessors = User::role('Assessor')->where(["userTypeID"=>Config::$USER_TYPES['INTERNAL']['ID']])->get();
         $claims = Claim::where(['claimType'=> $claimType,'active'=>Config::ACTIVE])->with('adjuster')->get();
         return view('common.theft-claims',['claims' => $claims, 'assessors' => $assessors]);
+    }
+
+    public function fetchTheftAssessments(Request $request)
+    {
+        try {
+            $assessmentStatusID = $request->assessmentStatusID;
+            if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
+                if($assessmentStatusID == Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
+                {
+                    $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                        ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                        ->where('active','=',Config::ACTIVE)
+                        ->where('isTheft','=',Config::ACTIVE)
+                        ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+                }else
+                {
+                    $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                        ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                        ->where('active','=',Config::ACTIVE)
+                        ->where('isTheft','=',Config::ACTIVE)
+                        ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+                }
+            } elseif (isset($request->regNumber)) {
+//                $regNo = preg_replace("/\s+/", "", $request->regNumber);
+                $registrationNumber=preg_replace("/\s+/", "", $request->regNumber);
+                $regNoArray = preg_split('/(?=\d)/', $registrationNumber, 2);
+                $regNo1 =isset($regNoArray[0]) ? $regNoArray[0] : '';
+                $regNo2 = isset($regNoArray[1]) ? $regNoArray[1] : '';
+                $regNo = $request->regNumber;
+                $claimids = Claim::where(function($a) use ($regNo,$regNo1,$regNo2) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo.'%');
+                })->orWhere(function($a)use ($regNo1,$regNo2) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%');
+                })->pluck('id')->toArray();
+//                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
+                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->whereIn('claimID', $claimids)
+                    ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::ACTIVE)
+                    ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
+                $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+                $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+                $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::ACTIVE)
+                    ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            } else {
+                $assessments = array();
+            }
+            return view('common.theft-assessments', ["assessments" => $assessments, 'assessmentStatusID' => $assessmentStatusID]);
+        } catch (\Exception $e) {
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to fetch assessments. Error message " . $e->getMessage());
+        }
+    }
+    public function PTVReport(Request $request)
+    {
+        try {
+            if(isset($request->assessmentID))
+            {
+                $assessment = Assessment::where(["id"=>$request->assessmentID])->with("claim")->first();
+                if(isset($assessment->id))
+                {
+                    $customerCode = isset($assessment->claim->customerCode) ? $assessment->claim->customerCode : 0;
+                    $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+                    return view('common.PTVReport',["assessment"=>$assessment,'insuredFullName'=>$insured->fullName]);
+                }else
+                {
+                    $response = array(
+                        "STATUS_CODE" => Config::NO_RECORDS_FOUND,
+                        "STATUS_MESSAGE" => "PTV report not found"
+                    );
+                }
+
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Invalid payload"
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to view PTV report. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
     }
 }

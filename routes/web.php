@@ -103,6 +103,7 @@ $router->group(['prefix' => 'assessor'], function($router)
     $router->post('/price-change-report','AssessorController@priceChangeReport');
     $router->post('/deleteImage','AssessorController@deleteImage');
     $router->post('/resizeImages','AssessorController@resizeImages');
+    $router->post('/submitPTVRequest','AssessorController@submitPTVRequest');
 
 });
 
@@ -220,6 +221,8 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/salvage-release-letter', 'CommonController@salvageReleaseLetter');
     $router->post('/viewLPOReport', 'CommonController@viewLPOReport');
     $router->post('/fetch-theft-claims', 'CommonController@fetchTheftClaims');
+    $router->post('/fetch-theft-assessments', 'CommonController@fetchTheftAssessments');
+    $router->post('/PTVReport', 'CommonController@PTVReport');
 });
 
 // migrate

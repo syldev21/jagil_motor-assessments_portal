@@ -80,14 +80,8 @@
                 </ul>
             </div>
         </li>
-        <li class="bold ">
-            <a class="sidenav-link fetch-claim-types" id="theft" data-id="{{App\Conf\Config::CLAIM_TYPES['THEFT']}}"
-               href="#"
-            >
-                <i class="material-icons">no_transfer</i>
-                <span class="menu-title" data-i18n="Theft Claims">Theft Claims</span>
-            </a>
-        </li>
+        @endhasrole
+        @if(auth()->user()->userTypeID == \App\Conf\Config::$USER_TYPES['INTERNAL']['ID'])
         <li class="bold ">
             <a class="sidenav-link fetch-claim-types" id="windscreen" data-id="{{App\Conf\Config::CLAIM_TYPES['WINDSCREEN']}}"
                href="#"
@@ -96,7 +90,56 @@
                 <span class="menu-title" data-i18n="Windscreen claims">Windscreen Claims</span>
             </a>
         </li>
-        @endhasrole
+        <li class="bold ">
+            <a class="collapsible-header sidenav-link"
+               href="javascript:void(0) "
+            >
+                <i class="material-icons">no_transfer</i>
+                <span class="menu-title" data-i18n="Chart">Theft Claims</span>
+            </a>
+            <div class="collapsible-body">
+                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
+
+                    <li class="">
+                        <a href="#" class="sidenav-link fetch-theft-claims" id="theft" data-id="{{App\Conf\Config::CLAIM_TYPES['THEFT']}}">
+                            <i class="material-icons">file_upload</i>
+                            <span data-i18n="ChartJS">Uploaded</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']}}" class="sidenav-link fetch-theft-assessments">
+                            <i class="material-icons">assignment_ind</i>
+                            <span data-i18n="ChartJS">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']}}" class="sidenav-link fetch-theft-assessments">
+                            <i class="material-icons">compare_arrows</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link fetch-theft-assessments">
+                            <i class="material-icons">done</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']}}" class="sidenav-link fetch-theft-assessments">
+                            <i class="material-icons">done_all</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']}}" class="sidenav-link fetch-theft-assessments">
+                            <i class="material-icons">announcement</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']]}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        @endif
         @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
         <li class="bold ">
             <a class="collapsible-header sidenav-link" href="javascript:void(0)">

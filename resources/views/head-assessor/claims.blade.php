@@ -147,7 +147,7 @@
                                                                         Assessor</a></li>
                                                             @else
                                                                 <li><a href="#"
-                                                                       onclick="assignAssessor({{$loop->iteration}})"><i
+                                                                       onclick="assignAssessor({{$loop->iteration}},'{{$claim['claimType']}}')"><i
                                                                             class="material-icons">assignment_ind</i>Assign
                                                                         Assessor</a></li>
                                                             @endif
