@@ -52,6 +52,7 @@ class AssessorController extends Controller
                 $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }elseif (isset($request->regNumber))
             {
@@ -71,6 +72,7 @@ class AssessorController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
             {
@@ -80,6 +82,7 @@ class AssessorController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }else
             {

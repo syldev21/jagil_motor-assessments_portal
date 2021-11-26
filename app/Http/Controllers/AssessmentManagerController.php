@@ -49,6 +49,7 @@ class AssessmentManagerController extends Controller
                     $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->where('active','=',Config::ACTIVE)
+                        ->where('isTheft','=',Config::INACTIVE)
                         ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
                         ->orderBy('finalApprovedAt', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
                 }else
@@ -56,6 +57,7 @@ class AssessmentManagerController extends Controller
                     $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->where('active','=',Config::ACTIVE)
+                        ->where('isTheft','=',Config::INACTIVE)
                         ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
                 }
             } elseif (isset($request->regNumber)) {
@@ -75,6 +77,7 @@ class AssessmentManagerController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
             } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
                 $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
@@ -82,6 +85,7 @@ class AssessmentManagerController extends Controller
                 $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
                     ->orderBy('dateCreated', 'DESC')->with('approver')->with('final_approver')->with('assessor')->with('claim')->with('supplementaries')->get();
             } else {

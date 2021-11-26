@@ -46,6 +46,7 @@ class CommonController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             } elseif (isset($request->regNumber)) {
 //              $regNo = preg_replace("/\s+/", "", $request->regNumber);
@@ -68,6 +69,7 @@ class CommonController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
                 $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
@@ -78,6 +80,7 @@ class CommonController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('reInspection')->orderBy('dateCreated', 'DESC')->get();
             }
             return view('common.re-inspections', ['assessments' => $assessments, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'], 'asmts' => $asmts]);
@@ -220,6 +223,7 @@ class CommonController extends Controller
         if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
             $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                 ->where('active','=',Config::ACTIVE)
+                ->where('isTheft','=',Config::INACTIVE)
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
              WHEN assessmentStatusID='$changesDue' THEN changeRequestAt < '$flagThreshold'
@@ -242,6 +246,7 @@ class CommonController extends Controller
             })->pluck('id')->toArray();
             $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                 ->where('active','=',Config::ACTIVE)
+                ->where('isTheft','=',Config::INACTIVE)
                 ->whereIn('claimID', $claimids)
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'
@@ -256,6 +261,7 @@ class CommonController extends Controller
             $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
             $assessments = Assessment::where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                 ->where('active','=',Config::ACTIVE)
+                ->where('isTheft','=',Config::INACTIVE)
                 ->whereBetween('dateCreated', [$fromDate, $toDate])
                 ->whereRaw(
                     ("CASE WHEN assessmentStatusID='$provisonal' THEN approvedAt <  '$flagThreshold'

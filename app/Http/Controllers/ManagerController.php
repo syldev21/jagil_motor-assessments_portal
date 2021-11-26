@@ -61,12 +61,14 @@ class ManagerController extends Controller
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
                         ->where('active','=',Config::ACTIVE)
+                        ->where('isTheft','=',Config::INACTIVE)
                         ->orderBy('finalApprovedAt', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
                 }else
                 {
                     $assessments = Assessment::where(["assessmentStatusID" => $assessmentStatusID])
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->where('active','=',Config::ACTIVE)
+                        ->where('isTheft','=',Config::INACTIVE)
                         ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
                 }
             }elseif (isset($request->regNumber))
@@ -86,6 +88,7 @@ class ManagerController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             }elseif(isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber))
             {
@@ -95,6 +98,7 @@ class ManagerController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->orderBy('dateCreated', 'DESC')->with('claim')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
 
             }else

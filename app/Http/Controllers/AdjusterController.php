@@ -543,6 +543,7 @@ class AdjusterController extends Controller
                 {
                     $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                         ->where('active','=',Config::ACTIVE)
+                        ->where('isTheft','=',Config::INACTIVE)
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->where('finalApprovedAt', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
                         ->orderBy('finalApprovedAt', 'DESC')->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
@@ -551,6 +552,7 @@ class AdjusterController extends Controller
                     $assessments = Assessment::where('assessmentStatusID', '=', $assessmentStatusID)
                         ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                         ->where('active','=',Config::ACTIVE)
+                        ->where('isTheft','=',Config::INACTIVE)
                         ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
                 }
             } elseif (isset($request->regNumber)) {
@@ -570,6 +572,7 @@ class AdjusterController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereIn('claimID', $claimids)
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
 
             } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
@@ -579,6 +582,7 @@ class AdjusterController extends Controller
                     ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
                     ->whereBetween('dateCreated', [$fromDate, $toDate])
                     ->where('active','=',Config::ACTIVE)
+                    ->where('isTheft','=',Config::INACTIVE)
                     ->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->with('supplementaries')->get();
             } else {
                 $assessments = array();
