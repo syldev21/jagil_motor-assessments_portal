@@ -11,6 +11,7 @@ use App\Company;
 use App\Conf\Config;
 use App\CustomerMaster;
 use App\Document;
+use App\Escalation;
 use App\Garage;
 use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
@@ -119,7 +120,9 @@ class CommonController extends Controller
              ".Auth::user()->name."<br/>
              <b>Claims ".Auth::user()->roles->pluck('name')[0]."</b></i>
          </p>";
-        $message = $message.$footer;
+
+        $msg = $message.$footer;
+
 
         $message = [
             'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
@@ -127,8 +130,16 @@ class CommonController extends Controller
             'to' => $emails,
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
             'cc' => $ccEmails,
-            'html' => $message,
+            'html' => $msg,
         ];
+        Escalation::create([
+            'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
+            'to' => json_encode($emails),
+            'cc' => json_encode($ccEmails),
+            'message' => $msg,
+            'createdBy'=> Auth::user()->id,
+
+        ]);
 
         InfobipEmailHelper::sendEmail($message);
         $logData = array(
@@ -163,6 +174,12 @@ class CommonController extends Controller
         }
         return json_encode($response);
     }
+
+    public function fetchEscalations(Request $request){
+        $escalations = Escalation::all();
+        return view('common.escalations', ['escalations'=>$escalations]);
+    }
+
 
     public function showActivityLog(Request $request)
     {
