@@ -223,6 +223,8 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/fetch-theft-claims', 'CommonController@fetchTheftClaims');
     $router->post('/fetch-theft-assessments', 'CommonController@fetchTheftAssessments');
     $router->post('/PTVReport', 'CommonController@PTVReport');
+    $router->get('/fetchEscalations', 'CommonController@fetchEscalations');
+
 });
 
 // migrate
