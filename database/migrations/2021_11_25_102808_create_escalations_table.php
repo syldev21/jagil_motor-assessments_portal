@@ -15,9 +15,10 @@ class CreateEscalationsTable extends Migration
     {
         Schema::create('escalations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('subject');
-            $table->string('to');
-            $table->string('message');
+            $table->longText('subject')->nullable();
+            $table->longText('to')->nullable();
+            $table->longText('cc')->nullable();
+            $table->longText('message')->nullable();
             $table->integer('modifiedBy')->nullable();
             $table->integer('createdBy')->nullable();
             $table->dateTime('dateModified')->nullable();
