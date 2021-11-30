@@ -89,4 +89,4 @@ h6{
 .hideSubrogation{
     display: none !important;
 }
-
+ul.sidenav.sidenav-fixed:hover { overflow-y: auto; !important; }
