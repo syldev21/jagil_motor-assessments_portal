@@ -5708,6 +5708,42 @@ $(document).ready(function () {
 
         });
     });
+
+
+
+    $("body").on('click','#showEscalations',function (){
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/common/fetchEscalations',
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+    });
+
+
+
     $("body").on('click','.fetchLogDetails',function (){
 
         var activityLogID = $(this).data("id");

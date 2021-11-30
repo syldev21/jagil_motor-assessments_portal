@@ -11,6 +11,7 @@
 |
 */
 
+//Route::get('/','HomeController@assessments')->middleware("auth");
 Route::get('/', function () {
     return view('authentication.user-login');
 });
@@ -223,7 +224,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/fetch-theft-claims', 'CommonController@fetchTheftClaims');
     $router->post('/fetch-theft-assessments', 'CommonController@fetchTheftAssessments');
     $router->post('/PTVReport', 'CommonController@PTVReport');
-    $router->get('/fetchEscalations', 'CommonController@fetchEscalations');
+    $router->post('/fetchEscalations', 'CommonController@fetchEscalations');
 
 });
 
