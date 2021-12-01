@@ -978,10 +978,10 @@
                     @can(App\Conf\Config::PERMISSIONS['ADD_VENDOR'])
                     <li class="">
                         <a href="#"
-                           class="fetch-salvage-vendors sidenav-link"
+                           class="fetch-vendors sidenav-link"
                         >
                             <i class="material-icons">people_outline</i>
-                            <span data-i18n="Invoice List">Salvage Vendors</span>
+                            <span data-i18n="Invoice List">Vendors</span>
                         </a>
                     </li>
                     @endcan
