@@ -284,21 +284,21 @@ class AdminController extends Controller
         }
         return json_encode($response);
     }
-    public function fetchSalvageVendors()
+    public function fetchVendors()
     {
         $vendors =Vendor::all();
-        return view('admin.salvage-vendors',['vendors'=>$vendors]);
+        return view('admin.vendors',['vendors'=>$vendors]);
     }
     public function addVendorForm()
     {
-        return view('admin.add-salvage-vendor');
+        return view('admin.add-vendor');
     }
 
     public function addVendor(Request $request)
     {
         try {
             if(isset($request->firstName) && isset($request->lastName) && isset($request->email)
-           && isset($request->MSISDN) && isset($request->idNumber) && isset($request->kraPin) && isset($request->location))
+           && isset($request->MSISDN) && isset($request->idNumber) && isset($request->kraPin) && isset($request->location) && isset($request->vendorType))
             {
                 $fullName = $request->firstName." ".$request->lastName;
                 Vendor::create([
@@ -310,6 +310,8 @@ class AdminController extends Controller
                     "idNumber"=>$request->idNumber,
                     "kraPin"=>$request->kraPin,
                     "location"=>$request->location,
+                    "type"=>$request->vendorType,
+                    "status"=>Config::ACTIVE,
                     "createdBy"=>Auth::user()->id,
                     "dateCreated"=>$this->functions->curlDate()
                 ]);

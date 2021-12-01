@@ -188,7 +188,7 @@ $router->group(['prefix' => 'admin'], function($router)
     $router->post('/permissions','AdminController@permissions');
     $router->post('/assignPermission','AdminController@assignPermission');
     $router->post('/add-permission','AdminController@addPermission');
-    $router->post('/fetch-salvage-vendors','AdminController@fetchSalvageVendors');
+    $router->post('/fetch-vendors','AdminController@fetchVendors');
     $router->post('/addVendorForm','AdminController@addVendorForm');
     $router->post('/addVendor','AdminController@addVendor');
     $router->get('/fetch-user-status','AdminController@getUser');

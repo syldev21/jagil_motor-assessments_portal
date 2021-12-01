@@ -3550,7 +3550,7 @@ $(document).ready(function () {
             }
         });
     });
-    $("body").on('click','.fetch-salvage-vendors',function (e){
+    $("body").on('click','.fetch-vendors',function (e){
         e.preventDefault();
         $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
@@ -3566,7 +3566,7 @@ $(document).ready(function () {
 
             type: 'POST',
 
-            url: '/admin/fetch-salvage-vendors',
+            url: '/admin/fetch-vendors',
             success: function (data) {
                 $("#main").html(data);
                 $('#data-table-simple').DataTable({
@@ -3688,6 +3688,7 @@ $(document).ready(function () {
         var idNumber = $("#idNumber");
         var kraPin = $("#kraPin");
         var location = $("#location");
+        var vendorType = $("#vendorType");
         $.ajaxSetup({
 
             headers: {
@@ -3707,7 +3708,8 @@ $(document).ready(function () {
                 MSISDN : MSISDN.val(),
                 idNumber : idNumber.val(),
                 kraPin : kraPin.val(),
-                location : location.val()
+                location : location.val(),
+                vendorType : vendorType.val()
             },
             url: '/admin/addVendor',
             success: function (data) {

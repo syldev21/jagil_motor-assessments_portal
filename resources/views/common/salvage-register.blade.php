@@ -200,9 +200,6 @@
                                 <div class="row">
                                     <div class="input-field col m6 s12">
                                         <select id="vendor" required name="vendor">
-                                            <?php
-                                            $vendors = \App\Vendor::all();
-                                            ?>
                                             @foreach($vendors as $vendor)
                                                     <option value="{{$vendor->id}}">{{$vendor->fullName}}</option>
                                             @endforeach

@@ -51,6 +51,14 @@
                                             <input placeholder="" id="location" type="text" name="location" value="">
                                             <label for="location" class="active">Location</label>
                                         </div>
+                                        <div class="input-field col m4 s12">
+                                            <select id="vendorType" name="vendorType">
+                                                @foreach(App\Conf\Config::VENDOR_TYPES as $vendor)
+                                                    <option value="{{$vendor['ID']}}">{{$vendor['TITLE']}}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="vendorType" class="active">Vendor Type</label>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col m8 s12">

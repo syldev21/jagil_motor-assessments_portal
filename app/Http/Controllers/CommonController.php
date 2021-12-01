@@ -19,6 +19,7 @@ use App\Helper\InfobipEmailHelper;
 use App\SalvageRegister;
 use App\User;
 use App\Utility;
+use App\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -596,8 +597,9 @@ class CommonController extends Controller
 
     public function fetchSalvageRegister(Request $request)
     {
+        $vendors = Vendor::where(["status"=>Config::ACTIVE,"type"=>Config::DISPLAY_VENDOR_TYPES['SALVAGE']['ID']])->get();
         $salvageRegisters = SalvageRegister::with('assessment')->with('vendor')->with('claim')->get();
-        return view('common.salvage-register',['salvageRegisters'=>$salvageRegisters]);
+        return view('common.salvage-register',['salvageRegisters'=>$salvageRegisters,'vendors'=>$vendors]);
     }
     public function submitSaleSalvageRequest(Request $request)
     {

@@ -31,6 +31,7 @@
                                             <th>MSISDN</th>
                                             <th>KRA Pin</th>
                                             <th>Location</th>
+                                            <th>Vendor Type</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -43,6 +44,7 @@
                                                 <td>{{$vendor->MSISDN}}</td>
                                                 <td>{{$vendor->kraPin}}</td>
                                                 <td>{{$vendor->location}}</td>
+                                                <td>{{App\Conf\Config::VENDOR_TYPES[$vendor->type]['TITLE']}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
