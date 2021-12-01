@@ -90,3 +90,7 @@ h6{
     display: none !important;
 }
 ul.sidenav.sidenav-fixed:hover { overflow-y: auto; !important; }
+.collapsible-sub li{
+    margin-left: 10px;
+    border-left: 3px solid #a71a3b;
+}
