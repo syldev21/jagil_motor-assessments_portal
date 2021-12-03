@@ -96,7 +96,11 @@
                                                 <th>Quantity</th>
                                                 <th>Initial Price</th>
                                                 <th>Current Price</th>
-                                                <th>Difference</th>
+                                                <th>Contribution</th>
+                                                <th>Discount</th>
+                                                <th>Initial Total</th>
+                                                <th>Current Total</th>
+                                                <th>Difference Per Unit</th>
                                                 <th>Remarks</th>
                                                 <th>Category</th>
                                             </tr>
@@ -126,12 +130,29 @@
                                                                     name="current[]" value="{{$assessmentItem->current!=0?$assessmentItem->current:''}}" />
                                                         </td>
                                                         <td>
+                                                            <input id="contribution_{{$count}}" placeholder="" type="text"
+                                                                   name="contribution[]" value="{{!empty($assessmentItem->contribution) ? $assessmentItem->contribution : 0}}" disabled/>
+                                                        </td>
+                                                        <td>
+                                                            <input id="discount_{{$count}}" placeholder="" type="text" name="discount[]"
+                                                                   value="{{!empty($assessmentItem->discount) ? $assessmentItem->discount : 0}}" disabled/>
+                                                        </td>
+                                                        <td>
+                                                            <input id="total_{{$count}}" placeholder="" type="text" name="total[]" value="{{$assessmentItem->total}}" class="total"
+                                                                   disabled/>
+                                                        </td>
+                                                        <td>
+                                                            <input id="currenttotal_{{$count}}" placeholder="" type="text" name="currenttotal[]" value="" class="currenttotal"
+                                                                   disabled/>
+                                                        </td>
+                                                        <td>
                                                             <input disabled class="center-align" id="difference_{{$count}}"
-                                                                   placeholder="" type="text" name="discount[]"  value="{{$assessmentItem->difference!=0?$assessmentItem->difference:''}}"
+                                                                   placeholder="" type="text" name="difference[]"  value="{{$assessmentItem->difference!=0?$assessmentItem->difference:''}}"
                                                             />
                                                         </td>
                                                         <td>
                                                             <input class="center-align" disabled type="text" id="remarks_{{$count}}" name="remarks[]" value="{{ $assessmentItem->remark->name }}">
+                                                            <input type="hidden" id="totaldifference_{{$count}}" value="{{$assessmentItem->totalDifference!=0?$assessmentItem->totalDifference:''}}">
                                                         </td>
                                                         <td>
                                                             @foreach(\App\Conf\Config::$JOB_CATEGORIES as $category)

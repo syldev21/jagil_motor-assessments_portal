@@ -2988,8 +2988,20 @@ $(document).ready(function () {
         var partPrice="partPrice_"+val;
         var current="current_"+val;
         var difference="difference_"+val;
-
+        var contribution = "contribution_"+val;
+        var currenttotal = "currenttotal_"+val;
+        var discount = "discount_"+val;
+        var total = "total_"+val;
+        var totalDiff = "totaldifference_"+val;
         var diff=parseInt($('#'+current).val())-parseInt($('#'+partPrice).val());
+        if($('#'+contribution).val() > 0)
+        {
+            diff = diff*($('#'+contribution).val()/100);
+        }
+        if($('#'+discount).val() > 0)
+        {
+            diff = diff*((100 - $('#'+discount).val())/100);
+        }
 
         if(!($('#'+current).val()))
         {
@@ -2998,6 +3010,9 @@ $(document).ready(function () {
         }else{
             $('#'+difference).val(diff);
         }
+        var totalDifference = diff*parseInt($('#'+quantity).val())
+        $("#"+totalDiff).val(totalDifference);
+        $('#'+currenttotal).val((diff*parseInt($('#'+quantity).val()))+parseInt($('#'+total).val()));
 
 
 
@@ -3017,6 +3032,7 @@ $(document).ready(function () {
             var partID=partsID[i].id;
             var quantity = $('#quantity_'+i).val();
             var current = $('#current_'+i).val();
+            var totalDifference = $('#totaldifference_'+i).val();
             var assessmentID = $("#assessmentID").val()
             // var partData = {quantity : quantity.length > 0 ? quantity : 0,costcost : cost.length > 0 ? cost : 0,current:current.length > 0 ? current : 0,remarks:remarks,vehicleParts:vehiclePart,assessmentID:assessmentID,partID:partID,difference : difference.length > 0 ? difference : 0};
             // var partData = {current:current.length > 0 ? current : 0,assessmentID:assessmentID,partID:partID,difference:difference.length > 0 ? difference : 0 };
@@ -3024,7 +3040,8 @@ $(document).ready(function () {
                 current: current.length > 0 ? current : 0,
                 partID: partID,
                 difference: difference.length > 0 ? difference : 0,
-                quantity : quantity
+                quantity : quantity,
+                totalDifference : totalDifference
             };
             partsData.push(partData);
         }
