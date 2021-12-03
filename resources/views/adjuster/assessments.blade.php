@@ -187,6 +187,12 @@
                                                                         </li>
                                                                     @endforeach
                                                                 @endif
+                                                                @if($assessment['isSubrogate'] == App\Conf\Config::ACTIVE)
+                                                                    <li>
+                                                                        <a href="#" id="subrogate-report" data-id="{{$assessment->id}}"><i
+                                                                                class="material-icons">picture_as_pdf</i>View Subrogate Report</a>
+                                                                    </li>
+                                                                @endif
                                                                 <li>
                                                                     <a href="#" id="fetchDMSDocuments" data-id="{{$claimNo}}" data-id2="{{$policyNo}}"><i
                                                                             class="material-icons">attachment</i>DMS</a>
