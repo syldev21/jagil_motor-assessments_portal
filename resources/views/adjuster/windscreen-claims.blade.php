@@ -99,7 +99,7 @@
                                                             <?php
                                                             $LPOUser = \App\User::where(['id'=>$claim['LPOAddedBy']])->first();
                                                             ?>
-                                                            {{isset($LPOUser->fullName) ? $LPOUser->fullName : ''}}
+                                                            {{isset($LPOUser->name) ? $LPOUser->name : ''}}
                                                         @endif
                                                     </td>
                                                     <td>
