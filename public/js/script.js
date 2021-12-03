@@ -1294,6 +1294,49 @@ $(document).ready(function () {
 
             success: function (data) {
                 $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+    });
+    $("body").on('click','#filter-claim-types',function (e){
+        e.preventDefault();
+        var fromDate = $("#from_date").val();
+        var toDate = $("#to_date").val();
+        var regNumber = $("#vehicle_reg_no").val();
+        var claimType = $("#claimType").val();
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                claimType : claimType,
+                fromDate : fromDate,
+                toDate : toDate,
+                regNumber : regNumber
+            },
+            url: '/adjuster/fetch-claim-types',
+
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
                 $('#data-table-simple').DataTable({
                     dom: 'Bfrtip',
                     buttons: [

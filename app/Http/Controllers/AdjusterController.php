@@ -817,9 +817,39 @@ class AdjusterController extends Controller
     }
     public function fetchClaimTypes(Request $request)
     {
-        $claimType = $request->claimType;
+
         $assessors = User::role('Assessor')->get();
-        $claims = Claim::where(['claimType'=> $claimType,'active'=>Config::ACTIVE])->with('adjuster')->get();
+        $claimType =$request->claimType;
+//        $claims = Claim::where(['claimType'=> $claimType,'active'=>Config::ACTIVE])->with('adjuster')->get();
+        if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
+            $claims = Claim::where(
+                'dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                ->where('active','=',Config::ACTIVE)
+                ->where('claimType','=',$claimType)
+                ->with('adjuster')->orderBy('dateCreated', 'DESC')->get();
+        } elseif (isset($request->regNumber)) {
+            $registrationNumber = preg_replace("/\s+/", "", $request->regNumber);
+            $regNoArray = preg_split('/(?=\d)/', $registrationNumber, 2);
+            $regNo1 = isset($regNoArray[0]) ? $regNoArray[0] : '';
+            $regNo2 = isset($regNoArray[1]) ? $regNoArray[1] : '';
+            $regNo = $request->regNumber;
+            $claims = Claim::where(function ($a) use ($regNo, $regNo1, $regNo2,$claimType) {
+                $a->where('vehicleRegNo', 'like', '%' . $regNo . '%')
+                    ->where('claimType', '=',$claimType);
+            })->orWhere(function ($a) use ($regNo1, $regNo2,$claimType) {
+                $a->where('vehicleRegNo', 'like', '%' . $regNo1 . '%')->where('vehicleRegNo', 'like', '%' . $regNo2 . '%')
+                    ->where('claimType', '=',$claimType);
+            })
+                ->with('adjuster')->orderBy('dateCreated', 'DESC')->get();
+
+        } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
+            $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+            $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+            $claims = Claim::whereBetween('dateCreated', [$fromDate, $toDate])
+                ->where('active','=',Config::ACTIVE)
+                ->where('claimType','=',$claimType)
+                ->with('adjuster')->orderBy('dateCreated', 'DESC')->get();
+        }
         if($request->claimType == Config::CLAIM_TYPES['WINDSCREEN'])
         {
             $view = 'windscreen-claims';
@@ -827,7 +857,7 @@ class AdjusterController extends Controller
         }else{
             $view = 'claim-types';
         }
-        return view('adjuster.'.$view, ['claims' => $claims, 'assessors' => $assessors]);
+        return view('adjuster.'.$view, ['claims' => $claims, 'assessors' => $assessors,'claimType'=>$claimType]);
     }
 
     //Generate release letter
