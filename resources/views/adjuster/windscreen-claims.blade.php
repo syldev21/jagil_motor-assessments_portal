@@ -55,6 +55,9 @@
                                             <th>Adjuster</th>
                                             <th>Status</th>
                                             <th>Sum Insured</th>
+                                            <th>LPO Amount</th>
+                                            <th>LPO processed By</th>
+                                            <th>LPO processed</th>
                                             <th>Created</th>
                                             <th>Operation</th>
                                         </tr>
@@ -71,25 +74,15 @@
                                                     <td>{{$claim['vehicleRegNo']}}</td>
                                                     <td>{{isset($claim['adjuster']->name) ? $claim['adjuster']->name : ''}}</td>
 
-                                                    @if($claim['claimStatusID']  == \App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['id'])
+                                                    @if(!isset($claim['LPOAmount']))
                                                         <td>
                                                             <button
-                                                                class="btn red lighten-2">{{\App\Conf\Config::$STATUSES['CLAIM']['UPLOADED']['text'] }}</button>
+                                                                class="btn red lighten-2">Uploaded</button>
                                                         </td>
-                                                    @elseif($claim['claimStatusID'] == \App\Conf\Config::$STATUSES['CLAIM']['ASSIGNED']['id'])
+                                                    @else
                                                         <td>
                                                             <button
-                                                                class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['CLAIM']['ASSIGNED']['text']}}</button>
-                                                        </td>
-                                                    @elseif($claim['claimStatusID'] == \App\Conf\Config::$STATUSES['CLAIM']['RE-INSPECTED']['id'])
-                                                        <td>
-                                                            <button
-                                                                class="btn green lighten-2">{{\App\Conf\Config::$STATUSES['CLAIM']['RE-INSPECTED']['text']}}</button>
-                                                        </td>
-                                                    @elseif($claim['claimStatusID'] == \App\Conf\Config::$STATUSES['CLAIM']['RELEASED']['id'])
-                                                        <td>
-                                                            <button
-                                                                class="btn green darken-2">{{\App\Conf\Config::$STATUSES['CLAIM']['RELEASED']['text']}}</button>
+                                                                class="btn green lighten-2">Processed</button>
                                                         </td>
                                                     @endif
                                                     <input type="hidden" name="claimID{{$loop->iteration}}"
@@ -97,6 +90,22 @@
                                                            value="{{$claim['claimID']}}" class="claimID">
                                                     <td>
                                                         {{$claim['sumInsured']}}
+                                                    </td>
+                                                    <td>
+                                                        {{isset($claim['LPOAmount']) ? $claim['LPOAmount'] : 0 }}
+                                                    </td>
+                                                    <td>
+                                                        @if(isset($claim['LPOAddedBy']))
+                                                            <?php
+                                                            $LPOUser = \App\User::where(['id'=>$claim['LPOAddedBy']])->first();
+                                                            ?>
+                                                            {{isset($LPOUser->fullName) ? $LPOUser->fullName : ''}}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if(isset($claim['LPODateCreated']))
+                                                            {{\Carbon\Carbon::parse($claim['LPODateCreated'])->diffForHumans()}}
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         {{\Carbon\Carbon::parse($claim['dateCreated'])->diffForHumans()}}
