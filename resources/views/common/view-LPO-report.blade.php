@@ -19,7 +19,7 @@
 
             <p>
                 {{$claim->garage->name}}, <br>
-                {{$claim->garage->location}}
+                {!! $claim->garage->location !!}
                 <br>
             </p>
         </div>
