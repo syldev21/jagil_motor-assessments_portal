@@ -6361,7 +6361,9 @@ $(document).ready(function () {
                             { 'visible': false, 'targets': [3] },
                             { 'visible': false, 'targets': [4] },
                             { 'visible': false, 'targets': [5] },
-                            { 'visible': false, 'targets': [6] }
+                            { 'visible': false, 'targets': [6] },
+                            { 'visible': false, 'targets': [10] },
+                            { 'visible': false, 'targets': [11] }
                         ],
                         "pageLength": 25
                     });

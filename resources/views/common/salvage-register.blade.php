@@ -59,6 +59,7 @@
                                             <th>Make</th>
                                             <th>Model</th>
                                             <th>Chassis Number</th>
+                                            <th>Engine Number</th>
                                             <th>Received Logbook</th>
                                             <th>Received Documents</th>
                                             <th>Insured Interested with Salvage</th>
@@ -107,6 +108,9 @@
                                                     </td>
                                                     <td>
                                                         {{$salvageRegister->claim->chassisNumber}}
+                                                    </td>
+                                                    <td>
+                                                        {{$salvageRegister->claim->engineNumber}}
                                                     </td>
                                                     <td>
                                                         @if($salvageRegister->logbookReceived == App\Conf\Config::YES_OR_NO['YES']['ID'])
