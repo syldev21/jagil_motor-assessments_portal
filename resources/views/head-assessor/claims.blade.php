@@ -111,9 +111,7 @@
                                                                         if(count($assessments)>0)
                                                                             {
                                                                             foreach ($assessments as $assessment) {
-                                                                                if ($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSIGNED']['id']) {
                                                                                     $assessorID = $assessment->assessedBy;
-                                                                                }
                                                                             }
                                                                         }
                                                                         ?>

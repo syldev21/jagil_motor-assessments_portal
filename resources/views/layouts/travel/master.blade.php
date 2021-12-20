@@ -1,0 +1,6 @@
+@include('_partials.home-fibre.header')
+@include('_partials.home-fibre.navbar')
+@include('_partials.home-fibre.sidebar')
+@include('includes.home-fibre.main')
+@include('_partials.home-fibre.settings')
+@include('_partials.home-fibre.footer')

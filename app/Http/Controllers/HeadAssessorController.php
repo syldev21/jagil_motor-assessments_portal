@@ -188,10 +188,10 @@ class HeadAssessorController extends Controller
         $curlDate = $this->functions->curlDate();
         try {
             if (isset($request->claimID) && isset($request->assessor)) {
-                Assessment::where(["claimID" => $request->claimID, "assessmentStatusID" => Config::$STATUSES["ASSESSMENT"]["ASSIGNED"]["id"]])->update([
+                Assessment::where(['claimID'=>$request->claimID])->update([
                     "assessedBy" => $request->assessor,
-                    "createdBy" => Auth::id(),
-                    "dateModified" => $curlDate
+                    "updatedBy" => Auth::id(),
+                    "dateModified"=>$this->functions->curlDate()
                 ]);
                 $assessor = User::where(['id' => $request->assessor])->first();
                 $claim = Claim::where(['id' => $request->claimID])->first();
