@@ -292,3 +292,10 @@ $router->group(['prefix' => 'safaricom-home-fibre'], function($router)
     $router->post('/fetch-policy-details', 'homeFibre\SafaricomHomeFibreController@fetchPolicyDetails');
     $router->post('/sendPolicyDocument', 'homeFibre\SafaricomHomeFibreController@sendPolicyDocument');
 });
+
+//Travel APIs
+$router->group(['prefix' => 'travel'], function($router)
+{
+    $router->get('/', 'travel\TravelController@index')->name('travel-home');
+    $router->post('/fetch-policies', 'travel\TravelController@fetchPolicies');
+});

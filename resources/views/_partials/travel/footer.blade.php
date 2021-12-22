@@ -65,7 +65,7 @@
 <script type="text/javascript" src="{{ asset('js/image-uploader.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/image-zoom.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/travelScript.js') }}"></script>
 <script type="text/javascript">
     var stepper = document.querySelector('.stepper');
     var stepperInstace = new MStepper(stepper, {

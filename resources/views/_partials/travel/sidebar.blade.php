@@ -16,86 +16,47 @@
                 </div>
                 <div class="col s1"></div>
             </div>
-{{--            <a class="navbar-toggler" href="javascript:void(0)"><i class="material-icons">radio_button_checked</i></a>--}}
         </h1>
     </div>
     <ul class="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out"
         data-menu="menu-navigation" data-collapsible="menu-accordion">
 
         <li class="navigation-header">
-            <a class="navigation-header-text">Quick Operations</a>
+            <a class="navigation-header-text">Travel Quick Operations</a>
             <i class="navigation-header-icon material-icons">more_horiz</i>
         </li>
-{{--        @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])--}}
-        <li class="bold ">
-            <a class="collapsible-header sidenav-link"
-               href="javascript:void(0) "
+        <li class="">
+            <a href="#"
+               class="listUsers sidenav-link"
             >
-                <i class="material-icons">directions_car</i>
-                <span class="menu-title" data-i18n="Chart">Motor Renewals</span>
+                <i class="material-icons">list</i>
+                <span data-i18n="Invoice List">All Policies</span>
             </a>
-            <div class="collapsible-body">
-                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
-
-{{--                    <li class="">--}}
-{{--                        <a href="#" class="sidenav-link fetch-renewals" data-id="{{\App\Conf\Config::$PERIOD['TODAY']['ID']}}">--}}
-{{--                            <i class="material-icons">file_upload</i>--}}
-{{--                            <span data-i18n="ChartJS">Today</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    <li class="">--}}
-{{--                        <a href="#" class="sidenav-link fetch-renewals" data-id="{{\App\Conf\Config::$PERIOD['TOMORROW']['ID']}}">--}}
-{{--                            <i class="material-icons">reorder</i>--}}
-{{--                            <span data-i18n="ChartJS">Tomorrow</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    <li class="">--}}
-{{--                        <a href="#" class="sidenav-link fetch-renewals"  data-id="{{\App\Conf\Config::$PERIOD['ONE_WEEK']['ID']}}">--}}
-{{--                            <i class="material-icons">assignment_ind</i>--}}
-{{--                            <span data-i18n="Chartist">One Week</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    <li class="">--}}
-{{--                        <a href="#" class="sidenav-link fetch-renewals"  data-id="{{\App\Conf\Config::$PERIOD['ONE_MONTH']['ID']}}">--}}
-{{--                            <i class="material-icons">assignment_turned_in</i>--}}
-{{--                            <span data-i18n="Chartist">One Month</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    <li class="">--}}
-{{--                        <a href="#" class="sidenav-link fetch-renewals" data-id="{{\App\Conf\Config::$PERIOD['THREE_MONTHS']['ID']}}">--}}
-{{--                            <i class="material-icons">next_week</i>--}}
-{{--                            <span data-i18n="Chartist">Three Months</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-                    <li class="">
-                        <a href="#" class="sidenav-link fetch-motor-renewals renewals-loader" data-id="{{\App\Conf\Config::$PERIOD['TWO_MONTHS']['ID']}}">
-                            <i class="material-icons">next_week</i>
-                            <span data-i18n="Chartist">Two Months</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </li>
-
-        <li class="bold ">
-            <a class="collapsible-header sidenav-link"
-               href="javascript:void(0) "
+        <li class="">
+            <a href="#"
+               class="fetch-travel-policies sidenav-link" data-id="{{App\Conf\Config::TRAVEL_DISPLAY_STATUSES['PROCESSED']['ID']}}"
             >
-                <i class="material-icons">no_transfer</i>
-                <span class="menu-title" data-i18n="Chart">Non-Motor Renewals</span>
+                <i class="material-icons">done_all</i>
+                <span data-i18n="Invoice List">Processed Policies</span>
             </a>
-            <div class="collapsible-body">
-                <ul class="collapsible collapsible-sub" data-collapsible="accordion">
-                    <li class="">
-                        <a href="#" class="sidenav-link fetch-non-motor-renewals" data-id="{{\App\Conf\Config::$PERIOD['TWO_MONTHS']['ID']}}">
-                            <i class="material-icons">next_week</i>
-                            <span data-i18n="Chartist">Two Months</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </li>
-{{--        @endhasrole--}}
+        <li class="">
+            <a href="#"
+               class="fetch-travel-policies sidenav-link" data-id="{{App\Conf\Config::TRAVEL_DISPLAY_STATUSES['PENDING']['ID']}}"
+            >
+                <i class="material-icons">done</i>
+                <span data-i18n="Invoice List">Pending Policies</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="#"
+               class="fetch-travel-policies sidenav-link" data-id="{{App\Conf\Config::TRAVEL_DISPLAY_STATUSES['FAILED']['ID']}}"
+            >
+                <i class="material-icons">info_outline</i>
+                <span data-i18n="Invoice List">Failed Policies</span>
+            </a>
+        </li>
         <li class="bold ">
             <a class="waves-effect waves-light"
                href="{{ route('user.logout') }}"
