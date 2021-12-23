@@ -1,0 +1,2 @@
+@include('layouts.NHIF.master')
+

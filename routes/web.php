@@ -299,3 +299,10 @@ $router->group(['prefix' => 'travel'], function($router)
     $router->get('/', 'travel\TravelController@index')->name('travel-home');
     $router->post('/fetch-policies', 'travel\TravelController@fetchPolicies');
 });
+
+//NHIF APIs
+$router->group(['prefix' => 'nhif'], function($router)
+{
+    $router->get('/', 'NHIF\NHIFController@index')->name('nhif-home');
+    $router->post('add-claim-form', 'NHIF\NHIFController@addClaimForm');
+});

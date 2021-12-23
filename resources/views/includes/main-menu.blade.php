@@ -103,6 +103,24 @@
             @endif
         </div>
         <div class="col s12 m6 l4">
+            @if($user->userTypeID == App\Conf\Config::$USER_TYPES['INTERNAL']['ID'])
+                <div class="card padding-4 animate fadeLeft">
+                    <center>
+                        <h5>NHIF Policy Service</h5>
+                        <div class="row">
+                            <div class="col s2"></div>
+                            <div class="col s8">
+                                <img src="{{ asset('images/icon/NHIF-Policy.jpg') }}" class="responsive-img">
+                            </div>
+                            <div class="col s2"></div>
+                        </div>
+                        <a href="{{ route("nhif-home") }}" class="btn float-right">Access Service</a>
+                        <p></p>
+                    </center>
+                </div>
+            @endif
+        </div>
+        <div class="col s12 m6 l4">
 
         </div>
     </div>
