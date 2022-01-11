@@ -34,7 +34,7 @@ class TravelController extends Controller
             "fromDate"=> isset($request->fromDate) ? $request->fromDate : '',
             "toDate"=>isset($request->toDate) ? $request->toDate : ''
         );
-        $response = $this->utility->getData($data, '/api/v1/b2b/general/fetch-travel-policy', 'POST');
+        $response = $this->utility->getData($data, '/api/v1/b2b/general/travel/fetch-travel-policy', 'POST');
         $policy_data = json_decode($response->getBody()->getContents());
         if ($policy_data->status == 'success') {
             $travelPolicies = json_decode(json_encode($policy_data->data), true);
