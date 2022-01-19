@@ -627,7 +627,7 @@ class AdjusterController extends Controller
                 $claimNo = $claim->claimNo;
                 $policyNo = $claim->policyNo;
                 $createdBy = Auth::id();
-                if ($oldexcess != $request->excess || $oldsumInsured != $request->sumInsured) {
+                if ($oldexcess != $request->excess || $oldsumInsured != $request->sumInsured || $oldGarage != $request->garageID) {
                     $claimTrackerID = ClaimTracker::insertGetId([
                         'claimID' => $claimID,
                         'claimNo' => $claimNo,
