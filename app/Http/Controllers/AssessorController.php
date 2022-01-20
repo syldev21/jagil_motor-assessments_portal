@@ -2343,7 +2343,7 @@ class AssessorController extends Controller
                 $current = $partDetail['current'];
                 $difference = $partDetail['difference'];
                 $quantity = $partDetail['quantity'];
-                $totalDifference = $partDetail['totalDifference'];
+                $totalDifference = isset($partDetail['totalDifference']) ? $partDetail['totalDifference'] : 0;
 //              $totalDifference = $quantity*$difference;
                 AssessmentItem::where(["id" => $partID])->update([
                         "current" => $current,
