@@ -6399,6 +6399,46 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#send-assessment-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentID : assessmentID,
+            },
+            url: '/common/reports/assessment-report',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+            }
+
+        });
+    });
     $("body").on('change','#carModel',function (e){
         e.preventDefault();
         var carModelCode = $("#carModel").val();

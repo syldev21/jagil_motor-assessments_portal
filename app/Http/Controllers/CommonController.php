@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ActivityLog;
 use App\Assessment;
+use App\AssessmentItem;
 use App\CarModel;
 use App\Claim;
 use App\ClaimFormTracker;
@@ -16,13 +17,17 @@ use App\Garage;
 use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
 use App\Helper\InfobipEmailHelper;
+use App\JobDetail;
+use App\PriceChange;
 use App\SalvageRegister;
 use App\User;
 use App\Utility;
 use App\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class CommonController extends Controller
 {
@@ -776,5 +781,29 @@ class CommonController extends Controller
                 "An exception occurred when trying to view PTV report. Error message " . $e->getMessage());
         }
         return json_encode($response);
+    }
+    public function sendAssessmentReport(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
+        $aproved = isset($priceChange) ? $priceChange : 'false';
+        $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadView('reports.assessment-report', ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail, 'priceChange' => $priceChange]);
+
+        $pdfFilePath = public_path('reports/assessment-report.pdf');
+
+        if (File::exists($pdfFilePath)) {
+            File::delete($pdfFilePath);
+        }
+        $pdf->save($pdfFilePath);
     }
 }

@@ -193,6 +193,7 @@ $router->group(['prefix' => 'admin'], function($router)
     $router->post('/addVendor','AdminController@addVendor');
     $router->get('/fetch-user-status','AdminController@getUser');
     $router->post('/set-status','AdminController@setStatus');
+    $router->post('/getSubClassCode','AdminController@getSubClassCode');
 });
 $router->group(['prefix' => 'migration'], function($router)
 {
@@ -225,6 +226,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/fetch-theft-assessments', 'CommonController@fetchTheftAssessments');
     $router->post('/PTVReport', 'CommonController@PTVReport');
     $router->post('/fetchEscalations', 'CommonController@fetchEscalations');
+    $router->post('/reports/assessment-report', 'CommonController@sendAssessmentReport');
 
 });
 
@@ -298,6 +300,8 @@ $router->group(['prefix' => 'travel'], function($router)
 {
     $router->get('/', 'travel\TravelController@index')->name('travel-home');
     $router->post('/fetch-policies', 'travel\TravelController@fetchPolicies');
+    $router->post('/fetch-policy-details', 'travel\TravelController@fetchPolicyDetails');
+    $router->post('/update-policy', 'travel\TravelController@updatePolicy');
 });
 
 //NHIF APIs

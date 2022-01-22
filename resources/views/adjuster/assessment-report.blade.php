@@ -547,6 +547,14 @@
                                 </div>
                             </div>
                             @endif
+                            @if(auth()->user()->id == 1050)
+                            <div class="row">
+                                <div class="col s6">
+                                    <a id="send-assessment-report" data-id="{{$assessment['id']}}"
+                                       class="btn green darken-2">Send Assessment Report</a>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
