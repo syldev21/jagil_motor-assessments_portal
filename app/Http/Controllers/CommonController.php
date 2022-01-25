@@ -799,8 +799,12 @@ class CommonController extends Controller
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->loadView('reports.assessment-report', ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail, 'priceChange' => $priceChange]);
 
-        $pdfFilePath = public_path('reports/assessment-report.pdf');
-
+        //$pdfFilePath = public_path('reports/assessment-report.pdf');
+        $pdfName = $assessment['claim']['vehicleRegNo'].'_'.$assessment['claim']['claimNo'];
+        $pdfName = str_replace("/","_",$pdfName);
+        $pdfFileName=preg_replace('/\s+/', ' ', $pdfName);
+        $pdfFileName = str_replace(" ","_",$pdfFileName);
+        $pdfFilePath = public_path('reports/'.$pdfFileName.'.pdf');
         if (File::exists($pdfFilePath)) {
             File::delete($pdfFilePath);
         }
