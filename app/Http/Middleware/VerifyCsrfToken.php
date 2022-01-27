@@ -23,6 +23,10 @@ class VerifyCsrfToken extends Middleware
         '/assessor/resizeImages',
         '/updatePdfType',
         'common/getClaimsWithoutClaimForm',
-        'common/sendClaimFormNotification'
+        'common/sendClaimFormNotification',
+        'safaricom-home-fibre/fetch-payments',
+        'safaricom-home-fibre/sendPolicyDocument',
+        'admin/getSubClassCode',
+        'metropol/fetchCustomerData'
     ];
 }
