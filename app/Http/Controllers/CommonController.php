@@ -24,6 +24,8 @@ use App\User;
 use App\Utility;
 use App\Vendor;
 use Carbon\Carbon;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -68,7 +70,7 @@ class CommonController extends Controller
                 })->orWhere(function ($a) use ($regNo1, $regNo2) {
                     $a->where('vehicleRegNo', 'like', '%' . $regNo1 . '%')
                         ->where('vehicleRegNo', 'like', '%' . $regNo2 . '%')
-                        ->where('active','=',Config::ACTIVE);;
+                        ->where('active','=',Config::ACTIVE);
                 })->pluck('id')->toArray();
 
 //              $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
@@ -809,5 +811,83 @@ class CommonController extends Controller
             File::delete($pdfFilePath);
         }
         $pdf->save($pdfFilePath);
+    }
+
+    public function fetchCustomerData(Request $request)
+    {
+
+        try {
+            if(isset($request->report_type) && isset($request->identity_number) && isset($request->identity_type))
+            {
+                $privateKey = Config::METROPOL_PROD_PRIVATE_KEY;
+                $publicKey = Config::METROPOL_PROD_PUBLIC_KEY;
+                $url = Config::METROPOL_BASE_URL.":".Config::METROPOL_PORT ."/".Config::METROPOL_API_VERSION. "/identity/verify";
+                date_default_timezone_set("UTC");
+                //        $timestamp = gmdate("Y-m-d H:i:s.u");
+                $now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+                $local = $now->setTimeZone(new DateTimeZone('UTC'));
+                $timestamp = $local->format("YmdHisu");
+                $payload = array(
+                    "report_type"=>$request->report_type,
+                    "identity_number"=>$request->identity_number,
+                    "identity_type"=>$request->identity_type
+                );
+                $jsonObject = json_encode($payload);
+                $utf8Key = $privateKey.$jsonObject.$publicKey.$timestamp;
+                $headers = array(
+                    "Content-Type:application/json",
+                    'X-METROPOL-REST-API-KEY:' .$publicKey,
+                    'X-METROPOL-REST-API-HASH:'.hash('sha256',utf8_encode($utf8Key)),
+                    'X-METROPOL-REST-API-TIMESTAMP:'.$timestamp
+                );
+                $response = $this->generateCurl($url,$jsonObject,$headers);
+                $result = json_decode($response,true);
+                if(isset($result['api_code']) && isset($result['id_number']))
+                {
+                    $resp = array(
+                        "STATUS_CODE" =>200,
+                        "MESSAGE"=>"ID Number successfully verified"
+                    );
+                }else
+                {
+                    $resp = array(
+                        "STATUS_CODE" =>2001,
+                        "MESSAGE"=>"ID Number not verified"
+                    );
+                }
+            }else
+            {
+                $resp = array(
+                    "STATUS_CODE" =>2001,
+                    "MESSAGE"=>"ID Number not verified"
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $resp = array(
+                "STATUS_CODE" =>2001,
+                "MESSAGE"=>"ID Number not verified"
+            );
+        }
+        return json_encode($resp);
+    }
+
+    public function generateCurl($url, $params = null, $headers)
+    {
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            $result = curl_exec($ch);
+            curl_close($ch);
+            return $result;
+        } catch (Exception $ex) {
+
+
+        }
     }
 }

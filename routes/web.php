@@ -310,3 +310,10 @@ $router->group(['prefix' => 'nhif'], function($router)
     $router->get('/', 'NHIF\NHIFController@index')->name('nhif-home');
     $router->post('add-claim-form', 'NHIF\NHIFController@addClaimForm');
 });
+
+//Metropol integration
+$router->group(['prefix' => 'metropol'], function($router)
+{
+    $router->post('/fetchCustomerData', 'CommonController@fetchCustomerData');
+});
+
