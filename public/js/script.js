@@ -3039,7 +3039,7 @@ $(document).ready(function () {
         var diff=parseInt($('#'+current).val())-parseInt($('#'+partPrice).val());
         if($('#'+contribution).val() > 0)
         {
-            diff = diff*($('#'+contribution).val()/100);
+            diff = diff*((100 - $('#'+contribution).val())/100);
         }
         if($('#'+discount).val() > 0)
         {
