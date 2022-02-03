@@ -63,9 +63,11 @@ class AssessorController extends Controller
                 $regNo2 = isset($regNoArray[1]) ? $regNoArray[1] : '';
                 $regNo = $request->regNumber;
                 $claimids = Claim::where(function($a) use ($regNo,$regNo1,$regNo2) {
-                    $a->where('vehicleRegNo','like', '%'.$regNo.'%');
+                    $a->where('vehicleRegNo','like', '%'.$regNo.'%')
+                        ->where('active','=',Config::ACTIVE);
                 })->orWhere(function($a)use ($regNo1,$regNo2) {
-                    $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%');
+                    $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%')
+                        ->where('active','=',Config::ACTIVE);
                 })->pluck('id')->toArray();
 //                $claimids = Claim::where('vehicleRegNo','like', '%'.$request->regNumber.'%')->pluck('id')->toArray();
                 $assessments = Assessment::where(['assessmentStatusID' => $assessmentStatusID, "assessedBy" => $id])
