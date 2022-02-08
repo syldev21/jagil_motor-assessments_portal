@@ -227,6 +227,8 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/PTVReport', 'CommonController@PTVReport');
     $router->post('/fetchEscalations', 'CommonController@fetchEscalations');
     $router->post('/reports/assessment-report', 'CommonController@sendAssessmentReport');
+    $router->post('/reports/LPO-report', 'CommonController@sendLPOReport');
+
 
 });
 

@@ -1,6 +1,4 @@
 @include('_partials.header')
-@include('_partials.navbar')
-@include('_partials.sidebar')
 <div id="main" style="margin-left:30px;">
     <div class="row">
         <div class="col s8"></div>
@@ -11,7 +9,7 @@
     <div id="printableArea">
 
         <div style="text-align: center">
-            <img src="{{ asset('images/logo/jubilee_logo.png') }}" class="content-group mt-5" alt="" style="width: 170px;">
+            <img src="{{ public_path('images/logo/jubilee_logo.png') }}" class="content-group mt-5" alt="" style="width: 170px;">
         </div>
         <h5>{{ Carbon\Carbon::now()->format('l jS \of F, Y') }}</h5>
         <div style="font-weight: bold;">
@@ -44,14 +42,5 @@
             Allianz Plaza, 96 Riverside Drive,
         </p>
     </div>
-    <div class="row">
-        <div class="col s4"></div>
-        <div class="col s4"></div>
-        <div class="col s4">
-            <a id="send-LPO-report" data-id="{{$claim->id}}"
-               class="btn green darken-2">Send LPO Report</a>
-        </div>
-    </div>
 </div>
-@include('_partials.settings')
 @include('_partials.footer')

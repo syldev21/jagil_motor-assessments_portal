@@ -890,4 +890,25 @@ class CommonController extends Controller
 
         }
     }
+    public function sendLPOReport(Request $request)
+    {
+        $claimID = $request->claimID;
+        $claim = Claim::where(['id'=>$claimID])->with('garage')->first();
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadView('reports.LPO-report', ['claim'=>$claim]);
+        $this->savePdf($claim->vehicleRegNo,$claim->claimNo,'LPO',$pdf);
+
+    }
+    public function savePdf($vehicleRegNumber,$claimNumber,$path,$pdf)
+    {
+        $pdfName = $vehicleRegNumber.'_'.$claimNumber;
+        $pdfName = str_replace("/","_",$pdfName);
+        $pdfFileName=preg_replace('/\s+/', ' ', $pdfName);
+        $pdfFileName = str_replace(" ","_",$pdfFileName);
+        $pdfFilePath = public_path('reports/'.$path.'/'.$pdfFileName.'.pdf');
+        if (File::exists($pdfFilePath)) {
+            File::delete($pdfFilePath);
+        }
+        $pdf->save($pdfFilePath);
+    }
 }
