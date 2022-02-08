@@ -892,12 +892,42 @@ class CommonController extends Controller
     }
     public function sendLPOReport(Request $request)
     {
-        $claimID = $request->claimID;
-        $claim = Claim::where(['id'=>$claimID])->with('garage')->first();
-        $pdf = App::make('snappy.pdf.wrapper');
-        $pdf->loadView('reports.LPO-report', ['claim'=>$claim]);
-        $this->savePdf($claim->vehicleRegNo,$claim->claimNo,'LPO',$pdf);
-
+        try{
+            $claimID = $request->claimID;
+            $claim = Claim::where(['id'=>$claimID])->with('garage')->first();
+            $pdf = App::make('snappy.pdf.wrapper');
+            $pdf->loadView('reports.LPO-report', ['claim'=>$claim]);
+            $this->savePdf($claim->vehicleRegNo,$claim->claimNo,'LPO',$pdf);
+            $fileName = $this->getFileName($claim->vehicleRegNo,$claim->claimNo);
+            $pdfFilePath = public_path('reports/LPO/'.$fileName.'pdf');
+            $data = [
+                'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_LPO Report',
+                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                'to' => 'ondiekistephen5@gmail.com',
+                'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                'attachment' => $pdfFilePath,
+                'html' => "Dear ".$claim->garage->name."<br/>
+                                   Find attached LPO Report for : ".$claim->vehicleRegNo." for claimNo : ".$claim->claimNo."
+                                   <br/>
+                                   Regards<br/>
+                                   ".Auth::user()->firstName." ".Auth::user()->lastName."<br/>
+                                   Claims Adjuster Jubilee Allianz",
+            ];
+            InfobipEmailHelper::sendEmail($data);
+            $response = array(
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "Email successfully sent to the garage"
+            );
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to save pdf. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
     }
     public function savePdf($vehicleRegNumber,$claimNumber,$path,$pdf)
     {
@@ -910,5 +940,13 @@ class CommonController extends Controller
             File::delete($pdfFilePath);
         }
         $pdf->save($pdfFilePath);
+    }
+    public function getFileName($vehicleRegNumber,$claimNumber)
+    {
+        $pdfName = $vehicleRegNumber.'_'.$claimNumber;
+        $pdfName = str_replace("/","_",$pdfName);
+        $pdfFileName=preg_replace('/\s+/', ' ', $pdfName);
+        $pdfFileName = str_replace(" ","_",$pdfFileName);
+        return $pdfFileName;
     }
 }
