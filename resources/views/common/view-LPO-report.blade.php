@@ -48,8 +48,12 @@
         <div class="col s4"></div>
         <div class="col s4"></div>
         <div class="col s4">
+            @hasrole('Adjuster')
             <a id="send-LPO-report" data-id="{{$claim->id}}"
                class="btn green darken-2">Send LPO Report</a>
+            @endhasrole
+            <br/>
+            <br/>
         </div>
     </div>
 </div>

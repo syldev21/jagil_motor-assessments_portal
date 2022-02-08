@@ -903,7 +903,7 @@ class CommonController extends Controller
             $data = [
                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_LPO Report',
                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-                'to' => 'ondiekistephen5@gmail.com',
+                'to' => $claim->garage->email,
                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                 'attachment' => $pdfFilePath,
                 'html' => "Dear ".$claim->garage->name."<br/>
