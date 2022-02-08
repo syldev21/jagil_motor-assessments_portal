@@ -43,4 +43,3 @@
         </p>
     </div>
 </div>
-@include('_partials.footer')
