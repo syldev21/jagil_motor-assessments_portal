@@ -904,6 +904,7 @@ class CommonController extends Controller
                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_LPO Report',
                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                 'to' => $claim->garage->email,
+                'cc' => Auth::user()->email,
                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                 'attachment' => $pdfFilePath,
                 'html' => "Dear ".$claim->garage->name."<br/>
