@@ -899,7 +899,7 @@ class CommonController extends Controller
             $pdf->loadView('reports.LPO-report', ['claim'=>$claim]);
             $this->savePdf($claim->vehicleRegNo,$claim->claimNo,'LPO',$pdf);
             $fileName = $this->getFileName($claim->vehicleRegNo,$claim->claimNo);
-            $pdfFilePath = public_path('reports/LPO/'.$fileName.'pdf');
+            $pdfFilePath = public_path('reports/LPO/'.$fileName.'.pdf');
             $data = [
                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_LPO Report',
                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
