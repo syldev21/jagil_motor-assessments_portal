@@ -1,11 +1,5 @@
 @include('_partials.header')
 <div id="main" style="margin-left:30px;">
-    <div class="row">
-        <div class="col s8"></div>
-        <div class="col s4">
-            <button type="button" class="btn teal float-right" onclick="printDiv()"><i class="material-icons" style="font-size: 2em;">local_printshop</i></button>
-        </div>
-    </div>
     <div id="printableArea">
 
         <div style="text-align: center">
