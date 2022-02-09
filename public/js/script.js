@@ -6442,6 +6442,7 @@ $(document).ready(function () {
     $("body").on('click','#send-LPO-report',function (e){
         e.preventDefault();
         var claimID = $(this).data("id");
+        addLoadingButton();
         $.ajaxSetup({
 
             headers: {
@@ -6475,6 +6476,49 @@ $(document).ready(function () {
                         timer: 3000
                     })
                 }
+                removeLoadingButton();
+            }
+
+        });
+    });
+    $("body").on('click','#send-reinspection-report',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+        addLoadingButton();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentID : assessmentID,
+            },
+            url: '/common/reports/re-inspection-report',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+                removeLoadingButton();
             }
 
         });

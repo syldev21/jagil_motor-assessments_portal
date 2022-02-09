@@ -19,6 +19,7 @@ use App\Helper\GeneralFunctions;
 use App\Helper\InfobipEmailHelper;
 use App\JobDetail;
 use App\PriceChange;
+use App\ReInspection;
 use App\SalvageRegister;
 use App\User;
 use App\Utility;
@@ -29,6 +30,7 @@ use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class CommonController extends Controller
@@ -930,6 +932,61 @@ class CommonController extends Controller
         }
         return json_encode($response);
     }
+    public function sendReInspectionReport(Request $request)
+    {
+        try{
+            $assessmentID = $request->assessmentID;
+            $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
+            $assessmentIds = Assessment::where(['assessmentID' => $assessmentID, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']])->pluck('id')->toArray();
+            array_push($assessmentIds, $assessmentID);
+            $assessmentItems = AssessmentItem::whereIn("assessmentID", $assessmentIds)->with('part')->get();
+            $jobDetails = JobDetail::whereIn("assessmentID", $assessmentIds)
+                ->select([DB::raw("SUM(cost) as cost"), 'name'])
+                ->groupBy('name')
+                ->get();
+            $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+            $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+            $reinspection = ReInspection::where(['assessmentID' => $assessmentID])->first();
+            $documents = Document::where(["inspectionID" => $reinspection->id])->get();
+            $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+            $assessor = User::where(['id' => $assessment->assessedBy])->first();
+            $pdf = App::make('snappy.pdf.wrapper');
+            $pdf->loadView('reports.re-inspection-report', ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'reinspection' => $reinspection, 'assessmentIds' => $assessmentIds]);
+            $this->savePdf($assessment['claim']['vehicleRegNo'],$assessment['claim']['claimNo'],'reInspection',$pdf);
+            $fileName = $this->getFileName($assessment['claim']['vehicleRegNo'],$assessment['claim']['claimNo']);
+            $pdfFilePath = public_path('reports/reInspection/'.$fileName.'.pdf');
+            $garage = Garage::where(['id'=>$assessment['claim']['garageID']])->first();
+            $data = [
+                'subject' => $assessment['claim']['vehicleRegNo'].'_'.$assessment['claim']['claimNo'].'_reInspection Report',
+                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                'to' => $garage->email,
+                'cc' => Auth::user()->email,
+                'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                'attachment' => $pdfFilePath,
+                'html' => "Dear ".$garage->name."<br/>
+                                   Find attached Re-inspection Report for : ".$assessment['claim']['vehicleRegNo']." for claimNo : ".$assessment['claim']['claimNo']."
+                                   <br/>
+                                   Regards<br/>
+                                   ".Auth::user()->firstName." ".Auth::user()->lastName."<br/>
+                                   Assessor Jubilee Allianz",
+            ];
+            InfobipEmailHelper::sendEmail($data);
+            $response = array(
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "Re-inspection report successfully sent to the garage"
+            );
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to send re-inspection. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
+
     public function savePdf($vehicleRegNumber,$claimNumber,$path,$pdf)
     {
         $pdfName = $vehicleRegNumber.'_'.$claimNumber;
