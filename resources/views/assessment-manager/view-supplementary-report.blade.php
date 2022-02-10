@@ -39,7 +39,7 @@
 
                                     </div>
                                     <div class="col s8 center-align">
-                                        <h5>JUBILEE ALLIANZ INSURANCE IN-HOUSE ASSESSORS REPORT</h5>
+                                        <h5>JUBILEE ALLIANZ INSURANCE ASSESSORS REPORT</h5>
                                         <h6>PRIVATE AND CONFIDENTIAL</h6>
                                         <h6>MOTOR SUPPLEMENTARY REPORT PROVISIONAL</h6>
                                     </div>

@@ -66,7 +66,7 @@
              style="width: 120px;">
     </div>
     <div style="text-align: center; line-height: 50%;">
-        <p>JUBILEE ALLIANZ INSURANCE IN-HOUSE ASSESSORS REPORT</p>
+        <p>JUBILEE ALLIANZ INSURANCE ASSESSORS REPORT</p>
         <p>PRIVATE AND CONFIDENTIAL</p>
         <p>MOTOR ASSESSMENT REPORT</p>
     </div>

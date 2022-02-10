@@ -17,7 +17,6 @@
     <link rel="shortcut icon" type="image/x-icon" href=" {{ public_path('images/favicon/jubilee_favicon.png') }} ">
 
 
-    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" media="all">
     <link rel="stylesheet" type="text/css" href=" {{ public_path('vendors/vendors.min.css') }} " media="all">
 
     <link rel="stylesheet" type="text/css" href=" {{ public_path('css/pages/login.css') }} " media="all">
@@ -51,15 +50,7 @@
 
     <!-- BEGIN: VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="{{ public_path('vendors/flag-icon/css/flag-icon.min.css') }}" media="all">
-    <link rel="stylesheet" href="https://unpkg.com/materialize-stepper@3.1.0/dist/css/mstepper.min.css" media="all">
     <!-- END: VENDOR CSS-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" media="all"/>
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" media="all"/>
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css" media="all"/>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" media="all"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" media="all" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" media="all"/>
     <style type="text/css">
         body {
             font-family: Futura New Bold, sans-serif !important;
@@ -192,7 +183,7 @@
 
                                 </div>
                                 <div class="col s8 center-align">
-                                    <h5>JUBILEE ALLIANZ INSURANCE IN-HOUSE ASSESSORS REPORT</h5>
+                                    <h5>JUBILEE ALLIANZ INSURANCE ASSESSORS REPORT</h5>
                                     <h6>PRIVATE AND CONFIDENTIAL</h6>
                                     <h6>MOTOR ASSESSMENT REPORT</h6>
                                 </div>
@@ -682,7 +673,7 @@
                                         }
                                         ?>
                                         <div class="col s3">
-                                            <a href="{{url($path.'/'.$document['name']) }}" data-lightbox="gallery">
+                                            <a href="" data-lightbox="gallery">
                                                 <img class="responsive-img" src="{{url($path.'/'.$document['name']) }}">
                                             </a>
                                         </div>
