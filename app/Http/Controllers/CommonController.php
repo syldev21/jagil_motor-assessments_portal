@@ -846,32 +846,20 @@ class CommonController extends Controller
                 $result = json_decode($response,true);
                 if(isset($result['api_code']) && isset($result['id_number']))
                 {
-                    $resp = array(
-                        "STATUS_CODE" =>200,
-                        "MESSAGE"=>"ID Number successfully verified"
-                    );
+                    $resp = $resp = Config::ACTIVE;
                 }else
                 {
-                    $resp = array(
-                        "STATUS_CODE" =>2001,
-                        "MESSAGE"=>"ID Number not verified"
-                    );
+                    $resp = Config::INACTIVE;
                 }
             }else
             {
-                $resp = array(
-                    "STATUS_CODE" =>2001,
-                    "MESSAGE"=>"ID Number not verified"
-                );
+                $resp = Config::INACTIVE;
             }
         }catch (\Exception $e)
         {
-            $resp = array(
-                "STATUS_CODE" =>2001,
-                "MESSAGE"=>"ID Number not verified"
-            );
+            $resp = Config::INACTIVE;
         }
-        return json_encode($resp);
+        return $resp;
     }
 
     public function generateCurl($url, $params = null, $headers)
