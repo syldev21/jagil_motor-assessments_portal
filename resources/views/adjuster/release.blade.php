@@ -40,7 +40,7 @@
                     {{ isset(Auth::user()->middleName) ? Auth::user()->middleName : '' }}
                     {{ isset(Auth::user()->lastName) ? Auth::user()->lastName : '' }}<br />
                     <u>{{ $role }}</u><br />
-                    <u>TEL 0709901537</u><br />
+                    <u>TEL {{ isset(Auth::user()->MSISDN) ? Auth::user()->MSISDN : '' }}</u><br />
                 </strong>
             </p>
 
