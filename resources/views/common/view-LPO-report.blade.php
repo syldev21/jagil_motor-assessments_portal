@@ -43,8 +43,9 @@
             Jubilee Allianz General Insurance (K) Limited <br/>
             Allianz Plaza, 96 Riverside Drive,
         </p>
-        <h5>BCC: {{$claim->customer->fullName}}</h5>
-        <p>
+        <br/>
+        <h6>BCC: {{$claim->customer->fullName}}</h6>
+        <p style="font-size: 11px;">
             Kindly follow up for reinstatement of windscreen cover as it has been utilized for this claim.
         </p>
     </div>
