@@ -393,7 +393,7 @@ class AssessorController extends Controller
                     "assessmentItemType" => $assessmentType,
                     "category" => $category,
                     "segment" => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'],
-                    "createdBy" => Config::ACTIVE,
+                    "createdBy" => Auth::user()->id,
                     "dateCreated" => $curDate
                 );
                 $assessmentItems[] = $assessmentItem;
@@ -950,7 +950,7 @@ class AssessorController extends Controller
                         "assessmentItemType" => $assessmentType,
                         "category" => $category,
                         "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                        "createdBy" => Config::ACTIVE,
+                        "createdBy" => Auth::user()->id,
                         "dateCreated" => $curDate
                     );
                     $assessmentItems[] = $assessmentItem;
@@ -1641,7 +1641,7 @@ class AssessorController extends Controller
                     "assessmentItemType" => $assessmentType,
                     "category" => $category,
                     "segment" => Config::$ASSESSMENT_SEGMENTS['ASSESSMENT']['ID'],
-                    "createdBy" => Config::ACTIVE,
+                    "createdBy" => Auth::user()->id,
                     "dateCreated" => $curDate
                 );
                 $assessmentItems[] = $assessmentItem;
@@ -2179,7 +2179,7 @@ class AssessorController extends Controller
                     "assessmentItemType" => $assessmentType,
                     "category" => $category,
                     "segment" => Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'],
-                    "createdBy" => Config::ACTIVE,
+                    "createdBy" => Auth::user()->id,
                     "dateCreated" => $curDate
                 );
                 $assessmentItems[] = $assessmentItem;
