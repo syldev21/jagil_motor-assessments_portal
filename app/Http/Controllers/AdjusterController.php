@@ -984,7 +984,8 @@ class AdjusterController extends Controller
                 'parts' => $unReInspectedParts,
                 'labor' => $reinspection->labor,
                 'addLabor' => $reinspection->add_labor,
-                'intimationDate' => $claim->intimationDate
+                'intimationDate' => $claim->intimationDate,
+                'priceChange' => $priceChange
             ];
         } else {
             $data = [
@@ -999,7 +1000,8 @@ class AdjusterController extends Controller
                 'parts' => [],
                 'labor' => 0,
                 'addLabor' => 0,
-                'intimationDate' => '00:00:00'
+                'intimationDate' => '00:00:00',
+                'priceChange' => []
             ];
         }
 

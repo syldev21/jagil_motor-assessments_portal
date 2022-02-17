@@ -146,7 +146,12 @@
                                                             @foreach($parts as $part)
 
                                                                 <li><strong>{{ $part->part->name }}</strong>
-                                                                    : {{ number_format($part->total) }}</li>
+                                                                    :
+                                                                    @if($priceChange->assessmentID == $part->assessmentID && isset($priceChange->finalApprovedAt))
+                                                                    {{ number_format($part->total+$part->totalDifference) }}</li>
+                                                                    @else
+                                                                    {{ number_format($part->total) }}</li>
+                                                                    @endif
 
                                                             @endforeach
 
