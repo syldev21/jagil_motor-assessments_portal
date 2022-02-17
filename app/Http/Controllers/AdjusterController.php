@@ -919,6 +919,13 @@ class AdjusterController extends Controller
                 ->where('reInspectionType','=', Config::$JOB_CATEGORIES['CIL']['ID'])
                 ->where('reInspection', Config::ACTIVE)
                 ->sum('total');
+            if(isset($priceChange->finalApprovedAt)) {
+                $priceChangeDiff = AssessmentItem::whereIn("assessmentID", $assessmentIds)
+                    ->where('reInspectionType','=', Config::$JOB_CATEGORIES['CIL']['ID'])
+                    ->where('reInspection', Config::ACTIVE)
+                    ->sum('totalDifference');
+                $award = $award+$priceChangeDiff;
+            }
 
             $status = $assessment->assessmentTypeID;
 
