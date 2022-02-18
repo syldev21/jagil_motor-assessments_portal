@@ -37,13 +37,13 @@
         our consideration.<p>
 
     <p>Yours faithfully,</p>
-
+        <img src="{{'images/e_signatures/'.auth()->user()->signature }}" width="10%">
     <p>
         <strong>{{ isset(Auth::user()->firstName) ? Auth::user()->firstName : '' }}
             {{ isset(Auth::user()->middleName) ? Auth::user()->middleName : '' }}
             {{ isset(Auth::user()->lastName) ? Auth::user()->lastName : '' }}<br />
             <u>{{ $role }}</u><br />
-            <u>TEL 0709901537</u><br />
+            <u>TEL {{ isset(Auth::user()->MSISDN) ? Auth::user()->MSISDN : '' }}</u><br />
         </strong>
     </p>
 
