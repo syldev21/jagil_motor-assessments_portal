@@ -1014,6 +1014,14 @@
                 <span class="menu-title" data-i18n="Activity Log">Escalations</span>
             </a>
         </li>
+        <li class="bold " >
+            <a class="sidenav-link" id="showCourtesyCar"
+               href="#"
+            >
+                <i class="material-icons">directions_car</i>
+                <span class="menu-title" data-i18n="Activity Log">Courtesy Car</span>
+            </a>
+        </li>
         <li class="bold ">
             <a class="waves-effect waves-light"
                href="{{ route('user.logout') }}"
