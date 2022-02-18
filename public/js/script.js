@@ -6605,6 +6605,164 @@ $(document).ready(function () {
 
 
     });
+
+
+    $("body").on('click','#triggeraddCourtesyCarFirmModal',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('addCourtesyCarFirmModal');
+
+        const instance = M.Modal.init(elem, {dismissible: true});
+        var claimID = $(this).data("id");
+        $("#claimID").val(claimID);
+        instance.open();
+
+    });
+
+
+    $('body').on('keyup change', '#numberOfDays', function(e) {
+        e.preventDefault();
+
+        var numberOfDays = $("#numberOfDays").val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type:"POST",
+            url:"/adjuster/addDays",
+            data:{
+                numberOfDays:numberOfDays
+            },
+            success:function(data){
+
+                $("#returnDate").val(data);
+            }
+        })
+
+    });
+
+
+    $('body').on('change', '#vendorID', function (e) {
+        e.preventDefault();
+
+        var vendorID=$('#vendorID').val();
+
+
+        $.ajaxSetup({
+           headers:{
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           }
+        });
+        $.ajax({
+            type: 'POST',
+            url: '/adjuster/getCharge',
+            data: {
+                vendorID:vendorID
+            },
+            success: function (data){
+                var result = $.parseJSON(data);
+                $('#charge').val(result.charge);
+                var numberOfDays = $("#numberOfDays").val();
+                var charge = $("#charge").val();
+                var totalCharge=  numberOfDays * charge;
+
+                $("#totalCharge").val(totalCharge);
+            }
+        });
+    });
+
+    $('body').on('keyup change', '#numberOfDays', function(e) {
+        e.preventDefault();
+
+        var numberOfDays = $("#numberOfDays").val();
+        var charge = $("#charge").val();
+        var totalCharge=  numberOfDays * charge;
+
+        $("#totalCharge").val(totalCharge);
+
+
+    });
+
+   $("body").on('click','#addCourtesyCar',function (e){
+
+            e.preventDefault();
+
+            var claimID = $("#claimID").val();
+            var vendorID =$("#vendorID").val();
+            var numberOfDays = $('#numberOfDays').val();
+            var returnDate = $("#returnDate").val();
+            var charge = $('#charge').val();
+             var totalCharge= $('#totalCharge').val();
+
+
+            addLoadingButton();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '/adjuster/processCourtesy',
+
+                data: {
+                    claimID : claimID,
+                    vendorID: vendorID,
+                    nofdays: numberOfDays,
+                    rdate: returnDate,
+                    charge: charge,
+                    totalCharge: totalCharge
+                },
+                success: function (data) {
+
+                    $('#addCourtesyCar').html("courtesy car saved successfully successfully").fadeIn('slow') //also show a success message
+                    $('#addCourtesyCar').delay(5000).fadeOut('slow');
+                },
+                error: function (error){
+
+                }
+
+
+            });
+        });
+
+
+
+        $("body").on('click','#showCourtesyCar',function (){
+            $("#mainLoader").removeClass('hideLoader');
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                url: '/adjuster/showCourtesyCar',
+                success: function (data) {
+                    $("#main").html(data);
+                    $('.datepicker').datepicker();
+                    $('#data-table-simple').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ],
+                        "pageLength": 25
+                    });
+                    $("#mainLoader").addClass('hideLoader');
+                }
+
+            });
+
+    });
+
     $("body").on('click','#addPermission',function (e){
         e.preventDefault();
         var name = $("#name").val();

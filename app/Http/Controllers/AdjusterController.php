@@ -7,6 +7,7 @@ use App\AssessmentItem;
 use App\CarModel;
 use App\Claim;
 use App\ClaimTracker;
+use App\CourtesyCar;
 use App\Document;
 use App\Helper\SMSHelper;
 use App\JobDetail;
@@ -1306,5 +1307,95 @@ class AdjusterController extends Controller
                 "An exception occurred when trying addPLO. Error message " . $e->getMessage());
         }
         return json_encode($response);
+    }
+
+    public function editLPO(Request $request)
+    {
+//
+        try {
+            if(isset($request->claimID) && isset($request->amount))
+
+            {
+                $claim = Claim::where(['id'=>$request->claimID])->first();
+
+                if(isset($claim->id))
+                {
+
+                    $updated=Claim::where(['id'=>$claim->id])->first()->update([
+                        "LPOAmount"=>$request->amount,
+                        "updatedBy"=>Auth::user()->id,
+                        "dateModified"=>Carbon::now()
+                    ]);
+
+                    $saved=LPOTracker::create([
+                        'claimNo'=>$claim->claimNo,
+                        'policyNo'=>$claim->policyNo,
+                        'initialAmount'=>$claim->LPOAmount,
+                        'currentAmount'=>$request->amount,
+                        'createdBy'=>$claim->createdBy,
+                        'updatedBy'=>Auth::id(),
+                        'dateCreated'=>$claim->LPODateCreated,
+                        'dateModified'=>Carbon::now()
+                    ]);
+                        if ($updated && $saved){
+                            $response = array(
+                            "STATUS_CODE" => Config::SUCCESS_CODE,
+                            "STATUS_MESSAGE" => "Updated and Saved successfully"
+                            );
+                        }
+                }
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Invalid payload provided"
+                );
+            }
+
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying updatePLO. Error message " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
+
+
+    public function processCourtesy(Request $request)
+    {
+                $noodays = $request->nofdays;
+                $rdate = $request->rdate;
+                $charge = $request->charge;
+                $totalCharge = $request->totalCharge;
+
+                courtesyCar::create([
+                    'vendorID'=>$request->vendorID,
+                    'claimID'=>$request->claimID,
+                    'numberOfDays'=>$noodays,
+                    'returnDate'=>$rdate,
+                    'charge'=>$charge,
+                    'totalCharge'=>$totalCharge,
+                    "createdBy" => Auth::user()->id,
+                    "dateCreated"=>$this->functions->curlDate()
+                ]);
+    }
+    public function showCourtesyCar(){
+
+        $courtesyCars= CourtesyCar::with('claim')->with('vendor')->get();
+        return view('adjuster.courtesy-cars', ['courtesyCars'=>$courtesyCars]);
+    }
+    public function getCharge(Request $request){
+        $vendorID=$request->vendorID;
+        $charge = Vendor::where(['id'=>$vendorID])->first();
+        return json_encode($charge);
+    }
+    public function addDays(Request  $request){
+        $rdate =  Carbon::now()->addDays($request->numberOfDays)->toDateTimeString();
+        $date= date('Y-m-d H:i:s', strtotime($rdate));
+        return $date;
     }
 }

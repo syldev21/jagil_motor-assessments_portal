@@ -201,6 +201,15 @@
                                                                     <a href="#" id="triggerNotification" data-id="{{$assessment['id']}}"><i
                                                                             class="material-icons">notifications_active</i>Send Notification </a>
                                                                 </li>
+                                                                <?php
+                                                                $statusIds = array(\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'],\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id'],\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'],\App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']);
+                                                                ?>
+                                                                @if(in_array($assessment['assessmentStatusID'],$statusIds))
+                                                                <li>
+                                                                    <a href="#" id="triggeraddCourtesyCarFirmModal" data-id="{{$assessment['claim']['id']}}"><i
+                                                                            class="material-icons">drive_eta</i>Process Courtesy Car</a>
+                                                                </li>
+                                                                @endif
                                                         </ul>
 
                                                     </td>
@@ -216,6 +225,7 @@
                 </div>
             </div>
             @include('common.generic-notification')
+            @include('common.generic-courtesy-car')
         </div>
     </div>
 </div>

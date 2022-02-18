@@ -75,6 +75,13 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->post('/sendRepairAuthority', 'AdjusterController@SendRepairAuthority');
     $router->post('/emailReleaseletter', 'AdjusterController@emailReleaseletter');
     $router->post('/addLPO', 'AdjusterController@addLPO');
+    $router->post('/edit-lpo-amount', 'AdjusterController@editLPO');
+
+//    process courtesy car
+    $router->post('/processCourtesy', 'AdjusterController@processCourtesy');
+    $router->post('/showCourtesyCar', 'AdjusterController@showCourtesyCar');
+    $router->post('/getCharge', 'AdjusterController@getCharge');
+    $router->post('/addDays', 'AdjusterController@addDays');
 });
 
 // Assessor Routes
