@@ -1014,6 +1014,7 @@
                 <span class="menu-title" data-i18n="Activity Log">Escalations</span>
             </a>
         </li>
+        @if(auth()->user()->userTypeID == \App\Conf\Config::$USER_TYPES['INTERNAL']['ID'])
         <li class="bold " >
             <a class="sidenav-link" id="showCourtesyCar"
                href="#"
@@ -1022,6 +1023,7 @@
                 <span class="menu-title" data-i18n="Activity Log">Courtesy Car</span>
             </a>
         </li>
+        @endif
         <li class="bold ">
             <a class="waves-effect waves-light"
                href="{{ route('user.logout') }}"
