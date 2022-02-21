@@ -6619,10 +6619,13 @@ $(document).ready(function () {
     });
 
 
-    $('body').on('keyup change', '#numberOfDays', function(e) {
+    $('body').on('change keyup', '#numberOfDays', function(e) {
         e.preventDefault();
-
         var numberOfDays = $("#numberOfDays").val();
+        var charge = $("#charge").val();
+        var totalCharge=  numberOfDays * charge;
+
+        $("#totalCharge").val(totalCharge);
 
         $.ajaxSetup({
             headers: {
@@ -6644,7 +6647,7 @@ $(document).ready(function () {
     });
 
 
-    $('body').on('change', '#vendorID', function (e) {
+    $('#main').on('change', '#vendorID', function (e) {
         e.preventDefault();
 
         var vendorID=$('#vendorID').val();
@@ -6672,94 +6675,89 @@ $(document).ready(function () {
             }
         });
     });
+    $("body").on('click','#addCourtesyCar',function (e){
 
-    $('body').on('keyup change', '#numberOfDays', function(e) {
         e.preventDefault();
 
-        var numberOfDays = $("#numberOfDays").val();
-        var charge = $("#charge").val();
-        var totalCharge=  numberOfDays * charge;
-
-        $("#totalCharge").val(totalCharge);
-
-
-    });
-
-   $("body").on('click','#addCourtesyCar',function (e){
-
-            e.preventDefault();
-
-            var claimID = $("#claimID").val();
-            var vendorID =$("#vendorID").val();
-            var numberOfDays = $('#numberOfDays').val();
-            var returnDate = $("#returnDate").val();
-            var charge = $('#charge').val();
-             var totalCharge= $('#totalCharge').val();
+        var claimID = $("#claimID").val();
+        var vendorID =$("#vendorID").val();
+        var numberOfDays = $('#numberOfDays').val();
+        var returnDate = $("#returnDate").val();
+        var charge = $('#charge').val();
+        var totalCharge= $('#totalCharge').val();
 
 
-            addLoadingButton();
+        addLoadingButton();
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                type: 'POST',
-                url: '/adjuster/processCourtesy',
-
-                data: {
-                    claimID : claimID,
-                    vendorID: vendorID,
-                    nofdays: numberOfDays,
-                    rdate: returnDate,
-                    charge: charge,
-                    totalCharge: totalCharge
-                },
-                success: function (data) {
-
-                    $('#addCourtesyCar').html("courtesy car saved successfully successfully").fadeIn('slow') //also show a success message
-                    $('#addCourtesyCar').delay(5000).fadeOut('slow');
-                },
-                error: function (error){
-
-                }
-
-
-            });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
+        $.ajax({
+            type: 'POST',
+            url: '/adjuster/processCourtesy',
 
-
-
-        $("body").on('click','#showCourtesyCar',function (){
-            $("#mainLoader").removeClass('hideLoader');
-            $.ajaxSetup({
-
-                headers: {
-
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
+            data: {
+                claimID : claimID,
+                vendorID: vendorID,
+                nofdays: numberOfDays,
+                rdate: returnDate,
+                charge: charge,
+                totalCharge: totalCharge
+            },
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
                 }
+                removeLoadingButton();
+            }
 
-            });
-            $.ajax({
 
-                type: 'POST',
-                url: '/adjuster/showCourtesyCar',
-                success: function (data) {
-                    $("#main").html(data);
-                    $('.datepicker').datepicker();
-                    $('#data-table-simple').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'copy', 'csv', 'excel', 'pdf', 'print'
-                        ],
-                        "pageLength": 25
-                    });
-                    $("#mainLoader").addClass('hideLoader');
-                }
+        });
+    });
+    $("body").on('click', '#showCourtesyCar', function () {
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
 
-            });
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/adjuster/showCourtesyCar',
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
 
     });
 

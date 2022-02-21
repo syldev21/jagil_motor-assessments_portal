@@ -18,7 +18,7 @@ class CreateCourtesyCarsTable extends Migration
             $table->integer('vendorID')->nullable();
             $table->integer('claimID')->nullable();
             $table->integer('numberOfDays')->nullable();
-            $table->dateTime('returnDate')->useCurrent();
+            $table->dateTime('returnDate')->nullable();
             $table->integer('charge')->nullable();
             $table->integer('totalCharge')->nullable();
             $table->integer('modifiedBy')->nullable();

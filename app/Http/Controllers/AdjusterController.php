@@ -26,6 +26,7 @@ use App\Role;
 use App\User;
 use App\UserHasRole;
 use App\Utility;
+use App\Vendor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -1367,6 +1368,9 @@ class AdjusterController extends Controller
 
     public function processCourtesy(Request $request)
     {
+        try {
+            if(isset($request->nofdays) && isset($request->rdate) && isset($request->charge) && isset($request->totalCharge))
+            {
                 $noodays = $request->nofdays;
                 $rdate = $request->rdate;
                 $charge = $request->charge;
@@ -1382,6 +1386,25 @@ class AdjusterController extends Controller
                     "createdBy" => Auth::user()->id,
                     "dateCreated"=>$this->functions->curlDate()
                 ]);
+                $response = array(
+                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                    "STATUS_MESSAGE" => "Courtesy Car processed Successfully"
+                );
+            }else
+            {
+                $response = array(
+                    "STATUS_CODE" => Config::INVALID_PAYLOAD,
+                    "STATUS_MESSAGE" => "Input all required data and try again"
+                );
+            }
+        }catch (\Exception $e)
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+        }
+        return json_encode($response);
     }
     public function showCourtesyCar(){
 

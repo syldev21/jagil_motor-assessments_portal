@@ -34,14 +34,14 @@
                                 </div>
                                 <div class="input-field">
                                     <input  id="charge" type="number" name="charge"
-                                           value="">
+                                           value="" class="disabled">
                                     <label for="charge" class="active">Charge</label>
                                 </div>
                                 <div class="input-field">
                                     <input readonly id="totalCharge" type="text" name="totalCharge" onchange="changeHandler(event)"
                                            value="">
                                     <label for="charge" class="active">Total Charge</label>
-                                    <input type="text" id="claimID">
+                                    <input type="hidden" id="claimID">
                                 </div>
                             </div>
                         </div>

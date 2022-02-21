@@ -53,11 +53,8 @@
                                             <th>Policy Number</th>
                                             <th>Number of Days</th>
                                             <th>Return Date</th>
-                                            <th>Status</th>
                                             <th>Charge</th>
                                             <th>Total Charge</th>
-                                            <th>Process Status</th>
-                                            <th>Created By</th>
                                             <th>Date Created</th>
                                         </tr>
                                         </thead>
@@ -70,11 +67,8 @@
                                                 <td>{{$courtesyCar->claim->policyNo}}</td>
                                                 <td>{{$courtesyCar->numberOfDays}}</td>
                                                 <td>{{$courtesyCar->returnDate}}</td>
-                                                <td>{{$courtesyCar->status}}</td>
                                                 <td>{{$courtesyCar->charge}}</td>
                                                 <td>{{$courtesyCar->totalCharge}}</td>
-                                                <td>{{$courtesyCar->processStatus}}</td>
-                                                <td>{{$courtesyCar->createdBy}}</td>
                                                 <td>{{$courtesyCar->dateCreated}}</td>
 
                                             </tr>
