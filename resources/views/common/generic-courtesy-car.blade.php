@@ -5,6 +5,7 @@
         <div id="addCourtesyCarFirmModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h5 class="float-left">Process Courtesy Car</h5>
                     <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
                 </div>
                 <div class="modal-body clearfix">
@@ -34,12 +35,12 @@
                                 </div>
                                 <div class="input-field">
                                     <input  id="charge" type="number" name="charge"
-                                           value="" class="disabled">
+                                           value="" disabled>
                                     <label for="charge" class="active">Charge</label>
                                 </div>
                                 <div class="input-field">
-                                    <input readonly id="totalCharge" type="text" name="totalCharge" onchange="changeHandler(event)"
-                                           value="">
+                                    <input readonly id="totalCharge" type="text" name="totalCharge"
+                                           value="" disabled>
                                     <label for="charge" class="active">Total Charge</label>
                                     <input type="hidden" id="claimID">
                                 </div>
