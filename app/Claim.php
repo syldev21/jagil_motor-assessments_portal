@@ -11,7 +11,7 @@ class Claim extends Model
     protected $table = "claims";
     protected $primaryKey = "id";
     protected $fillable = ['claimNo','policyNo','branch','subClassCode','vehicleRegNo','carMakeCode','carModelCode','engineNumber','chassisNumber','yom','garageID','centerID','customerCode','claimType',
-        'sumInsured','excess','intimationDate','loseDate','location','changed','salvageProcessed','salvageProcessedDate','salvageProcessedBy','LPOAmount','LPOAddedBy','LPODateCreated','createdBy','updatedBy','claimStatusID','active','inPremia','archivedBy','archivalNote','archivedAt','dateModified','dateCreated'];
+        'sumInsured','excess','intimationDate','loseDate','location','changed','salvageProcessed','salvageProcessedDate','salvageProcessedBy','LPOAmount','LPOAddedBy','LPODateCreated','createdBy','updatedBy','claimStatusID','active','inPremia','archivedBy','archivalNote','archivedAt','isSubrogate','companyID','dateModified','dateCreated'];
     public $timestamps= false;
 
     public function assessment() {

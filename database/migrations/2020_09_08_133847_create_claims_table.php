@@ -49,6 +49,8 @@ class CreateClaimsTable extends Migration
             $table->longText('archivalNote')->nullable();
             $table->integer('archivedBy')->nullable();
             $table->dateTime('archivedAt')->nullable();
+            $table->tinyInteger('isSubrogate')->nullable();
+            $table->bigInteger('companyID')->nullable();
             $table->dateTime('dateModified')->nullable();
             $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

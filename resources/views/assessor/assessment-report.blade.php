@@ -12,8 +12,15 @@ $modelCode = isset($carDetails->modelCode)  ? $carDetails->modelCode : '';
             <div class="card">
                 <div class="card-content">
                     <div class="row col s12">
+                        <?php
+                        $claimForm =\App\Document::where(['claimID'=>$assessment['claimID'],"documentType"=>\App\Conf\Config::$DOCUMENT_TYPES['PDF']['ID'],'pdfType'=>App\Conf\Config::PDF_TYPES['CLAIM_FORM']['ID']])->first();
+                        ?>
                         <h4 class="card-title float-left">Assessment for claim Number
                             - {{$assessment->claim->claimNo}} </h4>
+                        @if(!isset($claimForm->name))
+                            <p class="float-right" style="color: red;"> * No Claim Form Report will be saved as Draft</p>
+                        @endif
+
                     </div>
                     <div class="divider"></div>
                     <div class="row">
@@ -537,7 +544,7 @@ $modelCode = isset($carDetails->modelCode)  ? $carDetails->modelCode : '';
                                             <div class="col m6">
                                                 <div class="input-field">
                                                     <label>
-                                                        <input type="checkbox" id="isDraft" value="0"/>
+                                                        <input type="checkbox" id="isDraft" value="0" @if(!isset($claimForm->name)) checked  disabled @endif/>
                                                         <span>Save as Draft</span>
                                                     </label>
                                                 </div>
@@ -546,6 +553,7 @@ $modelCode = isset($carDetails->modelCode)  ? $carDetails->modelCode : '';
                                         <br/>
                                         <div class="row">
                                             <div class="col m6">
+
                                             </div>
                                             <div class="step-actions">
                                                 <input type="hidden" name="counter" id="counter" value="{{isset($count) ? $count-1 : 0}}">

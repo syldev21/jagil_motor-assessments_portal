@@ -603,24 +603,26 @@
                                             </label>
                                         </div>
                                 </div>
+                                @if($assessment['claim']['isSubrogate'] == App\Conf\Config::ACTIVE)
                                 <div class="row">
                                     <div class="col m6" id="subrogationForm">
                                         <br/>
                                         <label>
                                             <input name="subrogation" type="checkbox"
-                                                   class="with-gap subrogation" value="" id="subrogation"/>
+                                                   class="with-gap subrogation" value="" id="subrogation" @if($assessment['claim']['isSubrogate'] == App\Conf\Config::ACTIVE) checked  @endif/>
                                             <span>Has Subrogation:</span>
                                         </label>
                                     </div>
                                     <div class="col m6">
-                                        <select id="company" name="company" class="browser-default subrogationSelect hideSubrogation">
+                                        <select id="company" name="company" class="browser-default subrogationSelect">
                                             <option value="0">Select Company</option>
                                             @foreach($companies as $company)
-                                                <option value="{{$company->id}}">{{$company->name}}</option>
+                                                <option value="{{$company->id}}" @if($assessment['claim']['companyID'] == $company->id) selected @endif>{{$company->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="row">
                                     <div class="input-field col m12 s12">
                                         <div class="row">

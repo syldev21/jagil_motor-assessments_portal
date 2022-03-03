@@ -49,6 +49,25 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <div class="col m4" id="subrogationForm">
+                                                <br/>
+                                                <label>
+                                                    <input name="subrogation" type="checkbox"
+                                                           class="with-gap subrogation subrogation-checkbox" value="" id="subrogation"/>
+                                                    <span>Has Subrogation:</span>
+                                                </label>
+                                            </div>
+                                            <div class="col m4">
+                                                <select id="company" name="company" class="browser-default subrogationSelect hideSubrogation">
+                                                    <option value="0">Select Company</option>
+                                                    @foreach($companies as $company)
+                                                        <option value="{{$company->id}}">{{$company->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col m4"></div>
+                                        </div>
+                                        <div class="row">
                                             <div class="input-field col m9 s12">
                                             </div>
                                             <div class="input-field col m3 s12">

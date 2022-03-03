@@ -4478,6 +4478,8 @@ $(document).ready(function () {
     $("body").on('click','#uploadDocuments',function (e) {
         e.preventDefault();
         var claimID = $("#claimID").val();
+        var isSubrogate = $(".subrogation").is(':checked') ? 1 : 0;
+        var companyID = $("#company").val();
         var image_upload = new FormData();
         // Attach file
         // formData.append('image', $('input[type=file]')[0].files[0]);
@@ -4490,6 +4492,8 @@ $(document).ready(function () {
         var claimForm = $('#claimFormpdf').prop('files')[0];
         image_upload.append('totalImages', totalImages);
         image_upload.append('claimID', claimID);
+        image_upload.append('isSubrogate', isSubrogate);
+        image_upload.append('companyID', companyID);
         image_upload.append('claimForm', claimForm);
         $.ajaxSetup({
 
@@ -6809,7 +6813,7 @@ $(document).ready(function () {
 
     });
 
-    $("#subrogationForm :checkbox").on('change',function (e){
+    $("#main").on('change','#subrogation',function (e){
         e.preventDefault();
         var isSubrogate = $(".subrogation").is(':checked') ? 1 : 0;
         if(isSubrogate)

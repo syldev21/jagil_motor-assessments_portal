@@ -7,6 +7,7 @@ use App\AssessmentItem;
 use App\CarModel;
 use App\Claim;
 use App\ClaimTracker;
+use App\Company;
 use App\CourtesyCar;
 use App\Document;
 use App\Helper\SMSHelper;
@@ -520,8 +521,9 @@ class AdjusterController extends Controller
 
     public function uploadDocumentsForm(Request $request, $claimID)
     {
+        $companies = Company::select('id','name')->get();
         $claim = Claim::where(['id' => $claimID])->first();
-        return view('adjuster.file-upload', ['claim' => $claim]);
+        return view('adjuster.file-upload', ['claim' => $claim,'companies'=>$companies]);
     }
 
     public function searchClaim(Request $request)

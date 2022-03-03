@@ -206,6 +206,17 @@ class AssessorController extends Controller
         try {
             $totalImages = $request->totalImages;
             $claimID = $request->claimID;
+            $isSubrogate = $request->isSubrogate;
+            $companyID = $request->companyID;
+            if(isset($companyID) && $isSubrogate == Config::ACTIVE)
+            {
+                Claim::where(['id'=>$claimID])->update([
+                    "companyID"=>$companyID,
+                    "isSubrogate"=>$isSubrogate,
+                    "dateModified"=>$this->functions->curlDate(),
+                    "updatedBy"=>Auth::user()->id
+                ]);
+            }
             $claimData = Claim::where(['id'=>$claimID])->first();
             $claimNo =  str_replace("/","_",$claimData->claimNo);
 
