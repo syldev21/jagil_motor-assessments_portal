@@ -609,7 +609,7 @@
                                         <br/>
                                         <label>
                                             <input name="subrogation" type="checkbox"
-                                                   class="with-gap subrogation" value="" id="subrogation" @if($assessment['claim']['isSubrogate'] == App\Conf\Config::ACTIVE) checked  @endif/>
+                                                   class="with-gap subrogation" value="" id="subrogation" @if($assessment['claim']['isSubrogate'] == App\Conf\Config::ACTIVE) checked  @endif disabled/>
                                             <span>Has Subrogation:</span>
                                         </label>
                                     </div>
