@@ -51,6 +51,9 @@ class CreateClaimsTable extends Migration
             $table->dateTime('archivedAt')->nullable();
             $table->tinyInteger('isSubrogate')->nullable();
             $table->bigInteger('companyID')->nullable();
+            $table->string('thirdPartyDriver')->nullable();
+            $table->string('thirdPartyPolicy')->nullable();
+            $table->string('thirdPartyVehicleRegNo')->nullable();
             $table->dateTime('dateModified')->nullable();
             $table->timestamp('dateCreated')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

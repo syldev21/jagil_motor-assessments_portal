@@ -210,9 +210,15 @@ class AssessorController extends Controller
             $companyID = $request->companyID;
             if(isset($companyID) && $isSubrogate == Config::ACTIVE)
             {
+                $thirdPartyDriver = $request->thirdPartyDriver;
+                $thirdPartyPolicy = $request->thirdPartyPolicy;
+                $thirdPartyVehicleRegNo = $request->thirdPartyVehicleRegNo;
                 Claim::where(['id'=>$claimID])->update([
                     "companyID"=>$companyID,
                     "isSubrogate"=>$isSubrogate,
+                    "thirdPartyDriver"=>$thirdPartyDriver,
+                    "thirdPartyPolicy" => $thirdPartyPolicy,
+                    "thirdPartyVehicleRegNo" => $thirdPartyVehicleRegNo,
                     "dateModified"=>$this->functions->curlDate(),
                     "updatedBy"=>Auth::user()->id
                 ]);

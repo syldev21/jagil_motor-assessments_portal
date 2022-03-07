@@ -35,10 +35,10 @@
                                 </div>
                             </div>
                                     <div class="row">
-                                        <div class="col s6">
+                                        <div class="col s12">
                                             <h5 style="font-weight: bold;">“WITHOUT PREJUDICE”</h5><br/>
                                             <h6><span style="font-weight: bold;">OUR REF: </span>{{$claim->claimNo}}</h6>
-                                            <h6><span style="font-weight: bold;">YOUR REF: </span>POL NO: {{$claim->policyNo }}</h6>
+                                            <h6><span style="font-weight: bold;">YOUR REF: </span>POL NO: {{$claim->thirdPartyPolicy }}</h6>
                                             <br/>
                                             <p>
                                             <?php
@@ -53,14 +53,11 @@
                                             <br/>
                                             <h6>Dear Sirs,</h6>
                                             <br/>
-                                            <h5 style="font-weight: bold">ACCIDENT ON {{$claim->loseDate}}</h5>
-                                            <h5 style="font-weight: bold">YOUR INSURED/INSURED’S DRIVER: GABRIEL MBOGO VEHICLE REG. NO. KBB 067D</h5>
-                                            <h5 style="font-weight: bold; text-decoration: underline;">OUR INSURED: {{$claim->customer->fullName}} REG. NO. {{$claim->vehicleRegNo}}</h5>
-
-                                        </div>
-                                        <div class="col s2 center-align">
-                                        </div>
-                                        <div class="col s2">
+                                            <div style="text-decoration: underline;">
+                                            <h5>ACCIDENT ON {{$claim->loseDate}}</h5>
+                                            <h5>YOUR INSURED/INSURED’S DRIVER: {{$claim->thirdPartyDriver}} REG NO. {{$claim->thirdPartyVehicleRegNo}}</h5>
+                                            <h5>OUR INSURED: {{$claim->customer->fullName}} REG. NO. {{$claim->vehicleRegNo}}</h5>
+                                            </div>
 
                                         </div>
                                     </div>

@@ -4480,6 +4480,9 @@ $(document).ready(function () {
         var claimID = $("#claimID").val();
         var isSubrogate = $(".subrogation").is(':checked') ? 1 : 0;
         var companyID = $("#company").val();
+        var thirdPartyDriver = $("#thirdPartyDriver").val();
+        var thirdPartyPolicy = $("#thirdPartyPolicy").val();
+        var thirdPartyVehicleRegNo = $("#thirdPartyVehicleRegNo").val();
         var image_upload = new FormData();
         // Attach file
         // formData.append('image', $('input[type=file]')[0].files[0]);
@@ -4494,43 +4497,101 @@ $(document).ready(function () {
         image_upload.append('claimID', claimID);
         image_upload.append('isSubrogate', isSubrogate);
         image_upload.append('companyID', companyID);
+        image_upload.append('thirdPartyDriver', thirdPartyDriver);
+        image_upload.append('thirdPartyPolicy', thirdPartyPolicy);
+        image_upload.append('thirdPartyVehicleRegNo', thirdPartyVehicleRegNo);
         image_upload.append('claimForm', claimForm);
-        $.ajaxSetup({
-
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-            }
-
-        });
-        $.ajax({
-
-            type: 'POST',
-            contentType: false,
-            processData: false,
-            data: image_upload,
-            url: '/assessor/uploadDocuments',
-            success: function (data) {
-                var result = $.parseJSON(data);
-                if (result.STATUS_CODE == SUCCESS_CODE) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+        if(isSubrogate == 0)
+        {
+            Swal.fire({
+                title: "Are you sure the claim doesn't have subrogation?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                customClass: {
+                    actions: 'my-actions',
+                    cancelButton: 'order-1 right-gap',
+                    confirmButton: 'order-2',
                 }
-            }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajaxSetup({
 
-        });
+                        headers: {
+
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                        }
+
+                    });
+                    $.ajax({
+
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        data: image_upload,
+                        url: '/assessor/uploadDocuments',
+                        success: function (data) {
+                            var result = $.parseJSON(data);
+                            if (result.STATUS_CODE == SUCCESS_CODE) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: result.STATUS_MESSAGE,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: result.STATUS_MESSAGE,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                            }
+                        }
+
+                    });
+                }
+            })
+        }else
+        {
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: image_upload,
+                url: '/assessor/uploadDocuments',
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }
+
+            });
+        }
     });
 
     $("body").on('click','#triggerApprove',function (e){
@@ -4706,6 +4767,9 @@ $(document).ready(function () {
         var assessmentTypeID = $("#assessmentTypeID").val();
         var isSubrogate = $(".subrogation").is(':checked') ? 1 : 0;
         var companyID = $("#company").val();
+        var thirdPartyDriver = $("#thirdPartyDriver").val();
+        var thirdPartyPolicy = $("#thirdPartyPolicy").val();
+        var thirdPartyVehicleRegNo = $("#thirdPartyVehicleRegNo").val();
         $.ajaxSetup({
 
             headers: {
@@ -4726,7 +4790,11 @@ $(document).ready(function () {
                 assessmentTypeID : assessmentTypeID,
                 pav : pav,
                 isSubrogate : isSubrogate,
-                companyID : companyID
+                companyID : companyID,
+                thirdPartyDriver : thirdPartyDriver,
+                thirdPartyPolicy : thirdPartyPolicy,
+                thirdPartyVehicleRegNo : thirdPartyVehicleRegNo
+
             },
             url: '/assessment-manager/review-assessment',
             success: function (data) {
@@ -6818,11 +6886,11 @@ $(document).ready(function () {
         var isSubrogate = $(".subrogation").is(':checked') ? 1 : 0;
         if(isSubrogate)
         {
-            $(".subrogationSelect").removeClass('hideSubrogation');
+            $(".subrogationSelect,.thirdPartyDetails").removeClass('hideSubrogation');
         }else
         {
             $("#company").val(0);
-            $(".subrogationSelect").addClass('hideSubrogation');
+            $(".subrogationSelect,.thirdPartyDetails").addClass('hideSubrogation');
         }
 
     });

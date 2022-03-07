@@ -67,6 +67,24 @@
                                             </div>
                                             <div class="col m4"></div>
                                         </div>
+                                        <br/>
+                                        <div class="row hideSubrogation thirdPartyDetails">
+                                            <div class="input-field col m4 s12">
+                                                <input placeholder="" id="thirdPartyDriver" type="text" name="thirdPartyDriver"
+                                                       value="">
+                                                <label for="thirdPartyDriver" class="active">3rd Party Driver Name</label>
+                                            </div>
+                                            <div class="input-field col m4 s12">
+                                                <input placeholder="" id="thirdPartyPolicy" type="text" name="thirdPartyPolicy"
+                                                       value="">
+                                                <label for="thirdPartyPolicy" class="active">3rd Party Policy</label>
+                                            </div>
+                                            <div class="input-field col m4 s12">
+                                                <input placeholder="" id="thirdPartyVehicleRegNo" type="text" name="thirdPartyVehicleRegNo"
+                                                       value="">
+                                                <label for="thirdPartyVehicleRegNo" class="active">3rd Party VehicleRegNo</label>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="input-field col m9 s12">
                                             </div>

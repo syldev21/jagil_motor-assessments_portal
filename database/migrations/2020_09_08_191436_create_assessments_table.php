@@ -44,6 +44,9 @@ class CreateAssessmentsTable extends Migration
             $table->tinyInteger('active')->default(0);
             $table->tinyInteger('isSubrogate')->default(0);
             $table->bigInteger('companyID')->nullable();
+            $table->string('thirdPartyDriver')->nullable();
+            $table->string('thirdPartyPolicy')->nullable();
+            $table->string('thirdPartyVehicleRegNo')->nullable();
             $table->tinyInteger('isTheft')->nullable();
             $table->double('PTV')->nullable();
             $table->bigInteger('createdBy')->nullable();

@@ -21,6 +21,7 @@ class CreateGaragesTable extends Migration
             $table->string('location')->nullable();
             $table->double('longitude')->nullable();
             $table->double('latitude')->nullable();
+            $table->integer('garageType')->nullable();
             $table->bigInteger('modifiedBy')->nullable();
             $table->bigInteger('createdBy')->nullable();
             $table->dateTime('dateModified')->nullable();

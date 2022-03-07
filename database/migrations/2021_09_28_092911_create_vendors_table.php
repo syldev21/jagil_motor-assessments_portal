@@ -26,6 +26,7 @@ class CreateVendorsTable extends Migration
             $table->string('kraPin')->nullable();
             $table->string('location')->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->double('charge')->nullable();
             $table->integer('createdBy')->nullable();
             $table->integer('updatedBy')->nullable();
             $table->dateTime('dateModified')->nullable();
