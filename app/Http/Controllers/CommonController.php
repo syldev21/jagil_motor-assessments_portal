@@ -995,4 +995,14 @@ class CommonController extends Controller
         $pdfFileName = str_replace(" ","_",$pdfFileName);
         return $pdfFileName;
     }
+    public function changeTracker(){
+        $changeTracker=Assessment::join("claims", "assessments.claimID", "=", "claims.id")
+            ->join("price_changes", "assessments.id", "=","price_changes.assessmentID")
+            ->where(["price_changes.finalApproved"=>1])
+            ->select('claims.vehicleRegNo as vehicleRegNo','claims.claimNo as claimNo','claims.id as claims_id','assessments.id as assessments_id',
+                'price_changes.previousTotal as previousTotal','price_changes.currentTotal as currentTotal','price_changes.priceDifference as priceDifference', "price_changes.dateCreated as dateCreated")
+            ->get();
+//        dd($changeTracker);
+        return view("common.change-tracker", ["change_tracker"=>$changeTracker]);
+    }
 }

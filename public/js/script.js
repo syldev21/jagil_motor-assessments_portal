@@ -6897,6 +6897,38 @@ $(document).ready(function () {
     $('.datepicker').datepicker();
     $('.collapsible').collapsible();
     $(".sidenav").sidenav();
+
+    $("body").on('click','#changeTracker',function (){
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/common/changeTracker',
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+
+    });
 });
 
 function isNotEmpty(caller) {

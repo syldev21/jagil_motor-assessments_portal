@@ -998,6 +998,16 @@
                 <span class="menu-title" data-i18n="Salvage Register">Salvage Register</span>
             </a>
         </li>
+        @hasanyrole('Admin|Head Assessor')
+        <li class="bold " >
+            <a class="sidenav-link" id="changeTracker"
+               href="#"
+            >
+                <i class="material-icons">change_history</i>
+                <span class="menu-title" data-i18n="Activity Log">Change Tracker</span>
+            </a>
+        </li>
+        @endhasanyrole
         <li class="bold ">
             <a class="sidenav-link" id="showActivityLog"
                href="#"
