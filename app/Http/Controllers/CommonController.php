@@ -817,7 +817,8 @@ class CommonController extends Controller
 
     public function fetchCustomerData(Request $request)
     {
-
+        $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "param data is report_type ".$request->report_type." identity_number ".$request->identity_number." identity_type ".$request->identity_type);
         try {
             if(isset($request->report_type) && isset($request->identity_number) && isset($request->identity_type))
             {
@@ -843,6 +844,8 @@ class CommonController extends Controller
                     'X-METROPOL-REST-API-TIMESTAMP:'.$timestamp
                 );
                 $response = $this->generateCurl($url,$jsonObject,$headers);
+                $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "response from mtropol is is ".json_encode($response));
                 $result = json_decode($response,true);
                 if(isset($result['api_code']) && isset($result['id_number']))
                 {
