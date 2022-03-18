@@ -12,6 +12,7 @@ use App\CourtesyCar;
 use App\Document;
 use App\Helper\SMSHelper;
 use App\JobDetail;
+use App\LPOTracker;
 use App\Notifications\ClaimApproved;
 use App\Notifications\NewClaimNotification;
 use App\PriceChange;
@@ -1340,12 +1341,12 @@ class AdjusterController extends Controller
                         'dateCreated'=>$claim->LPODateCreated,
                         'dateModified'=>Carbon::now()
                     ]);
-                        if ($updated && $saved){
-                            $response = array(
+                    if ($updated && $saved){
+                        $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
                             "STATUS_MESSAGE" => "Updated and Saved successfully"
-                            );
-                        }
+                        );
+                    }
                 }
             }else
             {
@@ -1366,7 +1367,6 @@ class AdjusterController extends Controller
         }
         return json_encode($response);
     }
-
 
     public function processCourtesy(Request $request)
     {
