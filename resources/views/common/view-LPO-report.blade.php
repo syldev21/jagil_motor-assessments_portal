@@ -34,7 +34,7 @@
         <p>Call the client on {{$claim->customer->MSISDN}}</p>
         <P>Your assistance to facilitate the same will be highly appreciated.</P>
         <p>Yours faithfully,</p>
-        <img src="{{'images/e_signatures/'.Auth::user()->signature }}" width="10%">
+        <img src="{{'images/e_signatures/'.Auth::user()->signature }}" width="20%">
         <p>
             <br><strong>{{ isset(Auth::user()->firstName) ? Auth::user()->firstName : '' }}
                 {{ isset(Auth::user()->middleName) ? Auth::user()->middleName : '' }}

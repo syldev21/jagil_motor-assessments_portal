@@ -26,6 +26,7 @@
         <p>Call the client on {{$claim->customer->MSISDN}}</p>
         <P>Your assistance to facilitate the same will be highly appreciated.</P>
         <p>Yours faithfully,</p>
+        <img src="{{'images/e_signatures/'.Auth::user()->signature }}" width="20%">
 
         <p>
             <br><strong>{{ isset(Auth::user()->firstName) ? Auth::user()->firstName : '' }}
@@ -34,6 +35,11 @@
             Claims Adjuster<br/>
             Jubilee Allianz General Insurance (K) Limited <br/>
             Allianz Plaza, 96 Riverside Drive,
+        </p>
+        <br/>
+        <h6>BCC: {{$claim->customer->fullName}}</h6>
+        <p style="font-size: 11px;">
+            Kindly follow up for reinstatement of windscreen cover as it has been utilized for this claim.
         </p>
     </div>
 </div>
