@@ -656,13 +656,57 @@ class AssessmentManagerController extends Controller
     {
         try {
             $claimStatusID = $request->claimStatusID;
-
-            $claims = Claim::with("assessment")
-                ->where("claimStatusID", "=", $claimStatusID)
-                ->where("active", "=", Config::ACTIVE)
-                ->where("claimType","=". Config::CLAIM_TYPES['ASSESSMENT'])
-                ->orderBy('dateCreated', 'DESC')->with('assessment')->get();
             $assessors = User::role('Assessor')->get();
+            if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
+                if($claimStatusID == Config::$STATUSES['CLAIM']['UPLOADED']['id'])
+                {
+                    $claims = Claim::where([
+                        'claimStatusID'=> $claimStatusID,
+                        'active'=>Config::ACTIVE,
+                        'claimType'=> Config::CLAIM_TYPES['ASSESSMENT']
+                    ])->with('adjuster')->get();
+                }else
+                {
+                    $claims = Claim::where([
+                        'claimStatusID'=> $claimStatusID,
+                        'active'=>Config::ACTIVE,
+                        'claimType'=> Config::CLAIM_TYPES['ASSESSMENT']
+                    ])  ->where('dateCreated', ">=", Carbon::now()->subDays(Config::DATE_RANGE))
+                        ->with('adjuster')->get();
+                }
+            } elseif (isset($request->regNumber)) {
+//                $regNo = preg_replace("/\s+/", "", $request->regNumber);
+                $registrationNumber=preg_replace("/\s+/", "", $request->regNumber);
+                $regNoArray = preg_split('/(?=\d)/', $registrationNumber, 2);
+                $regNo1 =isset($regNoArray[0]) ? $regNoArray[0] : '';
+                $regNo2 = isset($regNoArray[1]) ? $regNoArray[1] : '';
+                $regNo = $request->regNumber;
+                $claims = Claim::where(function($a) use ($regNo,$regNo1,$regNo2,$claimStatusID) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo.'%')
+                        ->where('claimStatusID','=',$claimStatusID)
+                        ->where('claimType','=',Config::CLAIM_TYPES['ASSESSMENT'])
+                        ->where('active','=',Config::ACTIVE);
+                })->orWhere(function($a)use ($regNo1,$regNo2,$claimStatusID) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo1.'%')
+                        ->where('vehicleRegNo','like', '%'.$regNo2.'%')
+                        ->where('claimStatusID','=',$claimStatusID)
+                        ->where('claimType','=',Config::CLAIM_TYPES['ASSESSMENT'])
+                        ->where('active','=',Config::ACTIVE);
+                })->with('adjuster')
+                    ->get();
+
+            } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
+                $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+                $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+                $claims = Claim::where([
+                    'claimStatusID' => $claimStatusID,
+                    'active' => Config::ACTIVE,
+                    'claimType' => Config::CLAIM_TYPES['ASSESSMENT']
+                ])->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->with('adjuster')->get();
+            } else {
+                $claims = array();
+            }
             return view('assessment-manager.claims', ['claims' => $claims, 'assessors' => $assessors, "claimStatusID" => $claimStatusID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .

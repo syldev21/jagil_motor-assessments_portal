@@ -33,8 +33,8 @@
                                     </div>
                                     <div class="input-field col m3 s12">
                                         <div class="input-field col s12">
-                                            <button class="btn cyan waves-effect waves-light" type="submit"
-                                                    name="action" id="searchClaim">
+                                            <button class="btn cyan waves-effect waves-light" type="submit" data-id="{{isset($claimStatusID) ? $claimStatusID : ''}}"
+                                                    name="action" id="filter-assessment-manager-claims">
                                                 <i class="material-icons left">search</i> Filter
                                             </button>
                                         </div>

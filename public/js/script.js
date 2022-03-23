@@ -663,9 +663,12 @@ $(document).ready(function () {
 
         });
     });
-    $("body").on('click','.assessment-manager-claims',function (e){
+    $("body").on('click','#filter-assessment-manager-claims,.assessment-manager-claims',function (e){
         e.preventDefault();
         var claimStatusID = $(this).data("id");
+        var fromDate = $("#from_date").val();
+        var toDate = $("#to_date").val();
+        var regNumber = $("#vehicle_reg_no").val();
         $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
@@ -680,7 +683,10 @@ $(document).ready(function () {
 
             type: 'POST',
             data : {
-                'claimStatusID' : claimStatusID
+                claimStatusID : claimStatusID,
+                fromDate : fromDate,
+                toDate : toDate,
+                regNumber : regNumber
             },
 
             url: '/assessment-manager/claims',
@@ -694,6 +700,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $('.datepicker').datepicker();
                 $("#mainLoader").addClass('hideLoader');
             }
 
