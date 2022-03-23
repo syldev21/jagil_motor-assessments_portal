@@ -108,7 +108,48 @@ class CommonController extends Controller
     {
         $assessmentTypeID = $request->assessmentTypeID;
         try {
-            $assessments = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'], 'assessmentTypeID' => $assessmentTypeID,'active'=>Config::ACTIVE])->with('claim')->with('user')->with('approver')->with('final_approver')->with('assessor')->get();
+            if (!isset($request->fromDate) && !isset($request->toDate) && !isset($request->regNumber)) {
+
+                $assessments = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
+                    'assessmentTypeID' => $assessmentTypeID,'active'=>Config::ACTIVE])
+                    ->with('claim')->with('user')->with('approver')
+                    ->with('final_approver')->with('assessor')->with('supplementaries')->get();
+
+            } elseif (isset($request->regNumber)) {
+//                $regNo = preg_replace("/\s+/", "", $request->regNumber);
+                $registrationNumber=preg_replace("/\s+/", "", $request->regNumber);
+                $regNoArray = preg_split('/(?=\d)/', $registrationNumber, 2);
+                $regNo1 =isset($regNoArray[0]) ? $regNoArray[0] : '';
+                $regNo2 = isset($regNoArray[1]) ? $regNoArray[1] : '';
+                $regNo = $request->regNumber;
+                $claimids = Claim::where(function($a) use ($regNo,$regNo1,$regNo2) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo.'%');
+                })->orWhere(function($a)use ($regNo1,$regNo2) {
+                    $a->where('vehicleRegNo','like', '%'.$regNo1.'%')->where('vehicleRegNo','like', '%'.$regNo2.'%');
+                })->pluck('id')->toArray();
+//                $claimids = Claim::where('vehicleRegNo', 'like', '%' . $request->regNumber . '%')->pluck('id')->toArray();
+
+                $assessments = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
+                    'assessmentTypeID' => $assessmentTypeID,'active'=>Config::ACTIVE])
+                    ->whereIn('claimID', $claimids)
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->with('claim')->with('user')->with('approver')
+                    ->with('final_approver')->with('assessor')->with('supplementaries')->get();
+
+            } elseif (isset($request->fromDate) && isset($request->toDate) && !isset($request->regNumber)) {
+                $fromDate = Carbon::parse($request->fromDate)->format('Y-m-d H:i:s');
+                $toDate = Carbon::parse($request->toDate)->format('Y-m-d H:i:s');
+
+                $assessments = Assessment::where(['assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
+                    'assessmentTypeID' => $assessmentTypeID,'active'=>Config::ACTIVE])
+                    ->where('segment', "!=", Config::$ASSESSMENT_SEGMENTS['SUPPLEMENTARY']['ID'])
+                    ->whereBetween('dateCreated', [$fromDate, $toDate])
+                    ->with('claim')->with('user')->with('approver')
+                    ->with('final_approver')->with('assessor')->with('supplementaries')->get();
+            } else {
+                $assessments = array();
+            }
+
             return view('common.assessment-types', ['assessments' => $assessments, 'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'], 'assessmentTypeID' => $assessmentTypeID]);
         } catch (\Exception $e) {
             $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .

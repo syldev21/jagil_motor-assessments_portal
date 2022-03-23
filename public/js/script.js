@@ -1198,9 +1198,12 @@ $(document).ready(function () {
 
         });
     });
-    $(".fetch-claims-by-type").on('click',function (e){
+    $("body").on('click','#filter-claims-by-type,.fetch-claims-by-type',function (e){
         e.preventDefault();
         var assessmentTypeID = $(this).data("id");
+        var fromDate = $("#from_date").val();
+        var toDate = $("#to_date").val();
+        var regNumber = $("#vehicle_reg_no").val();
         $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
@@ -1215,7 +1218,10 @@ $(document).ready(function () {
 
             type: 'POST',
             data : {
-                'assessmentTypeID' : assessmentTypeID
+                'assessmentTypeID' : assessmentTypeID,
+                fromDate : fromDate,
+                toDate : toDate,
+                regNumber : regNumber
             },
             url: '/common/fetch-claims-by-type',
 
@@ -1228,6 +1234,7 @@ $(document).ready(function () {
                     ],
                     "pageLength": 25
                 });
+                $('.datepicker').datepicker();
                 $("#mainLoader").addClass('hideLoader');
             }
 
