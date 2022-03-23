@@ -4757,6 +4757,17 @@ $(document).ready(function () {
         var claimID = $(this).data("id");
         $("#claimID").val(claimID);
     });
+
+    $("body").on('click','#editLPOModalTrigger',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('editLPOModal');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+
+        var claimID = $(this).data("id");
+        $("#claim_ID").val(claimID);
+    });
+
     $("body").on('click','#reviewAssessment',function (e){
         e.preventDefault();
         var assessmentID = $("#assessmentID").val();
@@ -6237,6 +6248,71 @@ $(document).ready(function () {
             })
         }
     });
+
+
+    $("#main").on('click','#updateEditLPORequest',function (e){
+        e.preventDefault();
+        var claimID= $("#claim_ID").val();
+        var amount = $("#edit_amount").val();
+
+        // alert(amount);
+        if(amount != '')
+        {
+            addLoadingButton();
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+                data : {
+                    amount : amount,
+                    claimID : claimID
+                },
+                url: '/adjuster/edit-lpo-amount',
+
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                        const elem = document.getElementById('editLPOModal');
+                        const instance = M.Modal.init(elem, {dismissible: true});
+                        instance.close();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    removeLoadingButton();
+                }
+
+            });
+        }else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'You have not provided an amount',
+                showConfirmButton: false,
+                timer: 3000
+            })
+        }
+    });
+
+
     $("#main").on('click','#submitPTVRequest',function (e){
         e.preventDefault();
         var assessmentID= $("#assessmentID").val();

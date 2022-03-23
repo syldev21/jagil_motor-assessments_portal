@@ -145,15 +145,20 @@
                                                             @endif
                                                             @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                                                             @if(!isset($claim['LPOAmount']))
-                                                            <li><a href="#" data-id="{{$claim['id']}}" id="addLPOModalTrigger"><i
-                                                                        class="material-icons">add_box</i>
-                                                                    Add LPO Amount</a></li>
+                                                                <li><a href="#" data-id="{{$claim['id']}}" id="addLPOModalTrigger"><i
+                                                                            class="material-icons">add_box</i>
+                                                                        Add LPO Amount</a></li>
                                                             @endif
                                                             @endhasrole
                                                             @if(isset($claim['LPOAmount']))
-                                                            <li><a href="#" data-id="{{$claim['id']}}" id="viewLPOReport"><i
-                                                                        class="material-icons">picture_as_pdf</i>
-                                                                    View LPO Report</a></li>
+                                                                <li><a href="#" data-id="{{$claim['id']}}" id="editLPOModalTrigger"><i
+                                                                            class="material-icons">edit</i>
+                                                                        Edit LPO Amount</a></li>
+                                                            @endif
+                                                            @if(isset($claim['LPOAmount']))
+                                                                <li><a href="#" data-id="{{$claim['id']}}" id="viewLPOReport"><i
+                                                                            class="material-icons">picture_as_pdf</i>
+                                                                        View LPO Report</a></li>
                                                             @endif
                                                             @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                                                             <li><a href="#" data-id="{{$claim['id']}}" id="archiveClaimTrigger"><i
@@ -262,6 +267,46 @@
                                     <div class="input-field col m4 s12">
                                         <input type="hidden" id="salvageID" >
                                         <a href="#" class="btn blue lighten-2 waves-effect" id="submitAddLPORequest">Submit</a>
+                                        <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--                    edit modal structure--}}
+                    <div id="editLPOModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="input-field col m12 s12">
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <span class="float-left" style="font-size: 1.6em">Edit LPO Amount</span>
+                                                <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m4 s6">
+                                        <p>Amount</p>
+                                    </div>
+                                    <div class="input-field col m4 s6">
+                                        <input type="text" name="edit_amount" id="edit_amount">
+                                    </div>
+                                    <div class="input-field col m4 s6">
+
+                                    </div>
+                                    <div class="input-field col m4 s6">
+                                        <input type="text" name="claim_ID" id="claim_ID" hidden>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col m8 s12">
+                                    </div>
+                                    <div class="input-field col m4 s12">
+                                        <input type="hidden" id="salvageID" >
+                                        <a href="#" class="btn blue lighten-2 waves-effect" id="updateEditLPORequest">Update</a>
                                         <a href="#" class="modal-action modal-close btn red lighten-2 waves-effect">Cancel</a>
                                     </div>
                                 </div>
