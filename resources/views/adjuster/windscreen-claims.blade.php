@@ -52,6 +52,9 @@
                                             <th>Claim Number</th>
                                             <th>Intimation Date</th>
                                             <th>Registration Number</th>
+                                            <th>Make</th>
+                                            <th>Model</th>
+                                            <th>Chassis Number</th>
                                             <th>Adjuster</th>
                                             <th>Status</th>
                                             <th>Sum Insured</th>
@@ -72,6 +75,12 @@
                                                     </td>
                                                     <td>{{$claim['intimationDate']}}</td>
                                                     <td>{{$claim['vehicleRegNo']}}</td>
+                                                    <?php
+                                                    $carDetail = \App\CarModel::where(["modelCode" => isset($claim['carModelCode']) ? $claim['carModelCode'] : 0])->first();
+                                                    ?>
+                                                    <td>{{$carDetail->makeName}}</td>
+                                                    <td>{{$carDetail->modelName}}</td>
+                                                    <td>{{$claim['chassisNumber']}}</td>
                                                     <td>{{isset($claim['adjuster']->name) ? $claim['adjuster']->name : ''}}</td>
 
                                                     @if(!isset($claim['LPOAmount']))
