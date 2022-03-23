@@ -47,7 +47,26 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Claim Number</th>
+                                            <th>Insured</th>
                                             <th>Registration Number</th>
+                                            <th>Loss Date</th>
+                                            <th>FNOL date</th>
+                                            <th>Claim Close date</th>
+                                            @if($assessmentTypeID == App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
+                                            <th>Location</th>
+                                            <th>Sold date</th>
+                                            <th>Salvage Amount</th>
+                                            <th>Retained</th>
+                                            <th>Salvage Booked date</th>
+                                            <th>Auctioned</th>
+                                            <th>Documenting</th>
+                                            <th>Salvage Reserve</th>
+                                            @endif
+                                            <th>Chassis Number</th>
+                                            <th>Engine Number</th>
+                                            <th>Make</th>
+                                            <th>Model</th>
+                                            <th>Sum Insured</th>
                                             @if($assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                 <th>Approver</th>
                                                 <th>Final Approver</th>
@@ -55,14 +74,11 @@
                                             <th>Assessor</th>
                                             <th>Status</th>
                                             <th>{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}}</th>
-                                            <th>Operation</th>
+                                            <th>Type</th>
                                             <th>PAV</th>
-                                            @if($assessmentTypeID == App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
-                                            <th>Salvage</th>
-                                            @endif
                                             <th>Amount</th>
                                             <th>Assessed At</th>
-                                            <th>Type</th>
+                                            <th>Operation</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -73,8 +89,56 @@
                                                     <td>
                                                         <a href="#" data-id="{{$assessment->id}}" id="assessmentDetails">{{$assessment['claim']['claimNo']}}</a>
                                                     </td>
+                                                    <?php
+                                                    $customer = \App\CustomerMaster::where(['customerCode'=>$assessment['claim']['customerCode']])->first();
+                                                    $carMakeModel = \App\CarModel::where(["makeCode"=>$assessment['claim']['carMakeCode'],"modelCode"=>$assessment['claim']['carModelCode']])->first();
+                                                    ?>
+                                                    <td>{{$customer->fullName}}</td>
                                                     <?php $date = ''?>
                                                     <td>{{$assessment['claim']['vehicleRegNo']}}</td>
+                                                    <td>{{$assessment['claim']['loseDate']}}</td>
+                                                    <td>{{$assessment['claim']['intimationDate']}}</td>
+                                                    <td>N/A</td>
+                                                    @if($assessmentTypeID == App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
+                                                        <?php
+                                                        $salvageRegister = \App\SalvageRegister::where(['claimID'=>$assessment['claim']['id']])->first();
+                                                        ?>
+                                                        <td>{{isset($salvageRegister->location) ? $salvageRegister->location : ''}}</td>
+                                                        <td>{{isset($salvageRegister->dateModified) ? $salvageRegister->dateModified : ''}}</td>
+                                                        <td>{{isset($salvageRegister->cost) ? $salvageRegister->cost : ''}}</td>
+                                                        <td>
+                                                            @if(isset($salvageRegister->insuredInterestedWithSalvage))
+                                                            @if($salvageRegister->insuredInterestedWithSalvage == App\Conf\Config::YES_OR_NO['YES']['ID'])
+                                                                <b class="green-text text-darken-3">{{App\Conf\Config::YES_OR_NO['YES']['TEXT']}}</b>
+                                                            @else
+                                                                <b class="red-text text-darken-3">{{App\Conf\Config::YES_OR_NO['NO']['TEXT']}}</b>
+                                                            @endif
+                                                            @endif
+                                                        </td>
+                                                        <td>{{isset($salvageRegister->dateCreated) ? $salvageRegister->dateCreated : ''}}</td>
+                                                        <td>
+                                                            @if(isset($salvageRegister->cost))
+                                                                <b class="green-text text-darken-3">{{App\Conf\Config::YES_OR_NO['YES']['TEXT']}}</b>
+                                                            @else
+                                                                <b class="red-text text-darken-3">{{App\Conf\Config::YES_OR_NO['NO']['TEXT']}}</b>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if(isset($salvageRegister->recordsReceived))
+                                                            @if($salvageRegister->recordsReceived == App\Conf\Config::YES_OR_NO['YES']['ID'])
+                                                                <b class="green-text text-darken-3">{{App\Conf\Config::YES_OR_NO['YES']['TEXT']}}</b>
+                                                            @else
+                                                                <b class="red-text text-darken-3">{{App\Conf\Config::YES_OR_NO['NO']['TEXT']}}</b>
+                                                            @endif
+                                                            @endif
+                                                        </td>
+                                                        <td>{{$assessment['salvage']}}</td>
+                                                    @endif
+                                                    <td>{{$assessment['claim']['chassisNumber']}}</td>
+                                                    <td>{{$assessment['claim']['engineNumber']}}</td>
+                                                    <td>{{isset($carMakeModel->makeName) ? $carMakeModel->makeName : ''}}</td>
+                                                    <td>{{isset($carMakeModel->modelName) ? $carMakeModel->modelName : ''}}</td>
+                                                    <td>{{$assessment['claim']['sumInsured']}}</td>
                                                     @if($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                                                         <td>{{isset($assessment->approver) ? $assessment->approver->firstName : ''}} {{isset($assessment->approver) ? $assessment->approver->lastName : ''}}</td>
                                                         <td>{{isset($assessment->final_approver->firstName) ? $assessment->final_approver->firstName : ''}} {{isset($assessment->final_approver->lastName) ? $assessment->final_approver->lastName : ''}}</td>
@@ -118,9 +182,6 @@
                                                         {{ isset($assessment['assessmentTypeID'])  ?  \App\Conf\Config::DISPLAY_ASSESSMENT_TYPES[$assessment['assessmentTypeID']] : ''}}
                                                     </td>
                                                     <td>{{ number_format($assessment['pav']) }}</td>
-                                                    @if($assessmentTypeID == App\Conf\Config::ASSESSMENT_TYPES['TOTAL_LOSS'])
-                                                    <td>{{ number_format($assessment['salvage']) }}</td>
-                                                    @endif
                                                     <td>
                                                         @if(isset($assessment['totalCost']))
                                                             {{isset($assessment['totalChange']) ? number_format($assessment['totalChange']) : number_format($assessment['totalCost']) }}
