@@ -165,9 +165,11 @@
                                                                             class="material-icons">picture_as_pdf</i>
                                                                         Exception Report</a></li>
                                                             @endif
+                                                            @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                                                             <li><a href="#" data-id="{{$claim['id']}}" id="archiveClaimTrigger"><i
                                                                         class="material-icons">archive</i>
                                                                     Archive</a></li>
+                                                            @endhasrole
                                                         </ul>
 
                                                     </td>

@@ -124,6 +124,7 @@
                                                         ?>
 
                                                         <ul id='{{$loop->iteration}}' class='dropdown-content'>
+                                                            @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                                                             <li>
                                                                 <a href="#" id="editClaimForm" data-id="{{$claim['id']}}"><i
                                                                         class="material-icons">edit</i>Edit</a></li>
@@ -131,6 +132,7 @@
                                                                 <a href="#" id="uploadDocumentsForm" data-id="{{$claim['id']}}"><i
                                                                         class="material-icons">file_upload</i> Upload
                                                                     Document</a></li>
+                                                            @endhasrole
                                                             @if(isset($claimForm->name))
                                                                 <li>
                                                                     <a href="{{asset('documents/'.$claimForm->name)}}" download><i
@@ -141,19 +143,23 @@
                                                                             class="material-icons">picture_as_pdf</i>
                                                                         Exception Report</a></li>
                                                             @endif
+                                                            @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                                                             @if(!isset($claim['LPOAmount']))
                                                             <li><a href="#" data-id="{{$claim['id']}}" id="addLPOModalTrigger"><i
                                                                         class="material-icons">add_box</i>
                                                                     Add LPO Amount</a></li>
                                                             @endif
+                                                            @endhasrole
                                                             @if(isset($claim['LPOAmount']))
                                                             <li><a href="#" data-id="{{$claim['id']}}" id="viewLPOReport"><i
                                                                         class="material-icons">picture_as_pdf</i>
                                                                     View LPO Report</a></li>
                                                             @endif
+                                                            @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                                                             <li><a href="#" data-id="{{$claim['id']}}" id="archiveClaimTrigger"><i
                                                                         class="material-icons">archive</i>
                                                                     Archive</a></li>
+                                                            @endhasrole
                                                         </ul>
 
                                                     </td>
