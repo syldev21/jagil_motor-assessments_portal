@@ -32,8 +32,8 @@
                                     </div>
                                     <div class="input-field col m3 s12">
                                         <div class="input-field col s12">
-                                            <button class="btn cyan waves-effect waves-light" type="submit" id="filter-adjuster-assessments"
-                                                    name="action">
+                                            <button class="btn cyan waves-effect waves-light" type="submit" id="filter-theft-assessments"
+                                                    name="action" data-id="{{$assessmentStatusID}}">
                                                 <i class="material-icons left">search</i> Filter
                                             </button>
                                         </div>

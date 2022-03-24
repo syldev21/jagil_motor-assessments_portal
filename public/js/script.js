@@ -1122,9 +1122,12 @@ $(document).ready(function () {
 
         });
     });
-    $(".fetch-theft-assessments").on('click',function (e){
+    $("body").on('click','#filter-theft-assessments,.fetch-theft-assessments',function (e){
         e.preventDefault();
         var assessmentStatusID = $(this).data("id");
+        var fromDate = $("#from_date").val();
+        var toDate = $("#to_date").val();
+        var regNumber = $("#vehicle_reg_no").val();
         $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
@@ -1139,7 +1142,10 @@ $(document).ready(function () {
 
             type: 'POST',
             data : {
-                'assessmentStatusID' : assessmentStatusID
+                assessmentStatusID : assessmentStatusID,
+                fromDate : fromDate,
+                toDate : toDate,
+                regNumber : regNumber
             },
             url: '/common/fetch-theft-assessments',
 
