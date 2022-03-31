@@ -30,6 +30,7 @@ class CreateClaimMocksTable extends Migration
             $table->integer('IDNumber')->nullable();
             $table->string('placeOfLoss')->nullable();
             $table->string('causeOfLoss')->nullable();
+            $table->integer('typeOfInjury')->nullable();
             $table->dateTime('dateOfInjury')->nullable();
             $table->dateTime('dateReceived')->nullable();
             $table->longText('lossDescription')->nullable();
