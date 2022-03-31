@@ -10,7 +10,7 @@
                         <img class="responsive-img" src="{{ url('images/logo/jubilee_logo.png') }}" alt="Jubilee logo"/>
                     </a>
                     <a class="brand-logo darken-1 show-on-medium-and-down hide-on-med-and-up" href="{{ url('home') }}">
-                        <img class="" src="{{ url('images/logo/jubilee_logo.png') }}"
+                        <img class="" src="{{ url('images/logo/jubilee') }}"
                              alt="Jubilee logo"/>
                     </a>
                 </div>
@@ -22,7 +22,7 @@
         data-menu="menu-navigation" data-collapsible="menu-accordion">
 
         <li class="navigation-header">
-            <a class="navigation-header-text">Travel Quick Operations</a>
+            <a class="navigation-header-text">Quick Operations</a>
             <i class="navigation-header-icon material-icons">more_horiz</i>
         </li>
         <li class="bold ">
@@ -35,34 +35,65 @@
         </li>
         <li class="">
             <a href="#"
+               class="fetch_proportions sidenav-link"
+            >
+                <i class="material-icons">stream</i>
+                <span data-i18n="Invoice List">Follower Proportions</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="#"
                class="add-claim-form sidenav-link"
             >
                 <i class="material-icons">add_box</i>
-                <span data-i18n="Invoice List">Upload Claim</span>
+                <span data-i18n="Invoice ist">Upload Claim</span>
+            </a>
+        </li>
+
+        <li class="">
+            <a href="#"
+               class="fetch-nhif-claims sidenav-link" data-id="{{App\Conf\Config::NHIF_DISPLAY_STATUSES["SUBMITTED"]["ID"]}}">
+                <i class="material-icons">assignment_turned_in</i>
+                <span data-i18n="Invoice List">Submitted Claims</span>
             </a>
         </li>
         <li class="">
             <a href="#"
-               class="fetch-travel-policies sidenav-link" data-id="{{App\Conf\Config::TRAVEL_DISPLAY_STATUSES['PROCESSED']['ID']}}"
-            >
-                <i class="material-icons">done_all</i>
-                <span data-i18n="Invoice List">Submitted Policies</span>
+               class="fetch-nhif-claims sidenav-link" data-id="{{App\Conf\Config::NHIF_DISPLAY_STATUSES["DOCUMENTS_PENDING"]["ID"]}}">
+                <i class="material-icons">pending_action_two_tone</i>
+                <span data-i18n="Invoice List">Documents Pending</span>
             </a>
         </li>
         <li class="">
             <a href="#"
-               class="fetch-travel-policies sidenav-link" data-id="{{App\Conf\Config::TRAVEL_DISPLAY_STATUSES['PENDING']['ID']}}"
+               class="fetch-nhif-claims sidenav-link" data-id="{{App\Conf\Config::NHIF_DISPLAY_STATUSES["IN_PROGRESS"]["ID"]}}"
             >
-                <i class="material-icons">done</i>
-                <span data-i18n="Invoice List">Pending Policies</span>
+                <i class="material-icons">launch</i>
+                <span data-i18n="Invoice List">In Progress</span>
             </a>
         </li>
         <li class="">
             <a href="#"
-               class="fetch-travel-policies sidenav-link" data-id="{{App\Conf\Config::TRAVEL_DISPLAY_STATUSES['FAILED']['ID']}}"
+               class="fetch-nhif-claims sidenav-link" data-id="{{App\Conf\Config::NHIF_DISPLAY_STATUSES["PAID"]["ID"]}}"
             >
-                <i class="material-icons">info_outline</i>
-                <span data-i18n="Invoice List">Failed Policies</span>
+                <i class="material-icons">check_circle_outline</i>
+                <span data-i18n="Invoice List">Paid</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="#"
+               class="fetch-nhif-claims sidenav-link" data-id="{{App\Conf\Config::NHIF_DISPLAY_STATUSES["CLOSED"]["ID"]}}"
+            >
+                <i class="material-icons">check_circle</i>
+                <span data-i18n="Invoice List">Closed</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="#"
+               class="fetch-nhif-claims sidenav-link" data-id="{{App\Conf\Config::NHIF_DISPLAY_STATUSES["REJECTED"]["ID"]}}"
+            >
+                <i class="material-icons">cancel</i>
+                <span data-i18n="Invoice List">Rejected</span>
             </a>
         </li>
         <li class="bold ">

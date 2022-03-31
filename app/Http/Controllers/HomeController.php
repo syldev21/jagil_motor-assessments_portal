@@ -35,7 +35,15 @@ class HomeController extends Controller
     public function mainDashboard()
     {
         $user = Auth::user();
-        return view('dashboard.main',['user' => $user]);
+        if(auth()->user()->hasRole(Config::$ROLES['NHIF']) && auth()->user()->userTypeID==Config::$USER_TYPES["EXTERNAL"]["ID"])
+        {
+            $view = "NHIF.index";
+
+        }else
+        {
+            $view = "dashboard.main";
+        }
+        return view($view,['user' => $user]);
     }
     public function markNotification(Request $request)
     {

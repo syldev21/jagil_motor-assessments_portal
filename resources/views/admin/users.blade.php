@@ -140,6 +140,9 @@
                                             @hasrole('Admin')
                                             <th>{{\App\Conf\Config::$ROLES['CUSTOMER-SERVICE']}}</th>
                                             @endhasrole
+                                            @hasrole('Admin')
+                                            <th>{{\App\Conf\Config::$ROLES['NHIF']}}</th>
+                                            @endhasrole
                                             <th>Status</th>
 {{--                                            <th>Permission</th>--}}
                                             {{--                                                <th>Operation</th>--}}
@@ -225,6 +228,16 @@
 
                                                     <label>
                                                         <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['CUSTOMER-SERVICE'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['CUSTOMER-SERVICE']}}"/>
+                                                        <span></span>
+                                                    </label>
+                                                </td>
+                                                @endhasrole
+                                                @hasrole('Admin')
+                                                <td>
+
+
+                                                    <label>
+                                                        <input type="checkbox" name="roles_{{$loop->iteration}}" class="filled-in" @if(in_array(App\Conf\Config::$ROLES['NHIF'], $rolesArray)) checked="checked"  @endif value="{{App\Conf\Config::$ROLES['NHIF']}}"/>
                                                         <span></span>
                                                     </label>
                                                 </td>

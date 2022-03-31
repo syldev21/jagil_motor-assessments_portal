@@ -319,7 +319,13 @@ $router->group(['prefix' => 'travel'], function($router)
 $router->group(['prefix' => 'nhif'], function($router)
 {
     $router->get('/', 'NHIF\NHIFController@index')->name('nhif-home');
-    $router->post('add-claim-form', 'NHIF\NHIFController@addClaimForm');
+    $router->post('/add-claim-form', 'NHIF\NHIFController@addClaimForm');
+    $router->post('/save_nhif_claim', 'NHIF\NHIFController@saveNhifClaim');
+    $router->post('/fetch-nhif-claims', 'NHIF\NHIFController@fetchClaims');
+    $router->get('/claim-details', 'NHIF\NHIFController@claimDetails');
+    $router->post('/uploadDocumentsForm', 'NHIF\NHIFController@uploadDocumentsForm');
+    $router->post('/uploadDocuments', 'NHIF\NHIFController@uploadDocuments');
+    $router->post('/fetch_proportions', 'NHIF\NHIFController@fetchProportions');
 });
 
 //Metropol integration
