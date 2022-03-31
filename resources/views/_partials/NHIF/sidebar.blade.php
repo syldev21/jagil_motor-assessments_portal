@@ -41,6 +41,7 @@
                 <span data-i18n="Invoice List">Follower Proportions</span>
             </a>
         </li>
+        @can(App\Conf\Config::PERMISSIONS['SUBMIT_NHIF_CLAIM'])
         <li class="">
             <a href="#"
                class="add-claim-form sidenav-link"
@@ -49,7 +50,7 @@
                 <span data-i18n="Invoice ist">Upload Claim</span>
             </a>
         </li>
-
+        @endcan
         <li class="">
             <a href="#"
                class="fetch-nhif-claims sidenav-link" data-id="{{App\Conf\Config::NHIF_DISPLAY_STATUSES["SUBMITTED"]["ID"]}}">
