@@ -288,7 +288,8 @@ class NHIFController extends Controller
     }
     public function fetchProportions(){
         $claims=FollowerClaim::all();
-        return view("nhif.fetch_proportions", ["claims"=>$claims]);
+
+        return view("NHIF.fetch_proportions", ["claims"=>$claims]);
 
 
     }
