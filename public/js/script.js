@@ -4995,6 +4995,11 @@ $(document).ready(function () {
         var assessmentID = $("#assessmentID").val();
         var assessmentReviewType = $("input[name='assessmentReviewType']:checked").val();
         var report = CKEDITOR.instances['report'].getData();
+        var isSubrogate = $(".subrogation").is(':checked') ? 1 : 0;
+        var companyID = $("#company").val();
+        var thirdPartyDriver = $("#thirdPartyDriver").val();
+        var thirdPartyPolicy = $("#thirdPartyPolicy").val();
+        var thirdPartyVehicleRegNo = $("#thirdPartyVehicleRegNo").val();
         $.ajaxSetup({
 
             headers: {
@@ -5010,7 +5015,12 @@ $(document).ready(function () {
             data : {
                 assessmentID : assessmentID,
                 assessmentReviewType : assessmentReviewType,
-                report : report
+                report : report,
+                isSubrogate : isSubrogate,
+                companyID : companyID,
+                thirdPartyDriver : thirdPartyDriver,
+                thirdPartyPolicy : thirdPartyPolicy,
+                thirdPartyVehicleRegNo : thirdPartyVehicleRegNo
             },
             url: '/head-assessor/review-assessment',
             success: function (data) {

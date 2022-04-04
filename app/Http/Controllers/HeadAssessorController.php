@@ -7,6 +7,7 @@ use App\AssessmentItem;
 use App\CarModel;
 use App\ChangeRequest;
 use App\Claim;
+use App\Company;
 use App\CustomerMaster;
 use App\Document;
 use App\Helper\SMSHelper;
@@ -387,8 +388,9 @@ class HeadAssessorController extends Controller
         $documents = Document::where(["assessmentID" => $assessmentID])->get();
         $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
         $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        $companies = Company::select('id','name')->get();
         $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-        return view("head-assessor.assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail,'priceChange'=>$priceChange]);
+        return view("head-assessor.assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail,'priceChange'=>$priceChange,'companies'=>$companies]);
     }
 
     public function reviewAssessment(Request $request)
@@ -396,10 +398,20 @@ class HeadAssessorController extends Controller
         try {
             if (isset($request->assessmentReviewType)) {
                 $assessment = Assessment::where(["id" => $request->assessmentID])->first();
+                $isSubrogate = isset($request->isSubrogate) ? $request->isSubrogate : 0;
+                $companyID = isset($request->companyID) ? $request->companyID : null;
+                $thirdPartyDriver = isset($request->thirdPartyDriver) ? $request->thirdPartyDriver : null;
+                $thirdPartyPolicy = isset($request->thirdPartyPolicy) ? $request->thirdPartyPolicy : null;
+                $thirdPartyVehicleRegNo = isset($request->thirdPartyVehicleRegNo) ? $request->thirdPartyVehicleRegNo : null;
                 if ($request->assessmentReviewType == Config::APPROVE) {
                     $approved = Assessment::where(["id" => $request->assessmentID])->update([
                         "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'],
                         "changesDue" => 0,
+                        "isSubrogate" => $isSubrogate,
+                        "companyID"=> $companyID,
+                        "thirdPartyDriver"=>$thirdPartyDriver,
+                        "thirdPartyPolicy" =>$thirdPartyPolicy,
+                        "thirdPartyVehicleRegNo" =>$thirdPartyVehicleRegNo,
                         "reviewNote" => isset($request->report) ? $request->report : null,
                         "approvedBy" => Auth::id(),
                         "approvedAt" => $this->functions->curlDate()

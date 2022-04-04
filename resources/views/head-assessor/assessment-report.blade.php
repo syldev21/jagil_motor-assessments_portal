@@ -588,6 +588,7 @@
                                         </label>
                                     </div>
                                 </div>
+                                @include('common.generic-subrogation-form')
                                 <div class="row">
                                     <div class="input-field col m12 s12">
                                         <div class="row">

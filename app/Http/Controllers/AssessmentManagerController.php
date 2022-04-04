@@ -219,11 +219,11 @@ class AssessmentManagerController extends Controller
             $grandTotal= $request->grandTotal;
             $assessmentTypeID = $request->assessmentTypeID;
             $pav = $request->pav;
-            $isSubrogate = isset($request->isSubrogate) ? $request->isSubrogate : 0;
-            $companyID = isset($request->companyID) ? $request->companyID : null;
-            $thirdPartyDriver = isset($request->thirdPartyDriver) ? $request->thirdPartyDriver : null;
-            $thirdPartyPolicy = isset($request->thirdPartyPolicy) ? $request->thirdPartyPolicy : null;
-            $thirdPartyVehicleRegNo = isset($request->thirdPartyVehicleRegNo) ? $request->thirdPartyVehicleRegNo : null;
+//            $isSubrogate = isset($request->isSubrogate) ? $request->isSubrogate : 0;
+//            $companyID = isset($request->companyID) ? $request->companyID : null;
+//            $thirdPartyDriver = isset($request->thirdPartyDriver) ? $request->thirdPartyDriver : null;
+//            $thirdPartyPolicy = isset($request->thirdPartyPolicy) ? $request->thirdPartyPolicy : null;
+//            $thirdPartyVehicleRegNo = isset($request->thirdPartyVehicleRegNo) ? $request->thirdPartyVehicleRegNo : null;
             if(isset($request->assessmentReviewType))
             {
                 $assessment = Assessment::where(["id" => $request->assessmentID])->first();
@@ -231,11 +231,11 @@ class AssessmentManagerController extends Controller
                     $approved = Assessment::where(["id" =>$request->assessmentID])->update([
                         "assessmentStatusID" => Config::$STATUSES['ASSESSMENT']['APPROVED']['id'],
                         "changesDue" => 0,
-                        "isSubrogate" => $isSubrogate,
-                        "companyID"=> $companyID,
-                        "thirdPartyDriver"=>$thirdPartyDriver,
-                        "thirdPartyPolicy" =>$thirdPartyPolicy,
-                        "thirdPartyVehicleRegNo" =>$thirdPartyVehicleRegNo,
+//                        "isSubrogate" => $isSubrogate,
+//                        "companyID"=> $companyID,
+//                        "thirdPartyDriver"=>$thirdPartyDriver,
+//                        "thirdPartyPolicy" =>$thirdPartyPolicy,
+//                        "thirdPartyVehicleRegNo" =>$thirdPartyVehicleRegNo,
                         "reviewNote" => isset($request->report) ? $request->report : null,
                         "finalApprovalBy" => Auth::id(),
                         "finalApprovedAt" => $this->functions->curlDate()
