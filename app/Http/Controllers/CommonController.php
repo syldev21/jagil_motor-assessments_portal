@@ -1049,4 +1049,76 @@ class CommonController extends Controller
 //        dd($changeTracker);
         return view("common.change-tracker", ["change_tracker"=>$changeTracker]);
     }
+    public function sendSubrogationReport(Request $request){
+        $assessmentID= $request->assessmentID;
+        $assessment = Assessment::where(["id"=>$assessmentID])->first();
+        $claim = Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
+        $company = Company::where(["id"=>$assessment->companyID])->first();
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadView('reports.subrogation-report', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
+
+//        $pdfFilePath = public_path('reports/assessment-report.pdf');
+        $pdfName = $assessment['claim']['vehicleRegNo'].'_'.$assessment['claim']['claimNo'];
+        $pdfName = str_replace("/","_",$pdfName);
+        $pdfFileName=preg_replace('/\s+/', ' ', $pdfName);
+        $pdfFileName = str_replace(" ","_",$pdfFileName);
+        $pdfFilePath = public_path('reports/'.$pdfFileName.'.pdf');
+        if (File::exists($pdfFilePath)) {
+            File::delete($pdfFilePath);
+        }
+        $pdf->save($pdfFilePath);
+
+
+        $flag = false;
+
+        $message = [
+            'subject' => "PROCEED TO REPAIR - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
+            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'to' => $company->recovery_officer_email,
+            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'attachment' => $pdfFilePath,
+            'cc' => Auth::user()->email,
+            'html' => "
+                        Dear Sirs, <br>
+
+                        Kindly proceed with repairs as per attached and adhere to REPAIR TIMELINES <br>
+
+                        Note: No supplmentaries will be allowed or price changes after repair commencement. <br> <br>
+                        Kindly adhere to above terms.
+
+
+
+                        Regards, <br><br>
+
+                        " . Auth::user()->name . ", <br>
+
+                        Claims Department, <br>
+
+                        Jubilee Allianz Insurance Company
+                    ",
+        ];
+
+        InfobipEmailHelper::sendEmail($message, $company->recovery_officer_email);
+        // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email', $userDetail['MSISDN']);
+//            $user = User::where(["id" => $userDetail['id']])->first();
+//            Notification::send($user, new ClaimApproved($claim));
+
+        $flag = true;
+        if ($flag)
+            $response = array(
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "An email was sent successfuly"
+            );
+        else {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+        }
+
+        return json_encode($response);
+
+
+
+    }
 }
