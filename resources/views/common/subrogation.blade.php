@@ -94,6 +94,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col s8">
+                        <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
+                           class="btn green darken-2">Send Subrogation Report</a>
+                    </div>
+                    <div class="col s4">
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
