@@ -59,6 +59,7 @@
                                             <th>Status</th>
                                             <th>Sum Insured</th>
                                             <th>LPO Amount</th>
+                                            <th>Garage</th>
                                             <th>LPO processed By</th>
                                             <th>LPO processed</th>
                                             <th>Created</th>
@@ -102,6 +103,12 @@
                                                     </td>
                                                     <td>
                                                         {{isset($claim['LPOAmount']) ? $claim['LPOAmount'] : 0 }}
+                                                    </td>
+                                                    <?php
+                                                    $garage = \App\Garage::where(['id'=>$claim['garageID']])->first();
+                                                    ?>
+                                                    <td>
+                                                        {{isset($garage->name) ? $garage->name :''}}
                                                     </td>
                                                     <td>
                                                         @if(isset($claim['LPOAddedBy']))
