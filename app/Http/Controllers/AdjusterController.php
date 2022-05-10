@@ -51,7 +51,7 @@ class AdjusterController extends Controller
 
     public function fetchPremiaClaims(Request $request)
     {
-//        $claims = array (
+        dd(Config::DMS_BASE_URL);//        $claims = array (
 //            0 =>
 //                array (
 //                    'CLM_NO' => 'C/109/1001/2020/000023',
@@ -1052,10 +1052,9 @@ class AdjusterController extends Controller
     {
         $assessmentID = $request->assessmentID;
         $email = $request->email;
-
         $role = Config::$ROLES['ADJUSTER'];
         $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
-        $aproved = isset($priceChange) ? $priceChange : 'false';
+//        $aproved = isset($priceChange) ? $priceChange : 'false';
 
         $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
         $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
@@ -1138,6 +1137,78 @@ class AdjusterController extends Controller
 
 
     }
+    public function sendSubrogationReport(Request $request)
+    {
+        $assessmentID = $request->assessmentID;
+        $companyID=Assessment::where(["id"=>$assessmentID])->first("companyID");
+        $email=Assessment::join("companies", "assessments.companyID", "=", $companyID)->first("companies.recovery_officer_email");
+        $message="You claim has been assessed and approved, pending payment";
+
+        $priceChange = PriceChange::where('assessmentID', $assessmentID)->first();
+//        $aproved = isset($priceChange) ? $priceChange : 'false';
+
+        $assessment = Assessment::where(["id" => $assessmentID])->with("claim")->first();
+        $assessmentItems = AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
+        $jobDetails = JobDetail::where(["assessmentID" => $assessmentID])->get();
+        $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+        $insured = CustomerMaster::where(["customerCode" => $customerCode])->first();
+        $documents = Document::where(["assessmentID" => $assessmentID])->get();
+        $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
+        $assessor = User::where(['id' => $assessment->assessedBy])->first();
+        $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadView('adjuster.send-repair-authority', compact('assessment', "assessmentItems", "jobDetails", "insured", 'documents', 'adjuster', 'assessor', 'aproved', 'carDetail', 'priceChange'));
+
+        $pdfFilePath = public_path('images/assessment-report.pdf');
+
+        if (File::exists($pdfFilePath)) {
+            File::delete($pdfFilePath);
+        }
+        $pdf->save($pdfFilePath);
+
+        $header = "<p>
+                       <br/>
+                       <br/>
+                        <i>Dear Recovery Officer,
+                        <br/>
+                        </i>
+                </p>";
+        $footer = "<p>
+                       Thanks.
+                       <br/>
+                       <br/>
+                        <i>Regards,
+                        <br/>
+                        ".Auth::user()->name.".
+                        <br/>
+                        </i>
+                </p>";
+        $msg =$header.$message.$footer;
+        $message = [
+            'subject' => "PROCEED TO REPAIR - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
+            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'to' => $email,
+            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'html' => $msg,
+        ];
+
+        $email_sent=InfobipEmailHelper::sendEmail($message);
+
+        if ($email_sent)
+            $response = array(
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "An email was sent successfuly"
+            );
+        else {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+        }
+
+        return json_encode($response);
+    }
+
     public function emailReleaseletter(Request $request)
     {
         $claim_id = $request->claimID;
@@ -1412,6 +1483,15 @@ class AdjusterController extends Controller
 
         $courtesyCars= CourtesyCar::with('claim')->with('vendor')->get();
         return view('adjuster.courtesy-cars', ['courtesyCars'=>$courtesyCars]);
+    }
+    public function showSubrogationRegister(){
+        $subrogationClaims=Assessment::join('claims', "assessments.claimID", "=", "claims.id")
+                                        ->join('companies', "assessments.companyID", "=", "companies.id")
+//                                        ->join('car_models', "claims.carModelCode", "=", "car_models.modelCode")
+                                        ->where("assessments.isSubrogate", "=", 1)
+                                        ->orderBy("assessments.dateCreated", "DESC")
+                                        ->get();
+        return view("adjuster.subrogation-register", ["subrogationClaims"=>$subrogationClaims]);
     }
     public function getCharge(Request $request){
         $vendorID=$request->vendorID;
