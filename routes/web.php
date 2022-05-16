@@ -11,6 +11,36 @@
 |
 */
 
+Route::get("/test", function (){
+    $assessmentID = "4445";
+    $email = "Sylvester.ouma@jubileekenya.com";
+//    $message="You claim has been assessed and approved, pending payment";
+//
+//    $priceChange = App\PriceChange::where('assessmentID', $assessmentID)->first();
+//    $aproved = isset($priceChange) ? $priceChange : 'false';
+//
+//    $assessment = App\Assessment::where(["id" => $assessmentID])->with("claim")->first();
+//    $assessmentItems = App\AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
+//    $jobDetails = App\JobDetail::where(["assessmentID" => $assessmentID])->get();
+//    $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
+//    $insured = App\CustomerMaster::where(["customerCode" => $customerCode])->first();
+//    $documents = App\Document::where(["assessmentID" => $assessmentID])->get();
+//    $adjuster = App\User::where(['id' => $assessment->claim->createdBy])->first();
+//    $assessor = App\User::where(['id' => $assessment->assessedBy])->first();
+//    $carDetail = App\CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
+//    $pdf = App::make('dompdf.wrapper');
+//    $pdf->loadView('adjuster.subrogation-report', compact('assessment', "assessmentItems", "jobDetails", "insured", 'documents', 'adjuster', 'assessor', 'aproved', 'carDetail', 'priceChange'));
+////    return view('adjuster.send-subrogation-report', compact('assessment', "assessmentItems", "jobDetails", "insured", 'documents', 'adjuster', 'assessor', 'aproved', 'carDetail', 'priceChange'));
+
+    $message="Your claim has been assessed and approved, pending payment";
+    $assessment = App\Assessment::where(["id"=>$assessmentID])->first();
+    $claim = App\Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
+    $company = App\Company::where(["id"=>$assessment->companyID])->first();
+    $pdf = App::make('dompdf.wrapper');
+    $pdf->loadView('adjuster.send-subrogation-report',compact('assessment', 'claim', 'company'));
+    return $pdf->download();
+});
+
 //Route::get('/','HomeController@assessments')->middleware("auth");
 Route::get('/', function () {
     return view('authentication.user-login');
@@ -73,6 +103,8 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->post('/supplementaries','AdjusterController@supplementaries');
     $router->post('/supplementary-report','AdjusterController@supplementaryReport');
     $router->post('/sendRepairAuthority', 'AdjusterController@SendRepairAuthority');
+    $router->post('/sendSubrogationReport', 'AdjusterController@sendSubrogationReport');
+    $router->post('/subrogationRegister', 'AdjusterController@showSubrogationRegister');
     $router->post('/emailReleaseletter', 'AdjusterController@emailReleaseletter');
     $router->post('/addLPO', 'AdjusterController@addLPO');
     $router->post('/edit-lpo-amount', 'AdjusterController@editLPO');
@@ -237,6 +269,7 @@ $router->group(['prefix' => 'common'], function($router)
     $router->post('/reports/LPO-report', 'CommonController@sendLPOReport');
     $router->post('/reports/re-inspection-report', 'CommonController@sendReInspectionReport');
     $router->post('/changeTracker', 'CommonController@changeTracker');
+    $router->post('/sendSubrogationReport', 'CommonController@sendSubrogationReport');
 
 
 });

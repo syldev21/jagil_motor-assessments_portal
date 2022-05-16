@@ -4749,6 +4749,12 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
+    $("body").on('click','#triggerSendReport',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('subrogationReport');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+    });
     $("body").on('click','#triggerSendReleaseLetter',function (e){
         e.preventDefault();
         const elem = document.getElementById('releaseLetter');
@@ -5738,6 +5744,50 @@ $(document).ready(function () {
                 })
             }
         }
+    });
+    $("body").on('click','#sendSubrogationReport',function (e){
+        e.preventDefault();
+        var assessmentID = $(this).data("id");
+
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                }
+
+            });
+            $.ajax({
+
+                type: 'POST',
+
+                url: '/common/sendSubrogationReport',
+                data : {
+                    assessmentID : assessmentID,
+                },
+                success: function (data) {
+                    var result = $.parseJSON(data);
+                    if (result.STATUS_CODE == SUCCESS_CODE) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: result.STATUS_MESSAGE,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }
+
+            });
+
+
     });
     $("body").on('click','#send-release-letter',function (){
         var claimID = $(this).data("id");
@@ -6922,6 +6972,36 @@ $(document).ready(function () {
 
             type: 'POST',
             url: '/adjuster/showCourtesyCar',
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#mainLoader").addClass('hideLoader');
+            }
+
+        });
+
+    });
+    $("body").on('click', '#subrogationRegister', function () {
+        $("#mainLoader").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+            type: 'POST',
+            url: '/adjuster/subrogationRegister',
             success: function (data) {
                 $("#main").html(data);
                 $('.datepicker').datepicker();

@@ -29,7 +29,9 @@ class SMSHelper
 
         $message = new Message();
 
-        $message->setFrom('JUBINSURE');
+//        $message->setFrom('JUBINSURE');
+
+        $message->setFrom('JALLIANZ');
 
         $message->setDestinations([$destination]);
 

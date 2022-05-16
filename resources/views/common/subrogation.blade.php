@@ -77,7 +77,7 @@
                                                      /-
                                             </p>
                                             <p style="line-height: 200%">
-                                                We hold you liable for the loss we suffered in making good damages sustained by our insured. Kindly let us have your admission of liability within 21 days from the date hereof.
+                                                We hold you liable for the loss we suffered in making good damages sustained by our insured. Kindly let us have your admission of liability within 14 days from the date hereof.
                                             </p>
                                             <p style="line-height: 200%">
                                                 In default we shall assume you are not interested in an amicable settlement and continue to advise our lawyers to serve your insured with summons.
@@ -92,6 +92,15 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s8">
+                        <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
+                           class="btn green darken-2">Send Subrogation Report</a>
+                    </div>
+                    <div class="col s4">
+
                     </div>
                 </div>
             </div>

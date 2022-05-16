@@ -1033,6 +1033,14 @@
                 <span class="menu-title" data-i18n="Activity Log">Courtesy Car</span>
             </a>
         </li>
+            <li class="bold " >
+            <a class="sidenav-link" id="subrogationRegister"
+               href="#"
+            >
+                <i class="material-icons">car_rental</i>
+                <span class="menu-title" data-i18n="Activity Log">Subrogation Register</span>
+            </a>
+        </li>
         @endif
         <li class="bold ">
             <a class="waves-effect waves-light"
