@@ -31,7 +31,7 @@ class SMSHelper
 
 //        $message->setFrom('JUBINSURE');
 
-        $message->setFrom('JAZ_KE');
+        $message->setFrom('JALLIANZ');
 
         $message->setDestinations([$destination]);
 

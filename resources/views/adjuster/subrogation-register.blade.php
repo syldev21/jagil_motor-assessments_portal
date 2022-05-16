@@ -53,7 +53,7 @@
 {{--                                            <th>Make</th>--}}
 {{--                                            <th>Model</th>--}}
 {{--                                            <th>Chassis Number</th>--}}
-                                            <th>Third Party Insurer</th>
+{{--                                            <th>Third Party Insurer</th>--}}
                                             <th>Third Party Driver</th>
                                             <th>Third Party Registration Number</th>
                                             <th>Amount</th>
@@ -70,7 +70,7 @@
 {{--                                                <td>{{$subrogationClaim->makeName}}</td>--}}
 {{--                                                <td>{{$subrogationClaim->modelName}}</td>--}}
 {{--                                                <td>{{$subrogationClaim->chassisNumber}}</td>--}}
-                                                <td></td>
+{{--                                                <td></td>--}}
                                                 <td>{{$subrogationClaim->thirdPartyDriver}}</td>
                                                 <td>{{$subrogationClaim->thirdPartyVehicleRegNo}}</td>
                                                 <td>{{$subrogationClaim->totalCost}}</td>

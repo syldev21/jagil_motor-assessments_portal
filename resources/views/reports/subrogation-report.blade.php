@@ -69,7 +69,7 @@
                                 </p>
                                 <p style="line-height: 200%">
                                     We hold you liable for the loss we suffered in making good damages sustained
-                                    by our insured. Kindly let us have your admission of liability within 21
+                                    by our insured. Kindly let us have your admission of liability within 14
                                     days from the date hereof.
                                 </p>
                                 <p style="line-height: 200%">

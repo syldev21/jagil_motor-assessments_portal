@@ -1034,7 +1034,7 @@
             </a>
         </li>
             <li class="bold " >
-            <a class="sidenav-link" id="showSubrogationRegister"
+            <a class="sidenav-link" id="subrogationRegister"
                href="#"
             >
                 <i class="material-icons">car_rental</i>

@@ -6988,7 +6988,7 @@ $(document).ready(function () {
         });
 
     });
-    $("body").on('click', '#showSubrogationRegister', function () {
+    $("body").on('click', '#subrogationRegister', function () {
         $("#mainLoader").removeClass('hideLoader');
         $.ajaxSetup({
 
@@ -7001,7 +7001,7 @@ $(document).ready(function () {
         });
         $.ajax({
             type: 'POST',
-            url: '/adjuster/showSubrogationRegister',
+            url: '/adjuster/subrogationRegister',
             success: function (data) {
                 $("#main").html(data);
                 $('.datepicker').datepicker();
