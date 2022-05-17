@@ -51,7 +51,7 @@ class AdjusterController extends Controller
 
     public function fetchPremiaClaims(Request $request)
     {
-        dd(Config::DMS_BASE_URL);//        $claims = array (
+        //        $claims = array (
 //            0 =>
 //                array (
 //                    'CLM_NO' => 'C/109/1001/2020/000023',
