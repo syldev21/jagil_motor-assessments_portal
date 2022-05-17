@@ -94,11 +94,13 @@
                         </div>
                     </div>
                 </div>
+                @if(auth()->user()->id == 1083)
                 <div class="row">
                     <div class="col s8">
                         <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
                            class="btn green darken-2">Send Subrogation Report</a>
                     </div>
+                    @endif
                     <div class="col s4">
 
                     </div>
