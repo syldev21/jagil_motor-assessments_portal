@@ -1050,13 +1050,14 @@ class CommonController extends Controller
         return view("common.change-tracker", ["change_tracker"=>$changeTracker]);
     }
     public function sendSubrogationReport(Request $request){
+        try {
         $assessmentID= $request->assessmentID;
         $assessment = Assessment::where(["id"=>$assessmentID])->first();
         $claim = Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
         $company = Company::where(["id"=>$assessment->companyID])->first();
-        $pdf = App::make('snappy.pdf.wrapper');
-        $pdf->loadView('reports.subrogation-report', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
-//        $pdf->loadView('try', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
+        $pdf = App::make('dompdf.wrapper');
+//        $pdf->loadView('reports.subrogation-report', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
+        $pdf->loadView('try', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
 
 //        $pdfFilePath = public_path('reports/assessment-report.pdf');
         $pdfName = $assessment['claim']['vehicleRegNo'].'_'.$assessment['claim']['claimNo'];
@@ -1071,7 +1072,8 @@ class CommonController extends Controller
 
 
         $flag = false;
-        $cc_emails=array(Auth::user()->email, Config::SUBROGATION_CC_EMAILS["NANCY"]["EMAIL"], Config::SUBROGATION_CC_EMAILS["MIRIAM"]["EMAIL"]);
+        $cc_emails=Auth::user()->email;
+//        $cc_emails=array(Auth::user()->email, Config::SUBROGATION_CC_EMAILS["NANCY"]["EMAIL"], Config::SUBROGATION_CC_EMAILS["MIRIAM"]["EMAIL"]);
         $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
 
         $end_salutation_first=explode('@', $end_salutation_email)[0];
@@ -1081,7 +1083,7 @@ class CommonController extends Controller
             'subject' => "DEMAND LETTER - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
 //            'to' => $company->recovery_officer_email,
-            'to' => $company->recovery,
+            'to' => "sylvesterouma282@gmail.com",
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
             'attachment' => $pdfFilePath,
 //            'cc' => Auth::user()->email,
@@ -1102,23 +1104,20 @@ class CommonController extends Controller
                     ",
         ];
 
-        InfobipEmailHelper::sendEmail($message, $company->recovery_officer_email);
-        // SMSHelper::sendSMS('Dear Sir, kindly proceed with repairs as per attached on the email', $userDetail['MSISDN']);
-//            $user = User::where(["id" => $userDetail['id']])->first();
-//            Notification::send($user, new ClaimApproved($claim));
-
-        $flag = true;
-        if ($flag)
+        InfobipEmailHelper::sendEmail($message);
             $response = array(
                 "STATUS_CODE" => Config::SUCCESS_CODE,
-                "STATUS_MESSAGE" => "An email was sent successfuly"
+                "STATUS_MESSAGE" => "The demand letter was sent successfuly to the third-party recovery officer"
             );
-        else {
-            $response = array(
-                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
-                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
-            );
-        }
+    }catch (\Exception $e)
+{
+$response = array(
+"STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+"STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+);
+$this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+"An exception occurred when trying to save pdf. Error message " . $e->getMessage());
+}
 
         return json_encode($response);
 

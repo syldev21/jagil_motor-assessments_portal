@@ -103,7 +103,6 @@ $router->group(['prefix' => 'adjuster'], function($router)
     $router->post('/supplementaries','AdjusterController@supplementaries');
     $router->post('/supplementary-report','AdjusterController@supplementaryReport');
     $router->post('/sendRepairAuthority', 'AdjusterController@SendRepairAuthority');
-    $router->post('/sendSubrogationReport', 'AdjusterController@sendSubrogationReport');
     $router->post('/subrogationRegister', 'AdjusterController@showSubrogationRegister');
     $router->post('/emailReleaseletter', 'AdjusterController@emailReleaseletter');
     $router->post('/addLPO', 'AdjusterController@addLPO');
