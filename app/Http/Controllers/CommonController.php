@@ -1055,9 +1055,9 @@ class CommonController extends Controller
         $assessment = Assessment::where(["id"=>$assessmentID])->first();
         $claim = Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
         $company = Company::where(["id"=>$assessment->companyID])->first();
-        $pdf = App::make('dompdf.wrapper');
-//        $pdf->loadView('reports.subrogation-report', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
-        $pdf->loadView('try', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadView('reports.subrogation-report', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
+//        $pdf->loadView('try', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
 
 //        $pdfFilePath = public_path('reports/assessment-report.pdf');
         $pdfName = $assessment['claim']['vehicleRegNo'].'_'.$assessment['claim']['claimNo'];
