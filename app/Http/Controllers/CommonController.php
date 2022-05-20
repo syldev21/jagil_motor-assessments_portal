@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+Use App\Mail\Attachment;
 
 class CommonController extends Controller
 {
@@ -1055,9 +1056,17 @@ class CommonController extends Controller
             $assessment = Assessment::where(["id"=>$assessmentID])->first();
             $claim = Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
             $company = Company::where(["id"=>$assessment->companyID])->first();
-            $pdf = App::make('snappy.pdf.wrapper');
-            $pdf->loadView('reports.subrogation-report', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
-//        $pdf->loadView('try', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
+            $third_party_officer_username=explode("@", $company->recovery_officer_email)[0];
+            $third_party_officer =explode(".", $third_party_officer_username)[0]." ".explode(".", $third_party_officer_username)[1];
+            $cc_emails=array(Auth::user()->email, Config::SUBROGATION_CC_EMAILS["NANCY"]["EMAIL"], Config::SUBROGATION_CC_EMAILS["MIRIAM"]["EMAIL"]);
+            $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
+
+            $end_salutation_first=explode('@', $end_salutation_email)[0];
+            $first_array=explode(".", $end_salutation_first);
+            $regards=implode(" ", $first_array);
+            $pdf = App::make('dompdf.wrapper');
+//            $pdf->loadView('reports.subrogation-report', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
+            $pdf->loadView('try', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company, 'regards'=>$regards]);
 
 //        $pdfFilePath = public_path('reports/assessment-report.pdf');
             $pdfName = $assessment['claim']['vehicleRegNo'].'_'.$assessment['claim']['claimNo'];
@@ -1072,8 +1081,7 @@ class CommonController extends Controller
 
 
             $flag = false;
-            $cc_emails=Auth::user()->email;
-//        $cc_emails=array(Auth::user()->email, Config::SUBROGATION_CC_EMAILS["NANCY"]["EMAIL"], Config::SUBROGATION_CC_EMAILS["MIRIAM"]["EMAIL"]);
+        $cc_emails=array(Auth::user()->email, Config::SUBROGATION_CC_EMAILS["NANCY"]["EMAIL"], Config::SUBROGATION_CC_EMAILS["MIRIAM"]["EMAIL"]);
             $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
 
             $end_salutation_first=explode('@', $end_salutation_email)[0];
@@ -1086,7 +1094,6 @@ class CommonController extends Controller
                 'to' => "sylvesterouma282@gmail.com",
                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                 'attachment' => $pdfFilePath,
-//            'cc' => Auth::user()->email,
                 'cc' => $cc_emails,
                 'html' => "
                         Dear Sirs, <br>
@@ -1107,7 +1114,7 @@ class CommonController extends Controller
             InfobipEmailHelper::sendEmail($message);
             $response = array(
                 "STATUS_CODE" => Config::SUCCESS_CODE,
-                "STATUS_MESSAGE" => "The demand letter was sent successfuly to the third-party recovery officer"
+                "STATUS_MESSAGE" => "The demand letter was sent successfully"
             );
         }catch (\Exception $e)
         {
