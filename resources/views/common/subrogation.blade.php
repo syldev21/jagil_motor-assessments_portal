@@ -86,7 +86,7 @@
                                                 <h5>Yours faithfully,</h5>
                                                 <img src="{{'images/e_signatures/'.auth()->user()->signature }}" width="10%">
                                                 <h5>{{auth()->user()->name}}</h5>
-                                                <h5>NON-LIFE CLAIMS</h5>
+                                                <h5>Claims Department</h5>
                                         </div>
                                     </div>
                                 </div>
