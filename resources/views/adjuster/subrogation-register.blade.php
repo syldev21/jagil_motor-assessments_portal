@@ -50,17 +50,15 @@
                                             <th>S/N</th>
                                             <th>Claim Number</th>
                                             <th>Registration Number</th>
-{{--                                            <th>Make</th>--}}
-{{--                                            <th>Model</th>--}}
-{{--                                            <th>Chassis Number</th>--}}
-{{--                                            <th>Third Party Insurer</th>--}}
+                                            <th>Third Party Insurer</th>
                                             <th>Third Party Driver</th>
                                             <th>Third Party Registration Number</th>
                                             <th>Amount</th>
                                             <th>PAV</th>
-                                            @if(auth()->user()->id == 1083||auth()->user()->id == 1050)
-                                            <th>Operation</th>
-                                            @endif
+                                            <th>Date of Accident</th>
+                                            <th>Status</th>
+                                            <th>Date Letter Sent</th>
+                                            <th>Adjuster</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -69,15 +67,38 @@
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$subrogationClaim->claimNo}}</td>
                                                 <td>{{$subrogationClaim->claim->vehicleRegNo}}</td>
-{{--                                                <td>{{$subrogationClaim->makeName}}</td>--}}
-{{--                                                <td>{{$subrogationClaim->modelName}}</td>--}}
-{{--                                                <td>{{$subrogationClaim->chassisNumber}}</td>--}}
-{{--                                                <td></td>--}}
+                                                <td>{{isset($subrogationClaim->company->name) && isset($subrogationClaim->companyID) ? $subrogationClaim->company->name : ""}}</td>
                                                 <td>{{$subrogationClaim->thirdPartyDriver}}</td>
                                                 <td>{{$subrogationClaim->thirdPartyVehicleRegNo}}</td>
                                                 <td>{{$subrogationClaim->totalCost}}</td>
                                                 <td>{{$subrogationClaim->pav}}</td>
-                                                <td></td>
+                                                <td>{{$subrogationClaim->claim->loseDate}}</td>
+                                                <td>
+                                                    @if(isset($subrogationClaim->demandLetterDate))
+                                                        <button
+                                                            class="btn green lighten-2">SENT
+                                                        </button>
+                                                    @else
+                                                        <button
+                                                            class="btn red lighten-2">PENDING
+                                                        </button>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(isset($subrogationClaim->demandLetterDate))
+                                                                {{$subrogationClaim->demandLetterDate}}
+                                                    @else
+                                                                N/A
+                                                    @endif
+                                                </td>
+
+                                                <td>
+                                                    @if(isset($subrogationClaim->demandLetterDate))
+                                                        {{\App\User::where(["id"=>$subrogationClaim->subrogationSender])->first()->name}}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
