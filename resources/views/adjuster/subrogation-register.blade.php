@@ -58,7 +58,9 @@
                                             <th>Third Party Registration Number</th>
                                             <th>Amount</th>
                                             <th>PAV</th>
+                                            @if(auth()->user()->id == 1083||auth()->user()->id == 1050)
                                             <th>Operation</th>
+                                            @endif
                                         </tr>
                                         </thead>
                                         <tbody>
