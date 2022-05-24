@@ -48,10 +48,16 @@
             We hold you liable for the loss incurred as a result of the said accident
             which we expended sums in making good the damages suffered by our insured to
             the tune of Ksh.
-            @if(isset($assessment->totalCost))
-                {{isset($assessment->totalChange) ? number_format($assessment->totalChange) : number_format($assessment->totalCost) }}
-            @elseif(isset($assessment->totalLoss))
-                {{isset($assessment->totalChange) ? number_format($assessment->totalChange) : number_format($assessment->totalCost) }}
+            @if($assessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"])
+                {{$assessment->pav}}
+            @else
+                @if(isset($assessment->totalCost))
+                    {{isset($assessment->totalChange) ? number_format($assessment->totalChange) : number_format($assessment->totalCost) }}
+                @elseif(isset($assessment->totalLoss))
+                    {{isset($assessment->totalChange) ? number_format($assessment->totalChange) : number_format($assessment->totalCost) }}
+
+                @endif
+
             @endif
 
             /-

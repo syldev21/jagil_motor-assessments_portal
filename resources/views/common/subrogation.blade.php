@@ -46,10 +46,10 @@
                                             ?>
                                             </p>
                                             <br/>
-                                            <h5>{{$company->name}}</h5>
-                                            <h5>{{$company->building}}</h5>
-                                            <h5>{{$company->stricty}}</h5>
-                                            <h5>{{$company->city}}.</h5>
+                                            <h5>{{isset($company->name)?$company->name:""}}</h5>
+                                            <h5>{{isset($company->building)?$company->building:""}}</h5>
+{{--                                            <h5>{{$company->stricty}}</h5>--}}
+                                            <h5>{{isset($company->city)?$company->city:""}}.</h5>
                                             <br/>
                                             <h6>Dear Sirs,</h6>
                                             <br/>
@@ -68,11 +68,17 @@
                                             </p>
                                             <p style="line-height: 200%">
                                                 We hold you liable for the loss incurred as a result of the said accident which we expended sums in making good the damages suffered by our insured to the tune of Ksh.
+                                                @if($assessment->assessmentTypeID == \App\Conf\Config::ASSESSMENT_TYPES["TOTAL_LOSS"])
+                                                    {{$assessment->pav}}
+                                                @else
                                                     @if(isset($assessment->totalCost))
                                                         {{isset($assessment->totalChange) ? number_format($assessment->totalChange) : number_format($assessment->totalCost) }}
                                                     @elseif(isset($assessment->totalLoss))
                                                         {{isset($assessment->totalChange) ? number_format($assessment->totalChange) : number_format($assessment->totalCost) }}
+
                                                     @endif
+
+                                                @endif
 
                                                      /-
                                             </p>
@@ -94,12 +100,16 @@
                         </div>
                     </div>
                 </div>
-                @if(auth()->user()->id == 1083||auth()->user()->id == 1050)
+                @if($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'])
+{{--            @if(auth()->user()->id == 1083||auth()->user()->id == 1050)--}}
+                @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                 <div class="row">
                     <div class="col s8">
                         <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
                            class="btn green darken-2">Send Demand Letter</a>
                     </div>
+{{--                    @endif--}}
+                    @endhasrole
                     @endif
                     <div class="col s4">
 

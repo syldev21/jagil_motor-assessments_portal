@@ -12,7 +12,7 @@ class Assessment extends Model
     protected $primaryKey = "id";
     protected $fillable = ['claimID','assessmentID','assessedBy','assessedAt','garageID','assessmentTypeID','pav','salvage',
         'totalLoss','totalCost','totalChange','priceChange','cause','note',
-        'assessmentStatusID','changeTypeID','segment','approvedBy','approvedAt','finalApprovalBy','finalApprovedAt','changesDue','changeRequestAt','reviewNote','scrapValue', 'scrap','active','isSubrogate','companyID','thirdPartyDriver','thirdPartyPolicy','thirdPartyVehicleRegNo','isTheft','PTV','createdBy','updatedBy',
+        'assessmentStatusID','changeTypeID','segment','approvedBy','approvedAt','finalApprovalBy','finalApprovedAt','changesDue','changeRequestAt','reviewNote','scrapValue', 'scrap','active','isSubrogate','companyID','thirdPartyDriver','thirdPartyPolicy','thirdPartyVehicleRegNo','demandLetterDate','subrogationSender','isTheft','PTV','createdBy','updatedBy',
         'dateModified','dateCreated'];
     public $timestamps= false;
 
