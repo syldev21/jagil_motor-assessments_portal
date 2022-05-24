@@ -54,7 +54,7 @@
                                             <h6>Dear Sirs,</h6>
                                             <br/>
                                             <div style="text-decoration: underline;">
-                                            <h5>ACCIDENT ON {{$claim->loseDate}}</h5>
+                                            <h5>ACCIDENT ON {{explode(" ", $claim->loseDate)[0]}}</h5>
                                             <h5>YOUR INSURED/INSURED’S DRIVER: {{$claim->thirdPartyDriver}} REG NO. {{$claim->thirdPartyVehicleRegNo}}</h5>
                                             <h5>OUR INSURED: {{$claim->customer->fullName}} REG. NO. {{$claim->vehicleRegNo}}</h5>
                                             </div>
