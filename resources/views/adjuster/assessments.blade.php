@@ -57,8 +57,8 @@
                                             <th>Assessor</th>
                                             <th>Status</th>
                                             <th>{{\App\Conf\Config::$DISPLAY_STATUSES["ASSESSMENT"][$assessmentStatusID]}}</th>
-                                            <th>Operation</th>
                                             <th>Type</th>
+                                            <th>Operation</th>
                                         </tr>
                                         </thead>
                                         <tbody>
