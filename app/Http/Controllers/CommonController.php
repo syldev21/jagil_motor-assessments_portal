@@ -1095,7 +1095,6 @@ class CommonController extends Controller
                 'attachment' => $pdfFilePath,
                 'cc' => $cc_emails,
                 'html' => "
-THIS IS A TEST EMAIL
 
                         Dear Sirs, <br>
 
