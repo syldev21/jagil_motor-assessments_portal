@@ -1087,16 +1087,18 @@ class CommonController extends Controller
             $message = [
                 'subject' => "DEMAND LETTER - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-//            'to' => $company->recovery_officer_email,
-                'to' => "sylvesterouma282@gmail.com",
+                'to' => $company->recovery_officer_email,
+//                'to' => "sylvesterouma282@gmail.com",
                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                 'attachment' => $pdfFilePath,
                 'cc' => $cc_emails,
+//                'cc' => Auth::user()->email,
                 'html' => "
 
                         Dear Sirs, <br>
 
-                        Kindly see attached our demand letter. <br> <br>
+                        Kindly see attached our demand letter. <br>
+                        To acknowledge the receipt of the letter, and further follow-ups, kindly contact our recovery departmet via jazrecovery@allianz.com. <br> <br>
 
                         Regards, <br><br>
 

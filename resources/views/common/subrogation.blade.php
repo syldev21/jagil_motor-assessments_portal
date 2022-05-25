@@ -101,7 +101,6 @@
                     </div>
                 </div>
                 @if($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'])
-            @if(auth()->user()->id == 1083||auth()->user()->id == 1050)
                 @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                 <div class="row">
                     <div class="col s8">
@@ -114,13 +113,13 @@
 
                         @endif
                     </div>
-                    @endif
-                    @endhasrole
-                    @endif
+{{--                    @endif--}}
                     <div class="col s4">
 
                     </div>
                 </div>
+                @endhasrole
+                @endif
             </div>
         </div>
     </div>

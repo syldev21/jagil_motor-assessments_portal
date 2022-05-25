@@ -1032,7 +1032,7 @@
                 <i class="material-icons">directions_car</i>
                 <span class="menu-title" data-i18n="Activity Log">Courtesy Car</span>
             </a>
-        @if(auth()->user()->id == 1083 | auth()->user()->id == 1101)
+
         </li>
             <li class="bold " >
             <a class="sidenav-link" id="subrogationRegister"
@@ -1042,7 +1042,6 @@
                 <span class="menu-title" data-i18n="Activity Log">Subrogation Register</span>
             </a>
         </li>
-        @endif
         @endif
         <li class="bold ">
             <a class="waves-effect waves-light"
