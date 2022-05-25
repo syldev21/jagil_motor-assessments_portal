@@ -1056,14 +1056,14 @@ class CommonController extends Controller
             $assessment = Assessment::where(["id"=>$assessmentID])->first();
             $claim = Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
             $company = Company::where(["id"=>$assessment->companyID])->first();
-            $cc_email=Auth::user()->email;
-            $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
+            $cc_emails=array(Auth::user()->email, Config::JUBILEE_REPLY_EMAIL);
 
+
+            $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
             $end_salutation_first=explode('@', $end_salutation_email)[0];
             $first_array=explode(".", $end_salutation_first);
             $regards=implode(" ", $first_array);
             $pdf = App::make('dompdf.wrapper');
-//            $pdf->loadView('reports.subrogation-report', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company]);
             $pdf->loadView('reports.demand-letter', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company, 'regards'=>$regards]);
 
 //        $pdfFilePath = public_path('reports/assessment-report.pdf');
@@ -1091,7 +1091,7 @@ class CommonController extends Controller
                 'to' => "sylvesterouma282@gmail.com",
                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                 'attachment' => $pdfFilePath,
-                'cc' => $cc_email,
+                'cc' => $cc_emails,
                 'html' => "
 
                         Dear Sirs, <br>
