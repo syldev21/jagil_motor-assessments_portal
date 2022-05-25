@@ -101,14 +101,14 @@
                     </div>
                 </div>
                 @if($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'])
-{{--            @if(auth()->user()->id == 1083||auth()->user()->id == 1050)--}}
+            @if(auth()->user()->id == 1083||auth()->user()->id == 1050)
                 @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                 <div class="row">
                     <div class="col s8">
                         <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
                            class="btn green darken-2">Send Demand Letter</a>
                     </div>
-{{--                    @endif--}}
+                    @endif
                     @endhasrole
                     @endif
                     <div class="col s4">
