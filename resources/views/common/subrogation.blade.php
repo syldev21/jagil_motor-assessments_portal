@@ -105,8 +105,14 @@
                 @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                 <div class="row">
                     <div class="col s8">
+                        @if($assessment->demandLetterDate == null)
                         <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
                            class="btn green darken-2">Send Demand Letter</a>
+                            @else
+                        <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
+                           class="btn green darken-2">Resend Demand Letter</a>
+
+                        @endif
                     </div>
                     @endif
                     @endhasrole

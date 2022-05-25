@@ -1111,9 +1111,7 @@ class CommonController extends Controller
 
             $emailSSent=InfobipEmailHelper::sendEmail($message);
             if ($emailSSent){
-//                Assessment::where(["id"=>$assessmentID])->update(["demandLetterDate"=>\Illuminate\Support\Carbon::now(), "subrogationSender"=>Auth::user()->id]);
-                Assessment::where("demandLetterDate", "!=", null)
-                            ->update(["demandLetterDate"=>null, "subrogationSender"=>null]);
+                Assessment::where(["id"=>$assessmentID])->update(["demandLetterDate"=>\Illuminate\Support\Carbon::now(), "subrogationSender"=>Auth::user()->id]);
             }
             $response = array(
                 "STATUS_CODE" => Config::SUCCESS_CODE,
