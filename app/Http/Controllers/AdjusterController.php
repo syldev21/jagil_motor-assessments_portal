@@ -1418,7 +1418,7 @@ class AdjusterController extends Controller
                                         ->join('companies', "assessments.companyID", "=", "companies.id")
 //                                        ->join('car_models', "claims.carModelCode", "=", "car_models.modelCode")
                                         ->where("assessments.isSubrogate", "=", 1)
-                                        ->orderBy("assessments.dateCreated", "DESC")
+                                        ->orderBy("assessments.demandLetterDate", "DESC")
                                         ->get();
         return view("adjuster.subrogation-register", ["subrogationClaims"=>$subrogationClaims]);
     }

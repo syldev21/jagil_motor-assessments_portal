@@ -72,7 +72,7 @@
                                                 <td>{{$subrogationClaim->thirdPartyVehicleRegNo}}</td>
                                                 <td>{{$subrogationClaim->totalCost}}</td>
                                                 <td>{{$subrogationClaim->pav}}</td>
-                                                <td>{{$subrogationClaim->claim->loseDate}}</td>
+                                                <td>{{explode(" ", $subrogationClaim->claim->loseDate)[0]}}</td>
                                                 <td>
                                                     @if(isset($subrogationClaim->demandLetterDate))
                                                         <button
@@ -86,7 +86,7 @@
                                                 </td>
                                                 <td>
                                                     @if(isset($subrogationClaim->demandLetterDate))
-                                                                {{$subrogationClaim->demandLetterDate}}
+                                                                {{explode(" ", $subrogationClaim->demandLetterDate)[0]}}
                                                     @else
                                                                 N/A
                                                     @endif
