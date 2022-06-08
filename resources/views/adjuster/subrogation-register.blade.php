@@ -67,7 +67,7 @@
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$subrogationClaim->claimNo}}</td>
                                                 <td>{{$subrogationClaim->claim->vehicleRegNo}}</td>
-                                                <td>{{isset($subrogationClaim->company->name) && isset($subrogationClaim->companyID) ? $subrogationClaim->company->name : ""}}</td>
+                                                <td>{{$subrogationClaim->companyID >=0  ? \App\Company::where("id", $subrogationClaim->companyID)->first()->name : ""}}</td>
                                                 <td>{{$subrogationClaim->thirdPartyDriver}}</td>
                                                 <td>{{$subrogationClaim->thirdPartyVehicleRegNo}}</td>
                                                 <td>{{$subrogationClaim->totalCost}}</td>
@@ -93,11 +93,7 @@
                                                 </td>
 
                                                 <td>
-                                                    @if(isset($subrogationClaim->demandLetterDate))
-                                                        {{\App\User::where(["id"=>$subrogationClaim->subrogationSender])->first()->name}}
-                                                    @else
-                                                        N/A
-                                                    @endif
+                                                    {{\App\User::where(["id"=>$subrogationClaim->claim->createdBy])->first()->name}}
                                                 </td>
                                             </tr>
                                         @endforeach
