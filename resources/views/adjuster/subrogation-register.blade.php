@@ -86,7 +86,7 @@
                                                 </td>
                                                 <td>
                                                     @if(isset($subrogationClaim->demandLetterDate))
-                                                                {{explode(" ", $subrogationClaim->demandLetterDate)[0]}}
+                                                                {{$subrogationClaim->demandLetterDate}}
                                                     @else
                                                                 N/A
                                                     @endif
