@@ -100,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                @if($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'])
+                @if($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']||$assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                 @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                 <div class="row">
                     <div class="col s8">
