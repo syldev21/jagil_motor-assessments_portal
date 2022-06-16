@@ -26,6 +26,26 @@
             <a class="navigation-header-text">Quick Operations</a>
             <i class="navigation-header-icon material-icons">more_horiz</i>
         </li>
+        @if($user->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
+            <li class="">
+                <a href="#" data-id="" class="sidenav-link fetch-customers">
+                    <i class="material-icons">apps</i>
+                    <span data-i18n="Chartist">My Portfolio</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="#" data-id="" class="sidenav-link fetch-payments">
+                    <i class="material-icons">attach_money</i>
+                    <span data-i18n="Chartist">Payments</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="#" data-id="" class="sidenav-link">
+                    <i class="material-icons">assignment_returned</i>
+                    <span data-i18n="Chartist">Claims</span>
+                </a>
+            </li>
+        @else
         <li class="">
             <a href="#" data-id="" class="sidenav-link fetch-customers">
                 <i class="material-icons">people</i>
@@ -44,6 +64,7 @@
                 <span data-i18n="Chartist">Help</span>
             </a>
         </li>
+        @endif
         <li class="bold ">
             <a class="waves-effect waves-light"
                href="{{ route('user.logout') }}"
