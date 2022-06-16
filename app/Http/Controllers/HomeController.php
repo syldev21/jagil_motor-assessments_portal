@@ -9,6 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Helper\GeneralFunctions;
+use App\Helper\CustomLogger;
+use App\Utility;
 
 class HomeController extends Controller
 {
@@ -17,10 +20,17 @@ class HomeController extends Controller
      *
      * @return void
      */
+    private $log;
+    private $functions;
+    private $utility;
     public function __construct()
     {
         $this->middleware('auth');
+        $this->log = new CustomLogger();
+        $this->functions = new GeneralFunctions();
+        $this->utility = new Utility();
     }
+
 
     /**
      * Show the application dashboard.
@@ -39,6 +49,8 @@ class HomeController extends Controller
         {
             $view = "NHIF.index";
 
+        }else if(auth::user()->hasRole(Config::$ROLES['CUSTOMER-SERVICE'])|| auth()->user()->userTypeID==Config::$USER_TYPES["HOME FIBER CUSTOMER"]["ID"]){
+            $view='layouts.home-fibre.master';
         }else
         {
             $view = "dashboard.main";
