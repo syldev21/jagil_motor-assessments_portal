@@ -413,7 +413,7 @@ class NHIFController extends Controller
             $claim = ClaimMock::where(["status"=>$request->status,"claimNo"=>$request->claimNo])->first();
 
             $documents=ClaimDocument::where(['claimID'=>$claim['id']])->get();
-            return view('nhif.claim-details', ['claim' => $claim, "documents"=>$documents, "data"=>$data]);
+            return view('NHIF.claim-details', ['claim' => $claim, "documents"=>$documents, "data"=>$data]);
         } catch (\Exception $e) {
 //            echo $e->getMessage();
 //            exit();
