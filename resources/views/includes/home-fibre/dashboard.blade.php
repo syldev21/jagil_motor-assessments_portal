@@ -9,7 +9,8 @@
         <div class="col s4" style="position: relative; left: 970px; top: 10px">
 {{--                <div class="card padding-4 animate fadeRight">--}}
                     <!-- Modal Trigger -->
-                    <a href="#" id="contactUsTrigger" class="btn blue lighten-2 waves-effect">Contact Us</a>
+                    <a href="#" id="contactUsTrigger" class="btn blue lighten-2 waves-effect"><i class="material-icons">dialpad</i>
+                        <span data-i18n="Chartist">Contact Us</span></a>
 {{--                </div>--}}
         </div>
 
@@ -69,7 +70,10 @@
     <div class="col s12 m6 l4">
         <div class="card padding-4 animate fadeRight">
             <center>
-                <p><u>Name</u></p>
+                <p><u>
+                        <i class="material-icons">recent_actors</i>
+                        <span data-i18n="Chartist">Name</span>
+                </u></p>
 
 {{--                <p>{{$user->name}}</p>--}}
                 <p><b>{{$user->name}}</b></p>
@@ -79,7 +83,10 @@
     <div class="col s12 m6 l4">
         <div class="card padding-4 animate fadeLeft">
             <center>
-                <p><u>Phone Number</u></p>
+                    <p><u>
+                        <i class="material-icons">assignment_ind</i>
+                        <span data-i18n="Chartist">Phone Number</span>
+                    </u></p>
 
                 <p><b>{{$user->MSISDN}}</b></p>
             </center>
@@ -88,7 +95,10 @@
     <div class="col s12 m6 l4">
         <div class="card padding-4 animate fadeRight">
             <center>
-                <p><u>Postal Address</u></p>
+                <p><u>
+                        <i class="material-icons">drafts</i>
+                        <span data-i18n="Chartist">Postal Address</span>
+                </u></p>
 
             </center>
         </div>
@@ -98,7 +108,10 @@
     <div class="col s12 m6 l4">
         <div class="card padding-4 animate fadeRight">
             <center>
-                <p><u>Email Address</u></p>
+                <p><u>
+                        <i class="material-icons">email</i>
+                        <span data-i18n="Chartist">Emails Address</span>
+                </u></p>
 
                 <p><b>{{$user->email}}</b></p>
             </center>
@@ -107,7 +120,10 @@
     <div class="col s12 m6 l4">
         <div class="card padding-4 animate fadeLeft">
             <center>
-                <p><u>ID Number</u></p>
+                <p><u>
+                        <i class="material-icons">verified_user</i>
+                        <span data-i18n="Chartist">ID Number</span>
+                </u></p>
                 <p><b>{{$user->idNumber}}</b></p>
             </center>
         </div>
@@ -115,7 +131,10 @@
     <div class="col s12 m6 l4">
         <div class="card padding-4 animate fadeRight">
             <center>
-                <p><u>KRA PIN</u></p>
+                <p><u>
+                        <i class="material-icons">fiber_pin</i>
+                        <span data-i18n="Chartist">KRA PIN</span>
+                    </u></p>
                 <p><b></b></p>
             </center>
         </div>
