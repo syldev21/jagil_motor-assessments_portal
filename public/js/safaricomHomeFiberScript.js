@@ -199,4 +199,10 @@ $(document).ready(function () {
         $(".sidenav-link").removeClass('active');
         $(this).addClass('active');
     });
+    $("body").on('click','#contactUsTrigger',function (e){
+        e.preventDefault();
+        const elem = document.getElementById('contactUs');
+        const instance = M.Modal.init(elem, {dismissible: true});
+        instance.open();
+    });
 });

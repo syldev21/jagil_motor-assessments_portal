@@ -3,8 +3,126 @@
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
 </div>
+@if($user->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
+
+    <div class="row">
+        <div class="col s4" style="position: relative; left: 970px; top: 10px">
+{{--                <div class="card padding-4 animate fadeRight">--}}
+                    <!-- Modal Trigger -->
+                    <a href="#" id="contactUsTrigger" class="btn blue lighten-2 waves-effect">Contact Us</a>
+{{--                </div>--}}
+        </div>
+
+
+{{--        ContactUSModal structure--}}
+
+        <div id="contactUs" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+                </div>
+                <div class="modal-body clearfix">
+                    <h3>Jubilee General Allianz</h3>
+
+                    <p>Jubilee Insurance Centre,</p>
+                    <p>Wabera Street, Nairobi</p>
+                    <p>P.O. Box 6685 - 00100 GPO, Nairobi, Kenya</p>
+                    <p>Telephone: +254 20 328 1000</p>
+                    <p>Call Centre: +254 709 949 000</p>
+                    <p>Talk2usgeneral@jubileekenya.com</p>
+                </div>
+            </div>
+        </div>
+        {{--        requestChangeModal structure--}}
+
+        <div id="requestChange" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
+                </div>
+                <div class="modal-body clearfix">
+                    <h3>Jubilee General Allianz</h3>
+
+                    <p>Jubilee Insurance Centre,</p>
+                    <p>Wabera Street, Nairobi</p>
+                    <p>P.O. Box 6685 - 00100 GPO, Nairobi, Kenya</p>
+                    <p>Telephone: +254 20 328 1000</p>
+                    <p>Call Centre: +254 709 949 000</p>
+                    <p>Talk2usgeneral@jubileekenya.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 <div class="row">
+    <div class="row col s12" id="police" style="border: 2px solid gray; text-align: right"></div>
+    <div class="col s12 m6 l4">
+    </div>
+    <div class="col s12 m6 l4">
+        <h5 style="text-align: center;"><span class="btn">{{$user->name}}'s Detail Summary</span></h5>
+    </div>
+    <div class="col s12 m6 l4">
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m6 l4">
+        <div class="card padding-4 animate fadeRight">
+            <center>
+                <p><u>Name</u></p>
+
+{{--                <p>{{$user->name}}</p>--}}
+                <p><b>{{$user->name}}</b></p>
+            </center>
+        </div>
+    </div>
+    <div class="col s12 m6 l4">
+        <div class="card padding-4 animate fadeLeft">
+            <center>
+                <p><u>Phone Number</u></p>
+
+                <p><b>{{$user->MSISDN}}</b></p>
+            </center>
+        </div>
+    </div>
+    <div class="col s12 m6 l4">
+        <div class="card padding-4 animate fadeRight">
+            <center>
+                <p><u>Postal Address</u></p>
+
+            </center>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m6 l4">
+        <div class="card padding-4 animate fadeRight">
+            <center>
+                <p><u>Email Address</u></p>
+
+                <p><b>{{$user->email}}</b></p>
+            </center>
+        </div>
+    </div>
+    <div class="col s12 m6 l4">
+        <div class="card padding-4 animate fadeLeft">
+            <center>
+                <p><u>ID Number</u></p>
+                <p><b>{{$user->idNumber}}</b></p>
+            </center>
+        </div>
+    </div>
+    <div class="col s12 m6 l4">
+        <div class="card padding-4 animate fadeRight">
+            <center>
+                <p><u>KRA PIN</u></p>
+                <p><b></b></p>
+            </center>
+        </div>
+    </div>
+</div>
+@else
+    <div class="row">
     <div class="col s12 m6 l4">
     </div>
     <div class="col s12 m6 l4">
@@ -71,3 +189,4 @@
         </div>
     </div>
 </div>
+@endif
