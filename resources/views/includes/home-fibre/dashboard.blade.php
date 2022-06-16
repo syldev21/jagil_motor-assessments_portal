@@ -84,7 +84,7 @@
         <div class="card padding-4 animate fadeLeft">
             <center>
                     <p><u>
-                        <i class="material-icons">assignment_ind</i>
+                        <i class="material-icons">contact_phone</i>
                         <span data-i18n="Chartist">Phone Number</span>
                     </u></p>
 
@@ -96,7 +96,7 @@
         <div class="card padding-4 animate fadeRight">
             <center>
                 <p><u>
-                        <i class="material-icons">drafts</i>
+                        <i class="material-icons">local_post_office</i>
                         <span data-i18n="Chartist">Postal Address</span>
                 </u></p>
 
@@ -109,7 +109,7 @@
         <div class="card padding-4 animate fadeRight">
             <center>
                 <p><u>
-                        <i class="material-icons">email</i>
+                        <i class="material-icons">contact_mail</i>
                         <span data-i18n="Chartist">Emails Address</span>
                 </u></p>
 
