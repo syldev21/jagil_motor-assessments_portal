@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Constraint\Count;
 use function GuzzleHttp\Promise\all;
+use App\Utility;
 
 
 class NHIFController extends Controller
@@ -122,10 +123,10 @@ class NHIFController extends Controller
         $claim_number=$newClaim;
         if ($request->policyType == Config::POLICY_TYPES["KENYA_POLICE_AND_KENYA_PRISONS"]["ID"]){
             $messageClaim = Config::POLICY_TYPES["KENYA_POLICE_AND_KENYA_PRISONS"]["TITLE"];
-//            dump($messageClaim);
+            $assuredCode = 6001;
         }else{
             $messageClaim = Config::POLICY_TYPES["CIVIL_SERVANTS_AND_NYS"]["TITLE"];
-//            dd($messageClaim);
+            $assuredCode = 5020;
         }
         $emMessageClaim= "<b>"."<i>".$messageClaim."</i>"."</b>";
 
@@ -185,8 +186,35 @@ class NHIFController extends Controller
                 "STATUS_MESSAGE" => Config::VALIDATOR["LATER_DATE"]["TITLE"].Carbon::now()->format("Y-m-d  H:i:s")
             );
         }else{
-            $email_sent=InfobipEmailHelper::sendEmail($message);
+
 //            dd($rea);
+
+            $data = [
+                "policyNo"=>$request->policyType,
+                "dateOfInjury"=>$dateOfInjury,
+                "dateReceived"=>$dateReceived,
+                "lossCode"=>"COL-300",
+                "causeOfLoss"=>"Accidenatal Death Or Bodily Injury",
+                "lossDescription"=>$request->lossDescription,
+                "sectionCode"=> "600101",
+                "policyNo1"=>$request->policyType,
+                "coverCode"=>"3601",
+                "ceDate"=>"",
+                "estCode"=>"6000012",
+                "custCode"=>"K10019404",
+                "currencyCode"=>"KES",
+                "amountFC"=>"100000",
+                "partyRefNo"=>"NHIF PORTAL",
+                "eventCode"=>"064 BODILY INJURY",
+                "lossDescription1"=>$request->lossDescription,
+                "prodCode"=>"$assuredCode",
+                "assuredCode"=>$assuredCode,
+                "status"=>"",
+            ];
+//            $utility = new Utility();
+//
+//            $saveNhifClaim=$utility->getData($data,'/api/v1/b2b/general/claim/insert-claim', 'POST' );
+
 
             $nhifClaimID = ClaimMock::insertGetId([
                 "claimNo"=>$newClaim,
@@ -233,6 +261,8 @@ class NHIFController extends Controller
                 "url" => $path,
                 "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
             ]);
+
+            $email_sent=InfobipEmailHelper::sendEmail($message);
 
             if ($nhifClaimID && $documents && $email_sent->messages[0]->status->groupId==1){
                 $response = array(
