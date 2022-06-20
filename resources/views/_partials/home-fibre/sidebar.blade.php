@@ -39,16 +39,11 @@
                     <span data-i18n="Chartist">Payments</span>
                 </a>
             </li>
-            <li class="">
-                <a href="#" data-id="" class="sidenav-link fetch-CClaims">
-                    <i class="material-icons">assignment_returned</i>
-                    <span data-i18n="Chartist">Claims</span>
-                </a>
-            </li>
+
             <li class="">
                 <a href="#" data-id="" class="sidenav-link fetch-myClaims">
                     <i class="material-icons">assignment_returned</i>
-                    <span data-i18n="Chartist"> My Claims</span>
+                    <span data-i18n="Chartist">Claims</span>
                 </a>
             </li>
         @else
