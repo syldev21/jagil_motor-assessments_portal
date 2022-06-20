@@ -9,6 +9,70 @@ $(document).ready(function () {
     $('.datepicker').datepicker();
     $('.materialboxed').materialbox();
 
+    $("body").on('click','.fetch-cclaims',function (){
+
+        $("#loader-wrapper").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/safaricom-home-fibre/fetch-cclaims',
+            data: {},
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#loader-wrapper").addClass('hideLoader');
+            }
+
+        });
+    });
+    $("body").on('click','.fetch-portfolio',function (){
+
+        $("#loader-wrapper").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/safaricom-home-fibre/fetch-portfolio',
+            data: {},
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#loader-wrapper").addClass('hideLoader');
+            }
+
+        });
+    });
     $("body").on('click','.fetch-customers',function (){
 
         $("#loader-wrapper").removeClass('hideLoader');
@@ -71,6 +135,40 @@ $(document).ready(function () {
                 });
                 $("#loader-wrapper").addClass('hideLoader');
             }
+        });
+    });
+    $("body").on('click','.fetch-cpayments',function (){
+        $("#loader-wrapper").removeClass('hideLoader');
+        // var ci_code = $(this).data("id");
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/safaricom-home-fibre/fetch-cpayments',
+            data: {
+                // ci_code : ci_code
+            },
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#loader-wrapper").addClass('hideLoader');
+            }
+
         });
     });
     $("body").on('click','#fetch-customer-payments',function (){
@@ -145,6 +243,8 @@ $(document).ready(function () {
 
         });
     });
+
+
     $("body").on('click','#sendPolicyDocument',function (){
         var email = $(this).data("id");
         var policyNumber = $(this).data("id2");
