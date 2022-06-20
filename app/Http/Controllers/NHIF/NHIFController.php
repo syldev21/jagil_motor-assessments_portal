@@ -111,10 +111,16 @@ class NHIFController extends Controller
         }
 
 
-        $dInjury=explode(" ", Carbon::parse($request->dateOfInjury)->format('Y-m-d H:i:s'));
-        $dReceived=explode(" ", Carbon::parse($request->dateReceived)->format('Y-m-d H:i:s'));
-        $dateOfInjury=$dInjury[0];
-        $dateReceived=$dReceived[0];
+        $dInjury=Carbon::parse($request->dateOfInjury)->format('Y-m-d H:i:s');
+        $dReceived=Carbon::parse($request->dateReceived)->format('Y-m-d H:i:s');
+        $dateOfInjury=$dInjury;
+        $dateReceived=$dReceived;
+
+        if ($request->typeOfInjury == Config::INJURY_TYPES["INJURY"]["ID"]){
+            $causeOfLoss="Injury";
+        }else{
+            $causeOfLoss="Death";
+        }
 
         $emails = array(Config::CLAIM_NOTIFICATION_CONTACTS["HARRIET"]["EMAIL"],Config::CLAIM_NOTIFICATION_CONTACTS["LINUS"]["EMAIL"],Config::CLAIM_NOTIFICATION_CONTACTS["NABWIRE"]["EMAIL"]);
         $cc1=User::where(["id"=>1059])->first()->email;
@@ -188,34 +194,69 @@ class NHIFController extends Controller
         }else{
 
 //            dd($rea);
-
+            $dateOfInjuryPremia=explode("-", explode(" ", $dateOfInjury)[0]);
+            $dateReceivedPremia=explode("-", explode(" ", $dateReceived)[0]);
+            $daOfInjuryPremia=$dateOfInjuryPremia[2]."/".$dateOfInjuryPremia[1]."/".$dateOfInjuryPremia[0];
+            $daReceivedPremia=$dateReceivedPremia[2]."/".$dateReceivedPremia[1]."/".$dateReceivedPremia[0];
+//            dump($daOfInjuryPremia);
+//            dd($daReceivedPremia);
             $data = [
                 "policyNo"=>$request->policyType,
-                "dateOfInjury"=>$dateOfInjury,
-                "dateReceived"=>$dateReceived,
+                "dateOfInjury"=>$daOfInjuryPremia,
+                "dateReceived"=>$daReceivedPremia,
                 "lossCode"=>"COL-300",
-                "causeOfLoss"=>"Accidenatal Death Or Bodily Injury",
+                "causeOfLoss"=>$causeOfLoss,
+//                "causeOfLoss"=>"Accidenatal Death Or Bodily Injury",
                 "lossDescription"=>$request->lossDescription,
                 "sectionCode"=> "600101",
                 "policyNo1"=>$request->policyType,
                 "coverCode"=>"3601",
-                "ceDate"=>"",
+                "ceDate"=>$daReceivedPremia,
                 "estCode"=>"6000012",
                 "custCode"=>"K10019404",
                 "currencyCode"=>"KES",
-                "amountFC"=>"100000",
+                "amountFC"=>100000,
                 "partyRefNo"=>"NHIF PORTAL",
-                "eventCode"=>"064 BODILY INJURY",
+//                "eventCode"=>"064 BODILY INJURY",
+                "eventCode"=>"064",
                 "lossDescription1"=>$request->lossDescription,
-                "prodCode"=>"$assuredCode",
+                "prodCode"=>$assuredCode,
                 "assuredCode"=>$assuredCode,
-                "status"=>"",
+                "riskID"=>1
+//                "status"=>"",
             ];
-//            $utility = new Utility();
-//
-//            $saveNhifClaim=$utility->getData($data,'/api/v1/b2b/general/claim/insert-claim', 'POST' );
 
 
+//            $data = [
+//                "policyNo"=>"P/101/6001/2021/000028",
+//                "dateOfInjury"=>"2022-03-03",
+//                "dateReceived"=>"2022-03-11",
+//                "lossCode"=>"COL-300",
+//                "causeOfLoss"=>"Injury",
+////                "causeOfLoss"=>"Accidenatal Death Or Bodily Injury",
+//                "lossDescription"=>"accident",
+//                "sectionCode"=> "600101",
+//                "policyNo1"=>"P/101/6001/2021/000028",
+//                "coverCode"=>"3601",
+//                "ceDate"=>"2022-03-11",
+//                "estCode"=>"6000012",
+//                "custCode"=>"K10019404",
+//                "currencyCode"=>"KES",
+//                "amountFC"=>100000.00,
+//                "partyRefNo"=>"NHIF PORTAL",
+////                "eventCode"=>"064 BODILY INJURY",
+//                "eventCode"=>"INJURY",
+//                "lossDescription1"=>"accident",
+//                "prodCode"=>"6001",
+//                "assuredCode"=>"6001",
+//                "riskID"=>"1",
+////                "status"=>"done",
+//            ];
+
+
+            $utility = new Utility();
+
+            $saveNhifClaim=$utility->getData($data,'/api/v1/b2b/general/claim/insert-claim', 'POST' );
             $nhifClaimID = ClaimMock::insertGetId([
                 "claimNo"=>$newClaim,
                 "policyNo"=>$request->policyType,
@@ -265,13 +306,22 @@ class NHIFController extends Controller
             $email_sent=InfobipEmailHelper::sendEmail($message);
 
             if ($nhifClaimID && $documents && $email_sent->messages[0]->status->groupId==1){
-                $response = array(
-                    "STATUS_CODE" => Config::SUCCESS_CODE,
-                    "STATUS_MESSAGE" => "NHIF claim Saved successfully"
-                );
+
+                if ($saveNhifClaim->status == 'success') {
+                    $response = array(
+                        "STATUS_CODE" => Config::SUCCESS_CODE,
+                        "STATUS_MESSAGE" => "NHIF claim Saved successfully"
+                    );
+                }else{
+                    $response = array(
+                        "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                        "STATUS_MESSAGE" => "There was a problem saving the data"
+                    );
+                }
             }
             else
             {
+                dd('error');
 
                 $response = array(
                     "STATUS_CODE" => Config::SUCCESS_CODE,
