@@ -49,7 +49,7 @@ class HomeController extends Controller
         {
             $view = "NHIF.index";
 
-        }else if(auth::user()->hasRole(Config::$ROLES['CUSTOMER-SERVICE'])|| auth()->user()->userTypeID==Config::$USER_TYPES["HOME FIBER CUSTOMER"]["ID"]){
+        }else if(auth::user()->hasRole(Config::$ROLES['CUSTOMER-SERVICE'])&& auth()->user()->userTypeID==Config::$USER_TYPES["HOME FIBER CUSTOMER"]["ID"]){
             $view='layouts.home-fibre.master';
         }else
         {
