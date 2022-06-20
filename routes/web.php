@@ -336,6 +336,10 @@ $router->group(['prefix' => 'safaricom-home-fibre'], function($router)
     $router->post('/fetch-customer-payments', 'homeFibre\SafaricomHomeFibreController@fetchCustomerPayments');
     $router->post('/fetch-policy-details', 'homeFibre\SafaricomHomeFibreController@fetchPolicyDetails');
     $router->post('/sendPolicyDocument', 'homeFibre\SafaricomHomeFibreController@sendPolicyDocument');
+    //customer
+    $router->post('/fetch-portfolio', 'homeFibre\SafaricomHomeFibreController@fetchPortfolio');
+    $router->post('/fetch-cpayments', 'homeFibre\SafaricomHomeFibreController@fetchCPayments');
+    $router->post('/fetch-myClaims', 'homeFibre\SafaricomHomeFibreController@fetchMyClaims');
 });
 
 //Travel APIs
