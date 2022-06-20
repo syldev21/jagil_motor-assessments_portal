@@ -130,9 +130,17 @@ class NHIFController extends Controller
         if ($request->policyType == Config::POLICY_TYPES["KENYA_POLICE_AND_KENYA_PRISONS"]["ID"]){
             $messageClaim = Config::POLICY_TYPES["KENYA_POLICE_AND_KENYA_PRISONS"]["TITLE"];
             $assuredCode = 6001;
+            $sectionCode=600101;
+            $coverCode=3601;
+            $estCode=6000012;
+            $lossCode="COL-3001";
         }else{
             $messageClaim = Config::POLICY_TYPES["CIVIL_SERVANTS_AND_NYS"]["TITLE"];
             $assuredCode = 5020;
+            $sectionCode = 502001;
+            $coverCode=3588;
+            $estCode=1000001;
+            $lossCode="NOL-3004";
         }
         $emMessageClaim= "<b>"."<i>".$messageClaim."</i>"."</b>";
 
@@ -193,26 +201,25 @@ class NHIFController extends Controller
             );
         }else{
 
-//            dd($rea);
-            $dateOfInjuryPremia=explode("-", explode(" ", $dateOfInjury)[0]);
-            $dateReceivedPremia=explode("-", explode(" ", $dateReceived)[0]);
-            $daOfInjuryPremia=$dateOfInjuryPremia[2]."/".$dateOfInjuryPremia[1]."/".$dateOfInjuryPremia[0];
-            $daReceivedPremia=$dateReceivedPremia[2]."/".$dateReceivedPremia[1]."/".$dateReceivedPremia[0];
-//            dump($daOfInjuryPremia);
-//            dd($daReceivedPremia);
+            $daOfInjuryPremia=Carbon::parse($request->dateOfInjury)->format('d/m/Y H:i:s');
+            $daReceivedPremia=Carbon::parse($request->dateReceived)->format('d/m/Y H:i:s');
+            $daOfInjuryP = implode("/", explode("/", explode(" ", $daOfInjuryPremia)[0]))." ".implode("/", explode("/", explode(" ", $daOfInjuryPremia)[1]));
+            $daReceivedP = implode("/", explode("/", explode(" ", $daReceivedPremia)[0]))." ".implode("/", explode("/", explode(" ", $daReceivedPremia)[1]));
+
+
             $data = [
                 "policyNo"=>$request->policyType,
-                "dateOfInjury"=>$daOfInjuryPremia,
-                "dateReceived"=>$daReceivedPremia,
-                "lossCode"=>"COL-300",
+                "dateOfInjury"=>$daOfInjuryP,
+                "dateReceived"=>$daReceivedP,
+                "lossCode"=>$lossCode,
                 "causeOfLoss"=>$causeOfLoss,
 //                "causeOfLoss"=>"Accidenatal Death Or Bodily Injury",
                 "lossDescription"=>$request->lossDescription,
-                "sectionCode"=> "600101",
+                "sectionCode"=> $sectionCode,
                 "policyNo1"=>$request->policyType,
-                "coverCode"=>"3601",
-                "ceDate"=>$daReceivedPremia,
-                "estCode"=>"6000012",
+                "coverCode"=>$coverCode,
+                "ceDate"=>$daReceivedP,
+                "estCode"=>$estCode,
                 "custCode"=>"K10019404",
                 "currencyCode"=>"KES",
                 "amountFC"=>100000,
@@ -221,37 +228,9 @@ class NHIFController extends Controller
                 "eventCode"=>"064",
                 "lossDescription1"=>$request->lossDescription,
                 "prodCode"=>$assuredCode,
-                "assuredCode"=>$assuredCode,
+                "assuredCode"=>"K10019404",
                 "riskID"=>1
-//                "status"=>"",
             ];
-
-
-//            $data = [
-//                "policyNo"=>"P/101/6001/2021/000028",
-//                "dateOfInjury"=>"2022-03-03",
-//                "dateReceived"=>"2022-03-11",
-//                "lossCode"=>"COL-300",
-//                "causeOfLoss"=>"Injury",
-////                "causeOfLoss"=>"Accidenatal Death Or Bodily Injury",
-//                "lossDescription"=>"accident",
-//                "sectionCode"=> "600101",
-//                "policyNo1"=>"P/101/6001/2021/000028",
-//                "coverCode"=>"3601",
-//                "ceDate"=>"2022-03-11",
-//                "estCode"=>"6000012",
-//                "custCode"=>"K10019404",
-//                "currencyCode"=>"KES",
-//                "amountFC"=>100000.00,
-//                "partyRefNo"=>"NHIF PORTAL",
-////                "eventCode"=>"064 BODILY INJURY",
-//                "eventCode"=>"INJURY",
-//                "lossDescription1"=>"accident",
-//                "prodCode"=>"6001",
-//                "assuredCode"=>"6001",
-//                "riskID"=>"1",
-////                "status"=>"done",
-//            ];
 
 
             $utility = new Utility();
