@@ -28,21 +28,27 @@
         </li>
         @if($user->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
             <li class="">
-                <a href="#" data-id="" class="sidenav-link fetch-customers">
+                <a href="#" data-id="" class="sidenav-link fetch-portfolio">
                     <i class="material-icons">apps</i>
                     <span data-i18n="Chartist">My Portfolio</span>
                 </a>
             </li>
             <li class="">
-                <a href="#" data-id="" class="sidenav-link fetch-payments">
+                <a href="#" data-id="" class="sidenav-link fetch-cpayments">
                     <i class="material-icons">attach_money</i>
                     <span data-i18n="Chartist">Payments</span>
                 </a>
             </li>
             <li class="">
-                <a href="#" data-id="" class="sidenav-link">
+                <a href="#" data-id="" class="sidenav-link fetch-CClaims">
                     <i class="material-icons">assignment_returned</i>
                     <span data-i18n="Chartist">Claims</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="#" data-id="" class="sidenav-link fetch-myClaims">
+                    <i class="material-icons">assignment_returned</i>
+                    <span data-i18n="Chartist"> My Claims</span>
                 </a>
             </li>
         @else
