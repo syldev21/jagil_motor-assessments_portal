@@ -49,17 +49,8 @@ class HomeController extends Controller
         {
             $view = "NHIF.index";
 
-        }else if($user->user()->userTypeID==Config::$USER_TYPES["HOME FIBER CUSTOMER"]["ID"]){
-//            $data = array();
-//            $response = $this->utility->getData($data, '/api/v1/b2b/general/home-insurance/summary', 'POST');
-//            $claim_data = json_decode($response->getBody()->getContents());
-//            if ($claim_data->status == 'success') {
-//                $summary = json_decode(json_encode($claim_data->data), true);
-//            } else {
-//                $summary = [];
-//            }
-//            return view('layouts.home-fibre-customer.master', ['summary' => $summary]);
-            return view('layouts.home-fibre-customer.master');
+        }else if(auth::user()->hasRole(Config::$ROLES['CUSTOMER-SERVICE'])&& auth()->user()->userTypeID==Config::$USER_TYPES["HOME FIBER CUSTOMER"]["ID"]){
+            $view='layouts.home-fibre.master';
         }else
         {
             $view = "dashboard.main";

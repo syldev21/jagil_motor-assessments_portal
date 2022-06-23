@@ -32,8 +32,8 @@ class Utility extends Model
         $this->client_secret = "QBZTwdE3y7Pvqwf5wPp5FQeCp9MZmiMWhG6QXlJO";
         $this->api_username = "homeinsurance-report@jubileekenya.com";
         $this->api_password = "GX=N2`B9[Vm&f27*";
-        $this->api_endpoint = "https://digitalapps.jubileekenya.com";
-//        $this->api_endpoint = "http://127.0.0.1:8000";
+//        $this->api_endpoint = "https://digitalapps.jubileekenya.com";
+        $this->api_endpoint = "http://127.0.0.1:8000";
     }
 
     public function createToken()
