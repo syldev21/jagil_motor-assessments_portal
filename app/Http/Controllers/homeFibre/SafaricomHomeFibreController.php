@@ -46,6 +46,7 @@ class SafaricomHomeFibreController extends Controller
         } else {
             $customers = [];
         }
+        $this->fetchCPayments($customers);
         return view('safaricom-home-fibre.customers', ['customers' => $customers]);
     }
 
@@ -142,7 +143,8 @@ class SafaricomHomeFibreController extends Controller
     public function fetchPortfolio(){
         return view("safaricom-home-fibre.customer.portfolio");
     }
-    public function fetchCPayments(){
+    public function fetchCPayments($customers){
+        dd($customers);
         return view("safaricom-home-fibre.customer.payments");
     }
     public function fetchMyClaims(){
