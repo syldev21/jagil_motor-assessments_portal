@@ -45,25 +45,24 @@
                     <span data-i18n="Chartist">Claims</span>
                 </a>
             </li>
-            <li class="bold hidden">
+            <li class="bold">
                 <a class="collapsible-header sidenav-link" href="javascript:void(0)">
-                    <i class="material-icons">assignment_returned</i>
+                    <i class="material-icons">assessment</i>
                     <span class="menu-title" data-i18n="Chart">Claims</span>
                 </a>
                 <div class="collapsible-body">
                     <ul class="collapsible collapsible-sub" data-collapsible="accordion">
 
                         <li class="">
-                            <a href="#" data-id="" class="sidenav-link fetch-cclaims">
-                                <i class="material-icons">assignment_returned</i>
-                                <span data-i18n="Chartist">My Claims</span>
+                            <a href="#" data-id="" class="sidenav-link fetch-assessments">
+                                <i class="material-icons">assignment_ind</i>
+                                <span data-i18n="ChartJS">My Claims</span>
                             </a>
                         </li>
-
                         <li class="">
-                            <a href="#" data-id="" class="sidenav-link fetch-cclaims">
-                                <i class="material-icons">assignment_returned</i>
-                                <span data-i18n="Chartist">Launch a Claim</span>
+                            <a href="#" data-id="" class="sidenav-link fetch-assessments">
+                                <i class="material-icons">assignment_ind</i>
+                                <span data-i18n="ChartJS">Launch a Claim</span>
                             </a>
                         </li>
                     </ul>
