@@ -39,7 +39,7 @@
                     <span data-i18n="Chartist">Payments</span>
                 </a>
             </li>
-            <li class="">
+            <li class="" hidden>
                 <a href="#" data-id="" class="sidenav-link" id="fetchCClaims">
                     <i class="material-icons">assignment_returned</i>
                     <span data-i18n="Chartist">Claims</span>
