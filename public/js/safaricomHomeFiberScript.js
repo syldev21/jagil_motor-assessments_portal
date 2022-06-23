@@ -9,7 +9,7 @@ $(document).ready(function () {
     $('.datepicker').datepicker();
     $('.materialboxed').materialbox();
 
-    $("body").on('click','.fetch-cclaims',function (){
+    $("body").on('click','#fetchCClaims',function (){
 
         $("#loader-wrapper").removeClass('hideLoader');
         $.ajaxSetup({
@@ -41,7 +41,7 @@ $(document).ready(function () {
 
         });
     });
-    $("body").on('click','.fetch-portfolio',function (){
+    $("body").on('click','#fetchPortfolio',function (){
 
         $("#loader-wrapper").removeClass('hideLoader');
         $.ajaxSetup({
@@ -137,7 +137,7 @@ $(document).ready(function () {
             }
         });
     });
-    $("body").on('click','.fetch-cpayments',function (){
+    $("body").on('click','#fetchCPayments',function (){
         $("#loader-wrapper").removeClass('hideLoader');
         // var ci_code = $(this).data("id");
         $.ajaxSetup({
