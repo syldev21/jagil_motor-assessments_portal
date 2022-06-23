@@ -26,7 +26,7 @@
             <a class="navigation-header-text">Quick Operations</a>
             <i class="navigation-header-icon material-icons">more_horiz</i>
         </li>
-        @if($user->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
+        @if(auth::user()->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
             <li class="">
                 <a href="#" data-id="" class="sidenav-link" id="fetchPortfolio">
                     <i class="material-icons">apps</i>
