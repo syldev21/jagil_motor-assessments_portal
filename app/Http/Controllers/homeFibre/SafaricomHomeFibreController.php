@@ -139,4 +139,13 @@ class SafaricomHomeFibreController extends Controller
         }
         return json_encode($response);
     }
+    public function fetchPortfolio(){
+        return view("safaricom-home-fibre.customer.portfolio");
+    }
+    public function fetchCPayments(){
+        return view("safaricom-home-fibre.customer.payments");
+    }
+    public function fetchMyClaims(){
+        return view("safaricom-home-fibre.customer.claims");
+    }
 }
