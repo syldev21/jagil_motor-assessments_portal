@@ -45,7 +45,7 @@
                     <span data-i18n="Chartist">Claims</span>
                 </a>
             </li>
-            <li class="bold">
+            <li class="bold hiddendiv">
                 <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                     <i class="material-icons">assignment_returned</i>
                     <span class="menu-title" data-i18n="Chart">Claims</span>
