@@ -30,7 +30,7 @@
                     <p>P.O. Box 6685 - 00100 GPO, Nairobi, Kenya</p>
                     <p>Telephone: +254 20 328 1000</p>
                     <p>Call Centre: +254 709 949 000</p>
-                    <p>Talk2usgeneral@jubileekenya.com</p>
+                    <p>Talk2us@allianz.com</p>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                     <p>P.O. Box 6685 - 00100 GPO, Nairobi, Kenya</p>
                     <p>Telephone: +254 20 328 1000</p>
                     <p>Call Centre: +254 709 949 000</p>
-                    <p>Talk2usgeneral@jubileekenya.com</p>
+                    <p>Talk2us@allianz.com</p>
                 </div>
             </div>
         </div>
