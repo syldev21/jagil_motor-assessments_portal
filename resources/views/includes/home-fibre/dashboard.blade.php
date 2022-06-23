@@ -144,11 +144,11 @@
                         <span data-i18n="Chartist">KRA PIN</span>
                     </u></p>
                 <p><b>
-                        @if($user->id == 1083){
+                        @if($user->id == 1083)
                         A009278415V
-                        @else{
+                        @else
                         A081974851W
-                        }
+
                         @endif
                     </b></p>
             </center>
