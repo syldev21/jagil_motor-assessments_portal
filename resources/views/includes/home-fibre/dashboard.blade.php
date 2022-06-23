@@ -99,6 +99,14 @@
                         <i class="material-icons">local_post_office</i>
                         <span data-i18n="Chartist">Postal Address</span>
                 </u></p>
+                <p><b>
+                        @if($user->id == 1083){
+                        P.O. Box 6685 - 00100 GPO, Nairobi, Kenya
+                        @else{
+                        P.O. Box 20585 - 00810 Buruburu, Nairobi, Kenya
+                            }
+                        @endif
+                    </b></p>
 
             </center>
         </div>
@@ -135,7 +143,14 @@
                         <i class="material-icons">fiber_pin</i>
                         <span data-i18n="Chartist">KRA PIN</span>
                     </u></p>
-                <p><b></b></p>
+                <p><b>
+                        @if($user->id == 1083){
+                        A009278415V
+                        @else{
+                        A081974851W
+                        }
+                        @endif
+                    </b></p>
             </center>
         </div>
     </div>
