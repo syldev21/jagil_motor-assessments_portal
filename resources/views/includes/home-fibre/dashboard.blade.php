@@ -3,7 +3,7 @@
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
 </div>
-@if(auth::$user()->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
+@if(auth::user()->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
 
     <div class="row">
         <div class="col s4" style="position: relative; left: 970px; top: 10px">
