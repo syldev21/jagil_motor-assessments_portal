@@ -82,7 +82,7 @@ class NHIF_SEND_MAIL extends Command
         if (!empty($claim_data)){
             foreach ($claim_data as $claim){
                 $claim_number = $claim->clm_no;
-                $policy_number = $claim->clm_pol_no;
+                $id = $claim->id;
                 $emails = Config::CLAIM_NOTIFICATION_CONTACTS["EMAIL_TO"]["EMAIL"];
                 $ccEmails = Config::CLAIM_NOTIFICATION_CONTACTS["CC_EMAIL"]["EMAIL"];
 
@@ -117,41 +117,43 @@ class NHIF_SEND_MAIL extends Command
                     'html' => $msg,
                 ];
                 $email_sent=InfobipEmailHelper::sendEmail($message);
-            }
-            if ($email_sent){
-                dump("sent successfully");
-                $data=$policy_number;
+                if ($email_sent){
+                    dump("sent successfully");
+                    ClaimMock::where("id", "=", $id)->update(["claimNo"=>$claim_number]);
+                    $data=$id;
 
-                $curl = curl_init();
+                    $curl = curl_init();
 
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'https://digitalappsuat.jubileekenya.com/api/v1/b2b/general/claim/p11-update-flag',
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS => array('policy_number' => $policy_number),
-                    CURLOPT_HTTPHEADER => array(
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://digitalappsuat.jubileekenya.com/api/v1/b2b/general/claim/p11-update-flag',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                        CURLOPT_POSTFIELDS => array('id' => $data),
+                        CURLOPT_HTTPHEADER => array(
 //                        'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImNiYmVjYjUyYWIzZWVhYTUwMWJhYzQyNWE2ZjE5ODI5MGYxZDZjMDJiZWUwZDhiMTdiMDRjOWQ4NDYxYTViZDkyNDhjYTU0Nzc3NDFiZTRhIn0.eyJhdWQiOiIyIiwianRpIjoiY2JiZWNiNTJhYjNlZWFhNTAxYmFjNDI1YTZmMTk4MjkwZjFkNmMwMmJlZTBkOGIxN2IwNGM5ZDg0NjFhNWJkOTI0OGNhNTQ3Nzc0MWJlNGEiLCJpYXQiOjE2NTYzMTgzNTAsIm5iZiI6MTY1NjMxODM1MCwiZXhwIjoxNjU2MzIxOTUwLCJzdWIiOiI4MjU0Iiwic2NvcGVzIjpbXX0.FllJvhr_bq9fK_Q_dXD9OHNmK7e5ZFXUqWlEb4tiIlJAdw9KnKjCMOskbTGySDTuAEy_gPIhRKXXdG5iDdjCHiTSwLOS1U9BK4IjbGTm0lGkez9xDTNL8h4YnTWSlSUU2FHJ5Z8vctnSuHpyBfYBUs-AgbZocaZDXBH7Pe67RURHoIkG_cBicjA1z_nUKU3zs5tbv_IrXqnn3Z8N7pAEjBLQ9w4eIL0ZrbdOsVDH-MiapE2op3C90Tm8V9pMWuYgWcIGoMoZmvQCLx6iDsbOjt3kvDxVmKz42Uh12GHknhfnInYtmM9CqAShaOdKRm7OCuybjSDS_iFeeB4fcCSLxkMYSQy7aOVwwNNDvVZsxjAA-zFiKLhsZRccm8xesGfjP6sTp78ialL8nGb-rqOqj1M-CEdJzns6N5jrqvGlhHf2RK37xLB5nuENh-pP_rVb27dhGI852Foq51pGJVM9r4gYQkaWIzfcQWZ0e4IB2hDTtViyeSlX6Mj4fZljdsKs9aqpw_4MmyPKoG0TGqUxmFSFveOE4WbWv4IO8aIgMyOj8NPYmoMnI2O9l5NphV8Apqq2GlceMH2mFKRcIRmSykPfKenhlWFgJ-L6KQfU3wbiKSMOOT7PsttmZ403sC04mWE6JwmybKSkTN-BGirZHPWoGYyTvfx-o0AAbStcIWM',
-                    'Authorization: Bearer'. $access_token,
-                        'Cookie: XSRF-TOKEN=eyJpdiI6InVOdGpKMldqdkNGMnJHS3FzWGZvUkE9PSIsInZhbHVlIjoiMDB2MThSSXpZV081cE05OTNRSk1ubE9rSEU3WEh0dXJFbkc0Znd1XC9tVERSa2ZjTVpXQVwvRDh5a05nTUZFajBVZjJVXC9QUjdhYjNlcXZYTmpqQnVSZkE9PSIsIm1hYyI6IjU1NjJjZmIwYmU1YjgyZTc1ODc3NDVjODAxYTFlNThiODhiMDVjMTdkN2M0MWY3YWQ5MTdmMDk0ZTY1YWRjNTMifQ%3D%3D; laravel_session=eyJpdiI6IlhlcmZzTENKV1BkVGVlREpFRzZncUE9PSIsInZhbHVlIjoiMXUrTURzbnRMeEFsdjdCKytadzRpbE5cL1NGbmFwaG1XdmpyZFhmYVpFM0NKWldHOThoaFwvdW82OFJ3dVNBU3NIbmRQckt4RnR5YllsUVV4UzlsekpFdz09IiwibWFjIjoiZjM1YWM2MzAzMDNmOTJjYzRiMTc3Y2UyM2U3MjQ1OWZmNzNkNmYzNjkxMGU3M2FkZDEzZTBmM2VkYzE3ODBkYiJ9'
-                    ),
-                ));
+                            'Authorization: Bearer '. $access_token,
+                            'Cookie: XSRF-TOKEN=eyJpdiI6InVOdGpKMldqdkNGMnJHS3FzWGZvUkE9PSIsInZhbHVlIjoiMDB2MThSSXpZV081cE05OTNRSk1ubE9rSEU3WEh0dXJFbkc0Znd1XC9tVERSa2ZjTVpXQVwvRDh5a05nTUZFajBVZjJVXC9QUjdhYjNlcXZYTmpqQnVSZkE9PSIsIm1hYyI6IjU1NjJjZmIwYmU1YjgyZTc1ODc3NDVjODAxYTFlNThiODhiMDVjMTdkN2M0MWY3YWQ5MTdmMDk0ZTY1YWRjNTMifQ%3D%3D; laravel_session=eyJpdiI6IlhlcmZzTENKV1BkVGVlREpFRzZncUE9PSIsInZhbHVlIjoiMXUrTURzbnRMeEFsdjdCKytadzRpbE5cL1NGbmFwaG1XdmpyZFhmYVpFM0NKWldHOThoaFwvdW82OFJ3dVNBU3NIbmRQckt4RnR5YllsUVV4UzlsekpFdz09IiwibWFjIjoiZjM1YWM2MzAzMDNmOTJjYzRiMTc3Y2UyM2U3MjQ1OWZmNzNkNmYzNjkxMGU3M2FkZDEzZTBmM2VkYzE3ODBkYiJ9'
+                        ),
+                    ));
 
-                $response = curl_exec($curl);
+                    $response = curl_exec($curl);
 
-                curl_close($curl);
-                echo $response;
+                    curl_close($curl);
+                    echo $response;
 
 
-            }else{
-                dump("email not sent. you will try again");
+                }else{
+                    dump("email not sent. you will try again");
+                }
             }
+
         }else{
-            dump("no new email is created");
+            dump("no new claim is created");
         }
 
     }
