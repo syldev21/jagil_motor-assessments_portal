@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Constraint\Count;
 use function GuzzleHttp\Promise\all;
 use App\Utility;
+use Illuminate\Support\Facades\Http;
 
 
 class NHIFController extends Controller
@@ -122,10 +123,8 @@ class NHIFController extends Controller
             $causeOfLoss="Death";
         }
 
-        $emails = array(Config::CLAIM_NOTIFICATION_CONTACTS["HARRIET"]["EMAIL"],Config::CLAIM_NOTIFICATION_CONTACTS["LINUS"]["EMAIL"],Config::CLAIM_NOTIFICATION_CONTACTS["NABWIRE"]["EMAIL"]);
-        $cc1=User::where(["id"=>1059])->first()->email;
-        $cc2=User::where(["id"=>1049])->first()->email;
-        $ccEmails=array("Sylvester.Ouma@jubileekenya.com", "SylvesterOuma282@gmail.com");
+        $emails = Config::CLAIM_NOTIFICATION_CONTACTS["EMAIL_TO"]["EMAIL"];
+        $ccEmails = Config::CLAIM_NOTIFICATION_CONTACTS["CC_EMAIL"]["EMAIL"];
         $claim_number=$newClaim;
         if ($request->policyType == Config::POLICY_TYPES["KENYA_POLICE_AND_KENYA_PRISONS"]["ID"]){
             $messageClaim = Config::POLICY_TYPES["KENYA_POLICE_AND_KENYA_PRISONS"]["TITLE"];
@@ -169,7 +168,7 @@ class NHIFController extends Controller
         $message = [
             'subject' => $claim_number.'_'.$this->functions->curlDate(),
             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-            'to' => $emails,
+            'to' => 'sylvesterouma282@gmail.com',
             'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
             'cc' => $ccEmails,
             'html' => $msg,
@@ -207,37 +206,10 @@ class NHIFController extends Controller
             $daReceivedP = implode("/", explode("/", explode(" ", $daReceivedPremia)[0]))." ".implode("/", explode("/", explode(" ", $daReceivedPremia)[1]));
 
 
-            $data = [
-                "policyNo"=>$request->policyType,
-                "dateOfInjury"=>$daOfInjuryP,
-                "dateReceived"=>$daReceivedP,
-                "lossCode"=>$lossCode,
-                "causeOfLoss"=>$causeOfLoss,
-//                "causeOfLoss"=>"Accidenatal Death Or Bodily Injury",
-                "lossDescription"=>$request->lossDescription,
-                "sectionCode"=> $sectionCode,
-                "policyNo1"=>$request->policyType,
-                "coverCode"=>$coverCode,
-                "ceDate"=>$daReceivedP,
-                "estCode"=>$estCode,
-                "custCode"=>"K10019404",
-                "currencyCode"=>"KES",
-                "amountFC"=>100000,
-                "partyRefNo"=>"NHIF PORTAL",
-//                "eventCode"=>"064 BODILY INJURY",
-                "eventCode"=>"064",
-                "lossDescription1"=>$request->lossDescription,
-                "prodCode"=>$assuredCode,
-                "assuredCode"=>"K10019404",
-                "riskID"=>1
-            ];
 
 
-            $utility = new Utility();
-
-            $saveNhifClaim=$utility->getData($data,'/api/v1/b2b/general/claim/insert-claim', 'POST' );
             $nhifClaimID = ClaimMock::insertGetId([
-                "claimNo"=>$newClaim,
+                "claimNo"=>"",
                 "policyNo"=>$request->policyType,
                 "agent"=>$newAgent,
                 "insured"=>$insured,
@@ -262,6 +234,7 @@ class NHIFController extends Controller
                 "dateModified"=>Carbon::now(),
                 "dateCreated"=>Carbon::now()
             ]);
+
              $file = $request->file('file');
 //            $filename = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
@@ -284,9 +257,41 @@ class NHIFController extends Controller
 
             $email_sent=InfobipEmailHelper::sendEmail($message);
 
-            if ($nhifClaimID && $documents && $email_sent->messages[0]->status->groupId==1){
+//            if ($nhifClaimID && $documents && $email_sent->messages[0]->status->groupId==1){
+            $data = [
+                "policyNo"=>$request->policyType,
+                "dateOfInjury"=>$daOfInjuryP,
+                "dateReceived"=>$daReceivedP,
+                "lossCode"=>$lossCode,
+                "causeOfLoss"=>$causeOfLoss,
+//                "causeOfLoss"=>"Accidenatal Death Or Bodily Injury",
+                "lossDescription"=>$request->lossDescription,
+                "sectionCode"=> $sectionCode,
+                "policyNo1"=>$request->policyType,
+                "coverCode"=>$coverCode,
+                "ceDate"=>$daReceivedP,
+                "estCode"=>$estCode,
+                "custCode"=>"K10019404",
+                "currencyCode"=>"KES",
+                "amountFC"=>100000,
+                "partyRefNo"=>"NHIF PORTAL",
+//                "eventCode"=>"064 BODILY INJURY",
+                "eventCode"=>"064",
+                "lossDescription1"=>$request->lossDescription,
+                "prodCode"=>$assuredCode,
+                "assuredCode"=>"K10019404",
+                "riskID"=>1,
+                "id"=>$nhifClaimID
+            ];
 
-                if ($saveNhifClaim->status == 'success') {
+//        dump($causeOfLoss);
+            $utility = new Utility();
+
+            $saveNhifClaim=$utility->getData($data,'/api/v1/b2b/general/claim/insert-claim', 'POST' );
+            if ($nhifClaimID && $documents){
+
+
+                if ($saveNhifClaim) {
                     $response = array(
                         "STATUS_CODE" => Config::SUCCESS_CODE,
                         "STATUS_MESSAGE" => "NHIF claim Saved successfully"
