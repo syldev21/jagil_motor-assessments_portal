@@ -255,7 +255,7 @@ class NHIFController extends Controller
                 "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
             ]);
 
-            $email_sent=InfobipEmailHelper::sendEmail($message);
+//            $email_sent=InfobipEmailHelper::sendEmail($message);
 
 //            if ($nhifClaimID && $documents && $email_sent->messages[0]->status->groupId==1){
             $data = [
