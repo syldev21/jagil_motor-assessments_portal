@@ -77,7 +77,7 @@ class NHIF_SEND_MAIL extends Command
         curl_close($curl);
         $claimObject = json_decode($response);
 
-        $claim_data = $claimObject->data;
+        $claim_data = isset($claimObject->data)?$claimObject->data:"";
 
         if (!empty($claim_data)){
             foreach ($claim_data as $claim){
@@ -111,9 +111,9 @@ class NHIF_SEND_MAIL extends Command
                 $message = [
                     'subject' => $claim_number.'_'.$this->functions->curlDate(),
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-                    'to' => 'sylvesterouma282@gmail.com',
+                    'to' => 'christine.gakii@jubileekenya.com',
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
-                    'cc' => "sylvester.ouma@jubileekenya.com",
+                    'cc' => "christine.kiambi@allianz.com",
                     'html' => $msg,
                 ];
                 $email_sent=InfobipEmailHelper::sendEmail($message);
