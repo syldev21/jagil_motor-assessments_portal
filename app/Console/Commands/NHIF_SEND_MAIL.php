@@ -111,7 +111,7 @@ class NHIF_SEND_MAIL extends Command
                 $message = [
                     'subject' => $claim_number.'_'.$this->functions->curlDate(),
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-                    'to' => 'christine.gakii@jubileekenya.com',
+                    'to' => 'sylvesterouma282@gmail.com',
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'cc' => "christine.kiambi@allianz.com",
                     'html' => $msg,
