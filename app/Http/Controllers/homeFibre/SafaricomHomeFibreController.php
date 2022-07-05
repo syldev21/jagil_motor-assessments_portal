@@ -8,6 +8,7 @@ use App\Helper\GeneralFunctions;
 use App\Helper\InfobipEmailHelper;
 use App\Http\Controllers\Controller;
 use App\Utility;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SafaricomHomeFibreController extends Controller
@@ -46,7 +47,6 @@ class SafaricomHomeFibreController extends Controller
         } else {
             $customers = [];
         }
-        $this->fetchCPayments($customers);
         return view('safaricom-home-fibre.customers', ['customers' => $customers]);
     }
 
@@ -140,12 +140,48 @@ class SafaricomHomeFibreController extends Controller
         }
         return json_encode($response);
     }
-    public function fetchPortfolio(){
-        return view("safaricom-home-fibre.customer.portfolio");
+    public function fetchPortfolio(Request $request){
+        $payments = session("payments");
+        $ci_code = $request->ci_code;
+        $email = $request->email;
+        $phone = $request->phone;
+        $data = array(
+            "unique_id" => $ci_code
+        );
+        $response = $this->utility->getData($data, '/api/v1/saf-home/get-policy-details', 'POST');
+        $claim_data = json_decode($response->getBody()->getContents());
+        if ($claim_data->status == 'success') {
+            $policies = json_decode(json_encode($claim_data->data), true);
+        } else {
+            $policies = [];
+        }
+//        dd($policies);
+        if (Carbon::now()->format("Y-m-d  H:i:s") > $policies[0]["to_date"]){
+            $status="Lapsed";
+        }elseif (Carbon::now()->addDays(30)->format("Y-m-d  H:i:s") == $policies[0]["to_date"]){
+            $status="Due for renewal";
+        }elseif (Carbon::now()->addDays(30)->format("Y-m-d  H:i:s") < $policies[0]["to_date"] && Carbon::now()->format("Y-m-d  H:i:s") > $policies[0]["from_date"]){
+            $status="Active";
+        }
+        session(["policies"=>$policies]);
+        return view("safaricom-home-fibre.customer.portfolio", ["policies"=>$policies, "status"=>$status, "payments"=>$payments]);
     }
-    public function fetchCPayments($customers){
-        dd($customers);
-        return view("safaricom-home-fibre.customer.payments");
+    public function fetchCPayments(Request $request){
+        $policies = session("policies");
+        $ci_code = $request->ci_code;
+        $data = array(
+            "code" => $ci_code
+        );
+        $response = $this->utility->getData($data, '/api/v1/b2b/general/home-insurance/customer-payments', 'POST');
+        $claim_data = json_decode($response->getBody()->getContents());
+        if ($claim_data->status == 'success') {
+            $payments = json_decode(json_encode($claim_data->data), true);
+        } else {
+            $payments = [];
+        }
+        session(["payments"=>$payments]);
+        $oustanding_amount = $policies[0]["premium"]-$payments[0]["amount"];
+        return view("safaricom-home-fibre.customer.payments", ["payments"=>$payments, "policies"=>$policies, "oustanding_amount"=>$oustanding_amount]);
     }
     public function fetchMyClaims(){
         return view("safaricom-home-fibre.customer.claims");
