@@ -113,7 +113,7 @@ class NHIF_SEND_MAIL extends Command
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => 'sylvesterouma282@gmail.com',
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
-                    'cc' => "christine.kiambi@allianz.com",
+                    'cc' => "sylvester.ouma@jubileekenya.com",
                     'html' => $msg,
                 ];
                 $email_sent=InfobipEmailHelper::sendEmail($message);
