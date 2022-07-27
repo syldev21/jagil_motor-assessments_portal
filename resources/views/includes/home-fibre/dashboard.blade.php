@@ -100,11 +100,7 @@
                         <span data-i18n="Chartist">Postal Address</span>
                 </u></p>
                 <p><b>
-                        @if($user->id == 1083)
-                        P.O. Box 6685 - 00100 GPO, Nairobi, Kenya
-                        @else
-                        P.O. Box 20585 - 00810 Buruburu, Nairobi, Kenya
-                        @endif
+                       {{$user->physical_address}}
                     </b></p>
 
             </center>
@@ -117,7 +113,7 @@
             <center>
                 <p><u>
                         <i class="material-icons">contact_mail</i>
-                        <span data-i18n="Chartist">Emails Address</span>
+                        <span data-i18n="Chartist">Email Address</span>
                 </u></p>
 
                 <p><b>{{$user->email}}</b></p>
@@ -143,12 +139,7 @@
                         <span data-i18n="Chartist">KRA PIN</span>
                     </u></p>
                 <p><b>
-                        @if($user->id == 1083)
-                        A009278415V
-                        @else
-                        A081974851W
 
-                        @endif
                     </b></p>
             </center>
         </div>

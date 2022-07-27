@@ -50,60 +50,27 @@
                                         <thead>
                                         <tr>
                                             <th>S/N</th>
-                                            <th>Product Name</th>
+                                            <th>Customer Name</th>
+                                            <th>Customer Code</th>
                                             <th>Policy Number</th>
                                             <th>Policy From Date</th>
                                             <th>Policy To Date</th>
-                                            <th>Cause of Loss</th>
-                                            <th>Sum Insured</th>
-                                            <th>Premium</th>
-                                            <th>Status</th>
-                                            <th>Operations</th>
+                                            <th>Claim Description</th>
+                                            <th>Claim Submission Date</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $claims= array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);?>
+
                                         @foreach($claims as $claim)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
-
-                                                <td>
-
-                                                    <a href="#" class="nhifClaimDetails" data-id="" id=""></a>
-                                                </td>
-
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <!-- Dropdown Trigger -->
-                                                    <a class='dropdown-trigger' href='#'
-                                                       {{--                                                       data-target='{{$loop->iteration}}'--}}
-                                                       {{--                                                       data-activates="{{$loop->iteration}}">--}}
-                                                       data-target=''
-                                                       data-activates="">
-                                                        <i
-                                                            class="Medium material-icons">menu</i><i
-                                                            class="Medium material-icons">expand_more
-                                                        </i>
-                                                    </a>
-
-                                                    <!-- Dropdown Structure -->
-
-                                                    <ul id='' class='dropdown-content'>
-                                                        {{--                                                    <ul id='{{$loop->iteration}}' class='dropdown-content'>--}}
-
-                                                        <li>
-                                                            <a href="#" id="uploadDocumentsForm" data-id="" ><i
-                                                                    class="material-icons">upload</i>Upload Document</a>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-
+                                                <td>{{$policies[0]["assured_name"]}}</td>
+                                                <td>{{$policies[0]["assured_code"]}}</td>
+                                                <td>{{$claim->policyNumber}}</td>
+                                                <td>{{$policies[0]["from_date"]}}</td>
+                                                <td>{{$policies[0]["to_date"]}}</td>
+                                                <td>{{$claim->lossDescription}}</td>
+                                                <td>{{$claim->dateCreated}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>

@@ -49,7 +49,7 @@
                                     <table id="data-table-simple" class="display">
                                         <thead>
                                         <tr>
-                                            <th>S/N</th>
+{{--                                            <th>S/N</th>--}}
                                             <th>Product</th>
                                             <th>Policy Number</th>
                                             <th>Premium</th>
@@ -60,25 +60,20 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $claims= array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);?>
-                                        @foreach($claims as $claim)
+
+
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>
-
-                                                <td>
-
-                                                    <a href="#" class="nhifClaimDetails" data-id="" id=""></a>
-                                                </td>
-
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+{{--                                                <td>{{$loop->iteration}}</td>--}}
+                                                <td>{{$payments[0]["product"]}}</td>
+                                                <td>{{$policies[0]["policy_number"]}}</td>
+                                                <td>{{$policies[0]["premium"]}}</td>
+                                                <td>{{$payments[0]["amount"]}}</td>
+                                                <td>{{$payments[0]["mpesa_code"]}}</td>
+                                                <td>{{$payments[0]["payment_description"]}}</td>
+                                                <td>{{$oustanding_amount}}</td>
 
                                             </tr>
-                                        @endforeach
+
                                         </tbody>
                                     </table>
                                 </div>

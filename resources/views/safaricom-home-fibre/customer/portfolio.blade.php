@@ -49,12 +49,11 @@
                                     <table id="data-table-simple" class="display">
                                         <thead>
                                         <tr>
-                                            <th>S/N</th>
+{{--                                            <th>S/N</th>--}}
                                             <th>Product Name</th>
                                             <th>Policy Number</th>
                                             <th>Policy From Date</th>
                                             <th>Policy To Date</th>
-                                            <th>Cause of Loss</th>
                                             <th>Sum Insured</th>
                                             <th>Premium</th>
                                             <th>Status</th>
@@ -62,23 +61,19 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $claims= array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);?>
-                                        @foreach($claims as $claim)
+
+
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>
+{{--                                                <td>{{$loop->iteration}}</td>--}}
 
-                                                <td>
 
-                                                    <a href="#" class="nhifClaimDetails" data-id="" id=""></a>
-                                                </td>
-
+                                                <td>{{$payments[0]["product"]}}</td>
+                                                <td>{{$policies[0]["policy_number"]}}</td>
+                                                <td>{{$policies[0]["from_date"]}}</td>
+                                                <td>{{$policies[0]["to_date"]}}</td>
                                                 <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{$policies[0]["premium"]}}</td>
+                                                <td>{{$status}}</td>
                                                 <td>
                                                     <!-- Dropdown Trigger -->
                                                     <a class='dropdown-trigger' href='#'
@@ -105,7 +100,6 @@
                                                 </td>
 
                                             </tr>
-                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>

@@ -28,24 +28,18 @@
         </li>
         @if(auth::user()->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
             <li class="">
-                <a href="#" data-id="" class="sidenav-link" id="fetchPortfolio">
+                <a href="#" data-id="{{$user->ci_code}}" data-id2="{{$user->email}}" data-id3="{{$user->MSISDN}}" class="sidenav-link" id="fetchPortfolio">
                     <i class="material-icons">apps</i>
                     <span data-i18n="Chartist">My Portfolio</span>
                 </a>
             </li>
             <li class="">
-                <a href="#" data-id="" class="sidenav-link" id="fetchCPayments">
+                <a href="#" data-id="{{$user->ci_code}}" class="sidenav-link" id="fetchCPayments">
                     <i class="material-icons">attach_money</i>
                     <span data-i18n="Chartist">Payments</span>
                 </a>
             </li>
-            <li class="" hidden>
-                <a href="#" data-id="" class="sidenav-link" id="fetchCClaims">
-                    <i class="material-icons">assignment_returned</i>
-                    <span data-i18n="Chartist">Claims</span>
-                </a>
-            </li>
-            <li class="bold">
+            <li class="bold ">
                 <a class="collapsible-header sidenav-link" href="javascript:void(0)">
                     <i class="material-icons">assessment</i>
                     <span class="menu-title" data-i18n="Chart">Claims</span>
@@ -54,21 +48,20 @@
                     <ul class="collapsible collapsible-sub" data-collapsible="accordion">
 
                         <li class="">
-                            <a href="#" data-id="" class="sidenav-link fetch-assessments">
-                                <i class="material-icons">assignment_ind</i>
+                            <a href="#" data-id="" class="sidenav-link my_claims" id="fetchCClaims">
+                                <i class="material-icons">article</i>
                                 <span data-i18n="ChartJS">My Claims</span>
                             </a>
                         </li>
                         <li class="">
-                            <a href="#" data-id="" class="sidenav-link fetch-assessments">
-                                <i class="material-icons">assignment_ind</i>
+                            <a href="#" data-id="" class="sidenav-link launch_claim" id="launch_claim_form">
+                                <i class="material-icons">open_in_new</i>
                                 <span data-i18n="ChartJS">Launch a Claim</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
-
         @else
         <li class="">
             <a href="#" data-id="" class="sidenav-link fetch-customers">
