@@ -11,33 +11,12 @@
 |
 */
 
-Route::get("/test", function (){
-    $assessmentID = "4445";
-    $email = "Sylvester.ouma@jubileekenya.com";
-//    $message="You claim has been assessed and approved, pending payment";
-//
-//    $priceChange = App\PriceChange::where('assessmentID', $assessmentID)->first();
-//    $aproved = isset($priceChange) ? $priceChange : 'false';
-//
-//    $assessment = App\Assessment::where(["id" => $assessmentID])->with("claim")->first();
-//    $assessmentItems = App\AssessmentItem::where(["assessmentID" => $assessmentID])->with('part')->get();
-//    $jobDetails = App\JobDetail::where(["assessmentID" => $assessmentID])->get();
-//    $customerCode = isset($assessment['claim']['customerCode']) ? $assessment['claim']['customerCode'] : 0;
-//    $insured = App\CustomerMaster::where(["customerCode" => $customerCode])->first();
-//    $documents = App\Document::where(["assessmentID" => $assessmentID])->get();
-//    $adjuster = App\User::where(['id' => $assessment->claim->createdBy])->first();
-//    $assessor = App\User::where(['id' => $assessment->assessedBy])->first();
-//    $carDetail = App\CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-//    $pdf = App::make('dompdf.wrapper');
-//    $pdf->loadView('adjuster.subrogation-report', compact('assessment', "assessmentItems", "jobDetails", "insured", 'documents', 'adjuster', 'assessor', 'aproved', 'carDetail', 'priceChange'));
-////    return view('adjuster.send-subrogation-report', compact('assessment', "assessmentItems", "jobDetails", "insured", 'documents', 'adjuster', 'assessor', 'aproved', 'carDetail', 'priceChange'));
+use Illuminate\Support\Facades\App;
 
-    $message="Your claim has been assessed and approved, pending payment";
-    $assessment = App\Assessment::where(["id"=>$assessmentID])->first();
-    $claim = App\Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
-    $company = App\Company::where(["id"=>$assessment->companyID])->first();
+Route::get("/test", function (){
+    ;
     $pdf = App::make('dompdf.wrapper');
-    $pdf->loadView('adjuster.send-subrogation-report',compact('assessment', 'claim', 'company'));
+    $pdf->loadView('safaricom-home-fibre.customer.completed-claim-form');
     return $pdf->download();
 });
 
@@ -340,6 +319,12 @@ $router->group(['prefix' => 'safaricom-home-fibre'], function($router)
     $router->post('/fetch-portfolio', 'homeFibre\SafaricomHomeFibreController@fetchPortfolio');
     $router->post('/fetch-cpayments', 'homeFibre\SafaricomHomeFibreController@fetchCPayments');
     $router->post('/fetch-cclaims', 'homeFibre\SafaricomHomeFibreController@fetchMyClaims');
+    $router->post('/launch-claim-form', 'homeFibre\SafaricomHomeFibreController@lauchClaimForm');
+//    $router->post('/validate-page-one', 'homeFibre\SafaricomHomeFibreController@validatePageOne');
+    $router->get('/claim-form', 'homeFibre\SafaricomHomeFibreController@validatePageOne');
+    $router->post('/previous-page1', 'homeFibre\SafaricomHomeFibreController@previousPageOne');
+    $router->post('/download-claim-form', 'homeFibre\SafaricomHomeFibreController@downloadClaimForm');
+    $router->post('/save-safaricom-claim', 'homeFibre\SafaricomHomeFibreController@saveSafaricomClaim');
 });
 
 //Travel APIs

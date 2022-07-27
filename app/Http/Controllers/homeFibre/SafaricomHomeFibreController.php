@@ -7,9 +7,19 @@ use App\Helper\CustomLogger;
 use App\Helper\GeneralFunctions;
 use App\Helper\InfobipEmailHelper;
 use App\Http\Controllers\Controller;
+use App\SafaricomClaim;
+use App\SafaricomClaimDocument;
+use App\SafClaimDocument;
+use App\User;
 use App\Utility;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+use mysql_xdevapi\Exception;
+use Illuminate\Support\Facades\File;
 
 class SafaricomHomeFibreController extends Controller
 {
@@ -60,7 +70,8 @@ class SafaricomHomeFibreController extends Controller
         } else {
             $payments = [];
         }
-        return view('safaricom-home-fibre.payments', ['payments' => $payments]);
+        return view(
+            'safaricom-home-fibre.payments', ['payments' => $payments]);
     }
 
     public function fetchCustomerPayments(Request $request)
@@ -184,6 +195,133 @@ class SafaricomHomeFibreController extends Controller
         return view("safaricom-home-fibre.customer.payments", ["payments"=>$payments, "policies"=>$policies, "oustanding_amount"=>$oustanding_amount]);
     }
     public function fetchMyClaims(){
-        return view("safaricom-home-fibre.customer.claims");
+        $policies = session("policies");
+        $uniqeCode=Auth::user()->ci_code;
+        $claims = SafaricomClaim::where(["ci_code"=>$uniqeCode])->get();
+
+        return view("safaricom-home-fibre.customer.claims", ["claims"=>$claims, "policies"=>$policies]);
+    }
+    public function lauchClaimForm(){
+        $policies= session("policies");
+        $name=Auth::user()->name;
+        return view("safaricom-home-fibre.customer.claim_file_upload", ["policies"=>$policies, "name"=>$name]);
+    }
+    public function downloadClaimForm(Request  $request){
+
+        $file= public_path("safclaimform/HOME_FIBER_CLAIM_FORM_Interactive.pdf");
+
+        $headers = array(
+            'Content-Type: application/pdf',
+//            'Content-Transfer-Encoding' => 'Binary'
+        );
+
+        return Response::download($file, 'claim_form.pdf', $headers);
+    }
+
+    public function validatePageOne(Request $request){
+        $policies= session("policies");
+        $name=Auth::user()->name;
+        return view("safaricom-home-fibre.customer.claim-form-p1", ["policies"=>$policies, "name"=>$name]);
+    }
+    public function previousPageOne(Request $request){
+        return view("safaricom-home-fibre.customer.completed-claim-form");
+    }
+    public function saveSafaricomClaim(Request $request)
+    {
+
+           $safaricomClaimID=SafaricomClaim::insertGetId([
+            'lossDescription'=>$request->lossDescription,
+            'ci_code'=>Auth::user()->ci_code,
+            "updatedBy"=>Auth::id(),
+            "createdBy"=>Auth::id(),
+            "dateModified"=>Carbon::now(),
+            "dateCreated"=>Carbon::now()
+        ]);
+
+        $files= [
+            [$request->file('file'), $request->claim_form],
+            [$request->file('file1'), $request->abstract_form],
+            [$request->file('file2'), $request->handset_certificate],
+            [$request->file('file3'), $request->proforma_invoice]
+        ];
+
+        foreach ($files as $file){
+            $extension = $file[0]->getClientOriginalExtension();
+            $path = $file[0]->getRealPath();
+            $size = $file[0]->getSize();
+            $picture = $file[1].".".$extension;
+
+            $file[0]->move(public_path('/claim_documents/'.Auth::id().'/'), $picture);
+            $documents = SafClaimDocument::create([
+                "claimID" => $safaricomClaimID,
+                "name" => $picture,
+                "mime" => $extension,
+                "size" => $size,
+                "pdfType" => Config::PDF_TYPES['CLAIM_FORM']['ID'],
+                "documentType" => Config::$DOCUMENT_TYPES["PDF"]["ID"],
+                "url" => $path,
+                "segment" => ""
+            ]);
+        }
+
+        $emails = Config::SAF_EMAIL["EMAIL"];
+
+        $first_name = explode(" ", Config::SAF_EMAIL['NAME'])[0];
+
+        $message = "A new claim has been submitted. Kindly action.";
+
+        $header = "<p>
+                       <br/>
+                       <br/>
+                        <i>Dear $first_name,
+                        <br/>
+                        </i>
+                </p>";
+        $footer = "<p>
+                       Thanks.
+                       <br/>
+                       <br/>
+                        <i>Regards,
+                        <br/>
+                        <br/>
+                        </i>
+                </p>";
+
+
+        $pdfFilePaths = [
+            public_path('\claim_documents\\'.Auth::id().'\claimForm.pdf'),
+            public_path('\claim_documents\\'.Auth::id().'\abstract.pdf'),
+            public_path('\claim_documents\\'.Auth::id().'\handsetCertificate.pdf'),
+            public_path('\claim_documents\\'.Auth::id().'\proformaInvoice.pdf'),
+            ];
+
+        $msg =$header.$message.$footer;
+        $message = [
+            'subject' => Auth::user()->name.'_'.'NEW CLAIM'.'_'.$this->functions->curlDate(),
+            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'to' => 'sylvesterouma282@gmail.com',
+            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+            'attachment' => $pdfFilePaths,
+            'cc' => "sylvester.ouma@jubileekenya.com",
+            'html' => $msg,
+        ];
+        $email_sent=InfobipEmailHelper::sendEmail($message);
+
+        if($safaricomClaimID && $documents && $email_sent)
+        {
+            File::deleteDirectory(public_path('/claim_documents/'.Auth::id().'/'));
+            $response = array(
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "Home Fiber Claim Submitted successfully"
+            );
+        }else
+        {
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+        }
+
+        return json_encode($response);
     }
 }

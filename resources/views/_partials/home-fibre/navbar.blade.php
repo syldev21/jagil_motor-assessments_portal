@@ -11,7 +11,7 @@
                 <div class="header-search-wrapper hide-on-med-and-down">
                     <i class="material-icons">search</i>
                     <input class="header-search-input z-depth-2" type="text" name="Search"
-                           placeholder="Explore Jubilee Motor Insurance"
+                           placeholder="Explore Home Fiber Self Service Portal"
                            data-search="template-list">
                     <ul class="search-list collection display-none"></ul>
                 </div>
