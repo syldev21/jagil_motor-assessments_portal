@@ -175,7 +175,10 @@ class SafaricomHomeFibreController extends Controller
             $status="Active";
         }
         session(["policies"=>$policies]);
-        return view("safaricom-home-fibre.customer.portfolio", ["policies"=>$policies, "status"=>$status, "payments"=>$payments]);
+        $customer_portforlio = [$policies, $status, $payments
+        ];
+
+        return view("safaricom-home-fibre.customer.portfolio", ["customer_portforlio"=>$customer_portforlio]);
     }
     public function fetchCPayments(Request $request){
         $policies = session("policies");
@@ -204,7 +207,7 @@ class SafaricomHomeFibreController extends Controller
     public function lauchClaimForm(){
         $policies= session("policies");
         $name=Auth::user()->name;
-        return view("safaricom-home-fibre.customer.claim_file_upload", ["policies"=>$policies, "name"=>$name]);
+        return view("safaricom-home-fibre.customer.shf_file_uploads", ["policies"=>$policies, "name"=>$name]);
     }
     public function downloadClaimForm(Request  $request){
 
