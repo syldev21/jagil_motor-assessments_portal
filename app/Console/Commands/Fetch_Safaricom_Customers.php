@@ -85,6 +85,7 @@ class Fetch_Safaricom_Customers extends Command
                         'userTypeID'=>3,
                         'ci_code'=>$customer['code'],
                         'c_product'=>$customer['product'],
+                        'kra_pin'=>null,
                         'location'=>null,
                         'latitude'=>null,
                         'longitude'=>null,
@@ -115,23 +116,22 @@ class Fetch_Safaricom_Customers extends Command
                 }
             }
         }
-
-        $safCustomerss = User::where("userTypeID", "=", 3)->get();
-        foreach ($safCustomerss as $safCustomers){
-            $data = array(
-                "unique_id" => $safCustomers->ci_code
-            );
-            $response = $this->utility->getData($data, '/api/v1/saf-home/get-policy-details', 'POST');
-            $claim_data = json_decode($response->getBody()->getContents());
-            if ($claim_data->status == 'success') {
-                $policies = json_decode(json_encode($claim_data->data), true);
-            } else {
-                $policies = [];
-            }
-
-            $updatedCustomers = $safCustomers->kra_pin= $policies[0]['kra_pin'];
-            $updatedCustomers->save();
-
-        }
+//        $users = User::where(['email'=> $customer['client_email'], 'kra_pin'=>null])->get();
+//        foreach ($users as $us){
+//            if (isset($us->ci_code)){
+//                $data = array(
+//                    "unique_id" => $us->ci_code
+//                );
+//                $response = $this->utility->getData($data, '/api/v1/saf-home/get-policy-details', 'POST');
+//                $claim_data = json_decode($response->getBody()->getContents());
+//                if ($claim_data->status == 'success') {
+//                    $policies = json_decode(json_encode($claim_data->data), true);
+//                } else {
+//                    $policies = [];
+//                }
+//
+//                $user->update(['kra_pin'=>$policies[0]['kra_pin']]);
+//            }
+//        }
     }
 }
