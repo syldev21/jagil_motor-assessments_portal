@@ -223,7 +223,7 @@ $(document).ready(function () {
     $("body").on('click','#submitSafClaim',function (){
         $("#loader-wrapper").removeClass('hideLoader');
 
-        var lossDescription = "lossDescription";
+        var lossDescription = $("#lossDescription").val();
 
         var claim_form = $("#uploadClaimFormpdf").data("id");
         var abstract_form = $("#abstract").data("id");
