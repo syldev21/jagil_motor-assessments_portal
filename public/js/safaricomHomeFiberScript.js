@@ -222,6 +222,8 @@ $(document).ready(function () {
     });
     $("body").on('click','#submitSafClaim',function (){
         $("#loader-wrapper").removeClass('hideLoader');
+        // alertify.set('notifier','position', 'top-right');
+        // alertify.error('I am here');
 
         var lossDescription = $("#lossDescription").val();
 
@@ -272,12 +274,15 @@ $(document).ready(function () {
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: result.STATUS_MESSAGE,
-                        showConfirmButton: false,
-                        timer: 3000
-                    })
+                    // Swal.fire({
+                    //     icon: 'success',
+                    //     title: result.STATUS_MESSAGE,
+                    //     showConfirmButton: false,
+                    //     timer: 3000
+                    // })
+                    alertify.set('notifier','position', 'bottom-center');
+                    alertify.success(result.STATUS_MESSAGE);
+
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -287,6 +292,11 @@ $(document).ready(function () {
                     })
                 }
                 removeLoadingButton();
+            },
+            error:function (error) {
+                alertify.set('notifier','position', 'top-center');
+                alertify.error("Kindly insert to all the mandatory fields");
+                // alertify.error(error);
             }
 
         });
@@ -307,6 +317,38 @@ $(document).ready(function () {
 
             type: 'POST',
             url: '/safaricom-home-fibre/fetch-customers',
+            data: {},
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#loader-wrapper").addClass('hideLoader');
+            }
+
+        });
+    });
+    $("body").on('click','#fetchClaims',function (){
+
+        $("#loader-wrapper").removeClass('hideLoader');
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/safaricom-home-fibre/fetch-claims',
             data: {},
             success: function (data) {
                 $("#main").html(data);

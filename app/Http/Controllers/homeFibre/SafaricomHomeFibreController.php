@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use mysql_xdevapi\Exception;
 use Illuminate\Support\Facades\File;
 
@@ -166,6 +167,7 @@ class SafaricomHomeFibreController extends Controller
         } else {
             $policies = [];
         }
+
 //        dd($policies);
         if (Carbon::now()->format("Y-m-d  H:i:s") > $policies[0]["to_date"]){
             $status="Lapsed";
@@ -194,7 +196,12 @@ class SafaricomHomeFibreController extends Controller
             $payments = [];
         }
         session(["payments"=>$payments]);
-        $oustanding_amount = $policies[0]["premium"]-$payments[0]["amount"];
+
+        if ($policies!=null && $payments!=null){
+            $oustanding_amount = $policies[0]["premium"]-$payments[0]["amount"];
+        }else{
+            $oustanding_amount = "";
+        }
         return view("safaricom-home-fibre.customer.payments", ["payments"=>$payments, "policies"=>$policies, "oustanding_amount"=>$oustanding_amount]);
     }
     public function fetchMyClaims(){
@@ -231,56 +238,84 @@ class SafaricomHomeFibreController extends Controller
     }
     public function saveSafaricomClaim(Request $request)
     {
-
-           $safaricomClaimID=SafaricomClaim::insertGetId([
-            'lossDescription'=>$request->lossDescription,
-            'ci_code'=>Auth::user()->ci_code,
-            "updatedBy"=>Auth::id(),
-            "createdBy"=>Auth::id(),
-            "dateModified"=>Carbon::now(),
-            "dateCreated"=>Carbon::now()
+        $request->validate([
+            "lossDescription" => "required",
+            "claim_form" => "required",
+            "abstract_form" => "required"
+        ],
+        [
+            "lossDescription.required" => "Claim description field is required",
+            "claim_form.required" => "Please attach a duly filled claim form",
+            "abstract_form.required" => "Please attach a police abstract"
         ]);
 
-        $files= [
-            [$request->file('file'), $request->claim_form],
-            [$request->file('file1'), $request->abstract_form],
-            [$request->file('file2'), $request->handset_certificate],
-            [$request->file('file3'), $request->proforma_invoice]
-        ];
-
-        foreach ($files as $file){
-            $extension = $file[0]->getClientOriginalExtension();
-            $path = $file[0]->getRealPath();
-            $size = $file[0]->getSize();
-            $picture = $file[1].".".$extension;
-
-            $file[0]->move(public_path('/claim_documents/'.Auth::id().'/'), $picture);
-            $documents = SafClaimDocument::create([
-                "claimID" => $safaricomClaimID,
-                "name" => $picture,
-                "mime" => $extension,
-                "size" => $size,
-                "pdfType" => Config::PDF_TYPES['CLAIM_FORM']['ID'],
-                "documentType" => Config::$DOCUMENT_TYPES["PDF"]["ID"],
-                "url" => $path,
-                "segment" => ""
+            $safaricomClaimID = SafaricomClaim::insertGetId([
+                'lossDescription' => $request->lossDescription,
+                'ci_code' => Auth::user()->ci_code,
+                "updatedBy" => Auth::id(),
+                "createdBy" => Auth::id(),
+                "dateModified" => Carbon::now(),
+                "dateCreated" => Carbon::now()
             ]);
-        }
 
-        $emails = Config::SAF_EMAIL["EMAIL"];
+            $files = [
+                [$request->file('file'), $request->claim_form],
+                [$request->file('file1'), $request->abstract_form],
+                [$request->file('file2'), $request->handset_certificate],
+                [$request->file('file3'), $request->proforma_invoice]
+            ];
+            $pdfFilePaths = [];
+            foreach ($files as $file) {
+                if ($file[0] != null) {
+                    $extension = $file[0]->getClientOriginalExtension();
+                    $path = $file[0]->getRealPath();
+                    $size = $file[0]->getSize();
+                    $picture = $file[1] . "." . $extension;
 
-        $first_name = explode(" ", Config::SAF_EMAIL['NAME'])[0];
 
-        $message = "A new claim has been submitted. Kindly action.";
+//            File::makeDirectory(public_path('/claim_documents/'.Auth::id()));
 
-        $header = "<p>
+                    $file[0]->move(public_path('/claim_documents/' . Auth::id() . '/'), $picture);
+//                dump($picture);
+                    $documents = SafClaimDocument::create([
+                        "claimID" => $safaricomClaimID,
+                        "name" => $picture,
+                        "mime" => $extension,
+                        "size" => $size,
+                        "pdfType" => Config::PDF_TYPES['CLAIM_FORM']['ID'],
+                        "documentType" => Config::$DOCUMENT_TYPES["PDF"]["ID"],
+                        "url" => $path,
+                        "segment" => ""
+                    ]);
+//                if(File::exists(public_path('\claim_documents\\'.Auth::id().'\$picture.pdf'))) {
+                    array_push($pdfFilePaths, public_path('/claim_documents/' . Auth::id() . '/' . $picture));
+
+//            }
+                }
+
+
+            }
+//        dd($pdfFilePaths);
+
+
+            $emails = Config::SAF_EMAIL["EMAIL"];
+            $first_name_customer = Auth::user()->firstName;
+            $email_customer = Auth::user()->email;
+
+            $first_name = explode(" ", Config::SAF_EMAIL['NAME'])[0];
+
+            $message_adjuster = "A new claim has been submitted. Kindly action.";
+            $message_customer = "We acknowledge the receipt of your claim. We will process the claim within the next four days.";
+            $claims_adjuster=Config::SAF_EMAIL['NAME'];
+
+            $header = "<p>
                        <br/>
                        <br/>
                         <i>Dear $first_name,
                         <br/>
                         </i>
                 </p>";
-        $footer = "<p>
+            $footer = "<p>
                        Thanks.
                        <br/>
                        <br/>
@@ -291,40 +326,87 @@ class SafaricomHomeFibreController extends Controller
                 </p>";
 
 
-        $pdfFilePaths = [
-            public_path('\claim_documents\\'.Auth::id().'\claimForm.pdf'),
-            public_path('\claim_documents\\'.Auth::id().'\abstract.pdf'),
-            public_path('\claim_documents\\'.Auth::id().'\handsetCertificate.pdf'),
-            public_path('\claim_documents\\'.Auth::id().'\proformaInvoice.pdf'),
+            $msg = $header . $message_adjuster . $footer;
+            $message = [
+                'subject' => Auth::user()->name . '_' . 'NEW CLAIM' . '_' . $this->functions->curlDate(),
+                'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                'to' => 'sylvester.ouma@jubileekenya.com',
+                'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                'attachment' => $pdfFilePaths,
+                'html' => $msg,
             ];
+            $email_sent = InfobipEmailHelper::sendEmail($message);
 
-        $msg =$header.$message.$footer;
-        $message = [
-            'subject' => Auth::user()->name.'_'.'NEW CLAIM'.'_'.$this->functions->curlDate(),
-            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-            'to' => 'sylvesterouma282@gmail.com',
-            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
-            'attachment' => $pdfFilePaths,
-            'cc' => "sylvester.ouma@jubileekenya.com",
-            'html' => $msg,
-        ];
-        $email_sent=InfobipEmailHelper::sendEmail($message);
+            if ($safaricomClaimID && $documents && $email_sent) {
+                File::deleteDirectory(public_path('/claim_documents/' . Auth::id() . '/'));
 
-        if($safaricomClaimID && $documents && $email_sent)
-        {
-            File::deleteDirectory(public_path('/claim_documents/'.Auth::id().'/'));
-            $response = array(
-                "STATUS_CODE" => Config::SUCCESS_CODE,
-                "STATUS_MESSAGE" => "Home Fiber Claim Submitted successfully"
-            );
-        }else
-        {
-            $response = array(
-                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
-                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
-            );
+                $header = "<p>
+                       <br/>
+                       <br/>
+                        <i>Dear $first_name_customer,
+                        <br/>
+                        </i>
+                </p>";
+                $footer = "<p>
+                       Thanks.
+                       <br/>
+                       <br/>
+                        <i>Regards,
+                        <br/>
+                        <br/>
+                        </i>
+                        $claims_adjuster-Claims Adjuster , <br>
+
+                        Jubilee Allianz Insurance Company
+                </p>";
+
+
+                $msg = $header . $message_customer . $footer;
+                $message = [
+                    'subject' => Auth::user()->name . '_' . 'SUBMITTED CLAIM' . '_' . $this->functions->curlDate(),
+                    'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'to' => 'sylvesterouma282@gmail.com',
+                    'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'html' => $msg,
+                ];
+                $email_sent = InfobipEmailHelper::sendEmail($message);
+
+               if ($email_sent){
+                   $response = array(
+                       "STATUS_CODE" => Config::SUCCESS_CODE,
+                       "STATUS_MESSAGE" => "Home Fiber Claim Submitted successfully"
+                   );
+               }
+            } else {
+                $response = array(
+                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                );
+            }
+
+            return json_encode($response);
+    }
+    public function fetchClaims(){
+        $customers = User::join('safaricom_home_claims', 'users.ci_code', '=', 'safaricom_home_claims.ci_code')
+            ->where('userTypeID', '=', 3)
+            ->get();
+        $data = array();
+        $response = $this->utility->getData($data, '/api/v1/b2b/general/home-insurance/all-customers', 'POST');
+        $claim_data = json_decode($response->getBody()->getContents());
+        if ($claim_data->status == 'success') {
+            $customers_all = json_decode(json_encode($claim_data->data), true);
+        } else {
+            $customers_all = [];
         }
-
-        return json_encode($response);
+        $data = array();
+        $response = $this->utility->getData($data, '/api/v1/b2b/general/home-insurance/payments', 'POST');
+        $claim_data = json_decode($response->getBody()->getContents());
+        if ($claim_data->status == 'success') {
+            $payments = json_decode(json_encode($claim_data->data), true);
+        } else {
+            $payments = [];
+        }
+//        dd($payments);
+        return view('safaricom-home-fibre.customer.all-claims', ['customers'=>$customers]);
     }
 }

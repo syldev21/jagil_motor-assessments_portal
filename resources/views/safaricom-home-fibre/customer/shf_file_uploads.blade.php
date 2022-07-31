@@ -1,3 +1,7 @@
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 <div class="row">
 
     <div
@@ -23,8 +27,8 @@
                                     <ol style="line-height: 38px">
                                         <li>Duly filled <a href="{{url('/safclaimform/HOME_FIBER_CLAIM_FORM_Interactive.pdf')}}" target="_blank" class="fa-file-download">claim form<span style="color: red">*</span></a></li>
                                         <li>Police abstract<span style="color: red">*</span></li>
-                                        <li>Handset certificate</li>
-                                        <li>Handset Blockage certificate (Applicable for Lost device)</li>
+                                        <li>Handset certificate (for lost devices)</li>
+                                        <li>Proforma invoice</li>
                                     </ol>
                                 </div>
                                 <div class="col s12 m4">
@@ -81,7 +85,7 @@
                                     </div>
                                     </div>
                                 <div class="col s12 m4" style="position: relative">
-                                    <h5 class="bold"><b>Claim Description</b></h5>
+                                    <h5 class="bold"><b>Claim Description<span style="color: red">*</span></b></h5>
                                     <div class="input-field">
                                         <textarea placeholder="A summary of your claim in not more than 200 charcaters" style="height: 207px" id="lossDescription"  class = "" length = "120"></textarea>
                                     </div>
@@ -105,3 +109,5 @@
             </div>
         </div>
 </div>
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
