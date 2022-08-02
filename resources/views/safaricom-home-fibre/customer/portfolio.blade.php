@@ -61,45 +61,61 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-
+{{--                                        @foreach($customer_portforlio as $portforlio)--}}
 
                                             <tr>
 {{--                                                <td>{{$loop->iteration}}</td>--}}
 
 
-                                                <td>{{$payments[0]["product"]}}</td>
-                                                <td>{{$policies[0]["policy_number"]}}</td>
-                                                <td>{{$policies[0]["from_date"]}}</td>
-                                                <td>{{$policies[0]["to_date"]}}</td>
+                                                <td>{{$customer_portforlio[2][0]["product"]}}</td>
+                                                <td>{{$customer_portforlio[0][0]["policy_number"]}}</td>
+                                                <td>{{$customer_portforlio[0][0]["from_date"]}}</td>
+                                                <td>{{$customer_portforlio[0][0]["to_date"]}}</td>
                                                 <td></td>
-                                                <td>{{$policies[0]["premium"]}}</td>
-                                                <td>{{$status}}</td>
+                                                <td>{{$customer_portforlio[0][0]["premium"]}}</td>
+                                                <td>{{$customer_portforlio[1]}}</td>
                                                 <td>
                                                     <!-- Dropdown Trigger -->
                                                     <a class='dropdown-trigger' href='#'
-{{--                                                       data-target='{{$loop->iteration}}'--}}
-{{--                                                       data-activates="{{$loop->iteration}}">--}}
-                                                        data-target=''
-                                                       data-activates="">
-                                                        <i
+                                                       data-target='{{$customer_portforlio[0][0]["policy_number"]}}'
+                                                       data-activates="{{$customer_portforlio[0][0]["policy_number"]}}"><i
                                                             class="Medium material-icons">menu</i><i
-                                                            class="Medium material-icons">expand_more
-                                                        </i>
-                                                    </a>
+                                                            class="Medium material-icons">expand_more</i></a>
 
                                                     <!-- Dropdown Structure -->
-
                                                     <ul id='' class='dropdown-content'>
-{{--                                                    <ul id='{{$loop->iteration}}' class='dropdown-content'>--}}
 
-                                                        <li>
-                                                            <a href="#" id="uploadDocumentsForm" data-id="" ><i
-                                                                    class="material-icons">upload</i>Upload Document</a>
-                                                        </li>
+                                                            <li>
+                                                                <a href="" download><i
+                                                                        class="material-icons">file_download</i>Claim Form</a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="" download><i
+                                                                        class="material-icons">file_download</i>Invoice</a></li>
+                                                            <li>
+                                                                <a href="#" id="fillAssessmentReport"
+                                                                   data-id=""><i
+                                                                        class="material-icons">insert_drive_file</i>Submit
+                                                                    Assessment </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#" id="view-assessor-assessment-report"
+                                                                   data-id=""><i
+                                                                        class="material-icons">edit</i>Edit Assessment </a>
+                                                            </li>
+
+                                                            <li>
+                                                                <a href="#" id="fillAssessmentReport"
+                                                                   data-id=""><i
+                                                                        class="material-icons">insert_drive_file</i>Fill
+                                                                    Report </a>
+                                                            </li>
                                                     </ul>
-                                                </td>
 
+                                                </td>
                                             </tr>
+{{--                                        @endforeach--}}
                                         </tbody>
                                     </table>
                                 </div>

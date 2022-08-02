@@ -11,7 +11,7 @@
                         <div class="card-content">
                             <div class="row">
                                 <h4 class="card-title float-left">
-                                    My Payments
+                                    My Claims
                                 </h4>
 
                             </div>
@@ -49,31 +49,30 @@
                                     <table id="data-table-simple" class="display">
                                         <thead>
                                         <tr>
-{{--                                            <th>S/N</th>--}}
-                                            <th>Product</th>
+                                            <th>S/N</th>
+                                            <th>Customer Name</th>
+                                            <th>Customer Code</th>
                                             <th>Policy Number</th>
-                                            <th>Premium</th>
-                                            <th>Amount Paid</th>
-                                            <th>MPESA Code</th>
-                                            <th>Description</th>
-                                            <th>Amount Outstanding</th>
+                                            <th>Policy From Date</th>
+                                            <th>Policy To Date</th>
+                                            <th>Claim Description</th>
+                                            <th>Claim Submission Date</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
-
+                                        @foreach($claims as $claim)
                                             <tr>
-{{--                                                <td>{{$loop->iteration}}</td>--}}
-                                                <td>{{$payments[0]["product"]}}</td>
-                                                <td>{{isset($policies[0]["policy_number"])?$policies[0]["policy_number"]:""}}</td>
-                                                <td>{{isset($policies[0]["premium"])?$policies[0]["premium"]:""}}</td>
-                                                <td>{{$payments[0]["amount"]}}</td>
-                                                <td>{{$payments[0]["mpesa_code"]}}</td>
-                                                <td>{{$payments[0]["payment_description"]}}</td>
-                                                <td>{{$oustanding_amount}}</td>
-
+                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$policies[0]["assured_name"]}}</td>
+                                                <td>{{$policies[0]["assured_code"]}}</td>
+                                                <td>{{$claim->policyNumber}}</td>
+                                                <td>{{$policies[0]["from_date"]}}</td>
+                                                <td>{{$policies[0]["to_date"]}}</td>
+                                                <td>{{$claim->lossDescription}}</td>
+                                                <td>{{$claim->dateCreated}}</td>
                                             </tr>
-
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
