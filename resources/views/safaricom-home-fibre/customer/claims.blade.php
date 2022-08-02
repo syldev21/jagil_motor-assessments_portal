@@ -11,7 +11,7 @@
                         <div class="card-content">
                             <div class="row">
                                 <h4 class="card-title float-left">
-                                    My Claims
+                                    {{isset(auth::user()->ci_code)?"My Claims":"All Claims"}}
                                 </h4>
 
                             </div>
@@ -60,7 +60,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-
+                                        @if(auth::user()->ci_code != null)
                                         @foreach($claims as $claim)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
@@ -73,6 +73,20 @@
                                                 <td>{{$claim->dateCreated}}</td>
                                             </tr>
                                         @endforeach
+                                        @else
+                                        @foreach($claims as $claim)
+                                            <tr>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$claim->name}}</td>
+                                                <td>{{$policies[0]["assured_code"]}}</td>
+                                                <td>{{$claim->policyNumber}}</td>
+                                                <td>{{$policies[0]["from_date"]}}</td>
+                                                <td>{{$policies[0]["to_date"]}}</td>
+                                                <td>{{$claim->lossDescription}}</td>
+                                                <td>{{$claim->dateCreated}}</td>
+                                            </tr>
+                                        @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>

@@ -4,6 +4,9 @@
     <div class="loader-section section-right"></div>
 </div>
 @if(auth::user()->userTypeID == \App\Conf\Config::$USER_TYPES['HOME FIBER CUSTOMER']['ID'])
+    @if(auth::user()->ci_code==null)
+
+        @else
 
     <div class="row">
         <div class="col s4" style="position: relative; left: 970px; top: 10px">
@@ -145,6 +148,7 @@
         </div>
     </div>
 </div>
+@endif
 @else
     <div class="row">
     <div class="col s12 m6 l4">

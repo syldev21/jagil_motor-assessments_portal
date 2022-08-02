@@ -32,7 +32,7 @@
                                     </ol>
                                 </div>
                                 <div class="col s12 m4">
-                                    <h5 class="bold"><b>Add Files</b></h5>
+                                    <h5 class="bold"><b>Upload Files</b></h5>
                                     <div>
                                         <div class="row">
                                             <div class="input-field">

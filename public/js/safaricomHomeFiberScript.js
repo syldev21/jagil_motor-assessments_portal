@@ -274,14 +274,14 @@ $(document).ready(function () {
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {
-                    // Swal.fire({
-                    //     icon: 'success',
-                    //     title: result.STATUS_MESSAGE,
-                    //     showConfirmButton: false,
-                    //     timer: 3000
-                    // })
-                    alertify.set('notifier','position', 'bottom-center');
-                    alertify.success(result.STATUS_MESSAGE);
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    // alertify.set('notifier','position', 'bottom-center');
+                    // alertify.success(result.STATUS_MESSAGE);
 
                 } else {
                     Swal.fire({
@@ -333,7 +333,7 @@ $(document).ready(function () {
 
         });
     });
-    $("body").on('click','#fetchClaims',function (){
+    $("body").on('click','.fetchClaims',function (){
 
         $("#loader-wrapper").removeClass('hideLoader');
         $.ajaxSetup({
@@ -348,7 +348,7 @@ $(document).ready(function () {
         $.ajax({
 
             type: 'POST',
-            url: '/safaricom-home-fibre/fetch-claims',
+            url: '/safaricom-home-fibre/fetch-all-claims',
             data: {},
             success: function (data) {
                 $("#main").html(data);

@@ -51,26 +51,26 @@
                                         <tr>
                                             <th>S/N</th>
                                             <th>Customer Name</th>
-                                            <th>Mobile Number</th>
+                                            <th>Customer Code</th>
                                             <th>Policy Number</th>
-                                            <th>Policy No Date</th>
-                                            <th>Policy expiry date Date</th>
-                                            <th>Last payment date</th>
-                                            <th>Claim lodged</th>
+                                            <th>Policy From Date</th>
+                                            <th>Policy To Date</th>
+                                            <th>Claim Description</th>
+                                            <th>Claim Submission Date</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
-                                        @foreach($customers as $customer)
+                                        @foreach($claims as $claim)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
-                                                <td>{{$customer->name}}</td>
-                                                <td>{{$customer->MSISDN}}</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>{{{\App\Conf\Config::YES_OR_NO['NO']['TEXT']}}}</td>
+                                                <td>{{$policies[0]["assured_name"]}}</td>
+                                                <td>{{$policies[0]["assured_code"]}}</td>
+                                                <td>{{$claim->policyNumber}}</td>
+                                                <td>{{$policies[0]["from_date"]}}</td>
+                                                <td>{{$policies[0]["to_date"]}}</td>
+                                                <td>{{$claim->lossDescription}}</td>
+                                                <td>{{$claim->dateCreated}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>

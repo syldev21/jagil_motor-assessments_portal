@@ -65,8 +65,8 @@
                                             <tr>
 {{--                                                <td>{{$loop->iteration}}</td>--}}
                                                 <td>{{$payments[0]["product"]}}</td>
-                                                <td>{{$policies[0]["policy_number"]}}</td>
-                                                <td>{{$policies[0]["premium"]}}</td>
+                                                <td>{{isset($policies[0]["policy_number"])?$policies[0]["policy_number"]:""}}</td>
+                                                <td>{{isset($policies[0]["premium"])?$policies[0]["premium"]:""}}</td>
                                                 <td>{{$payments[0]["amount"]}}</td>
                                                 <td>{{$payments[0]["mpesa_code"]}}</td>
                                                 <td>{{$payments[0]["payment_description"]}}</td>
