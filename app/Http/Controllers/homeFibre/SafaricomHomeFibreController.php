@@ -387,19 +387,32 @@ class SafaricomHomeFibreController extends Controller
             return json_encode($response);
     }
     public function fetchAllClaims(){
-        $policies = session("policies");
+
         if (isset(Auth::user()->ci_code)){
-            $uniqeCode=Auth::user()->ci_code;
-            $claims = SafaricomClaim::where(["ci_code"=>$uniqeCode])->get();
+            $user=Auth::user();
+            $ci_code=$user->ci_code;
+            $data = array(
+                "unique_id" => $ci_code
+            );
+            $response = $this->utility->getData($data, '/api/v1/saf-home/get-policy-details', 'POST');
+            $claim_data = json_decode($response->getBody()->getContents());
+            if ($claim_data->status == 'success') {
+                $policies = json_decode(json_encode($claim_data->data), true);
+            } else {
+                $policies = [];
+            }
+
+                    $updateUser=$user->update(['policy_number'=>isset($policies[0]['policy_number'])?$policies[0]['policy_number']:null, 'kra_pin'=>isset($policies[0]['kra_pin'])?$policies[0]['kra_pin']:null, 'assured_code'=>isset($policies[0]['assured_code'])?$policies[0]['assured_code']:null]);
+
+
+
+            $claims = SafaricomClaim::join('users', ["safaricom_home_claims.ci_code"=>"users.ci_code"])
+                ->where(['users.ci_code'=>$ci_code])->get();
         }else{
             $claims = SafaricomClaim::join('users', ['safaricom_home_claims.ci_code'=>'users.ci_code'])->get();
+            $policies = [];
         }
 
-
-
-
-//        dd($all_claims->name);
-//        dd($claims);
 
         return view("safaricom-home-fibre.customer.claims", ["claims"=>$claims, "policies"=>$policies]);
     }

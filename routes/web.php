@@ -325,6 +325,7 @@ $router->group(['prefix' => 'safaricom-home-fibre'], function($router)
     $router->post('/previous-page1', 'homeFibre\SafaricomHomeFibreController@previousPageOne');
     $router->post('/download-claim-form', 'homeFibre\SafaricomHomeFibreController@downloadClaimForm');
     $router->post('/save-safaricom-claim', 'homeFibre\SafaricomHomeFibreController@saveSafaricomClaim');
+    $router->post('/fetch-all-claims', 'homeFibre\SafaricomHomeFibreController@fetchAllClaims');
 });
 
 //Travel APIs

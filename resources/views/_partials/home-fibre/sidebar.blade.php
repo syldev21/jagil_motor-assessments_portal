@@ -72,12 +72,6 @@
                                 <span data-i18n="ChartJS">My Claims</span>
                             </a>
                         </li>
-{{--                        <li class="">--}}
-{{--                            <a href="#" data-id="" class="sidenav-link launch_claim" id="fetchClaims">--}}
-{{--                                <i class="material-icons">open_in_new</i>--}}
-{{--                                <span data-i18n="ChartJS">All Customer Claims</span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
                     </ul>
                 </div>
             </li>

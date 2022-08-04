@@ -139,7 +139,16 @@
                                         <div class="file-field input-field col m4 s12 deathClaimFormpdf">
                                             <div class="btn">
                                                 <span>Claim Form</span>
-                                                <input type="file" id="deathClaimFormpdf" name="deathClaimFormpdf" value="">
+                                                <i
+
+
+
+
+
+
+
+
+                                                    nput type="file" id="deathClaimFormpdf" name="deathClaimFormpdf" value="">
                                             </div>
                                             <div class="file-path-wrapper">
                                                 <input class="file-path validate" type="text" placeholder="Upload Death Claim Form">
