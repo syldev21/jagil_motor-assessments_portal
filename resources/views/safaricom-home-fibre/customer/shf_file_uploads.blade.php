@@ -25,10 +25,10 @@
                                     <p style="color: red">Please see details below to know what is required to launch a claim (click on the link provided in item 1 to download claim form)</p>
                                     <br><span style="color: red">Important!</span>: Items marked with an asterisk (<span style="color: red">*</span>) are mandatory
                                     <ol style="line-height: 38px">
-                                        <li>Duly filled <a href="{{url('/safclaimform/HOME_FIBER_CLAIM_FORM_Interactive.pdf')}}" target="_blank" class="fa-file-download">claim form<span style="color: red">*</span></a></li>
-                                        <li>Police abstract<span style="color: red">*</span></li>
-                                        <li>Handset certificate (for lost devices)</li>
-                                        <li>Proforma invoice</li>
+                                        <li id="item">Duly filled <a href="{{url('/safclaimform/HOME_FIBER_CLAIM_FORM_Interactive.pdf')}}" target="_blank" class="fa-file-download">claim form<span style="color: red">*</span></a></li>
+                                        <li id="abstract"></li>
+                                        <li id="handset"></li>
+                                        <li id="proforma"></li>
                                     </ol>
                                 </div>
                                 <div class="col s12 m4">
