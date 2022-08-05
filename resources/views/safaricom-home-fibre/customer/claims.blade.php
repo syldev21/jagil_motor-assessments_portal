@@ -82,8 +82,6 @@
                                                 <td>{{$claim->name}}</td>
                                                 <td>{{$claim->assured_code}}</td>
                                                 <td>{{$claim->policy_number}}</td>
-{{--                                                <td>{{$policies[0]["from_date"]}}</td>--}}
-{{--                                                <td>{{$policies[0]["to_date"]}}</td>--}}
                                                 <td>{{$claim->lossDescription}}</td>
                                                 <td>{{$claim->dateCreated}}</td>
                                             </tr>

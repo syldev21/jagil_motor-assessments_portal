@@ -42,7 +42,7 @@
                                                         <input type="file" id="uploadClaimFormpdf" name="" data-id="claimForm">
                                                     </div>
                                                     <div class="file-path-wrapper">`
-                                                        <input class="file-path validate" type="text" placeholder="Upload pdf file">
+                                                        <input class="file-path validate" type="text" placeholder="Attach Claim Form">
                                                     </div>
                                                 </div>
                                             </div>
@@ -51,10 +51,10 @@
                                                     <div class="btn">
 {{--                                                        <span>Abstract</span>--}}
                                                         <span ><p style="padding-left: 28px; padding-right: 40px">Abstract</p> </span>
-                                                        <input type="file" id="abstract" name="" data-id="abstract">
+                                                        <input type="file" id="abstract_file" name="" data-id="abstract">
                                                     </div>
                                                     <div class="file-path-wrapper">
-                                                        <input class="file-path validate" type="text" placeholder="Upload pdf file">
+                                                        <input class="file-path validate" type="text" placeholder="Attach abstract">
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,10 +62,10 @@
                                                 <div class="file-field input-field">
                                                     <div class="btn">
                                                         <span>Handset Certificate</span>
-                                                        <input type="file" id="handsetCertificate" name="" data-id="handsetCertificate">
+                                                        <input type="file" id="handsetCertificate_file" name="" data-id="handsetCertificate">
                                                     </div>
                                                     <div class="file-path-wrapper">
-                                                        <input  class="file-path validate" type="text" placeholder="Upload pdf file">
+                                                        <input  class="file-path validate" type="text" placeholder="Attach handset certificate">
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,10 +74,10 @@
                                                     <div class="btn">
 {{--                                                        <span>Proforma Invoice</span>--}}
                                                         <span ><p style="padding-left: 2px; padding-right: 8px">Proforma Invoice</p> </span>
-                                                        <input type="file" id="proformaInvoice" name="" data-id="proformaInvoice">
+                                                        <input type="file" id="proformaInvoice_file" name="" data-id="proformaInvoice">
                                                     </div>
                                                     <div class="file-path-wrapper">
-                                                        <input class="file-path validate" type="text" placeholder="Upload pdf file">
+                                                        <input class="file-path validate" type="text" placeholder="Attach proforma invoice">
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,3 +111,21 @@
 </div>
 <!-- JavaScript -->
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<script>
+    $(document).ready(function (){
+        setTimeout(abstract, 1000);
+        setTimeout(handset, 1500);
+        setTimeout(proforma, 2000);
+
+        function abstract() {
+            document.getElementById("abstract").innerHTML = "Abstract Form<span style=\"color: red\">*</span>";
+        }
+        function handset() {
+            document.getElementById("handset").innerHTML = "Handset certificate";
+        }
+        function proforma() {
+            document.getElementById("proforma").innerHTML = "Proforma invoice";
+        }
+    })
+</script>
