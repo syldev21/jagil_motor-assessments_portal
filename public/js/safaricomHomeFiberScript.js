@@ -102,21 +102,7 @@ $(document).ready(function () {
         });
     });
     $("body").on('click','#launch_claim_form',function (){
-
         $("#loader-wrapper").removeClass('hideLoader');
-        setTimeout(abstract, 1000);
-        setTimeout(handset, 1500);
-        setTimeout(proforma, 2000);
-
-        function abstract() {
-            document.getElementById("abstract").innerHTML = "Abstract Form<span style=\"color: red\">*</span>";
-        }
-        function handset() {
-            document.getElementById("handset").innerHTML = "Handset certificate";
-        }
-        function proforma() {
-            document.getElementById("proforma").innerHTML = "Proforma invoice";
-        }
         $.ajaxSetup({
 
             headers: {
@@ -247,9 +233,9 @@ $(document).ready(function () {
 
         var formData = new FormData();
         var claimForm = $('#uploadClaimFormpdf').prop('files')[0];
-        var abstract = $('#abstract').prop('files')[0];
-        var handsetCertificate = $('#handsetCertificate').prop('files')[0];
-        var proformaInvoive = $('#proformaInvoice').prop('files')[0];
+        var abstract = $('#abstract_file').prop('files')[0];
+        var handsetCertificate = $('#handsetCertificate_file').prop('files')[0];
+        var proformaInvoive = $('#proformaInvoice_file').prop('files')[0];
 
         formData.append('file', claimForm);
         formData.append('file1', abstract);
