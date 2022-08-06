@@ -949,7 +949,7 @@ class AdjusterController extends Controller
                 ->get();
             $assessor = User::where('id', $reinspection->createdBy)->first();
             $insured = CustomerMaster::where(['customerCode' => $claim->customerCode])->first();
-            $insuredName = isset($insured->firstName) ? $insured->firstName : '' . isset($insured->lastName) ? $insured->lastName : '';
+            $insuredName = isset($insured->firstName) ? $insured->firstName : ('' . isset($insured->lastName) ? $insured->lastName : '');
             $assessorName = isset($assessor->name) ? $assessor->name : '';
 
             $priceChangeAssessmentIds = PriceChange::whereIn('assessmentID',$assessmentIds)
