@@ -227,9 +227,9 @@ $(document).ready(function () {
         var lossDescription = $("#lossDescription").val();
 
         var claim_form = $("#uploadClaimFormpdf").data("id");
-        var abstract_form = $("#abstract").data("id");
-        var handset_certificate = $("#handsetCertificate").data("id");
-        var proforma_invoice = $("#proformaInvoice").data("id");
+        var abstract_form = $("#abstract_file").data("id");
+        var handset_certificate = $("#handsetCertificate_file").data("id");
+        var proforma_invoice = $("#proformaInvoice_file").data("id");
 
         var formData = new FormData();
         var claimForm = $('#uploadClaimFormpdf').prop('files')[0];
