@@ -268,9 +268,6 @@ $(document).ready(function () {
             data: formData,
             processData: false,
             contentType: false,
-
-            // crossDomain: true,
-            // dataType: "text/plain",
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {
