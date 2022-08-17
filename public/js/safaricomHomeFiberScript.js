@@ -227,9 +227,9 @@ $(document).ready(function () {
         var lossDescription = $("#lossDescription").val();
 
         var claim_form = $("#uploadClaimFormpdf").data("id");
-        var abstract_form = $("#abstract").data("id");
-        var handset_certificate = $("#handsetCertificate").data("id");
-        var proforma_invoice = $("#proformaInvoice").data("id");
+        var abstract_form = $("#abstract_file").data("id");
+        var handset_certificate = $("#handsetCertificate_file").data("id");
+        var proforma_invoice = $("#proformaInvoice_file").data("id");
 
         var formData = new FormData();
         var claimForm = $('#uploadClaimFormpdf').prop('files')[0];
@@ -237,8 +237,8 @@ $(document).ready(function () {
         var handsetCertificate = $('#handsetCertificate_file').prop('files')[0];
         var proformaInvoive = $('#proformaInvoice_file').prop('files')[0];
 
-        formData.append('file', claimForm);
-        formData.append('file1', abstract);
+        formData.append('uploadClaimFormpdf', claimForm);
+        formData.append('abstract_file', abstract);
         formData.append('file2', handsetCertificate);
         formData.append('file3', proformaInvoive);
 
@@ -264,10 +264,11 @@ $(document).ready(function () {
         $.ajax({
 
             type: 'POST',
-            processData: false,
-            contentType: false,
             url: '/safaricom-home-fibre/save-safaricom-claim',
             data: formData,
+            processData: false,
+            contentType: false,
+
             // crossDomain: true,
             // dataType: "text/plain",
             success: function (data) {
@@ -293,7 +294,8 @@ $(document).ready(function () {
                 removeLoadingButton();
             },
             error:function (error) {
-                alertify.set('notifier','position', 'top-center');
+                console.log(error)
+                alertify.set('notifier','position', 'bottom-left');
                 alertify.error("Kindly insert to all the mandatory fields");
                 // alertify.error(error);
             }

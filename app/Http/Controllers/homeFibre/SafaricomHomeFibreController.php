@@ -150,7 +150,7 @@ class SafaricomHomeFibreController extends Controller
                 "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
             );
         }
-        return json_encode($response, err);
+        return json_encode($response);
     }
     public function fetchPortfolio(Request $request){
         $payments = session("payments");
@@ -240,14 +240,16 @@ class SafaricomHomeFibreController extends Controller
     {
         $request->validate([
             "lossDescription" => "required",
-            "claim_form" => "required",
-            "abstract_form" => "required"
+            "uploadClaimFormpdf" => "required",
+            "abstract_file" => "required"
         ],
         [
-            "lossDescription.required" => "Claim description field is required",
-            "claim_form.required" => "Please attach a duly filled claim form",
-            "abstract_form.required" => "Please attach a police abstract"
+            "lossDescription.required" => "Please add your claim description",
+            "uploadClaimFormpdf.required" => "Please attach a duly filled claim form",
+            "abstract_file.required" => "Please attach a police abstract"
         ]);
+
+
 
             $safaricomClaimID = SafaricomClaim::insertGetId([
                 'lossDescription' => $request->lossDescription,
@@ -259,8 +261,8 @@ class SafaricomHomeFibreController extends Controller
             ]);
 
             $files = [
-                [$request->file('file'), $request->claim_form],
-                [$request->file('file1'), $request->abstract_form],
+                [$request->file('uploadClaimFormpdf'), $request->claim_form],
+                [$request->file('abstract_file'), $request->abstract_form],
                 [$request->file('file2'), $request->handset_certificate],
                 [$request->file('file3'), $request->proforma_invoice]
             ];
@@ -333,7 +335,10 @@ class SafaricomHomeFibreController extends Controller
                 "STATUS_MESSAGE" => 'You need to attach at least two documents (abstract and claim form)'
             );
         }else{
+
+
             $email_sent = InfobipEmailHelper::sendEmail($message);
+//            dd($email_sent);
         }
 //        $email_sent = InfobipEmailHelper::sendEmail($message);
 
