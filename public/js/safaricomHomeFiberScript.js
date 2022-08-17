@@ -277,8 +277,6 @@ $(document).ready(function () {
                         showConfirmButton: false,
                         timer: 3000
                     })
-                    // alertify.set('notifier','position', 'bottom-center');
-                    // alertify.success(result.STATUS_MESSAGE);
 
                 } else {
                     Swal.fire({
@@ -292,6 +290,7 @@ $(document).ready(function () {
             },
             error:function (error) {
                 console.log(error)
+                // alertify.set('notifier','position', 'bottom-left');
                 alertify.set('notifier','position', 'bottom-left');
                 alertify.error("Kindly insert to all the mandatory fields");
                 // alertify.error(error);
