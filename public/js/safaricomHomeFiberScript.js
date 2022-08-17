@@ -277,8 +277,6 @@ $(document).ready(function () {
                         showConfirmButton: false,
                         timer: 3000
                     })
-                    // alertify.set('notifier','position', 'bottom-center');
-                    // alertify.success(result.STATUS_MESSAGE);
 
                 } else {
                     Swal.fire({
