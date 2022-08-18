@@ -9,6 +9,6 @@ class SafaricomClaim extends Model
     protected $connection = "mysql";
     protected $table = "safaricom_home_claims";
     protected $primaryKey = "id";
-    protected $fillable = ['ci_code','lossDescription'];
+    protected $fillable = ['ci_code','lossDescription','dateModified','dateCreated'];
     public $timestamps= false;
 }
