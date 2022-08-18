@@ -68,12 +68,12 @@
 
 
                                                 <td>{{isset($customer_portforlio[2][0]["product"])?$customer_portforlio[2][0]["product"]:''}}</td>
-                                                <td>{{$customer_portforlio[0][0]["policy_number"]}}</td>
-                                                <td>{{$customer_portforlio[0][0]["from_date"]}}</td>
-                                                <td>{{$customer_portforlio[0][0]["to_date"]}}</td>
+                                                <td>{{isset($customer_portforlio[0][0]["policy_number"])?$customer_portforlio[0][0]["policy_number"]:""}}</td>
+                                                <td>{{isset($customer_portforlio[0][0]["from_date"])?$customer_portforlio[0][0]["from_date"]:""}}</td>
+                                                <td>{{isset($customer_portforlio[0][0]["to_date"])?$customer_portforlio[0][0]["to_date"]:""}}</td>
                                                 <td></td>
-                                                <td>{{$customer_portforlio[0][0]["premium"]}}</td>
-                                                <td>{{$customer_portforlio[1]}}</td>
+                                                <td>{{isset($customer_portforlio[0][0]["premium"])?$customer_portforlio[0][0]["premium"]:""}}</td>
+                                                <td>{{isset($customer_portforlio[1])?$customer_portforlio[1]:""}}</td>
                                                 <td>
                                                     <!-- Dropdown Trigger -->
                                                     <a class='dropdown-trigger' href='#'

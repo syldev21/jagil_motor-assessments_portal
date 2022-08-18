@@ -97,6 +97,11 @@
                                            id="submitSafClaim"> <i class="material-icons right">send</i>
                                             Submit Claim
                                         </a>
+                                        <a href="#"
+                                           class="float-right btn  waves-effect waves-effect waves-light showActionButton actionButton"
+                                           id="submittingSafClaim"> <i class="material-icons right">send</i>
+                                            Submitting
+                                        </a>
                                     </div>
 
                                 </div>
@@ -127,5 +132,7 @@
         function proforma() {
             document.getElementById("proforma").innerHTML = "Proforma invoice";
         }
+        $('#submitSafClaim').removeClass('hide');
+        $('#submittingSafClaim').addClass('hide');
     })
 </script>
