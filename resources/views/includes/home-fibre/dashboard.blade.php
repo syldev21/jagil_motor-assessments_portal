@@ -141,6 +141,7 @@
                         <i class="material-icons">fiber_pin</i>
                         <span data-i18n="Chartist">KRA PIN</span>
                     </u></p>
+                <p><b>{{isset($user->kra_pin)?$user->kra_pin:"N/A"}}</b></p>
                 <p><b>
 
                     </b></p>

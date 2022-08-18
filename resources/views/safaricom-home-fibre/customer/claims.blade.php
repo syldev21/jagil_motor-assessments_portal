@@ -67,12 +67,12 @@
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$claim->name}}</td>
-                                                <td>{{$policies[0]["assured_code"]}}</td>
-                                                <td>{{$policies[0]['policy_number']}}</td>
-                                                <td>{{$policies[0]["from_date"]}}</td>
-                                                <td>{{$policies[0]["to_date"]}}</td>
+                                                <td>{{isset($policies[0]["assured_code"])?$policies[0]["assured_code"]:""}}</td>
+                                                <td>{{isset($policies[0]['policy_number'])?$policies[0]['policy_number']:""}}</td>
+                                                <td>{{isset($policies[0]["from_date"])?$policies[0]["from_date"]:""}}</td>
+                                                <td>{{isset($policies[0]["to_date"])?$policies[0]["to_date"]:""}}</td>
                                                 <td>{{$claim->lossDescription}}</td>
-                                                <td>{{$claim->dateCreated}}</td>
+                                                <td>{{$claim['dateCreated']}}</td>
                                             </tr>
                                         @endforeach
                                         @else

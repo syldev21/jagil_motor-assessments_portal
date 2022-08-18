@@ -407,7 +407,7 @@ class SafaricomHomeFibreController extends Controller
                 $policies = [];
             }
 
-                    $updateUser=$user->update(['policy_number'=>isset($policies[0]['policy_number'])?$policies[0]['policy_number']:null, 'kra_pin'=>isset($policies[0]['kra_pin'])?$policies[0]['kra_pin']:null, 'assured_code'=>isset($policies[0]['assured_code'])?$policies[0]['assured_code']:null]);
+                    $updateUser=$user->update(['policy_number'=>isset($policies[0]['policy_number'])?$policies[0]['policy_number']:"N/A", 'kra_pin'=>isset($policies[0]['kra_pin'])?$policies[0]['kra_pin']:"N/A", 'assured_code'=>isset($policies[0]['assured_code'])?$policies[0]['assured_code']:null]);
 
 
 

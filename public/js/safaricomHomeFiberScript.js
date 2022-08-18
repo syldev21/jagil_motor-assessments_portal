@@ -221,6 +221,8 @@ $(document).ready(function () {
     });
     $("body").on('click','#submitSafClaim',function (){
         $("#loader-wrapper").removeClass('hideLoader');
+        $('#submitSafClaim').addClass('hide');
+        $('#submittingSafClaim').removeClass('hide');
         // alertify.set('notifier','position', 'top-right');
         // alertify.error('I am here');
 
@@ -277,6 +279,8 @@ $(document).ready(function () {
                         showConfirmButton: false,
                         timer: 3000
                     })
+                    // alertify.set('notifier','position', 'bottom-center');
+                    // alertify.success(result.STATUS_MESSAGE);
 
                 } else {
                     Swal.fire({
@@ -287,6 +291,9 @@ $(document).ready(function () {
                     })
                 }
                 removeLoadingButton();
+                $('#submitSafClaim').removeClass('hide');
+                $('#submittingSafClaim').addClass('hide');
+
             },
             error:function (error) {
                 console.log(error)
@@ -294,9 +301,12 @@ $(document).ready(function () {
                 alertify.set('notifier','position', 'bottom-left');
                 alertify.error("Kindly insert to all the mandatory fields");
                 // alertify.error(error);
+                $('#submitSafClaim').removeClass('hide');
+                $('#submittingSafClaim').addClass('hide');
             }
 
         });
+
     });
     $("body").on('click','.fetch-customers',function (){
 
