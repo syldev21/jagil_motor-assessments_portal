@@ -30,13 +30,13 @@
             @if(auth::user()->ci_code == null)
                 <li class="">
                     <a href="#" data-id="" class="sidenav-link launch_claim fetch-customers" id="">
-                        <i class="material-icons">assessment</i>
+                        <i class="material-icons">people</i>
                         <span data-i18n="ChartJS">Customer Details</span>
                     </a>
                 </li>
                 <li class="">
                     <a href="#" data-id="" class="sidenav-link fetchClaims" id="">
-                        <i class="material-icons">assessment</i>
+                        <i class="material-icons">toc</i>
                         <span data-i18n="ChartJS">Claims</span>
                     </a>
                 </li>
@@ -55,7 +55,7 @@
             </li>
             <li class="bold ">
                 <a class="collapsible-header sidenav-link" href="javascript:void(0)">
-                    <i class="material-icons">assessment</i>
+                    <i class="material-icons">toc</i>
                     <span class="menu-title" data-i18n="Chart">Claims</span>
                 </a>
                 <div class="collapsible-body">
@@ -68,7 +68,7 @@
                         </li>
                         <li class="">
                             <a href="#" data-id="" class="sidenav-link fetchClaims" id="">
-                                <i class="material-icons">article</i>
+                                <i class="material-icons">toc</i>
                                 <span data-i18n="ChartJS">My Claims</span>
                             </a>
                         </li>
