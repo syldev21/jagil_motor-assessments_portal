@@ -98,7 +98,7 @@
                                             Submit Claim
                                         </a>
                                         <a href="#"
-                                           class="float-right btn  waves-effect waves-effect waves-light showActionButton actionButton"
+                                           class=" hidden float-right btn  waves-effect waves-effect waves-light showActionButton actionButton"
                                            id="submittingSafClaim"> <i class="material-icons right">send</i>
                                             Submitting
                                         </a>
@@ -114,7 +114,6 @@
             </div>
         </div>
 </div>
-<!-- JavaScript -->
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
 <script>
