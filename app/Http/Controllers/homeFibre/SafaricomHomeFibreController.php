@@ -177,9 +177,7 @@ class SafaricomHomeFibreController extends Controller
         } else {
             $payments = [];
         }
-//        dd($payments);
         if (!empty($payments)){
-//            dd();
             if ($payments[0]['amount'] == 1350){
                 $sam_insured = 1000000;
             }elseif ($payments[0]['amount'] == 475){
@@ -199,8 +197,6 @@ class SafaricomHomeFibreController extends Controller
         session(["policies"=>$policies]);
         $customer_portforlio = [$policies, $status, $payments, $sam_insured
         ];
-//        dd();
-
         return view("safaricom-home-fibre.customer.portfolio", ["customer_portforlio"=>$customer_portforlio]);
     }
     public function fetchCPayments(Request $request){
