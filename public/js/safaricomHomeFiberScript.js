@@ -438,7 +438,7 @@ $(document).ready(function () {
 
         });
     });
-    $("body").on('click','#fetch-customer-payments',function (){
+    $("body").on('click','.fetch-customer-payments',function (){
         $("#loader-wrapper").removeClass('hideLoader');
         var ci_code = $(this).data("id");
         $.ajaxSetup({
