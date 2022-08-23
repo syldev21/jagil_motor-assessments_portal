@@ -71,8 +71,8 @@
                                                 <td>{{isset($customer_portforlio[0][0]["policy_number"])?$customer_portforlio[0][0]["policy_number"]:""}}</td>
                                                 <td>{{isset($customer_portforlio[0][0]["from_date"])?$customer_portforlio[0][0]["from_date"]:""}}</td>
                                                 <td>{{isset($customer_portforlio[0][0]["to_date"])?$customer_portforlio[0][0]["to_date"]:""}}</td>
-                                                <td></td>
-                                                <td>{{isset($customer_portforlio[0][0]["premium"])?$customer_portforlio[0][0]["premium"]:""}}</td>
+                                                <td>{{isset($customer_portforlio[3])?$customer_portforlio[3]:""}}</td>
+                                                <td>{{isset($customer_portforlio[2][0]['amount'])?$customer_portforlio[2][0]['amount']:""}}</td>
                                                 <td>{{isset($customer_portforlio[1])?$customer_portforlio[1]:""}}</td>
                                                 <td>
                                                     <!-- Dropdown Trigger -->
