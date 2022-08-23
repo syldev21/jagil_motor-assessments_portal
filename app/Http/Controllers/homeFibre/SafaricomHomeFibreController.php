@@ -153,7 +153,6 @@ class SafaricomHomeFibreController extends Controller
         return json_encode($response);
     }
     public function fetchPortfolio(Request $request){
-        $payments = session("payments");
         $ci_code = $request->ci_code;
         $email = $request->email;
         $phone = $request->phone;
@@ -168,7 +167,28 @@ class SafaricomHomeFibreController extends Controller
             $policies = [];
         }
 
-//        dd($policies);
+        $payment_data = array(
+            "code" => $ci_code
+        );
+        $response = $this->utility->getData($payment_data, '/api/v1/b2b/general/home-insurance/customer-payments', 'POST');
+        $claim_data = json_decode($response->getBody()->getContents());
+        if ($claim_data->status == 'success') {
+            $payments = json_decode(json_encode($claim_data->data), true);
+        } else {
+            $payments = [];
+        }
+//        dd($payments);
+        if (!empty($payments)){
+//            dd();
+            if ($payments[0]['amount'] == 1350){
+                $sam_insured = 1000000;
+            }elseif ($payments[0]['amount'] == 475){
+                $sam_insured = 500000;
+            }else{
+                $sam_insured = 250000;
+            }
+        }
+
         if (Carbon::now()->format("Y-m-d  H:i:s") > $policies[0]["to_date"]){
             $status="Lapsed";
         }elseif (Carbon::now()->addDays(30)->format("Y-m-d  H:i:s") == $policies[0]["to_date"]){
@@ -177,8 +197,9 @@ class SafaricomHomeFibreController extends Controller
             $status="Active";
         }
         session(["policies"=>$policies]);
-        $customer_portforlio = [$policies, $status, $payments
+        $customer_portforlio = [$policies, $status, $payments, $sam_insured
         ];
+//        dd();
 
         return view("safaricom-home-fibre.customer.portfolio", ["customer_portforlio"=>$customer_portforlio]);
     }
@@ -415,7 +436,6 @@ class SafaricomHomeFibreController extends Controller
             } else {
                 $policies = [];
             }
-
                     $updateUser=$user->update(['policy_number'=>isset($policies[0]['policy_number'])?$policies[0]['policy_number']:"", 'kra_pin'=>isset($policies[0]['kra_pin'])?$policies[0]['kra_pin']:"", 'assured_code'=>isset($policies[0]['assured_code'])?$policies[0]['assured_code']:'']);
 
 
@@ -428,7 +448,6 @@ class SafaricomHomeFibreController extends Controller
                                     ->get();
             $policies = [];
         }
-
         return view("safaricom-home-fibre.customer.claims", ["claims"=>$claims, "policies"=>$policies]);
     }
 }
