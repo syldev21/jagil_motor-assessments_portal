@@ -88,7 +88,8 @@ class SafaricomHomeFibreController extends Controller
         } else {
             $payments = [];
         }
-        return view('safaricom-home-fibre.customer-payments', ['payments' => $payments]);
+        $payment = isset(auth::user()->ci_code)?"My Payments": "Customer Payments";
+        return view('safaricom-home-fibre.customer-payments', ['payments' => $payments, 'payment' => $payment]);
     }
 
     public function fetchPolicyDetails(Request $request)

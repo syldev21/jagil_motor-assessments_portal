@@ -50,7 +50,7 @@
             <li class="">
                 <a href="#" data-id="{{$user->ci_code}}" class="sidenav-link fetch-customer-payments" id="">
                     <i class="material-icons">attach_money</i>
-                    <span data-i18n="Chartist">Payments</span>
+                    <span data-i18n="Chartist">My Payments</span>
                 </a>
             </li>
             <li class="bold ">

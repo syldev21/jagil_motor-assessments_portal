@@ -12,7 +12,9 @@
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <h4 class="card-title float-left">Customer Payments</h4>
+                                <h4 class="card-title float-left">
+                                    {{$payment}}
+                                </h4>
                             </div>
                             <div class="row">
                                 <div class="row">
