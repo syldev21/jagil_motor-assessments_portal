@@ -49,6 +49,32 @@ class Fetch_Safaricom_Customers extends Command
         $this->fetchCustomers();
     }
     public function fetchCustomers(){
+//        $users = User::whereKraPin(null)->where("userTypeID", 3)->get();
+//        foreach ($users as $saf_user){
+//            $ci_code=$saf_user->ci_code;
+//            $data = array(
+//                "unique_id" => $ci_code
+//            );
+//            $response = $this->utility->getData($data, '/api/v1/saf-home/get-policy-details', 'POST');$claim_data = json_decode($response->getBody()->getContents());
+//            if ($claim_data->status == 'success') {
+//                $policies = json_decode(json_encode($claim_data->data), true);
+//            } else {
+//                $policies = [];
+//            }
+//
+//            $updateUser=$saf_user->update(['policy_number'=>isset($policies[0]['policy_number'])?$policies[0]['policy_number']:"", 'kra_pin'=>isset($policies[0]['kra_pin'])?$policies[0]['kra_pin']:"", 'assured_code'=>isset($policies[0]['assured_code'])?$policies[0]['assured_code']:'']);
+//            if ($updateUser){
+//                dump("user updated successfully");
+//            }else{
+//                dump("user not updated");
+//            }
+//        }
+//        dd();
+//        $users = User::where(["userTypeID" => 3])->update(['policy_number'=>isset($policies[0]['policy_number'])?$policies[0]['policy_number']:NULL, 'kra_pin'=>isset($policies[0]['kra_pin'])?$policies[0]['kra_pin']:NULL, 'assured_code'=>isset($policies[0]['assured_code'])?$policies[0]['assured_code']:NULL]);
+//
+//        dd();
+//        $users = User::whereKraPin(null)->where("userTypeID", 3)->get();
+//        dd(count($users));
         $data = array();
         $response = $this->utility->getData($data, '/api/v1/b2b/general/home-insurance/all-customers', 'POST');
         $claim_data = json_decode($response->getBody()->getContents());
@@ -57,8 +83,6 @@ class Fetch_Safaricom_Customers extends Command
         } else {
             $customers = [];
         }
-//        User::where("userTypeID", "=", 3)->where("id", ">", 1083)->update(["email_verified_at"=>Carbon::now()->format("Y-m-d  H:i:s")]);
-
         foreach ($customers as $customer){
             if ($customer['client_email'] != null){
 
@@ -68,8 +92,6 @@ class Fetch_Safaricom_Customers extends Command
                 }else{
                     $middleName='';
                 }
-
-//                dd(count(User::where("userTypeID", "=", 3)->where("id", ">", 1083)->get()));
                 $user = User::where('email', '=', $customer['client_email'])->first();
                 if ($user === null){
                     $createUser = User::updateOrCreate([
@@ -112,26 +134,30 @@ class Fetch_Safaricom_Customers extends Command
                         dump("SHF customer created successfully");
                     }
                 }else{
-                    dump("all the latest customers exist");
+                    dump("this customer is already created");
                 }
             }
         }
-//        $users = User::where(['email'=> $customer['client_email'], 'kra_pin'=>null])->get();
-//        foreach ($users as $us){
-//            if (isset($us->ci_code)){
-//                $data = array(
-//                    "unique_id" => $us->ci_code
-//                );
-//                $response = $this->utility->getData($data, '/api/v1/saf-home/get-policy-details', 'POST');
-//                $claim_data = json_decode($response->getBody()->getContents());
-//                if ($claim_data->status == 'success') {
-//                    $policies = json_decode(json_encode($claim_data->data), true);
-//                } else {
-//                    $policies = [];
-//                }
-//
-//                $user->update(['kra_pin'=>$policies[0]['kra_pin']]);
-//            }
-//        }
+
+        $users = User::whereKraPin(null)->where("userTypeID", 3)->get();
+        foreach ($users as $saf_user){
+            $ci_code=$user->ci_code;
+            $data = array(
+                "unique_id" => $ci_code
+            );
+            $response = $this->utility->getData($data, '/api/v1/saf-home/get-policy-details', 'POST');$claim_data = json_decode($response->getBody()->getContents());
+            if ($claim_data->status == 'success') {
+                $policies = json_decode(json_encode($claim_data->data), true);
+            } else {
+                $policies = [];
+            }
+
+            $updateUser=$saf_user->update(['policy_number'=>isset($policies[0]['policy_number'])?$policies[0]['policy_number']:NULL, 'kra_pin'=>isset($policies[0]['kra_pin'])?$policies[0]['kra_pin']:NULL, 'assured_code'=>isset($policies[0]['assured_code'])?$policies[0]['assured_code']:NULL]);
+            if ($updateUser){
+                dump("user updated successfully");
+            }else{
+                dump("user not updated");
+            }
+        }
     }
 }
