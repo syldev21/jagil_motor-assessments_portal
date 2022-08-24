@@ -408,18 +408,6 @@ class SafaricomHomeFibreController extends Controller
             return json_encode($response);
     }
     public function fetchAllClaims(){
-
-//        $claims = SafaricomClaim::all();
-//        if (count($claims)>0){
-//            foreach ($claims as $claim){
-//                $deleted= $claim->find($claim->id)->delete();
-//            }
-//            if ($deleted){
-//                dd("deleted");
-//            }else{
-//                dd("not deleted");
-//            }
-//        }
         if (isset(Auth::user()->ci_code)){
             $user=Auth::user();
             $ci_code=$user->ci_code;
@@ -433,10 +421,6 @@ class SafaricomHomeFibreController extends Controller
             } else {
                 $policies = [];
             }
-                    $updateUser=$user->update(['policy_number'=>isset($policies[0]['policy_number'])?$policies[0]['policy_number']:"", 'kra_pin'=>isset($policies[0]['kra_pin'])?$policies[0]['kra_pin']:"", 'assured_code'=>isset($policies[0]['assured_code'])?$policies[0]['assured_code']:'']);
-
-
-
             $claims = User::join('safaricom_home_claims', "safaricom_home_claims.ci_code", "=", "users.ci_code")
                                     ->where(['users.ci_code'=>$ci_code])
                                     ->get();
