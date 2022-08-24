@@ -81,11 +81,11 @@ class Fetch_Safaricom_Customers extends Command
                         'userTypeID'=>3,
                         'ci_code'=>$customer['code'],
                         'c_product'=>$customer['product'],
-                        'kra_pin'=>null,
-                        'location'=>null,
-                        'latitude'=>null,
-                        'longitude'=>null,
-                        'loggedInAt'=>null,
+                        'kra_pin'=>NULL,
+                        'location'=>NULL,
+                        'latitude'=>NULL,
+                        'longitude'=>NULL,
+                        'loggedInAt'=>NULL,
                         'email_verified_at'=>Carbon::now()->format("Y-m-d  H:i:s"),
                         'emailVerifiedAt'=>Carbon::now()->format("Y-m-d  H:i:s"),
                         'loggedOutAt'=>Carbon::now()->format("Y-m-d  H:i:s"),
@@ -115,7 +115,7 @@ class Fetch_Safaricom_Customers extends Command
 
         $users = User::whereKraPin(NULL)->where("userTypeID", 3)->get();
         foreach ($users as $saf_user){
-            $ci_code=$user->ci_code;
+            $ci_code=$saf_user->ci_code;
             $data = array(
                 "unique_id" => $ci_code
             );
