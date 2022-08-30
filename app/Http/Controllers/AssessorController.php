@@ -213,7 +213,7 @@ class AssessorController extends Controller
                 $thirdPartyDriver = $request->thirdPartyDriver;
                 $thirdPartyPolicy = $request->thirdPartyPolicy;
                 $thirdPartyVehicleRegNo = $request->thirdPartyVehicleRegNo;
-                Claim::where(['id'=>$claimID])->update([
+                $claim = Claim::where(['id'=>$claimID])->update([
                     "companyID"=>$companyID,
                     "isSubrogate"=>$isSubrogate,
                     "thirdPartyDriver"=>$thirdPartyDriver,
@@ -222,7 +222,26 @@ class AssessorController extends Controller
                     "dateModified"=>$this->functions->curlDate(),
                     "updatedBy"=>Auth::user()->id
                 ]);
+
+                if ($claim){
+                    $assessment = Assessment::where(['claimID'=>$claimID])->first();
+                if(isset($assessment->assessmentStatusID)){
+                    if ($assessment->assessmentStatusID == Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']){
+                        $assessment->update([
+                            "companyID" => $companyID,
+                            "isSubrogate" => $isSubrogate,
+                            "thirdPartyDriver" => $thirdPartyDriver,
+                            "thirdPartyPolicy" => $thirdPartyPolicy,
+                            "thirdPartyVehicleRegNo" => $thirdPartyVehicleRegNo,
+                            "dateModified" => $this->functions->curlDate(),
+                            "updatedBy" => Auth::user()->id
+                        ]);
+                    }
+                }
+                }
+
             }
+
             $claimData = Claim::where(['id'=>$claimID])->first();
             $claimNo =  str_replace("/","_",$claimData->claimNo);
 
