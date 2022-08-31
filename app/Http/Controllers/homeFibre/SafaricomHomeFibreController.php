@@ -48,16 +48,37 @@ class SafaricomHomeFibreController extends Controller
         return view('layouts.home-fibre.master', ['summary' => $summary]);
     }
 
-    public function fetchCustomers()
+    public function fetchCustomers(Request $request)
     {
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+//        dump($from_date);
+//        dd($to_date);
         $data = array();
         $response = $this->utility->getData($data, '/api/v1/b2b/general/home-insurance/all-customers', 'POST');
         $claim_data = json_decode($response->getBody()->getContents());
         if ($claim_data->status == 'success') {
-            $customers = json_decode(json_encode($claim_data->data), true);
+            $all_customers = json_decode(json_encode($claim_data->data), true);
         } else {
-            $customers = [];
+            $all_customers = [];
         }
+
+        if (!empty($all_customers)){
+            if (!isset($request->from_date)  &&  !isset($request->from_date)){
+                $customers = $all_customers;
+            }elseif(isset($from_date)  &&  isset($to_date)){
+//
+                $customers = $all_customers->filter(function($customer) use ($from_date, $to_date){
+                    return \Carbon\Carbon::parse($customer->created_at) -> greaterThanOrEqualTo($from_date)
+                        &&
+                            \Carbon\Carbon::parse($customer->created_at) -> lessThanOrEqualTo($to_date)
+                        ;
+                });
+            }else{
+                $customers = [];
+            }
+        }
+
         return view('safaricom-home-fibre.customers', ['customers' => $customers]);
     }
 
@@ -421,6 +442,7 @@ class SafaricomHomeFibreController extends Controller
             } else {
                 $policies = [];
             }
+
             $claims = User::join('safaricom_home_claims', "safaricom_home_claims.ci_code", "=", "users.ci_code")
                                     ->where(['users.ci_code'=>$ci_code])
                                     ->get();
