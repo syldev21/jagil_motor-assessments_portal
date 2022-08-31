@@ -50,36 +50,45 @@ class SafaricomHomeFibreController extends Controller
 
     public function fetchCustomers(Request $request)
     {
-        $from_date = \Carbon\Carbon::parse($request->from_date)->toDateString();
-        $to_date = e\Carbon\Carbon::parse($request->to_dat)->toDateString();
-//        dump($from_date);
-//        dd($to_date);
-        $data = array();
-        $response = $this->utility->getData($data, '/api/v1/b2b/general/home-insurance/all-customers', 'POST');
-        $claim_data = json_decode($response->getBody()->getContents());
-        if ($claim_data->status == 'success') {
-            $all_customers = json_decode(json_encode($claim_data->data), true);
-        } else {
-            $all_customers = [];
-        }
-
-        if (!empty($all_customers)){
-            if (!isset($request->from_date)  &&  !isset($request->from_date)){
-                $customers = $all_customers;
-            }elseif(isset($from_date)  &&  isset($to_date)){
-//
-                $customers = $all_customers->filter(function($customer) use ($from_date, $to_date){
-                     return \Carbon\Carbon::parse($customer['created_at'])->toDateString()->greaterThanOrEqualTo($from_date)
-                        &&
-                            \Carbon\Carbon::parse($customer['created_at'])->toDateString()->lessThanOrEqualTo($to_date)
-                        ;
-                });
-            }else{
-                $customers = [];
+        try {
+            $from_date = \Carbon\Carbon::parse($request->from_date)->toDateString();
+            $to_date = e\Carbon\Carbon::parse($request->to_dat)->toDateString();
+            //        dump($from_date);
+            //        dd($to_date);
+            $data = array();
+            $response = $this->utility->getData($data, '/api/v1/b2b/general/home-insurance/all-customers', 'POST');
+            $claim_data = json_decode($response->getBody()->getContents());
+            if ($claim_data->status == 'success') {
+                $all_customers = json_decode(json_encode($claim_data->data), true);
+            } else {
+                $all_customers = [];
             }
-        }
 
-        return view('safaricom-home-fibre.customers', ['customers' => $customers]);
+            if (!empty($all_customers)) {
+                if (!isset($request->from_date) && !isset($request->from_date)) {
+                    $customers = $all_customers;
+                } elseif (isset($from_date) && isset($to_date)) {
+                    //
+                    $customers = $all_customers->filter(function ($customer) use ($from_date, $to_date) {
+                        return \Carbon\Carbon::parse($customer['created_at'])->toDateString()->greaterThanOrEqualTo($from_date)
+                            &&
+                            \Carbon\Carbon::parse($customer['created_at'])->toDateString()->lessThanOrEqualTo($to_date);
+                    });
+                } else {
+                    $customers = [];
+                }
+            }
+
+            return view('safaricom-home-fibre.customers', ['customers' => $customers]);
+        }catch (\Exception $e) {
+            dump($e->getMessage());
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to create a claim. Error message " . $e->getMessage());
+        }
     }
 
     public function fetchPayments()
