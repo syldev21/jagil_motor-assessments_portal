@@ -70,7 +70,7 @@ class SafaricomHomeFibreController extends Controller
                 } elseif (isset($from_date) && isset($to_date)) {
                     //
                     $customers = collect($all_customers)->filter(function ($customer) use ($from_date, $to_date) {
-                        dd($customer);
+//                        dd($customer);
                         return \Carbon\Carbon::parse($customer['created_at'])->greaterThanOrEqualTo($from_date)
                             &&
                             \Carbon\Carbon::parse($customer['created_at'])->lessThanOrEqualTo($to_date);
