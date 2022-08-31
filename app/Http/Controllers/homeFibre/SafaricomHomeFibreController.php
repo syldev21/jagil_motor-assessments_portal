@@ -50,8 +50,8 @@ class SafaricomHomeFibreController extends Controller
 
     public function fetchCustomers(Request $request)
     {
-        $from_date = $request->from_date;
-        $to_date = $request->to_date;
+        $from_date = \Carbon\Carbon::parse($request->from_date)->toDateString();
+        $to_date = e\Carbon\Carbon::parse($request->to_dat)->toDateString();
 //        dump($from_date);
 //        dd($to_date);
         $data = array();
@@ -69,9 +69,9 @@ class SafaricomHomeFibreController extends Controller
             }elseif(isset($from_date)  &&  isset($to_date)){
 //
                 $customers = $all_customers->filter(function($customer) use ($from_date, $to_date){
-                    return \Carbon\Carbon::parse($customer->created_at) -> greaterThanOrEqualTo($from_date)
+                     return \Carbon\Carbon::parse($customer['created_at'])->toDateString()->greaterThanOrEqualTo($from_date)
                         &&
-                            \Carbon\Carbon::parse($customer->created_at) -> lessThanOrEqualTo($to_date)
+                            \Carbon\Carbon::parse($customer['created_at'])->toDateString()->lessThanOrEqualTo($to_date)
                         ;
                 });
             }else{
