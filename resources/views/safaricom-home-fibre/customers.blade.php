@@ -23,12 +23,12 @@
                                 <div class="row">
                                     <div class="input-field col m3 s6">
                                         <i class="material-icons prefix">access_time</i>
-                                        <input id="from_date" type="text" class="validate datepicker">
+                                        <input id="from_date" type="text" class="validate datepicker fromDate">
                                         <label for="from_date">From Date</label>
                                     </div>
                                     <div class="input-field col m3 s6">
                                         <i class="material-icons prefix">access_time</i>
-                                        <input id="to_date" type="text" class="validate datepicker">
+                                        <input id="to_date" type="text" class="validate datepicker toDate">
                                         <label for="to_date">To Date</label>
                                     </div>
 {{--                                    <div class="input-field col m3 s6">--}}
@@ -38,7 +38,7 @@
 {{--                                    </div>--}}
                                     <div class="input-field col m3 s12">
                                         <div class="input-field col s12">
-                                            <button class="btn cyan waves-effect waves-light" type="submit" id="filterReInspections"
+                                            <button class="btn cyan waves-effect waves-light" type="submit" id="filterCustomers"
                                                     name="action">
                                                 <i class="material-icons left">search</i> Filter
                                             </button>
