@@ -52,7 +52,7 @@ class SafaricomHomeFibreController extends Controller
     {
         try {
             $from_date = \Carbon\Carbon::parse($request->from_date)->toDateString();
-            $to_date = e\Carbon\Carbon::parse($request->to_dat)->toDateString();
+            $to_date = \Carbon\Carbon::parse($request->to_date)->toDateString();
             //        dump($from_date);
             //        dd($to_date);
             $data = array();
@@ -69,10 +69,11 @@ class SafaricomHomeFibreController extends Controller
                     $customers = $all_customers;
                 } elseif (isset($from_date) && isset($to_date)) {
                     //
-                    $customers = $all_customers->filter(function ($customer) use ($from_date, $to_date) {
-                        return \Carbon\Carbon::parse($customer['created_at'])->toDateString()->greaterThanOrEqualTo($from_date)
+                    $customers = collect($all_customers)->filter(function ($customer) use ($from_date, $to_date) {
+                        dd($customer);
+                        return \Carbon\Carbon::parse($customer['created_at'])->greaterThanOrEqualTo($from_date)
                             &&
-                            \Carbon\Carbon::parse($customer['created_at'])->toDateString()->lessThanOrEqualTo($to_date);
+                            \Carbon\Carbon::parse($customer['created_at'])->lessThanOrEqualTo($to_date);
                     });
                 } else {
                     $customers = [];
@@ -81,6 +82,7 @@ class SafaricomHomeFibreController extends Controller
 
             return view('safaricom-home-fibre.customers', ['customers' => $customers]);
         }catch (\Exception $e) {
+//            dump($e->getMessage());
             dump($e->getMessage());
             $response = array(
                 "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
