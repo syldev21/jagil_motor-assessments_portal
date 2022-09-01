@@ -340,6 +340,45 @@ $(document).ready(function () {
 
         });
     });
+    $("body").on('click','#filterCustomers',function (){
+
+        $("#loader-wrapper").removeClass('hideLoader');
+
+        var from_date = $('#from_date').val();
+        var to_date = $('#to_date').val();
+
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            url: '/safaricom-home-fibre/fetch-customers',
+            data: {
+                from_date : from_date,
+                to_date : to_date
+            },
+            success: function (data) {
+                $("#main").html(data);
+                $('.datepicker').datepicker();
+                $('#data-table-simple').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "pageLength": 25
+                });
+                $("#loader-wrapper").addClass('hideLoader');
+            }
+
+        });
+    });
     $("body").on('click','.fetchClaims',function (){
 
         $("#loader-wrapper").removeClass('hideLoader');
