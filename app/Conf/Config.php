@@ -650,9 +650,9 @@ class Config
     );
 
     const SAF_EMAIL=array(
-            "NAME"=>"Mary Ngure",
-            "PHONE"=>"0709901206",
-            "EMAIL"=>"mary.ngure@allianz.com"
+        "NAME"=>"Mary Ngure",
+        "PHONE"=>"0709901206",
+        "EMAIL"=>"mary.ngure@allianz.com"
     );
 
     /*** Metropol KYC Integration ***/
