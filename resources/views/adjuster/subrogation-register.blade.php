@@ -67,7 +67,7 @@
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$subrogationClaim->claimNo}}</td>
                                                 <td>{{$subrogationClaim->claim->vehicleRegNo}}</td>
-                                                <td>{{$subrogationClaim->companyID >=0  ? \App\Company::where("id", $subrogationClaim->companyID)->first()->name : ""}}</td>
+                                                <td>{{isset(\App\Company::where("id", $subrogationClaim->companyID)->whereNotNull("name")->first()->name) ? \App\Company::where("id", $subrogationClaim->companyID)->whereNotNull("name")->first()->name : ""}}</td>
                                                 <td>{{$subrogationClaim->thirdPartyDriver}}</td>
                                                 <td>{{$subrogationClaim->thirdPartyVehicleRegNo}}</td>
                                                 <td>{{$subrogationClaim->totalCost}}</td>

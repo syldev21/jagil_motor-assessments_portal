@@ -1414,13 +1414,26 @@ class AdjusterController extends Controller
         return view('adjuster.courtesy-cars', ['courtesyCars'=>$courtesyCars]);
     }
     public function showSubrogationRegister(){
-        $subrogationClaims=Assessment::join('claims', "assessments.claimID", "=", "claims.id")
-                                        ->join('companies', "assessments.companyID", "=", "companies.id")
+        try{
+            $subrogationClaims=Assessment::join('claims', "assessments.claimID", "=", "claims.id")
+                ->join('companies', "assessments.companyID", "=", "companies.id")
 //                                        ->join('car_models', "claims.carModelCode", "=", "car_models.modelCode")
-                                        ->where("assessments.isSubrogate", "=", 1)
-                                        ->orderBy("assessments.demandLetterDate", "DESC")
-                                        ->get();
-        return view("adjuster.subrogation-register", ["subrogationClaims"=>$subrogationClaims]);
+                ->where("assessments.isSubrogate", "=", 1)
+                ->orderBy("assessments.demandLetterDate", "DESC")
+                ->get();
+
+            return view("adjuster.subrogation-register", ["subrogationClaims"=>$subrogationClaims]);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to create a claim. Error message " . $e->getMessage());
+        }
+
+        return json_encode($response);
     }
     public function getCharge(Request $request){
         $vendorID=$request->vendorID;
