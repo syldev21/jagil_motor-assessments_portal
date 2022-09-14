@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="input-field col s12 center">
                     <img src="{{ asset('logins/images/img_avatar.png') }}" alt="" class="circle responsive-img valign profile-image-login">
-                    <p class="center login-form-text">Welcome to Jubilee-Allianz</p>
+                    <p class="center login-form-text text-blue">Welcome to Jubilee-Allianz</p>
                 </div>
             </div>
             <div class="row margin">
