@@ -32,7 +32,8 @@
     <!-- END: VENDOR CSS-->
     <!-- BEGIN: Page Level CSS-->
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> --}}
+    <link rel="stylesheet" href="{{ asset('css/materialize.css') }}">
 {{--    <link rel="stylesheet" type="text/css"--}}
 {{--          href=" {{ asset('css/themes/vertical-modern-menu-template/materialize.css') }} ">--}}
     <link rel="stylesheet" type="text/css"
