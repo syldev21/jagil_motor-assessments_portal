@@ -53,7 +53,7 @@
 {{--                        </a>--}}
 {{--                    </li>--}}
                     <li>
-                            <img style="height: 60px; width: 180px" class="responsive-img" src="{{ url('images/logo/safaricom_logo.png') }}" alt="Jubilee logo"/>
+                            <img style="height: 60px; width: 180px" class="responsive-img" src="{{ url('images/logo/safaricom_logo.png') }}" alt="safaricom logo"/>
                     </li>
                 </ul>
 {{--                @if(isset($user->unreadNotifications))--}}
