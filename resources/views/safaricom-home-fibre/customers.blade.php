@@ -71,6 +71,27 @@
                                                 <td>{{ isset($customer['client_phone']) ? $customer['client_phone'] : '' }}</td>
                                                 <td>{{ isset($customer['physical_address']) ? $customer['physical_address'] : '' }}</td>
                                                 <td>{{ isset($customer['product']) ? $customer['product'] : '' }}</td>
+{{--                                                <td>--}}
+{{--                                                    <!-- Dropdown Trigger -->--}}
+{{--                                                    <a class='dropdown-trigger' href='#'--}}
+{{--                                                       data-target='{{$loop->iteration}}'--}}
+{{--                                                       data-activates="{{$loop->iteration}}"><i--}}
+{{--                                                            class="Medium material-icons">menu</i><i--}}
+{{--                                                            class="Medium material-icons">expand_more</i></a>--}}
+
+{{--                                                    <ul id='{{$loop->iteration}}' class='dropdown-content'>--}}
+{{--                                                        <li class="fetch-customer-payments" data-id="{{$customer['code']}}">--}}
+{{--                                                            <a href="#"><i class="material-icons">attach_money</i>View Payments</a>--}}
+{{--                                                        </li>--}}
+{{--                                                        <li id="fetch-policy-details" data-id="{{$customer['code']}}" data-id2="{{$customer['client_email']}}" data-id3="{{$customer['client_phone']}}">--}}
+{{--                                                            <a href="#"><i class="material-icons">attach_money</i>View Policy</a>--}}
+{{--                                                        </li>--}}
+{{--                                                        <li>--}}
+{{--                                                            <a href="#" id="triggerNotification" data-id=""><i--}}
+{{--                                                                    class="material-icons">notifications_active</i>Send Notification </a>--}}
+{{--                                                        </li>--}}
+{{--                                                    </ul>--}}
+{{--                                                </td>--}}
                                                 <td>
                                                     <!-- Dropdown Trigger -->
                                                     <a class='dropdown-trigger' href='#'
@@ -79,6 +100,7 @@
                                                             class="Medium material-icons">menu</i><i
                                                             class="Medium material-icons">expand_more</i></a>
 
+                                                    <!-- Dropdown Structure -->
                                                     <ul id='{{$loop->iteration}}' class='dropdown-content'>
                                                         <li class="fetch-customer-payments" data-id="{{$customer['code']}}">
                                                             <a href="#"><i class="material-icons">attach_money</i>View Payments</a>
@@ -91,6 +113,7 @@
                                                                     class="material-icons">notifications_active</i>Send Notification </a>
                                                         </li>
                                                     </ul>
+
                                                 </td>
                                             </tr>
                                             @endif
