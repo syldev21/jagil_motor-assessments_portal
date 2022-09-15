@@ -32,25 +32,28 @@
                             <i class="material-icons">search</i>
                         </a>
                     </li>
+{{--                    <li>--}}
+{{--                        <a class="waves-effect waves-block waves-light notification-button dropdown-trigger" href="javascript:void(0);"--}}
+{{--                           data-target="notifications-dropdown">--}}
+{{--                            <i class="material-icons">notifications_none<small class="notification-badge"></small></i>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                    <li>--}}
+{{--                        <a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);"--}}
+{{--                           data-target="profile-dropdown">--}}
+{{--            <span class="avatar-status avatar-online">--}}
+{{--              <img src="{{ url('images/avatar/user.png') }}" alt="avatar"><i></i>--}}
+{{--            </span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                    <li>--}}
+{{--                        <a class="waves-effect waves-block waves-light sidenav-trigger" href="#"--}}
+{{--                           data-target="slide-out-right">--}}
+{{--                            <i class="material-icons">format_indent_increase</i>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li>
-                        <a class="waves-effect waves-block waves-light notification-button dropdown-trigger" href="javascript:void(0);"
-                           data-target="notifications-dropdown">
-                            <i class="material-icons">notifications_none<small class="notification-badge"></small></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="waves-effect waves-block waves-light profile-button" href="javascript:void(0);"
-                           data-target="profile-dropdown">
-            <span class="avatar-status avatar-online">
-              <img src="{{ url('images/avatar/user.png') }}" alt="avatar"><i></i>
-            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="waves-effect waves-block waves-light sidenav-trigger" href="#"
-                           data-target="slide-out-right">
-                            <i class="material-icons">format_indent_increase</i>
-                        </a>
+                            <img style="height: 60px; width: 180px" class="responsive-img" src="{{ url('images/logo/safaricom_logo.png') }}" alt="Jubilee logo"/>
                     </li>
                 </ul>
 {{--                @if(isset($user->unreadNotifications))--}}
