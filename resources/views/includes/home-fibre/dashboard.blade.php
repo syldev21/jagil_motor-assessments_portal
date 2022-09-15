@@ -21,19 +21,19 @@
 {{--        ContactUSModal structure--}}
 
         <div id="contactUs" class="modal">
-            <div class="modal-content">
+            <div class="modal-content" style="background-color: #003781">
                 <div class="modal-header">
                     <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
                 </div>
                 <div class="modal-body clearfix">
-                    <h3>Jubilee General Allianz</h3>
+                    <h3 style="color: white; font-size: 30px">Jubilee Allianz General Insurance Kenya Limited</h3>
 
-                    <p>Jubilee Insurance Centre,</p>
-                    <p>Wabera Street, Nairobi</p>
-                    <p>P.O. Box 6685 - 00100 GPO, Nairobi, Kenya</p>
-                    <p>Telephone: +254 20 328 1000</p>
-                    <p>Call Centre: +254 709 949 000</p>
-                    <p>Talk2us@allianz.com</p>
+                    <p style="color: white">Jubilee Insurance Centre,</p>
+                    <p style="color: white">Wabera Street, Nairobi</p>
+                    <p style="color: white">P.O. Box 6685 - 00100 GPO, Nairobi, Kenya</p>
+                    <p style="color: white">Telephone: +254 20 328 1000</p>
+                    <p style="color: white">Call Centre: +254 709 949 000</p>
+                    <p style="color: white">Talk2us@allianz.com</p>
                 </div>
             </div>
         </div>
@@ -45,14 +45,14 @@
                     <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
                 </div>
                 <div class="modal-body clearfix">
-                    <h3>Jubilee General Allianz</h3>
+                    <h3 style="color: white; font-size: 30px">Jubilee General Allianz</h3>
 
-                    <p>Jubilee Insurance Centre,</p>
-                    <p>Wabera Street, Nairobi</p>
-                    <p>P.O. Box 6685 - 00100 GPO, Nairobi, Kenya</p>
-                    <p>Telephone: +254 20 328 1000</p>
-                    <p>Call Centre: +254 709 949 000</p>
-                    <p>Talk2us@allianz.com</p>
+                    <p style="color: white">Jubilee Insurance Centre,</p>
+                    <p style="color: white">Wabera Street, Nairobi</p>
+                    <p style="color: white">P.O. Box 6685 - 00100 GPO, Nairobi, Kenya</p>
+                    <p style="color: white">Telephone: +254 20 328 1000</p>
+                    <p style="color: white">Call Centre: +254 709 949 000</p>
+                    <p style="color: white">Talk2us@allianz.com</p>
                 </div>
             </div>
         </div>
