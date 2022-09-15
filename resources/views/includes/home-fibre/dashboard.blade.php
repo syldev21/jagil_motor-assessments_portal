@@ -26,7 +26,7 @@
                     <a href="#" class="modal-action modal-close float-right"><i class="material-icons">close</i></a>
                 </div>
                 <div class="modal-body clearfix">
-                    <h3 style="color: white; font-size: 30px">Jubilee Allianz General Insurance Kenya Limited</h3>
+                    <h3 style="color: white; font-size: 30px">Jubilee Allianz General Insurance (k) Limited</h3>
 
                     <p style="color: white">Jubilee Insurance Centre,</p>
                     <p style="color: white">Wabera Street, Nairobi</p>
