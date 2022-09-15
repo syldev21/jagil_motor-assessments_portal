@@ -63,8 +63,9 @@
                                         </thead>
                                         <tbody>
                                         @foreach($customers as $customer)
+                                            @if ($customer['client_email'] !== null)
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$loop->iteration -3}}</td>
                                                 <td>{{ isset($customer['client_name']) ? $customer['client_name'] : '' }}</td>
                                                 <td>{{ isset($customer['client_email']) ? $customer['client_email'] : '' }}</td>
                                                 <td>{{ isset($customer['client_phone']) ? $customer['client_phone'] : '' }}</td>
@@ -92,6 +93,7 @@
                                                     </ul>
                                                 </td>
                                             </tr>
+                                            @endif
                                         @endforeach
                                         </tbody>
                                     </table>
