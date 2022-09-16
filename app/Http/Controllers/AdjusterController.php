@@ -760,7 +760,14 @@ class AdjusterController extends Controller
         $adjuster = User::where(['id' => $assessment->claim->createdBy])->first();
         $assessor = User::where(['id' => $assessment->assessedBy])->first();
         $carDetail = CarModel::where(['makeCode' => isset($assessment['claim']['carMakeCode']) ? $assessment['claim']['carMakeCode'] : '', 'modelCode' => isset($assessment['claim']['carModelCode']) ? $assessment['claim']['carModelCode'] : ''])->first();
-        return view("adjuster.assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail, 'priceChange' => $priceChange]);
+        if (isset($insured['middleName']) && isset($insured['lastName'])){
+            $middleName = $insured['middleName']." ". $insured['lastName'];
+        }elseif (isset($insured['middleName']) && !isset($insured['lastName'])) {
+            $middleName = $insured['middleName'];
+        }else{
+            $middleName = $insured['lastName'];
+        }
+        return view("adjuster.assessment-report", ['assessment' => $assessment, "assessmentItems" => $assessmentItems, "jobDetails" => $jobDetails, "insured" => $insured, 'documents' => $documents, 'adjuster' => $adjuster, 'assessor' => $assessor, 'aproved' => $aproved, 'carDetail' => $carDetail, 'priceChange' => $priceChange, 'middleName'=>$middleName]);
     }
 
     public function claims(Request $request)
