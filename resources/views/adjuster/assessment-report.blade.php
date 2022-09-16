@@ -63,7 +63,7 @@
                                         <li class="col s3">Policy Number: <h6>{{$assessment['claim']['policyNo']}}</h6>
                                         </li>
                                         <li class="col s3">Adjuster: <h6>{{$adjuster->firstName." ".$adjuster->lastName}}</h6></li>
-                                        <li class="col s3">Insured: <h6>{{$insured['fullName']}}</h6></li>
+                                        <li class="col s3">Insured: <h6>{{$insured['firstName']." ".$middleName}}</h6></li>
                                         <li class="col s3">Claim Number: <h6>{{$assessment['claim']['claimNo']}}</h6>
                                         </li>
                                     </ul>
