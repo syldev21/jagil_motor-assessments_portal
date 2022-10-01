@@ -29,7 +29,7 @@ use App\User;
 use App\UserHasRole;
 use App\Utility;
 use App\Vendor;
-use Carbon\Carbon;
+use Carbon\{Carbon, CarbonImmutable};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -242,6 +242,12 @@ class AdjusterController extends Controller
 //                    'BRANCH' => 'Jubctr',
 //                ),
 //        );
+
+
+        /* 
+        
+        // Digital Apps connection logic
+
         $utility = new Utility();
         $access_token = $utility->getToken();
 
@@ -250,11 +256,94 @@ class AdjusterController extends Controller
         $data = ["fromDate" => $fromDate, "toDate" => $toDate];
         $response = $utility->getData($data, '/api/v1/b2b/general/claim/fetch', 'POST');
         $claim_data = json_decode($response->getBody()->getContents());
+
+
         if ($claim_data->status == 'success' && sizeof($claim_data->data->DB_VALUE1) != 0) {
             $claims = json_decode(json_encode($claim_data->data->DB_VALUE1), true);
         } else {
             $claims = [];
-        }
+        } */
+
+        // Get the vehicle registration if any
+        $vehicleRegistrationNumber = $request->veh_reg_no ?? '' ?? 'KCW 161V';
+        
+        // Use CarbonImmutable to manipulate the dates
+        $today = CarbonImmutable::now();
+        
+        $fromDate = $today->subDays(Config::DATES_LIMIT)->startOfDay()->format('d-M-Y');
+        
+        $toDate = $today->endOfDay()->format('d-M-Y');
+        
+        $fromDate = strtoupper($fromDate);
+        
+        $toDate = strtoupper($toDate);
+        
+        // SQL STATEMENT TO FETCH CLAIMS DIRECTLY FROM PREMIA
+        $sqlStatementString = "SELECT CLM_NO, CLM_POL_NO, VEH_REG_NO, VEH_MAKE, VEH_MODEL, VEH_CHASSIS_NO, VEH_ENG_NO, VEH_MFG_YR, SUM_INSURED, 
+                EXCESS_AMT, CLM_LOSS_DT, CLM_INTM_DT, CLAIM_TYPE, CUST_CODE, CUST_NAME, CUST_MOBILE_NO, CUST_EMAIL1, BRANCH
+                FROM
+                (
+                SELECT CLM_NO, CLM_POL_NO, PRAIH_DATA_03 VEH_REG_NO, PRAIH_CODE_04 VEH_MAKE, PRAIH_CODE_05 VEH_MODEL, PRAIH_DATA_01 VEH_CHASSIS_NO, PRAIH_DATA_02 VEH_ENG_NO, PRAIH_NUM_01 VEH_MFG_YR, DECODE(PRAIH_NUM_02, 0, PRAIH_SI_LC_1, PRAIH_NUM_02)  SUM_INSURED, 
+                LEAST(GREATEST(DECODE(PRAIH_NUM_02, 0, PRAIH_SI_LC_1, PRAIH_NUM_02)*NVl(PCDH_PERC,0)/100, NVL(PCDH_MIN_LC_1,0)), NVL(PCDH_MAX_LC_1,999999999))  EXCESS_AMT,
+                DECODE(PRAIH_NUM_02, 0, PRAIH_SI_LC_1, PRAIH_NUM_02)*PCDH_PERC/100 EXCESS_CALC, PCDH_PERC, PCDH_MIN_LC_1, PCDH_MAX_LC_1, CLM_LOSS_DT, TRUNC(CLM_INTM_DT) CLM_INTM_DT, 
+                DECODE(CLMAP_COVER_CODE, '3109', 'Windscreen', DECODE(CLM_EVENT_CODE, '002', DECODE(CLM_LOSS_CODE, 'NOL-1011','Assessement','Theft'), 'Assessement')) CLAIM_TYPE,
+                CLM_ASSR_CODE CUST_CODE, CLM_ASSR_NAME CUST_NAME, ASSR_MOBILE_NO CUST_MOBILE_NO, ASSR_EMAIL_1 CUST_EMAIL1,
+                PGIPK_BI_REP_QRY.FN_GET_DIVN_NAME(CLM_DIVN_CODE) BRANCH       
+                FROM PGIT_CLAIM, PGIT_CLM_APPL_POLICY, PGITH_POL_RISK_ADDL_INFO a, PCOM_ASSURED,
+                (
+                SELECT PCDH_POL_SYS_ID, PCDH_PERC, PCDH_MIN_LC_1, PCDH_MAX_FC PCDH_MAX_LC_1 
+                FROM PGITH_POL_DEDUCTIBLE  c
+                
+                WHERE PCDH_CODE IN ('6031')
+                AND PCDH_END_NO_IDX = (SELECT MAX(PCDH_END_NO_IDX) FROM PGITH_POL_DEDUCTIBLE d WHERE d.PCDH_POL_SYS_ID=c.PCDH_POL_SYS_ID)
+                ) e
+                WHERE CLM_SYS_ID=CLMAP_CLM_SYS_ID
+                AND PRAIH_SYS_ID=CLMAP_PRAI_LVL1_SYS_ID
+                and CLM_ASSR_CODE=ASSR_CODE
+                AND CLM_POL_SYS_ID=PCDH_POL_SYS_ID(+)
+                AND PRAIH_END_NO_IDX = (SELECT MAX(PRAIH_END_NO_IDX) FROM PGITH_POL_RISK_ADDL_INFO b WHERE b.PRAIH_POL_SYS_ID=a.PRAIH_POL_SYS_ID)
+                AND PRAIH_DATA_03 LIKE NVL(:vehicleRegistrationNumber,'%')
+                and TRUNC(CLM_INTM_DT) BETWEEN NVL(TO_DATE(:fromDate,'DD-MON-YYYY'), TO_CHAR(TRUNC(SYSDATE)-30,'DD-MON-YYYY')) AND NVL(TO_DATE(:toDate,'DD-MON-YYYY'), TO_CHAR(TRUNC(SYSDATE), 'DD-MON-YYYY')) 
+                and CLM_PROD_CODE in ('1001','1002','1005')
+                and NVL(CLM_FLEXI_01,'X')='X'
+            )";
+
+        // Specify the connection to use and parse the variables
+        $claims = DB::connection('premia11_oracle')->select(
+            DB::raw($sqlStatementString),
+            array(
+                'vehicleRegistrationNumber' => $vehicleRegistrationNumber,
+                'fromDate'                  => $fromDate, 
+                'toDate'                    => $toDate
+            )
+        );
+
+        // Transform the keys to uppercase to maintain consistency in the blade file
+        $claims = collect($claims)->map(function($claim){
+
+            return [
+                'CLM_NO'        => $claim->clm_no,
+                'CLM_POL_NO'    => $claim->clm_pol_no,
+                'VEH_REG_NO'    => $claim->veh_reg_no,
+                'VEH_MAKE'      => $claim->veh_make,
+                'VEH_MODEL'     => $claim->veh_model,
+                'VEH_CHASSIS_NO' => $claim->veh_chassis_no,
+                'VEH_ENG_NO'    => $claim->veh_eng_no,
+                'VEH_MFG_YR'    => $claim->veh_mfg_yr,
+                'SUM_INSURED'   => $claim->sum_insured,
+                'EXCESS_AMT'    => $claim->excess_amt,
+                'CLM_LOSS_DT'   => $claim->clm_loss_dt,
+                'CLM_INTM_DT'   => $claim->clm_intm_dt,
+                'CLAIM_TYPE'    => $claim->claim_type,
+                'CUST_CODE'     => $claim->cust_code,
+                'CUST_NAME'     => $claim->cust_name,
+                'CUST_MOBILE_NO' => $claim->cust_mobile_no,
+                'CUST_EMAIL1'    => $claim->cust_email1,
+                'BRANCH'         => $claim->branch
+            ];
+        });
+
+        // dd($claims);
 
         return view('adjuster.index', ['claims' => $claims]);
     }
