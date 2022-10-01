@@ -491,10 +491,6 @@
                                 <div class="row">
                                     <div class="col s4"></div>
                                     <div class="col s4">
-                                        @hasrole('Assessor')
-                                        <a id="send-reinspection-report" data-id="{{$assessment['id']}}"
-                                           class="btn green darken-2">Send Re-inspection Report</a>
-                                        @endhasrole
                                     </div>
                                     <div class="col s4"></div>
                                 </div>
