@@ -357,7 +357,7 @@ class AdjusterController extends Controller
             $carDetails = CarModel::where(['makeCode' => isset($claim['VEH_MAKE']) ? $claim['VEH_MAKE'] : '', 'modelCode' => isset($claim['VEH_MODEL']) ? $claim['VEH_MODEL'] : ''])->first();
             return view('adjuster.claim-form', ['claim' => $claim, 'garages' => $garages, 'carDetails' => $carDetails]);
         }catch (\Exception $e) {
-            dd('we are here');
+            dd($e->getMessage());
             $response = array(
                 "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
                 "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
