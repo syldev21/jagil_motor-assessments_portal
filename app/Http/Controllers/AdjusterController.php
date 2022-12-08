@@ -244,8 +244,8 @@ class AdjusterController extends Controller
 //        );
 
 
-        /* 
-        
+        /*
+
         // Digital Apps connection logic
 
         $utility = new Utility();
@@ -266,34 +266,34 @@ class AdjusterController extends Controller
 
         // Get the vehicle registration if any
         $vehicleRegistrationNumber = $request->veh_reg_no ?? '' ?? 'KCW 161V';
-        
+
         // Use CarbonImmutable to manipulate the dates
         $today = CarbonImmutable::now();
-        
+
         $fromDate = $today->subDays(Config::DATES_LIMIT)->startOfDay()->format('d-M-Y');
-        
+
         $toDate = $today->endOfDay()->format('d-M-Y');
-        
+
         $fromDate = strtoupper($fromDate);
-        
+
         $toDate = strtoupper($toDate);
-        
+
         // SQL STATEMENT TO FETCH CLAIMS DIRECTLY FROM PREMIA
-        $sqlStatementString = "SELECT CLM_NO, CLM_POL_NO, VEH_REG_NO, VEH_MAKE, VEH_MODEL, VEH_CHASSIS_NO, VEH_ENG_NO, VEH_MFG_YR, SUM_INSURED, 
+        $sqlStatementString = "SELECT CLM_NO, CLM_POL_NO, VEH_REG_NO, VEH_MAKE, VEH_MODEL, VEH_CHASSIS_NO, VEH_ENG_NO, VEH_MFG_YR, SUM_INSURED,
                 EXCESS_AMT, CLM_LOSS_DT, CLM_INTM_DT, CLAIM_TYPE, CUST_CODE, CUST_NAME, CUST_MOBILE_NO, CUST_EMAIL1, BRANCH
                 FROM
                 (
-                SELECT CLM_NO, CLM_POL_NO, PRAIH_DATA_03 VEH_REG_NO, PRAIH_CODE_04 VEH_MAKE, PRAIH_CODE_05 VEH_MODEL, PRAIH_DATA_01 VEH_CHASSIS_NO, PRAIH_DATA_02 VEH_ENG_NO, PRAIH_NUM_01 VEH_MFG_YR, DECODE(PRAIH_NUM_02, 0, PRAIH_SI_LC_1, PRAIH_NUM_02)  SUM_INSURED, 
+                SELECT CLM_NO, CLM_POL_NO, PRAIH_DATA_03 VEH_REG_NO, PRAIH_CODE_04 VEH_MAKE, PRAIH_CODE_05 VEH_MODEL, PRAIH_DATA_01 VEH_CHASSIS_NO, PRAIH_DATA_02 VEH_ENG_NO, PRAIH_NUM_01 VEH_MFG_YR, DECODE(PRAIH_NUM_02, 0, PRAIH_SI_LC_1, PRAIH_NUM_02)  SUM_INSURED,
                 LEAST(GREATEST(DECODE(PRAIH_NUM_02, 0, PRAIH_SI_LC_1, PRAIH_NUM_02)*NVl(PCDH_PERC,0)/100, NVL(PCDH_MIN_LC_1,0)), NVL(PCDH_MAX_LC_1,999999999))  EXCESS_AMT,
-                DECODE(PRAIH_NUM_02, 0, PRAIH_SI_LC_1, PRAIH_NUM_02)*PCDH_PERC/100 EXCESS_CALC, PCDH_PERC, PCDH_MIN_LC_1, PCDH_MAX_LC_1, CLM_LOSS_DT, TRUNC(CLM_INTM_DT) CLM_INTM_DT, 
+                DECODE(PRAIH_NUM_02, 0, PRAIH_SI_LC_1, PRAIH_NUM_02)*PCDH_PERC/100 EXCESS_CALC, PCDH_PERC, PCDH_MIN_LC_1, PCDH_MAX_LC_1, CLM_LOSS_DT, TRUNC(CLM_INTM_DT) CLM_INTM_DT,
                 DECODE(CLMAP_COVER_CODE, '3109', 'Windscreen', DECODE(CLM_EVENT_CODE, '002', DECODE(CLM_LOSS_CODE, 'NOL-1011','Assessement','Theft'), 'Assessement')) CLAIM_TYPE,
                 CLM_ASSR_CODE CUST_CODE, CLM_ASSR_NAME CUST_NAME, ASSR_MOBILE_NO CUST_MOBILE_NO, ASSR_EMAIL_1 CUST_EMAIL1,
-                PGIPK_BI_REP_QRY.FN_GET_DIVN_NAME(CLM_DIVN_CODE) BRANCH       
+                PGIPK_BI_REP_QRY.FN_GET_DIVN_NAME(CLM_DIVN_CODE) BRANCH
                 FROM PGIT_CLAIM, PGIT_CLM_APPL_POLICY, PGITH_POL_RISK_ADDL_INFO a, PCOM_ASSURED,
                 (
-                SELECT PCDH_POL_SYS_ID, PCDH_PERC, PCDH_MIN_LC_1, PCDH_MAX_FC PCDH_MAX_LC_1 
+                SELECT PCDH_POL_SYS_ID, PCDH_PERC, PCDH_MIN_LC_1, PCDH_MAX_FC PCDH_MAX_LC_1
                 FROM PGITH_POL_DEDUCTIBLE  c
-                
+
                 WHERE PCDH_CODE IN ('6031')
                 AND PCDH_END_NO_IDX = (SELECT MAX(PCDH_END_NO_IDX) FROM PGITH_POL_DEDUCTIBLE d WHERE d.PCDH_POL_SYS_ID=c.PCDH_POL_SYS_ID)
                 ) e
@@ -303,7 +303,7 @@ class AdjusterController extends Controller
                 AND CLM_POL_SYS_ID=PCDH_POL_SYS_ID(+)
                 AND PRAIH_END_NO_IDX = (SELECT MAX(PRAIH_END_NO_IDX) FROM PGITH_POL_RISK_ADDL_INFO b WHERE b.PRAIH_POL_SYS_ID=a.PRAIH_POL_SYS_ID)
                 AND PRAIH_DATA_03 LIKE NVL(:vehicleRegistrationNumber,'%')
-                and TRUNC(CLM_INTM_DT) BETWEEN NVL(TO_DATE(:fromDate,'DD-MON-YYYY'), TO_CHAR(TRUNC(SYSDATE)-30,'DD-MON-YYYY')) AND NVL(TO_DATE(:toDate,'DD-MON-YYYY'), TO_CHAR(TRUNC(SYSDATE), 'DD-MON-YYYY')) 
+                and TRUNC(CLM_INTM_DT) BETWEEN NVL(TO_DATE(:fromDate,'DD-MON-YYYY'), TO_CHAR(TRUNC(SYSDATE)-30,'DD-MON-YYYY')) AND NVL(TO_DATE(:toDate,'DD-MON-YYYY'), TO_CHAR(TRUNC(SYSDATE), 'DD-MON-YYYY'))
                 and CLM_PROD_CODE in ('1001','1002','1005')
                 and NVL(CLM_FLEXI_01,'X')='X'
             )";
@@ -313,7 +313,7 @@ class AdjusterController extends Controller
             DB::raw($sqlStatementString),
             array(
                 'vehicleRegistrationNumber' => $vehicleRegistrationNumber,
-                'fromDate'                  => $fromDate, 
+                'fromDate'                  => $fromDate,
                 'toDate'                    => $toDate
             )
         );
@@ -350,11 +350,22 @@ class AdjusterController extends Controller
 
     public function claimForm(Request $request)
     {
-        $claim = json_decode($request->getContent(), true);
-        $garages = Garage::all();
+        try {
+            $claim = json_decode($request->getContent(), true);
+            $garages = Garage::all();
 
-        $carDetails = CarModel::where(['makeCode' => isset($claim['VEH_MAKE']) ? $claim['VEH_MAKE'] : '', 'modelCode' => isset($claim['VEH_MODEL']) ? $claim['VEH_MODEL'] : ''])->first();
-        return view('adjuster.claim-form', ['claim' => $claim, 'garages' => $garages, 'carDetails' => $carDetails]);
+            $carDetails = CarModel::where(['makeCode' => isset($claim['VEH_MAKE']) ? $claim['VEH_MAKE'] : '', 'modelCode' => isset($claim['VEH_MODEL']) ? $claim['VEH_MODEL'] : ''])->first();
+            return view('adjuster.claim-form', ['claim' => $claim, 'garages' => $garages, 'carDetails' => $carDetails]);
+        }catch (\Exception $e) {
+            dd('we are here');
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to create a claim. Error message " . $e->getMessage());
+        }
+
     }
 
     public function claimDetails(Request $request, $claimID)
