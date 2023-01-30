@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('claimform:sendnotification')->dailyAt('09:00')->withoutOverlapping();
         $schedule->command('fetchclaimform:withoutclaimform')->dailyAt('08:00')->withoutOverlapping();
         $schedule->command('command:nhifSendMail')->everyMinute()->withoutOverlapping();
-        $schedule->command('command:fetch_safaricom_customers')->everyMinute()->withoutOverlapping();
+        $schedule->command('command:fetch_safaricom_customers')->daily()->withoutOverlapping();
 
     }
 
