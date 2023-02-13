@@ -27,7 +27,7 @@
         <p>Dear Sir,</p>
         <p STYLE="text-decoration: underline;font-weight: bold;"><strong>RE: WINDSCREEN REPLACEMENT AUTHORITY FOR {{ $claim->vehicleRegNo }} <br/> INSURED: {{$claim->customer->fullName}}</strong></p>
         <p>
-            The subject motor vehicle is comprehensively insured with us. Kindly replace the Windscreen of the above Motor Vehicle and forward to us your invoice together with ETR for settlement as per the quoted amount.
+            The subject motor vehicle is comprehensively insured with us. Kindly replace the Windscreen of the above Motor Vehicle and forward to us your invoice together with ETR for settlement at Ksh.{{$claim->LPOAmount}}
         </p>
 
         <p>Also, attach the clear photographs of the vehicle after the replacement.</p>
