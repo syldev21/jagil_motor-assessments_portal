@@ -67,8 +67,8 @@ class HeadAssessorController extends Controller
                     if ($assessmentID > 0) {
                         $statusTracker = StatusTracker::where(["claimID" => $request->claimID])->first();
                         $oldStatus = isset($statusTracker->newStatus) ? $statusTracker->newStatus : 0;
-                        $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
-                            "Old status " . $oldStatus);
+//                        $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+//                            "Old status " . $oldStatus);
                         StatusTracker::create([
                             "assessmentID" => $assessmentID,
                             "claimID" => $request->claimID,
@@ -142,12 +142,12 @@ class HeadAssessorController extends Controller
                                 "notificationTo" => $email_add,
                                 "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
                             );
-                            $this->functions->logActivity($logData);
+//                            $this->functions->logActivity($logData);
                             InfobipEmailHelper::sendEmail($email, $email_add);
                             $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
                             $logData['notification'] = $smsMessage;
                             $logData["notificationTo"] = $assessor->MSISDN;
-                            $this->functions->logActivity($logData);
+//                            $this->functions->logActivity($logData);
                             SMSHelper::sendSMS($smsMessage, $assessor->MSISDN);
                             Notification::send($assessor, new AssignClaim($claim));
                         }
