@@ -9,49 +9,146 @@
         </div>
     </div>
     <div id="printableArea">
-
-    <div style="text-align: center">
-        <img src="{{ asset('images/logo/jubilee_logo.png') }}" class="content-group mt-5" alt="" style="width: 170px;">
+    <div style="text-align: right; width: 90%; margin-right: 0%">
+        <img src="{{ asset('images/logo/allianz-logo.png') }}" class="content-group mt-5" alt="" style="width: 170px; height: 50px;">
+        <h4 style="text-align: right; color: blue"><b>Allianz Insurance Company of Kenya Limited</b></h4>
     </div>
-    <h5>DATE: {{ Carbon\Carbon::now()->format('l, F d, Y') }}</h5>
-    <h5>OUR REF: <span style="margin-left: 20px">{{ $claim->claimNo }}</span></h5>
+    <h5>{{ Carbon\Carbon::now()->format('l, F d, Y') }}</h5>
 
-    <p>
+
+    <h5>
         The Workshop Manager, <br>
         {{ \App\Garage::where(['id'=>$claim->garageID])->first()->name }}
         <br>
         <u>{{ \App\Garage::where(['id'=>$claim->garageID])->first()->location }}</u>
-    </p>
+    </h5>
 
     <p>Dear Sir,</p>
-    <p><strong>RE: ACCIDENT TO {{ $claim->vehicleRegNo }} ON {{ $claim->intimationDate }}
-            <br> &nbsp; &nbsp;&nbsp; INSURED: {{ isset($claim->customer->firstName) ? $claim->customer->firstName : ''}}
+        <h5>OUR CLAIM No. {{ $claim->claimNo }}</h5>
+        <h5>REPAIRS TO M/V {{ $claim->vehicleRegNo }}</h5>
+        <h5>INSURED: {{isset($claim->customer->firstName) ? $claim->customer->firstName : ''}}
             {{isset($claim->customer->middleName) ? $claim->customer->middleName : ''}}
-            {{isset($claim->customer->lastName) ? $claim->customer->lastName  : ''}}</strong>
-    </p>
+            {{isset($claim->customer->lastName) ? $claim->customer->lastName  : ''}}</h5>
 
-    <p>Please release the above-mentioned vehicle to the insured and/or their authorized representative after
-        re-inspection by the assessor who authorized repairs.</p>
+        <p>Please release the above vehicle to the insured or her authorized representative when the repairs are complete but subject to the following conditions;</p>
+        <div style="margin-left: 7%; font-weight: bold">
+        <p>That the vehicle is repaired as per the assessor’s report and the assessors have re-inspected it.</p>
+        <p>The client feed back form here below is filled, signed  by the client and sent to us with your invoice and satisafaction note.</p>
+        </div>
+        <p>On a scale of 1 (Unsatisfied/Bad) to 10 (Very satisfied/ Good), I would rate Allianz Insurance company of Kenya Limited services as:</p>
+        <div class="container" style="width: 90%">
+            <table style="border:1px solid black; margin-right: 5%">
+            <tr>
+                <th colspan="2" style="border:1px solid black"></th>
+                <th style="border:1px solid black">1</th>
+                <th style="border:1px solid black">2</th>
+                <th style="border:1px solid black">3</th>
+                <th style="border:1px solid black">4</th>
+                <th style="border:1px solid black">5</th>
+                <th style="border:1px solid black">6</th>
+                <th style="border:1px solid black">7</th>
+                <th style="border:1px solid black">8</th>
+                <th style="border:1px solid black">9</th>
+                <th style="border:1px solid black">10</th>
+            </tr>
+            <tr>
+                <td style="border:1px solid black">a</td>
+                <td style="border:1px solid black">Overall speed in claims processing</td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+            </tr>
+            <tr>
+                <td style="border:1px solid black">b</td>
+                <td style="border:1px solid black">Prompt and regular updates on the progress of the claim</td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+            </tr>
+            <tr>
+                <td style="border:1px solid black">c</td>
+                <td style="border:1px solid black">How would you recommend our company to someone </td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+                <td style="border:1px solid black"></td>
+            </tr>
+        </table>
+        </div>
+        <div style="margin-left: 7%">
+            <p>
+                I express the following comments on the services of Allianz Insurance Company of Kenya Limited:
+                ……………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………
+                ……………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………
+                ……………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………
+            </p>
+        </div>
 
-    <p>Kindly have the insured sign a satisfaction note, which please forward to us together with the repair invoice for
-        our consideration.<p>
+        <p>
+            Do send us your repair bill (less KShs 3,000.00 for the scrap metal) to us for settlement noting to quote our above reference.
+        </p>
+        <p>
+            Do send us your repair bill (less KShs 3,000.00 for the scrap metal) to us for settlement noting to quote our above reference.
+        </p>
+        <p>
+            Please expect your settlement within thirty (30) working days from the date we receive the repair invoice or the re-inspection report, whichever is later.
+        </p>
 
-    <p>Yours faithfully,</p>
-        <img src="{{'images/e_signatures/'.auth()->user()->signature }}" width="10%">
+        <p>Yours faithfully,</p>
+        <div class="container" style="width: 100%">
+            <div style="width: 33%; float: left;">
+                <img src="{{'images/e_signatures/'.auth()->user()->signature }}" width="20%">
     <p>
         <strong>{{ isset(Auth::user()->firstName) ? Auth::user()->firstName : '' }}
             {{ isset(Auth::user()->middleName) ? Auth::user()->middleName : '' }}
             {{ isset(Auth::user()->lastName) ? Auth::user()->lastName : '' }}<br />
             <u>{{ $role }}</u><br />
-            <u>TEL {{ isset(Auth::user()->MSISDN) ? Auth::user()->MSISDN : '' }}</u><br />
+            Claims Department
+            <br />
         </strong>
     </p>
-
+            </div>
+            <div style="width: 34%; float: left;">
+                <b>Signature.............................</b>
+    <br>
+    <br>
     <p>
-        <strong>Note:</strong><br><br>
-        You will retain the scrap metal as per the agreed terms.
-
+        <strong>
+            Garage Representative
+        </strong>
     </p>
+            </div>
+            <div style="width: 33%; float: right;">
+                <b>Signature.............................</b>
+    <br>
+    <br>
+    <p>
+        <strong>
+            Insured Representative
+        </strong>
+    </p>
+            </div>
+        </div>
     </div>
     <?php
     $garageEmail = \App\Garage::where(['id'=>$claim->garageID])->first()->email
