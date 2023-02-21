@@ -11,7 +11,7 @@
     <div id="printableArea">
     <div style="text-align: right; width: 90%; margin-right: 0%">
         <img src="{{ asset('images/logo/jubilee_logo.png') }}" class="content-group mt-5" alt="" style="width: 170px; height: 50px;">
-        <h4 style="text-align: right; color: blue"><b>Allianz Insurance Company of Kenya Limited</b></h4>
+{{--        <h4 style="color: #004CD9; margin-left: 500px"><b>Allianz Insurance Company of Kenya Limited</b></h4>--}}
     </div>
     <h5>{{ Carbon\Carbon::now()->format('l, F d, Y') }}</h5>
 
