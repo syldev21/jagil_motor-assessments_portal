@@ -25,7 +25,9 @@ use App\Helper\InfobipEmailHelper;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Notification;
 
 class HeadAssessorController extends Controller
@@ -509,6 +511,79 @@ class HeadAssessorController extends Controller
                                 $this->functions->logActivity($logData);
                             }
                         }
+
+
+//                        send the demand letter to third party insurer
+
+
+
+                        $assessmentID= $request->assessmentID;
+                        $assessment = Assessment::where(["id"=>$assessmentID])->first();
+                        $claim = Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
+                        $company = Company::where(["id"=>$assessment->companyID])->first();
+                        $cc_emails=array(Auth::user()->email, Config::JUBILEE_REPLY_EMAIL);
+
+
+                        $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
+                        $end_salutation_first=explode('@', $end_salutation_email)[0];
+                        $first_array=explode(".", $end_salutation_first);
+                        $regards=implode(" ", $first_array);
+                        $pdf = App::make('dompdf.wrapper');
+                        $pdf->loadView('reports.demand-letter', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company, 'regards'=>$regards]);
+
+//        $pdfFilePath = public_path('reports/assessment-report.pdf');
+                        $pdfName = $assessment['claim']['vehicleRegNo'].'_'.$assessment['claim']['claimNo'];
+                        $pdfName = str_replace("/","_",$pdfName);
+                        $pdfFileName=preg_replace('/\s+/', ' ', $pdfName);
+                        $pdfFileName = str_replace(" ","_",$pdfFileName);
+                        $pdfFilePath = public_path('reports/'.$pdfFileName.'.pdf');
+                        if (File::exists($pdfFilePath)) {
+                            File::delete($pdfFilePath);
+                        }
+                        $pdf->save($pdfFilePath);
+
+
+                        $flag = false;
+                        $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
+
+                        $end_salutation_first=explode('@', $end_salutation_email)[0];
+                        $first_array=explode(".", $end_salutation_first);
+                        $regards=implode(" ", $first_array);
+                        $message = [
+                            'subject' => "DEMAND LETTER - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
+                            'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'to' => $company->recovery_officer_email,
+//                'to' => "sylvesterouma282@gmail.com",
+                            'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                            'attachment' => $pdfFilePath,
+                            'cc' => $cc_emails,
+//                'cc' => Auth::user()->email,
+                            'html' => "
+
+                        Dear Sirs, <br>
+
+                        Kindly see attached our demand letter. <br>
+                        To acknowledge the receipt of the letter, and further follow-ups, kindly contact our recovery departmet via jazrecovery@allianz.com. <br> <br>
+
+                        Regards, <br><br>
+
+
+                        $regards, <br>
+
+                        Recovery Officer , <br>
+
+                        Jubilee Allianz Insurance Company
+                    ",
+                        ];
+
+                        $emailSSent=InfobipEmailHelper::sendEmail($message);
+                        if ($emailSSent){
+                            Assessment::where(["id"=>$assessmentID])->update(["demandLetterDate"=>\Illuminate\Support\Carbon::now(), "subrogationSender"=>Auth::user()->id]);
+                        }
+
+
+
+
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
                             "STATUS_MESSAGE" => "Heads up! You have successfully approved an assessment"
