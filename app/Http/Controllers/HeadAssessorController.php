@@ -512,26 +512,20 @@ class HeadAssessorController extends Controller
                             }
                         }
 
-
-//                        send the demand letter to third party insurer
-
-
+                        //send the demand letter to third party insurer
 
                         $assessmentID= $request->assessmentID;
                         $assessment = Assessment::where(["id"=>$assessmentID])->first();
                         $claim = Claim::where(["id"=>$assessment->claimID])->with('customer')->first();
                         $company = Company::where(["id"=>$assessment->companyID])->first();
-                        $cc_emails=array(Auth::user()->email, Config::JUBILEE_REPLY_EMAIL);
+                        $adjuster_email = User::where('id', $claim->createdBy)->first()->email;
+                        $cc_emails=array($adjuster_email, Config::JUBILEE_REPLY_EMAIL);
 
 
-                        $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
-                        $end_salutation_first=explode('@', $end_salutation_email)[0];
-                        $first_array=explode(".", $end_salutation_first);
-                        $regards=implode(" ", $first_array);
+
                         $pdf = App::make('dompdf.wrapper');
                         $pdf->loadView('reports.demand-letter', ['assessment'=>$assessment,'claim'=>$claim,'company'=>$company, 'regards'=>$regards]);
 
-//        $pdfFilePath = public_path('reports/assessment-report.pdf');
                         $pdfName = $assessment['claim']['vehicleRegNo'].'_'.$assessment['claim']['claimNo'];
                         $pdfName = str_replace("/","_",$pdfName);
                         $pdfFileName=preg_replace('/\s+/', ' ', $pdfName);
@@ -544,11 +538,12 @@ class HeadAssessorController extends Controller
 
 
                         $flag = false;
-                        $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
 
+                        $end_salutation_email = Company::where("name", "=", "JUBILEE ALLIANZ GENERAL INSURANCE (K) LIMITED")->first()->recovery_officer_email;
                         $end_salutation_first=explode('@', $end_salutation_email)[0];
                         $first_array=explode(".", $end_salutation_first);
                         $regards=implode(" ", $first_array);
+
                         $message = [
                             'subject' => "DEMAND LETTER - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
                             'from' => Config::JUBILEE_NO_REPLY_EMAIL,
