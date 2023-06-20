@@ -246,38 +246,34 @@ class AssessmentManagerController extends Controller
                         $adjuster = User::where(["id" => $adjusterID])->first();
                         $assessorID = $assessment->assessedBy;
                         $assessor = User::where(["id" => $assessorID])->first();
-                        $userDetails = array(
-                            array(
-                                "id"=> $adjuster->id,
-                                "name" => $adjuster->firstName,
-                                "email" => $adjuster->email,
-                                "MSISDN" => $adjuster->MSISDN,
-                                "role" =>Config::$ROLES['ADJUSTER']
-                            )
-//                            array(
-//                                "id"=> $assessor->id,
-//                                "name" => $assessor->firstName,
-//                                "email" => $assessor->email,
-//                                "MSISDN" => $assessor->MSISDN,
-//                                "role" => Config::$ROLES['ASSESSOR']
-//                            )
-
-                        );
+                        $assessorUserID = Config::$USER_TYPES['INTERNAL']['ID'];
+                        $assessors = User::where('userTypeID', $assessorUserID)
+                                        ->role('Assessor')
+                                        ->get();
+                        $assessorArray =[];
+                        foreach ($assessors as $assessor){
+                            $assessorArray[] = [
+                                'email' => $assessor->email,
+                                'phone'=>$assessor->MSISDN,
+                                'name'=>$assessor->name
+                            ];
+                        }
+                        $smsRecipients = array_column($assessorArray, 'phone');
+                        $ccEmails = array_column($assessorArray, 'email');
                         $link = 'assessment-report/' . $request->assessmentID;
                         $vehicleReg  = $claim->vehicleRegNo;
                         $claimNo = $claim->claimNo;
                         $reviewNote = $request->report;
                         $role = Config::$ROLES['ASSESSMENT-MANAGER'];
 
-                        foreach ($userDetails as $userDetail)
-                        {
-                            $message = [
+                       $message = [
                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                'to' => $userDetail['email'],
+                                'to' => $adjuster['email'],
+                                'cc' => $ccEmails,
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'html' =>"
-                        Hello ".$userDetail['name'].", <br>
+                        Hello ".$adjuster['name'].", <br>
 
                         This is in regards to claim number <strong>".$claimNo." </strong> <br>
 
@@ -305,20 +301,20 @@ class AssessmentManagerController extends Controller
                                 "role" => Config::$ROLES['ADJUSTER'],
                                 "activity" => Config::ACTIVITIES['FINAL_APPROVAL'],
                                 "notification" => $message['html'],
-                                "notificationTo" => $userDetail['email'],
+                                "notificationTo" => $adjuster['email'],
                                 "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
                             );
                             $this->functions->logActivity($logData);
-                            $smsMessage = 'Hello '. $userDetail['name'] .', Assessment for claimNo '.$claimNo.' has been approved';
-                            InfobipEmailHelper::sendEmail($message, $userDetail['email']);
-                            SMSHelper::sendSMS($smsMessage,$userDetail['MSISDN']);
+                            $smsMessage = 'Hello '. $adjuster['name'] .', Assessment for claimNo '.$claimNo.' has been approved';
+                            InfobipEmailHelper::sendEmail($message, $adjuster['email']);
+                            $smsRecipients[] = $adjuster['MSISDN'];
+                            SMSHelper::sendSMS($smsMessage,$smsRecipients);
                             $logData['notification'] = $smsMessage;
-                            $logData['notificationTo'] = $userDetail['MSISDN'];
+                            $logData['notificationTo'] = $adjuster['MSISDN'];
                             $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
                             $this->functions->logActivity($logData);
-                            $user = User::where(["id" => $userDetail['id']])->first();
+                            $user = User::where(["id" => $adjuster['id']])->first();
                             Notification::send($user, new ClaimApproved($claim));
-                        }
                         $response = array(
                             "STATUS_CODE" => Config::SUCCESS_CODE,
                             "STATUS_MESSAGE" => "Heads up! You have successfully approved an assessment"
@@ -347,7 +343,7 @@ class AssessmentManagerController extends Controller
 
                     }else{
                         $pushedPremiaData = new PremiaIntergration();
-                        $pushedPremiaData->claim_no = $claim_no;
+                        $pushedPremiaData->claim_no = $claim->claimNo;
                         $pushedPremiaData->response = json_encode($reserveClaim);
                         $pushedPremiaData->status = "Failed";
                         $pushedPremiaData->save();
