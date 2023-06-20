@@ -308,7 +308,15 @@ class AssessmentManagerController extends Controller
                             $smsMessage = 'Hello '. $adjuster['name'] .', Assessment for claimNo '.$claimNo.' has been approved';
                             InfobipEmailHelper::sendEmail($message, $adjuster['email']);
                             $smsRecipients[] = $adjuster['MSISDN'];
-                            SMSHelper::sendSMS($smsMessage,$smsRecipients);
+                            foreach ($smsRecipients as $smsRecipient){
+                            if (substr($smsRecipient, 0, 1) === "0") {
+                                $formattedNumber = "+254" . substr($smsRecipient, 1);
+                                $phone= $formattedNumber;
+                            } else {
+                                $phone= $smsRecipient;
+                            }
+                            SMSHelper::sendSMS($smsMessage,$phone);
+                        }
                             $logData['notification'] = $smsMessage;
                             $logData['notificationTo'] = $adjuster['MSISDN'];
                             $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
