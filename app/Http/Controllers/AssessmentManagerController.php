@@ -258,6 +258,8 @@ class AssessmentManagerController extends Controller
                                 'name'=>$assessor->name
                             ];
                         }
+
+
                         $smsRecipients = array_column($assessorArray, 'phone');
                         $ccEmails = array_column($assessorArray, 'email');
                         $link = 'assessment-report/' . $request->assessmentID;
@@ -304,9 +306,10 @@ class AssessmentManagerController extends Controller
                                 "notificationTo" => $adjuster['email'],
                                 "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
                             );
+
                             $this->functions->logActivity($logData);
                             $smsMessage = 'Hello '. $adjuster['name'] .', Assessment for claimNo '.$claimNo.' has been approved';
-                            InfobipEmailHelper::sendEmail($message, $adjuster['email']);
+                            $emailSent = InfobipEmailHelper::sendEmail($message);
                             $smsRecipients[] = $adjuster['MSISDN'];
                             foreach ($smsRecipients as $smsRecipient){
                             if (substr($smsRecipient, 0, 1) === "0") {
@@ -315,7 +318,7 @@ class AssessmentManagerController extends Controller
                             } else {
                                 $phone= $smsRecipient;
                             }
-                            SMSHelper::sendSMS($smsMessage,$phone);
+//                            SMSHelper::sendSMS($smsMessage,$phone);
                         }
                             $logData['notification'] = $smsMessage;
                             $logData['notificationTo'] = $adjuster['MSISDN'];
@@ -333,31 +336,32 @@ class AssessmentManagerController extends Controller
                         'reserve_amount' => $assessmentTypeID == Config::ASSESSMENT_TYPES['TOTAL_LOSS'] ? $pav : $grandTotal,
                         'claim_type' => Config::DISPLAY_ASSESSMENT_TYPES[$assessmentTypeID]
                     ];
-                    $utility = new Utility();
-                    $access_token = $utility->getToken();
-                    $resp = $utility->getData($finalData, '/api/v1/b2b/general/claim/create-reserve', 'POST');
-                    $reserveClaim = json_decode($resp->getBody()->getContents());
-                    if ($reserveClaim->status == 'success') {
-                        PremiaIntegrations::create([
-                            "claimNo" => $claimNo,
-                            "status" => $reserveClaim->status,
-                            "response" => json_encode($reserveClaim),
-                            "createdBy" => Auth::id(),
-                            "dateCreated" => $this->functions->curlDate()
-                        ]);
-                        $updateClaim = Claim::where('claimNo', $claimNo)->update([
-                            'inPremia' => Config::ACTIVE
-                        ]);
-
-                    }else{
-                        $pushedPremiaData = new PremiaIntergration();
-                        $pushedPremiaData->claim_no = $claim->claimNo;
-                        $pushedPremiaData->response = json_encode($reserveClaim);
-                        $pushedPremiaData->status = "Failed";
-                        $pushedPremiaData->save();
-                        alert()->error('Error', 'Something went wrong.')->autoclose(3000);
-                        return redirect()->back();
-                    }
+//                    $utility = new Utility();
+//                    $access_token = $utility->getToken();
+//                    $resp = $utility->getData($finalData, '/api/v1/b2b/general/claim/create-reserve', 'POST');
+//                    $reserveClaim = json_decode($resp->getBody()->getContents());
+//                    if ($reserveClaim->status == 'success') {
+//                        PremiaIntegrations::create([
+//                            "claimNo" => $claimNo,
+//                            "status" => $reserveClaim->status,
+//                            "response" => json_encode($reserveClaim),
+//                            "createdBy" => Auth::id(),
+//                            "dateCreated" => $this->functions->curlDate()
+//                        ]);
+//                        $updateClaim = Claim::where('claimNo', $claimNo)->update([
+//                            'inPremia' => Config::ACTIVE
+//                        ]);
+//
+//                    }
+//                    else{
+//                        $pushedPremiaData = new PremiaIntergration();
+//                        $pushedPremiaData->claim_no = $claim->claimNo;
+//                        $pushedPremiaData->response = json_encode($reserveClaim);
+//                        $pushedPremiaData->status = "Failed";
+//                        $pushedPremiaData->save();
+//                        alert()->error('Error', 'Something went wrong.')->autoclose(3000);
+//                        return redirect()->back();
+//                    }
                 }else if($request->assessmentReviewType == Config::HALT)
                 {
 
