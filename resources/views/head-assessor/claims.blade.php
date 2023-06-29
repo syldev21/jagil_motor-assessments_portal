@@ -116,7 +116,8 @@
                                                                         }
                                                                         ?>
                                                                         <option
-                                                                            value="{{$assessor->id}}" @if($assessor->id == $assessorID) selected @endif>{{$assessor->firstName}} {{$assessor->lastName}}</option>
+                                                                            value="{{$assessor->id}}" @if($assessor->id == $assessorID) selected @endif>{{$assessor->name}}</option>
+{{--                                                                            value="{{$assessor->id}}" @if($assessor->id == $assessorID) selected @endif>{{$assessor->firstName}} {{$assessor->lastName}}</option>--}}
                                                                     @endforeach
                                                                 @endif
                                                             </select>
