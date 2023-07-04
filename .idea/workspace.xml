@@ -20,35 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28f28530-4f6d-4ec9-b5fe-7463e4cfbe2d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/add-user.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/users.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Conf/Config.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Conf/Config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdjusterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdjusterController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssessorController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssessorController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HeadAssessorController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HeadAssessorController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/RedirectIfAuthenticated.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/RedirectIfAuthenticated.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/documents/152742-car2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/documents/152743-car3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/documents/152743-car4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/documents/152743-car5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/documents/152836-car2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/documents/152836-car3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/documents/152837-car4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/documents/152837-car5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/_partials/footer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/_partials/footer.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/_partials/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/_partials/header.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/_partials/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/_partials/sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/claims.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/claims.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/adjuster/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/adjuster/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assessor/assessment-report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assessor/assessment-report.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assessor/assessments.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assessor/assessments.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/head-assessor/assessments.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/head-assessor/assessments.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/head-assessor/claims.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/head-assessor/claims.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,14 +143,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="mariadb" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/css" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\motor-assessments-portal_v2\public\css" />
@@ -220,6 +195,7 @@
       <workItem from="1602451910945" duration="21746000" />
       <workItem from="1602564250943" duration="25193000" />
       <workItem from="1603088460699" duration="2133000" />
+      <workItem from="1688471102963" duration="328000" />
     </task>
     <servers />
   </component>
@@ -236,7 +212,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="275" y="22" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602569866652">
