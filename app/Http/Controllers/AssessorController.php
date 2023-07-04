@@ -201,7 +201,7 @@ class AssessorController extends Controller
         return view('assessor.re-inspection-report', ['assessments' => $assessments, 'assessmentItems' => $assessmentItems, 'inspections' => $inspections, 'assessmentIds' => $assessmentIds]);
     }
 
-    public function uploadDocuments(Request $request)
+    /*public function uploadDocuments(Request $request)
     {
         try {
             $totalImages = $request->totalImages;
@@ -342,6 +342,148 @@ class AssessorController extends Controller
                 "Documents not uploaded an error. An error occurred " . $e->getMessage());
         }
         return json_encode($response);
+    }*/
+    public function uploadDocuments(Request $request)
+    {
+        try {
+            $totalImages = $request->totalImages;
+            $claimID = $request->claimID;
+            $isSubrogate = $request->isSubrogate;
+            $companyID = $request->companyID;
+
+            if (isset($companyID) && $isSubrogate == Config::ACTIVE) {
+                $this->updateClaimAndAssessment($request, $claimID, $companyID, $isSubrogate);
+            }
+
+            $this->handleClaimFormUpload($request, $claimID);
+            $this->handleImageUploads($request, $claimID, $totalImages);
+
+            $response = [
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "Congratulations! Your documents have been uploaded successfully"
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            ];
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "Documents not uploaded an error. An error occurred " . $e->getMessage());
+        }
+
+        return json_encode($response);
+    }
+
+    private function updateClaimAndAssessment(Request $request, $claimID, $companyID, $isSubrogate)
+    {
+        $dataToUpdate = [
+            "companyID" => $companyID,
+            "isSubrogate" => $isSubrogate,
+            "thirdPartyDriver" => $request->thirdPartyDriver,
+            "thirdPartyPolicy" => $request->thirdPartyPolicy,
+            "thirdPartyVehicleRegNo" => $request->thirdPartyVehicleRegNo,
+            "dateModified" => $this->functions->curlDate(),
+            "updatedBy" => Auth::user()->id
+        ];
+
+        Claim::where('id', $claimID)->update($dataToUpdate);
+
+        $assessment = Assessment::where('claimID', $claimID)->first();
+        if ($assessment && $assessment->assessmentStatusID == Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']) {
+            $assessment->update($dataToUpdate);
+        }
+    }
+
+    private function handleClaimFormUpload(Request $request, $claimID)
+    {
+        if (!$request->hasFile('claimForm')) {
+            return;
+        }
+
+        $claimData = Claim::findOrFail($claimID);
+        $claimNo = str_replace("/", "_", $claimData->claimNo);
+
+        $this->deleteExistingClaimFormDocuments($claimID);
+
+        $file = $request->file('claimForm');
+        $extension = $file->getClientOriginalExtension();
+        $picture = $claimNo . ".pdf";
+        $path = $file->move(public_path('documents/'), $picture);
+
+        $document = Document::create([
+            "claimID" => $claimID,
+            "name" => $picture,
+            "mime" => $extension,
+            "size" => $file->getSize(),
+            "pdfType" => Config::PDF_TYPES['CLAIM_FORM']['ID'],
+            "documentType" => Config::$DOCUMENT_TYPES["PDF"]["ID"],
+            "url" => $path,
+            "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
+        ]);
+
+        if ($request->totalImages == 0) {
+            $response = [
+                "STATUS_CODE" => Config::SUCCESS_CODE,
+                "STATUS_MESSAGE" => "Congratulations! Your documents have been uploaded successfully"
+            ];
+            return json_encode($response);
+        }
+    }
+
+    private function deleteExistingClaimFormDocuments($claimID)
+    {
+        $claimFormDocuments = Document::where('claimID', $claimID)
+            ->where('documentType', Config::$DOCUMENT_TYPES["PDF"]["ID"])
+            ->where('pdfType', Config::PDF_TYPES['CLAIM_FORM']['ID'])
+            ->get();
+
+        foreach ($claimFormDocuments as $document) {
+            $imagePath = "documents/" . $document->name;
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
+        }
+
+        Document::where('claimID', $claimID)
+            ->where('documentType', Config::$DOCUMENT_TYPES["PDF"]["ID"])
+            ->where('pdfType', Config::PDF_TYPES['CLAIM_FORM']['ID'])
+            ->delete();
+    }
+
+    private function handleImageUploads(Request $request, $claimID, $totalImages)
+    {
+        if ($totalImages <= 0) {
+            return;
+        }
+
+        $documentsArray = [];
+
+        for ($i = 0; $i < $totalImages; $i++) {
+            $inputName = 'images' . $i;
+
+            if (!$request->hasFile($inputName)) {
+                continue;
+            }
+
+            $file = $request->file($inputName);
+            $extension = $file->getClientOriginalExtension();
+            $picture = date('His') . '-' . $file->getClientOriginalName();
+            $path = $file->move(public_path('documents/'), $picture);
+
+            $documentsArray[] = [
+                "claimID" => $claimID,
+                "name" => $picture,
+                "mime" => $extension,
+                "size" => $file->getSize(),
+                "documentType" => Config::$DOCUMENT_TYPES["IMAGE"]["ID"],
+                "url" => $path,
+                "segment" => Config::$ASSESSMENT_SEGMENTS["ASSESSMENT"]["ID"]
+            ];
+        }
+
+        if (!empty($documentsArray)) {
+            Document::insert($documentsArray);
+        }
     }
 
     public function submitAssessment(Request $request)
@@ -2514,7 +2656,8 @@ class AssessorController extends Controller
 
 
     public function deleteImage(Request $request)
-    {
+    {   
+        $response = NULL;
         try {
             $assessmentID = $request->assessmentID;
             $imageName = $request->imageName;

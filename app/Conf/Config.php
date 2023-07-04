@@ -10,10 +10,17 @@ class Config
      * Log Variables
      */
     const MOTOR_ASSESSMENT_APP_NAME = "MOTOR_ASSESSMENT";
-    const MOTOR_ASSESSMENT_DEBUG = "C:\\xampp\\htdocs\\logs\\debug.log";
-    const MOTOR_ASSESSMENT_INFO = "C:\\xampp\\htdocs\\logs\\info.log";
-    const MOTOR_ASSESSMENT_ERROR = "C:\\xampp\\htdocs\\logs\\error.log";
-    const MOTOR_ASSESSMENT_FATAL = "C:\\xampp\\htdocs\\logs\\fatal.log";
+//   const MOTOR_ASSESSMENT_DEBUG = "C:\\xampp\\htdocs\\logs\\debug.log";
+//  const MOTOR_ASSESSMENT_INFO = "C:\\xampp\\htdocs\\logs\\info.log";
+//    const MOTOR_ASSESSMENT_ERROR = "C:\\xampp\\htdocs\\logs\\error.log";
+//    const MOTOR_ASSESSMENT_FATAL = "C:\\xampp\\htdocs\\logs\\fatal.log";
+
+	  const MOTOR_ASSESSMENT_DEBUG = "/var/www/assessment_jubileeallianz_com_v2/storage/logs/app-logs/debug.log";
+	  const MOTOR_ASSESSMENT_INFO = "/var/www/assessment_jubileeallianz_com_v2/storage/logs/app-logs/info.log";
+    const MOTOR_ASSESSMENT_ERROR = "/var/www/assessment_jubileeallianz_com_v2/storage/logs/app-logs/error.log";// "C:\\xampp\\htdocs\\logs\\error.log";
+    const MOTOR_ASSESSMENT_FATAL = "/var/www/assessment_jubileeallianz_com_v2/storage/logs/app-logs/fatal.log"; // "C:\\xampp\\htdocs\\logs\\fatal.log";
+
+
 
     /**
      * Setting the default timezone to kenya
