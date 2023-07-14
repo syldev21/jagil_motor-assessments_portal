@@ -250,18 +250,24 @@ class AssessmentManagerController extends Controller
                         $assessors = User::where('userTypeID', $assessorUserID)
                                         ->role('Assessor')
                                         ->get();
-                        $assessorArray =[];
+                        $final_approver = User::find($assessment->finalApprovalBy);
+                        $in_copies =[];
+                        $in_copies[]=[
+                            'email' => $final_approver->email,
+                            'phone'=>$final_approver->MSISDN,
+                            'name'=>$final_approver->name,
+
+                        ];
                         foreach ($assessors as $assessor){
-                            $assessorArray[] = [
+                            $in_copies[] = [
                                 'email' => $assessor->email,
                                 'phone'=>$assessor->MSISDN,
                                 'name'=>$assessor->name
                             ];
                         }
 
-
-                        $smsRecipients = array_column($assessorArray, 'phone');
-                        $ccEmails = array_column($assessorArray, 'email');
+                        $smsRecipients = array_column($in_copies, 'phone');
+                        $ccEmails = array_column($in_copies, 'email');
                         $link = 'assessment-report/' . $request->assessmentID;
                         $vehicleReg  = $claim->vehicleRegNo;
                         $claimNo = $claim->claimNo;
