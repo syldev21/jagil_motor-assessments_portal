@@ -23,10 +23,10 @@
             ?>
         </p>
             <br/>
-            <h5 style="font-size: 12px">{{$company->name}}</h5>
-            <h5 style="font-size: 12px">{{$company->building}}</h5>
-            <h5 style="font-size: 12px">{{$company->stricty}}</h5>
-        <h5>{{$company->city}}.</h5>
+            <h5 style="font-size: 12px">{{$company->name??''}}</h5>
+            <h5 style="font-size: 12px">{{$company->building??''}}</h5>
+            <h5 style="font-size: 12px">{{$company->stricty??''}}</h5>
+        <h5>{{$company->city??''}}.</h5>
         <br/>
         <h6 style="font-size: 12px"><u>Dear Sirs,</h6>
         <h5 style="font-size: 12px"><u>ACCIDENT ON {{explode(" ", $claim->loseDate)[0]}}</u></h5>

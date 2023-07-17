@@ -266,6 +266,8 @@ class Config
     const ASSESSMENT_MANAGER = "Assessment Center Manager";
 
     const JUBILEE_NO_REPLY_EMAIL = "noreply@jubileeinsurance.com";
+    const JUBILEE_ALLIANZ_TALK_TO_US_EMAIL = 'talk2us@allianz.com';
+    const JUBILEE_ALLIANZ_TALK_TO_US_NAME = 'talk2us';
     const JUBILEE_REPLY_EMAIL = "jazrecover@allianz.com";
 //    const JUBILEE_NO_REPLY_EMAIL_USERNAME ="JubileeKenya";
     const JUBILEE_NO_REPLY_EMAIL_USERNAME ="ADMIN_General";
