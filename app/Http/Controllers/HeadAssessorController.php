@@ -433,33 +433,26 @@ class HeadAssessorController extends Controller
                         $role = Config::$ROLES['HEAD-ASSESSOR'];
 
                         if ($assessmentTypeID == Config::ASSESSMENT_TYPES['TOTAL_LOSS']){
-                            $cc_emails = array(User::find(Auth::id())['email'], $email);
-//                            $cc_emails = array(User::find(Auth::id())['email'], 'oumasylvester61@gmail.com');
+//                            $cc_emails = array(User::find(Auth::id())['email'], $email);
+                            $cc_emails = array(User::find(Auth::id())['email'], 'oumasylvester61@gmail.com');
                             $message = [
                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                'to' => Config::JUBILEE_ALLIANZ_TALK_TO_US_EMAIL,
-//                                'to' => 'sylvesterouma282@gmail.com',
+//                                'to' => Config::JUBILEE_ALLIANZ_TALK_TO_US_EMAIL,
+                                'to' => 'sylvesterouma282@gmail.com',
                                 'cc'=>$cc_emails,
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'html' => "
-                        Hello " . Config::JUBILEE_ALLIANZ_TALK_TO_US_NAME . ", <br>
-
-                        This is in regards to claim number <strong>" . $claimNo . " </strong>, it is deemed a <strong>TOTAL LOSS</strong>. <br> <br>
-
-                        Kindly cancel this policy immediately and flag this vehicle for future policies. <br> <br>
-
-                            <b><i><u>Notes</u></i></b> <br>
-
-                            <i> " . $reviewNote . " </i><br><br>
-
-                        Regards, <br><br>
-
-                        " . $role . ", <br>
-
-                        Claims Department, <br>
-
-                        Jubilee Allianz Insurance Company
+                                Hello " . Config::JUBILEE_ALLIANZ_TALK_TO_US_NAME . ", <br>
+                                <br>
+                                This is in regards to claim number <strong>" . $claimNo . " </strong>, it is deemed a <strong>TOTAL LOSS</strong>. <br> <br>
+                                Kindly cancel this policy immediately and flag this vehicle for future policies. <br> <br>
+                                <b><i><u>Notes</u></i></b> <br>
+                                <i> " . $reviewNote . " </i><br><br>
+                                Regards, <br><br>
+                                " . $role . ", <br>
+                                Claims Department, <br>
+                                Jubilee Allianz Insurance Company
                     ",
                             ];
                         }else{
@@ -535,7 +528,7 @@ class HeadAssessorController extends Controller
                         Jubilee Allianz Insurance Company
                     ",
                                 ];
-                                InfobipEmailHelper::sendEmail($message, $assessmentManager->email);
+//                                InfobipEmailHelper::sendEmail($message, $assessmentManager->email);
 //                        SMSHelper::sendSMS('Hello ' . $firstName . ', Assessment for claimNo ' . $claimNo . ' has been provisionally approved', $MSISDN);
 //                        Notification::send($assessor, new ClaimApproved($claim));
 
@@ -588,12 +581,12 @@ class HeadAssessorController extends Controller
                             $message = [
                                 'subject' => "DEMAND LETTER - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                'to' => $company->recovery_officer_email,
-//                'to' => "sylvesterouma282@gmail.com",
+//                                'to' => $company->recovery_officer_email,
+                'to' => "sylvesterouma282@gmail.com",
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'attachment' => $pdfFilePath,
-                                'cc' => $cc_emails,
-//                'cc' => Auth::user()->email,
+//                                'cc' => $cc_emails,
+                'cc' => Auth::user()->email,
                                 'html' => "
 
                         Dear Sirs, <br>
