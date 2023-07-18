@@ -433,13 +433,13 @@ class HeadAssessorController extends Controller
                         $role = Config::$ROLES['HEAD-ASSESSOR'];
 
                         if ($assessmentTypeID == Config::ASSESSMENT_TYPES['TOTAL_LOSS']){
-//                            $cc_emails = array(User::find(Auth::id())['email'], $email);
-                            $cc_emails = array(User::find(Auth::id())['email'], 'oumasylvester61@gmail.com');
+                            $cc_emails = array(User::find(Auth::id())['email'], $email);
+//                            $cc_emails = array(User::find(Auth::id())['email'], 'oumasylvester61@gmail.com');
                             $message = [
                                 'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-//                                'to' => Config::JUBILEE_ALLIANZ_TALK_TO_US_EMAIL,
-                                'to' => 'sylvesterouma282@gmail.com',
+                                'to' => Config::JUBILEE_ALLIANZ_TALK_TO_US_EMAIL,
+//                                'to' => 'sylvesterouma282@gmail.com',
                                 'cc'=>$cc_emails,
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'html' => "
@@ -528,7 +528,7 @@ class HeadAssessorController extends Controller
                         Jubilee Allianz Insurance Company
                     ",
                                 ];
-//                                InfobipEmailHelper::sendEmail($message, $assessmentManager->email);
+                                InfobipEmailHelper::sendEmail($message, $assessmentManager->email);
 //                        SMSHelper::sendSMS('Hello ' . $firstName . ', Assessment for claimNo ' . $claimNo . ' has been provisionally approved', $MSISDN);
 //                        Notification::send($assessor, new ClaimApproved($claim));
 
@@ -581,12 +581,12 @@ class HeadAssessorController extends Controller
                             $message = [
                                 'subject' => "DEMAND LETTER - ".$assessment['claim']['claimNo']."_".$assessment['claim']['vehicleRegNo'],
                                 'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-//                                'to' => $company->recovery_officer_email,
-                'to' => "sylvesterouma282@gmail.com",
+                                'to' => $company->recovery_officer_email,
+//                'to' => "sylvesterouma282@gmail.com",
                                 'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                                 'attachment' => $pdfFilePath,
-//                                'cc' => $cc_emails,
-                'cc' => Auth::user()->email,
+                                'cc' => $cc_emails,
+//                'cc' => Auth::user()->email,
                                 'html' => "
 
                         Dear Sirs, <br>
