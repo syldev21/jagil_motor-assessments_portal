@@ -109,14 +109,14 @@
                                         <tr>
                                             <td>Make</td>
 
-                                            <td>{{$carDetail->makeName}}</td>
+                                            <td>{{$carDetail->makeName??''}}</td>
 
                                         </tr>
 
                                         <tr>
                                             <td>Model</td>
 
-                                            <td>{{$carDetail->modelName}}</td>
+                                            <td>{{$carDetail->modelName??''}}</td>
 
                                         </tr>
 
