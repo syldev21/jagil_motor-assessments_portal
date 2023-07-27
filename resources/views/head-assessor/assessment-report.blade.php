@@ -553,9 +553,27 @@
                 <div class="col s4">
                     <a id="triggerChangeRequests" data-target="changeRequest" class="btn orange darken-2">Request Changes</a>
                 </div>
+                @if(in_array(
+                                            $assessment->assessmentStatusID, [
+                                            \App\Conf\Config::$STATUSES['ASSESSMENT']['IS-DRAFT']['id'],
+                                            \App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id'],
+                                            \App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id'],
+                                            \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']
+                                            ]))
+                    <div class="col s4">
+                        <!-- Modal Trigger -->
+                        @php@endphp
+                        @if ($assessment->assessmentStatusID == 7)
+                            <a href="#" class="btn purple lighten-2 tooltipped investigation-tooltipped" data-position="top" data-tooltip="The assessment is already under investigation">Investigate</a>
+                        @else
+                            <button id="triggerInvestigation" data-target="changeRequest" class="btn purple lighten-2 btn investigation-tooltipped">Investigate</button>
+                        @endif
+                    </div>
+                    @endif
+
                 <div class="col s4">
                     <!-- Modal Trigger -->
-                    <button id="triggerApprove" data-target="approve" class="btn blue lighten-2 btn">Approve/Halt/Cancel</button>
+                    <button id="triggerApprove" data-target="approve" class="btn green lighten-2 btn">Approve/Halt/Cancel</button>
                 </div>
 
             </div>
@@ -657,8 +675,9 @@
                                 <div class="row">
                                     <div class="input-field col m8 s12">
                                     </div>
-                                    <div class="input-field col m4 s12">
+                                    <div class="input-field col m4 s12 dynamic-id">
                                         <a href="#" class="btn blue lighten-2 waves-effect" id="head-assessor-request-change">Submit</a>
+                                        <a href="#" class="btn blue lighten-2 waves-effect" id="'head-assessor-request-investigation">Submit</a>
                                         <a href="#" class="modal-action modal-close btn red darken-2 waves-effect">Cancel</a>
                                     </div>
                                 </div>

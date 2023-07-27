@@ -54,7 +54,8 @@ class Config
             3 => "Assessed",
             4 => "Provisional Approval",
             5=> "Approved",
-            6=> "Changes Due"
+            6=> "Changes Due",
+            7=> "Under Investigation",
         )
     );
     static $STATUSES = array(
@@ -100,6 +101,10 @@ class Config
             "CHANGES-DUE" => array(
                 "id" => 6,
                 "text" => "Changes Due"
+            ),
+            "UNDER-INVESTIGATION" => array(
+                "id" => 7,
+                "text" => "Under Investigation"
             )
         ),
         "PRICE-CHANGE" => array(
@@ -342,6 +347,7 @@ class Config
         "SUBMITTING_ASSESSMENT_REPORT" => "Submission of Assessment Report",
         "PROVISIONAL_APPROVAL" => "Provisional Approval",
         "REQUEST_CHANGES" => "Request Assessment Changes",
+        "REQUEST_INVESTIGATION" => "Request Assessment Investigation",
         "FINAL_APPROVAL" => "Final Approval",
         "GENERIC_NOTIFICATION" => "Generic Notification"
     );

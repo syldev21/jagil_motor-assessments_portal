@@ -119,6 +119,12 @@
                         </a>
                     </li>
                     <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}" class="sidenav-link fetch-theft-assessments">
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link fetch-theft-assessments">
                             <i class="material-icons">done</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -169,6 +175,12 @@
                         </a>
                     </li>
                     <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}" class="sidenav-link fetch-assessments">
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link fetch-assessments">
                             <i class="material-icons">done</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -211,6 +223,14 @@
                         >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="adjuster-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}"
+                        >
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -276,6 +296,12 @@
                         </a>
                     </li>
                     <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}" class="sidenav-link assessor-fetch-assessments">
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link assessor-fetch-assessments">
                             <i class="material-icons">done</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -318,6 +344,14 @@
                          >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}"
+                         >
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -421,6 +455,12 @@
                         </a>
                     </li>
                     <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}" class="sidenav-link head-assessor-assessments">
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link head-assessor-assessments">
                             <i class="material-icons">done</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -463,6 +503,14 @@
                         >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}"
+                        >
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -568,6 +616,12 @@
                         </a>
                     </li>
                     <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}" class="sidenav-link manager-assessments">
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link manager-assessments">
                             <i class="material-icons">done</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -610,6 +664,14 @@
                         >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="manager-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}"
+                        >
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -699,6 +761,12 @@
                         </a>
                     </li>
                     <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link assistant-head-assessor-assessments">
                             <i class="material-icons">done</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']]}}</span>
@@ -741,6 +809,14 @@
                         >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="assistant-head-assessor-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}"
+                        >
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">
@@ -828,6 +904,11 @@
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
                         </a>
+                    <li class="">
+                        <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}" class="sidenav-link assessment-manager-assessments">
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Chartist">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
+                        </a>
                     </li>
                     <li class="">
                         <a href="#" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']}}" class="sidenav-link assessment-manager-assessments">
@@ -872,6 +953,14 @@
                         >
                             <i class="material-icons">compare_arrows</i>
                             <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['id']]}}</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#"
+                           class="assessment-manager-fetch-supplementaries sidenav-link" data-id="{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']}}"
+                        >
+                            <i class="material-icons">sync</i>
+                            <span data-i18n="Invoice List">{{\App\Conf\Config::$DISPLAY_STATUSES['ASSESSMENT'][\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']]}}</span>
                         </a>
                     </li>
                     <li class="">

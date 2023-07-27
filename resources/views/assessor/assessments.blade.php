@@ -108,6 +108,13 @@
                                                                 class="btn orange lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['ASSESSED']['text']}}</button>
                                                         </td>
                                                         <?php $date = $assessment['assessedAt']; ?>
+                                                    @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id'])
+                                                        <td>
+                                                            <button
+                                                                class="btn purple lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['text']}}</button>
+                                                        </td>
+                                                            <?php $date = $assessment['assessedAt'] ?>
+
                                                     @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id'])
                                                         <td>
                                                             <button

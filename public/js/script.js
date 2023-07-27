@@ -4761,12 +4761,31 @@ $(document).ready(function () {
         const instance = M.Modal.init(elem, {dismissible: true});
         instance.open();
     });
-    $("body").on('click','#triggerChangeRequests',function (e){
+    $("body").on('click', '#triggerChangeRequests, #triggerInvestigation', function (e) {
         e.preventDefault();
         const elem = document.getElementById('changeRequest');
-        const instance = M.Modal.init(elem, {dismissible: true});
+        const instance = M.Modal.init(elem, { dismissible: true });
+
+        const modalText = document.querySelector('#changeRequest .modal-body span');
+        const dynamicIdButton = document.querySelector('#changeRequest .dynamic-id');
+        let buttonIdToShow;
+
+        if (this.id === 'triggerInvestigation') {
+            modalText.textContent = 'Submit for Investigation';
+            buttonIdToShow = 'head-assessor-request-investigation';
+            dynamicIdButton.innerHTML = `
+            <a href="#" class="btn blue lighten-2 waves-effect" id="${buttonIdToShow}">Submit</a>
+            <a href="#" class="modal-action modal-close btn red darken-2 waves-effect">Cancel</a>`;
+        } else {
+            modalText.textContent = 'Request Changes On Report';
+            buttonIdToShow = 'head-assessor-request-change';
+            dynamicIdButton.innerHTML = `
+            <a href="#" class="btn blue lighten-2 waves-effect" id="${buttonIdToShow}">Submit</a>
+            <a href="#" class="modal-action modal-close btn red darken-2 waves-effect">Cancel</a>`;
+        }
         instance.open();
     });
+
     $("body").on('click','#archiveClaimTrigger',function (e){
         e.preventDefault();
         const elem = document.getElementById('archiveClaim');
@@ -5213,6 +5232,51 @@ $(document).ready(function () {
                 changes : changes
             },
             url: '/head-assessor/request-assessment-change',
+            success: function (data) {
+                var result = $.parseJSON(data);
+                if (result.STATUS_CODE == SUCCESS_CODE) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: result.STATUS_MESSAGE,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                }
+                $("#changeRequest").modal('close');
+            }
+
+        });
+
+
+    });
+    $("#changeRequest").on('click','#head-assessor-request-investigation',function (e){
+        e.preventDefault();
+        var assessmentID = $("#assessmentID").val();
+        var changes = CKEDITOR.instances['changes'].getData();
+        $.ajaxSetup({
+
+            headers: {
+
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            }
+
+        });
+        $.ajax({
+
+            type: 'POST',
+            data : {
+                assessmentID : assessmentID,
+                reviewNote : changes
+            },
+            url: '/head-assessor/request-assessment-investigation',
             success: function (data) {
                 var result = $.parseJSON(data);
                 if (result.STATUS_CODE == SUCCESS_CODE) {

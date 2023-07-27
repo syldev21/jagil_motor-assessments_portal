@@ -38,6 +38,7 @@ class CreateAssessmentsTable extends Migration
             $table->dateTime('finalApprovedAt')->nullable();
             $table->tinyInteger('changesDue')->default(0);
             $table->dateTime('changeRequestAt')->nullable();
+            $table->dateTime('investigationRequestAt')->nullable();
             $table->longText('reviewNote')->nullable();
             $table->double('scrapValue')->nullable();
             $table->tinyInteger('scrap')->nullable();

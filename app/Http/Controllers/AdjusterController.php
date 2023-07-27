@@ -351,11 +351,11 @@ class AdjusterController extends Controller
             		'Accept' => 'application/json'
        		 ],
         	'form_params' => [
-            		'start_date'    => $fromDate, 
-            		'end_date'      => $toDate, 
+            		'start_date'    => $fromDate,
+            		'end_date'      => $toDate,
             		'vehicle_registration' => $vehicleRegistrationNumber
         	]
-    	]);# 
+    	]);#
 	#
 	$claims = json_decode($response->getBody()->getContents(), true);
 

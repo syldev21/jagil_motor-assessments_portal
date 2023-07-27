@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 Route::get("/test", function (){
     ;
@@ -144,6 +145,7 @@ $router->group(['prefix' => 'head-assessor'], function($router)
     $router->post('/price-change-report','HeadAssessorController@priceChangeReport');
     $router->post('/review-price-change','HeadAssessorController@reviewPriceChange');
     $router->post('/request-assessment-change','HeadAssessorController@requestAssessmentChange');
+    $router->post('/request-assessment-investigation','HeadAssessorController@requestAssessmentInvestigation');
 });
 
 // Manager Routes
@@ -354,5 +356,8 @@ $router->group(['prefix' => 'nhif'], function($router)
 $router->group(['prefix' => 'metropol'], function($router)
 {
     $router->post('/fetchCustomerData', 'CommonController@fetchCustomerData');
+});
+Route::get('test', function (){
+    dd(Auth::user()->role());
 });
 

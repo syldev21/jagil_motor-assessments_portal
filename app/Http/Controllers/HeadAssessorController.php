@@ -829,6 +829,87 @@ class HeadAssessorController extends Controller
         }
         return json_encode($response);
     }
+    public function requestAssessmentInvestigation(Request $request)
+    {
+        try {
+            $investigationUpdateData = [
+                'assessmentStatusID' => Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id'],
+                'dateModified' => date('Y-m-d H:i:s'),
+                'investigationRequestAt' => date('Y-m-d H:i:s'),
+                'updatedBy' => Auth::user()->id,
+                'reviewNote'=>$request->reviewNote??''
+            ];
+           $assessment = Assessment::where('id', $request->assessmentID);
+           $save = $assessment->update($investigationUpdateData);
+
+           if ($save){
+               $assessment= $assessment->first();
+               $claim = Claim::find($assessment->claimID);
+               $adjuster = User::find($claim->createdBy);
+               $assessor = User::find($assessment->assessedBy)->name;
+                $email = [
+                    'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
+                    'from' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'to' => $adjuster->email,
+                    'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
+                    'cc' => Auth::user()->email,
+                    'html' => "
+                    Hello " . $adjuster->firstName . ", <br>
+                    This is a test email
+                    <br>
+                    This is in regards to the vehicle registration number ".$claim->vehicleRegNo.", recently assessed by ".$assessor.". The circumstances are not consistent with damages <br>
+                    Kindly appoint an investigator.<br>
+                    <i><u>Note</u></i>: <br> <br>
+                    <p> " . $assessment->reviewNote . "</p> <br>
+
+                    Regards, <br>
+                    ".Auth::user()->firstName.",
+                     " . Config::$ROLES['HEAD-ASSESSOR'] . ", <br>
+                    Claims Department, <br>
+                    Jubilee Allianz Insurance Company of Kenya.
+                ",
+                ];
+                InfobipEmailHelper::sendEmail($email, $adjuster->email);
+                $logData = array(
+                    "vehicleRegNo" => $claim->vehicleRegNo,
+                    "claimNo" => $claim->claimNo,
+                    "policyNo" => $claim->policyNo,
+                    "userID" => Auth::user()->id,
+                    "role" => Config::$ROLES['ASSESSOR'],
+                    "activity" => Config::ACTIVITIES['REQUEST_INVESTIGATION'],
+                    "notification" => $email['html'],
+                    "notificationTo" => $adjuster->email,
+                    "notificationType" => Config::NOTIFICATION_TYPES['EMAIL'],
+                );
+                $this->functions->logActivity($logData);
+                $smsMessage = 'Hello ' . $adjuster->firstName . ', Check your email for investigation request for vehicle Reg. ' . $claim->vehicleRegNo. ' and action';
+                SMSHelper::sendSMS($smsMessage, $adjuster->MSISDN);
+                $logData['notification'] = $smsMessage;
+                $logData['notificationTo'] = $adjuster->MSISDN;
+                $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];
+                $this->functions->logActivity($logData);
+                Notification::send($adjuster, new NewChangeRequest($claim));
+                $response = array(
+                    "STATUS_CODE" => Config::SUCCESS_CODE,
+                    "STATUS_MESSAGE" => "Heads up! An email was sent to " . $adjuster->firstName . " with the investigation request"
+                );
+            } else {
+                $response = array(
+                    "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                    "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+                );
+            }
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            $response = array(
+                "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
+                "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
+            );
+            $this->log->motorAssessmentInfoLogger->info("FUNCTION " . __METHOD__ . " " . " LINE " . __LINE__ .
+                "An exception occurred when trying to request for changes " . $e->getMessage());
+        }
+        return json_encode($response);
+    }
 
     public function requestSupplementaryChange(Request $request)
     {
