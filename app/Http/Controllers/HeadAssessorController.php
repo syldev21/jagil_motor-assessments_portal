@@ -847,15 +847,32 @@ class HeadAssessorController extends Controller
                $claim = Claim::find($assessment->claimID);
                $adjuster = User::find($claim->createdBy);
                $assessor = User::find($assessment->assessedBy)->name;
+
+               $cc_emails = [Auth::user()->email];
+               // Get the role names for 'Assessment Manager' and 'Manager'
+               $assessmentManagerRoleName = Config::$ROLES['ASSESSMENT-MANAGER'];
+               $managerRoleName = Config::$ROLES['MANAGER'];
+
+// Retrieve users with the role 'Assessment Manager' but not with the role 'Manager'
+               $users = User::role($assessmentManagerRoleName)
+                   ->whereDoesntHave('roles', function ($query) use ($managerRoleName) {
+                       $query->where('name', $managerRoleName);
+                   })
+                   ->get();
+
+// Now you have the users with the role 'Assessment Manager' but not with the role 'Manager'
+               foreach ($users as $user){
+                   $cc_emails[] = $user->email;
+               }
+
                 $email = [
                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
                     'to' => $adjuster->email,
                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
-                    'cc' => Auth::user()->email,
+                    'cc' => $cc_emails,
                     'html' => "
                     Hello " . $adjuster->firstName . ", <br>
-                    This is a test email
                     <br>
                     This is in regards to the vehicle registration number ".$claim->vehicleRegNo.", recently assessed by ".$assessor.". The circumstances are not consistent with damages <br>
                     Kindly appoint an investigator.<br>
@@ -883,7 +900,7 @@ class HeadAssessorController extends Controller
                 );
                 $this->functions->logActivity($logData);
                 $smsMessage = 'Hello ' . $adjuster->firstName . ', Check your email for investigation request for vehicle Reg. ' . $claim->vehicleRegNo. ' and action';
-                SMSHelper::sendSMS($smsMessage, $adjuster->MSISDN);
+//                SMSHelper::sendSMS($smsMessage, $adjuster->MSISDN);
                 $logData['notification'] = $smsMessage;
                 $logData['notificationTo'] = $adjuster->MSISDN;
                 $logData['notificationType'] = Config::NOTIFICATION_TYPES['SMS'];

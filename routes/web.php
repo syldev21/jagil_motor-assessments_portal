@@ -11,6 +11,8 @@
 |
 */
 
+use App\Conf\Config;
+use App\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
@@ -358,6 +360,22 @@ $router->group(['prefix' => 'metropol'], function($router)
     $router->post('/fetchCustomerData', 'CommonController@fetchCustomerData');
 });
 Route::get('test', function (){
-    dd(Auth::user()->role());
+    $cc_emails = [Auth::user()->email];
+    // Get the role names for 'Assessment Manager' and 'Manager'
+    $assessmentManagerRoleName = Config::$ROLES['ASSESSMENT-MANAGER'];
+    $managerRoleName = Config::$ROLES['MANAGER'];
+
+// Retrieve users with the role 'Assessment Manager' but not with the role 'Manager'
+    $users = User::role($assessmentManagerRoleName)
+        ->whereDoesntHave('roles', function ($query) use ($managerRoleName) {
+            $query->where('name', $managerRoleName);
+        })
+        ->get();
+
+// Now you have the users with the role 'Assessment Manager' but not with the role 'Manager'
+    foreach ($users as $user){
+        $cc_emails[] = $user->email;
+    }
+    dd($cc_emails);
 });
 

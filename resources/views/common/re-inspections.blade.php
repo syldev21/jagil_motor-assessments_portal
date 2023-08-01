@@ -129,6 +129,13 @@
                                                             <button
                                                                 class="btn red lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['text']}}</button>
                                                         </td>
+                                                    @elseif($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id'])
+                                                        <td>
+                                                            <button
+                                                                class="btn purple lighten-2">{{explode(' ', \App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['text'])[1]}}
+{{--                                                                class="btn purple lighten-2">{{\App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['text']}}--}}
+                                                            </button>
+                                                        </td>
                                                     @endif
                                                     <?php
                                                     if ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id']) {
@@ -139,6 +146,8 @@
                                                         $date = $assessment['assessedAt'];
                                                     } elseif ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['CHANGES-DUE']['id']) {
                                                         $date = $assessment['changeRequestAt'];
+                                                    } elseif ($assessment['assessmentStatusID'] == \App\Conf\Config::$STATUSES['ASSESSMENT']['UNDER-INVESTIGATION']['id']) {
+                                                        $date = $assessment['investigationRequestAt'];
                                                     } else {
                                                         $date = $assessment['dateCreated'];
                                                     }
