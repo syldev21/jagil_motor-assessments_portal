@@ -4770,19 +4770,23 @@ $(document).ready(function () {
         const dynamicIdButton = document.querySelector('#changeRequest .dynamic-id');
         let buttonIdToShow;
 
-        if (this.id === 'triggerInvestigation') {
-            modalText.textContent = 'Submit for Investigation';
-            buttonIdToShow = 'head-assessor-request-investigation';
-            dynamicIdButton.innerHTML = `
+        if (dynamicIdButton){
+            if (this.id === 'triggerInvestigation') {
+                modalText.textContent = 'Submit for Investigation';
+                buttonIdToShow = 'head-assessor-request-investigation';
+                dynamicIdButton.innerHTML = `
             <a href="#" class="btn blue lighten-2 waves-effect" id="${buttonIdToShow}">Submit</a>
             <a href="#" class="modal-action modal-close btn red darken-2 waves-effect">Cancel</a>`;
-        } else {
-            modalText.textContent = 'Request Changes On Report';
-            buttonIdToShow = 'head-assessor-request-change';
-            dynamicIdButton.innerHTML = `
+            } else {
+                modalText.textContent = 'Request Changes On Report';
+                buttonIdToShow = 'head-assessor-request-change';
+                dynamicIdButton.innerHTML = `
             <a href="#" class="btn blue lighten-2 waves-effect" id="${buttonIdToShow}">Submit</a>
             <a href="#" class="modal-action modal-close btn red darken-2 waves-effect">Cancel</a>`;
+            }
         }
+
+
         instance.open();
     });
 
