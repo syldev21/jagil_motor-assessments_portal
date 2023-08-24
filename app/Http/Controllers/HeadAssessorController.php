@@ -506,7 +506,7 @@ class HeadAssessorController extends Controller
                                 $message = [
                                     'subject' => $claim->claimNo.'_'.$claim->vehicleRegNo.'_'.$this->functions->curlDate(),
                                     'from' => Config::JUBILEE_NO_REPLY_EMAIL,
-                                    'to' => $assessmentManager->email,
+                                    'to' => $assessmentManager->email, //sending emails to all managers
                                     'replyTo' => Config::JUBILEE_NO_REPLY_EMAIL,
                                     'html' => "
                         Hello " . $assessmentManager->firstName . ", <br>
@@ -528,14 +528,14 @@ class HeadAssessorController extends Controller
                         Jubilee Allianz Insurance Company
                     ",
                                 ];
-                                InfobipEmailHelper::sendEmail($message, $assessmentManager->email);
+//                                InfobipEmailHelper::sendEmail($message, $assessmentManager->email);
 //                        SMSHelper::sendSMS('Hello ' . $firstName . ', Assessment for claimNo ' . $claimNo . ' has been provisionally approved', $MSISDN);
 //                        Notification::send($assessor, new ClaimApproved($claim));
 
-                                $logData['notification'] = $message['html'];
-                                $logData["notificationTo"] = $assessmentManager->email;
-                                $logData["role"] = Config::$ROLES['ASSESSMENT-MANAGER'];
-                                $this->functions->logActivity($logData);
+//                                $logData['notification'] = $message['html'];
+//                                $logData["notificationTo"] = $assessmentManager->email;
+//                                $logData["role"] = Config::$ROLES['ASSESSMENT-MANAGER'];
+//                                $this->functions->logActivity($logData);
                             }
                         }
 
