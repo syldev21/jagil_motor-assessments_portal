@@ -103,12 +103,15 @@
                 @if($assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['PROVISIONAL-APPROVAL']['id']||$assessment->assessmentStatusID == \App\Conf\Config::$STATUSES['ASSESSMENT']['APPROVED']['id'])
                 @hasrole(\App\Conf\Config::$ROLES["ADJUSTER"])
                 <div class="row">
-                    <div class="col s8">
-                        <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
-                           class="btn green darken-2">Resend Demand Letter
-                        </a>
-                    </div>
-{{--                    @endif--}}
+                    @php
+
+                        $button_text =  $assessment['demandLetterDate'] == NULL && $assessment['subrogationSender'] == NULL ? 'Send ': 'Resend ';
+                    @endphp
+                        <div class="col s8">
+                            <a id="sendSubrogationReport" data-id="{{$assessment['id']}}"
+                               class="btn green darken-2">{{$button_text. 'Demand Letter'}}
+                            </a>
+                        </div>
                     <div class="col s4">
 
                     </div>
