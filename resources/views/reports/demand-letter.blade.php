@@ -73,8 +73,11 @@
         </p>
 
         <h5 style="font-size: 12px">Yours faithfully,</h5>
-        <img src="{{ public_path('images/e_signatures/'.auth::user()->signature) }}" width="10%">
-        <h5 style="font-size: 12px">{{auth()->user()->name}}</h5>
+        @php
+        $auth_user = auth()->user();
+        @endphp
+        <img src="{{ public_path('images/e_signatures/'.$auth_user->signature) }}" width="10%">
+        <h5 style="font-size: 12px">{{$auth_user->name}}</h5>
         <h5 style="font-size: 12px">Claims Adjuster-Claims Department</h5>
         <h5 style="font-size: 12px">CC. Miriam Maina</h5>
         <h5 style="font-size: 12px">Recovery Officer - Jubilee Allianz General Insurance (K) Limited</h5>
