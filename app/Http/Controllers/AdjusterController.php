@@ -280,7 +280,7 @@ class AdjusterController extends Controller
         $toDate = strtoupper($toDate);
 
         // SQL STATEMENT TO FETCH CLAIMS DIRECTLY FROM PREMIA
-        /* $sqlStatementString = "SELECT CLM_NO, CLM_POL_NO, VEH_REG_NO, VEH_MAKE, VEH_MODEL, VEH_CHASSIS_NO, VEH_ENG_NO, VEH_MFG_YR, SUM_INSURED,
+         $sqlStatementString = "SELECT CLM_NO, CLM_POL_NO, VEH_REG_NO, VEH_MAKE, VEH_MODEL, VEH_CHASSIS_NO, VEH_ENG_NO, VEH_MFG_YR, SUM_INSURED,
                 EXCESS_AMT, CLM_LOSS_DT, CLM_INTM_DT, CLAIM_TYPE, CUST_CODE, CUST_NAME, CUST_MOBILE_NO, CUST_EMAIL1, BRANCH
                 FROM
                 (
@@ -342,22 +342,23 @@ class AdjusterController extends Controller
                 'CUST_EMAIL1'    => $claim->cust_email1,
                 'BRANCH'         => $claim->branch
             ];
-	});*/
+	});
 
-	$client = new Client(["base_uri" => "http://192.168.52.35:10888"]);
+	// $client = new Client(["base_uri" => "http://192.168.52.35:10888"]);
 
-    	$response = $client->post("api/motor-claims", [
-        	'headers' => [
-            		'Accept' => 'application/json'
-       		 ],
-        	'form_params' => [
-            		'start_date'    => $fromDate,
-            		'end_date'      => $toDate,
-            		'vehicle_registration' => $vehicleRegistrationNumber
-        	]
-    	]);#
+    // 	$response = $client->post("api/motor-claims", [
+    //     	'headers' => [
+    //         		'Accept' => 'application/json'
+    //    		 ],
+    //     	'form_params' => [
+    //         		'start_date'    => $fromDate,
+    //         		'end_date'      => $toDate,
+    //         		'vehicle_registration' => $vehicleRegistrationNumber
+    //     	]
+    // 	]);#
 	#
-	$claims = json_decode($response->getBody()->getContents(), true);
+	// $claims = json_decode($response->getBody()->getContents(), true);
+    $claims = json_decode($claims, true);
 
         return view('adjuster.index', ['claims' => $claims]);
     }
