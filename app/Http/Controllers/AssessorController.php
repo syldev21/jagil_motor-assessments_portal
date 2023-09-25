@@ -363,6 +363,7 @@ class AssessorController extends Controller
                 "STATUS_MESSAGE" => "Congratulations! Your documents have been uploaded successfully"
             ];
         } catch (\Exception $e) {
+            dd($e->getMessage());
             $response = [
                 "STATUS_CODE" => Config::GENERIC_ERROR_CODE,
                 "STATUS_MESSAGE" => Config::GENERIC_ERROR_MESSAGE
